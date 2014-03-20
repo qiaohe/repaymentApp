@@ -15,7 +15,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void register(Member member) {
-
+        memberRepository.save(member);
     }
 
     @Override
@@ -33,6 +33,5 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findAll();
     }
 
-    public static void main(String[] args) {
-    }
+
 }
