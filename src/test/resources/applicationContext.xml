@@ -17,10 +17,10 @@
     <jpa:repositories base-package="com.huayuan.repository"/>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${db.driverClassName}"/>
-        <property name="jdbcUrl" value="jdbc:jtds:sqlserver://${db.host}:1433/member"/>
-        <property name="user" value="${db.username}"/>
-        <property name="password" value="${db.password}"/>
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="jdbc:jtds:sqlserver://${jdbc.host}:1433/member"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="maxPoolSize" value="10"/>
         <property name="minPoolSize" value="5"/>
         <property name="maxStatements" value="0"/>
@@ -32,7 +32,7 @@
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="showSql" value="true"/>
                 <property name="generateDdl" value="true"/>
-                <property name="databasePlatform" value="${db.dialect}"/>
+                <property name="databasePlatform" value="${jdbc.dialect}"/>
             </bean>
         </property>
     </bean>
