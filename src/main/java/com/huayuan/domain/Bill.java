@@ -1,5 +1,7 @@
 package com.huayuan.domain;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 public class Bill {
-    private int id;
+    private Long id;
     private Integer memberId;
     private Short bank;
     private Byte type;
@@ -28,11 +30,11 @@ public class Bill {
 
     @Id
     @Column(name = "ID")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -167,46 +169,18 @@ public class Bill {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Bill bill = (Bill) o;
-
-        if (id != bill.id) return false;
-        if (amtRmb != null ? !amtRmb.equals(bill.amtRmb) : bill.amtRmb != null) return false;
-        if (amtUsd != null ? !amtUsd.equals(bill.amtUsd) : bill.amtUsd != null) return false;
-        if (applNo != null ? !applNo.equals(bill.applNo) : bill.applNo != null) return false;
-        if (bank != null ? !bank.equals(bill.bank) : bill.bank != null) return false;
-        if (createTime != null ? !createTime.equals(bill.createTime) : bill.createTime != null) return false;
-        if (crl != null ? !crl.equals(bill.crl) : bill.crl != null) return false;
-        if (cycleFrom != null ? !cycleFrom.equals(bill.cycleFrom) : bill.cycleFrom != null) return false;
-        if (cycleThru != null ? !cycleThru.equals(bill.cycleThru) : bill.cycleThru != null) return false;
-        if (email != null ? !email.equals(bill.email) : bill.email != null) return false;
-        if (image != null ? !image.equals(bill.image) : bill.image != null) return false;
-        if (memberId != null ? !memberId.equals(bill.memberId) : bill.memberId != null) return false;
-        if (payDue != null ? !payDue.equals(bill.payDue) : bill.payDue != null) return false;
-        if (type != null ? !type.equals(bill.type) : bill.type != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(id, memberId);
     }
 
     @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
-        result = 31 * result + (bank != null ? bank.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (crl != null ? crl.hashCode() : 0);
-        result = 31 * result + (payDue != null ? payDue.hashCode() : 0);
-        result = 31 * result + (amtRmb != null ? amtRmb.hashCode() : 0);
-        result = 31 * result + (amtUsd != null ? amtUsd.hashCode() : 0);
-        result = 31 * result + (cycleFrom != null ? cycleFrom.hashCode() : 0);
-        result = 31 * result + (cycleThru != null ? cycleThru.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (applNo != null ? applNo.hashCode() : 0);
-        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
-        return result;
+    public boolean equals(final Object obj) {
+        if (obj instanceof Bill) {
+            final Bill other = (Bill) obj;
+            return Objects.equal(id, other.id)
+                    && memberId.equals(other.memberId);
+        } else {
+            return false;
+        }
     }
 }

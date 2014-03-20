@@ -1,5 +1,7 @@
 package com.huayuan.domain;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -9,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "BILL_MAILBOX", schema = "dbo", catalog = "MEMBER")
 public class BillMailbox {
-    private int id;
+    private Long id;
     private Integer memberId;
     private String email;
     private String password;
@@ -19,11 +21,11 @@ public class BillMailbox {
 
     @Id
     @Column(name = "ID")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,32 +90,17 @@ public class BillMailbox {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BillMailbox that = (BillMailbox) o;
-
-        if (id != that.id) return false;
-        if (applNo != null ? !applNo.equals(that.applNo) : that.applNo != null) return false;
-        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (memberId != null ? !memberId.equals(that.memberId) : that.memberId != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(memberId, email);
     }
 
     @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (applNo != null ? applNo.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
-        return result;
+    public boolean equals(final Object obj) {
+        if (obj instanceof BillMailbox) {
+            final BillMailbox other = (BillMailbox) obj;
+            return Objects.equal(memberId, other.memberId) && Objects.equal(email, other.email);
+        } else {
+            return false;
+        }
     }
 }

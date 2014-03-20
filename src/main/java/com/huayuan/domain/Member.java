@@ -1,5 +1,7 @@
 package com.huayuan.domain;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -229,5 +231,20 @@ public class Member {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(userName, name);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj instanceof Member) {
+            final Member other = (Member) obj;
+            return Objects.equal(userName, other.userName) && Objects.equal(name, other.name);
+        } else {
+            return false;
+        }
     }
 }
