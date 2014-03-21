@@ -1,4 +1,4 @@
-package com.huayuan.ocr;
+package com.huayuan.domain.recognizer;
 
 import com.huayuan.utils.FileUtils;
 import com.huayuan.utils.ImageUtils;
