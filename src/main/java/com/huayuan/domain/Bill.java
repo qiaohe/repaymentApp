@@ -1,4 +1,5 @@
 package com.huayuan.domain;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -24,8 +25,11 @@ public class Bill implements java.io.Serializable {
     private String applNo;
     private Timestamp createTime;
 
+    public Bill() {
+    }
+
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

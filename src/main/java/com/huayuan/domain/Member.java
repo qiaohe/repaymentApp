@@ -57,16 +57,16 @@ public class Member implements java.io.Serializable {
     private String blockCode;
     @Column(name = "CREATE_TIME")
     private Timestamp createTime;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
-    private IdCard idCard;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<Bill> bills = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<BillMailbox> billMailboxes = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade=CascadeType.ALL)
+    private IdCard idCard;
 
     public Member() {
     }

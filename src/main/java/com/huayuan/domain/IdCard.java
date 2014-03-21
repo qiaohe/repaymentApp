@@ -9,10 +9,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "ID_CARD", schema = "dbo", catalog = "MEMBER")
-public class IdCard implements java.io.Serializable{
+public class IdCard implements java.io.Serializable {
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
     private String idNo;
     private Byte sex;
@@ -27,8 +25,11 @@ public class IdCard implements java.io.Serializable{
     private String applNo;
     private Timestamp createTime;
 
+    public IdCard() {
+    }
+
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -37,6 +38,8 @@ public class IdCard implements java.io.Serializable{
         this.id = id;
     }
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }
