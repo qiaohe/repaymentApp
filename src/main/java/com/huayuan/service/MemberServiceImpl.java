@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addBillMailBox(Member member, BillMailbox billMailbox) {
-        memberRepository.addBillMailBox(billMailbox);
+//        memberRepository.addBillMailBox(billMailbox);
         BillCrawler crawler = new BillCrawler();
         addBill(member, crawler.crawl(billMailbox));
     }

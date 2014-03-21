@@ -8,5 +8,4 @@ import org.springframework.data.repository.CrudRepository;
  * Created by dell on 14-3-19.
  */
 public interface MemberRepository extends CrudRepository<Member, Integer> {
-    void addBillMailBox(BillMailbox billMailbox);
 }
