@@ -87,7 +87,7 @@
         </dependency>
 
         <!-- @Inject -->
-        <dependency>org.slf4j-version
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
