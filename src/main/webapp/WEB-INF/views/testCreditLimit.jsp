@@ -14,20 +14,17 @@
     <title></title>
     <link rel="stylesheet" href="resources/css/jquery.mobile-1.3.2.min.css">
     <script src="resources/js/jquery.1.9.1.js"></script>
+    <script src="resources/js/jquery.form.min.js"></script>
     <script src="resources/js/jquery.mobile-1.3.2.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#file1").on("change", function () {
-                $.ajax({
-                    url: "fileUpload.do",
-                    dataType: "json",
-                    type: "post",
-                    success: function (data) {
-                        alert(data);
-                    },
-                    error: function (data) {
-                        alert(data);
+            $("#idCardFrontFile").on("change", function () {
+                $("#testCreditLimitForm").ajaxSubmit(function(data){
+                    if(data != null || data != ""){
+                        $("#idCardFrontFile").parent().append("<p style='color: red'>省份证号码为:"+data+"</p>");
+                    }else{
+                         alert("识别失败!");
                     }
                 });
             });
@@ -40,7 +37,7 @@
 <!-- 扫描省份证，信用卡-->
 <div data-role="page" id="testCreditLimit">
     <div data-role="content">
-        <form id="form" action="uploadIdCardFront.html" enctype="multipart/form-data" method="post" data-ajax="false">
+        <form id="testCreditLimitForm" action="uploadIdCardFront.html" enctype="multipart/form-data" method="post">
             <div data-role="header">
                 <h1>测额度</h1>
             </div>
@@ -48,19 +45,19 @@
                 <img src="resources/img/testImg.png">
             </div>
             <div>
-                <label for="file">身份证-正面:</label>
-                <input type="file" name="file" id="file" value="">
+                <label for="idCardFrontFile">身份证-正面:</label>
+                <input type="file" name="idCardFrontFile" id="idCardFrontFile" value="aaa">
             </div>
             <div>
-                <label for="file2">身份证-反面 :</label>
-                <input type="file" name="file2" id="file2" value="">
+                <label for="idCardBackFile">身份证-反面 :</label>
+                <input type="file" name="idCardBackFile" id="idCardBackFile" value="">
             </div>
             <div>
-                <label for="file3">信用卡-正面:</label>
-                <input type="file" name="file3" id="file3" value="">
+                <label for="creditCardFile">信用卡-正面:</label>
+                <input type="file" name="creditCardFile" id="creditCardFile" value="">
             </div>
 
-            <input type="submit" value="提交">
+            <input type="button" id="testSubmit" value="提交">
         </form>
     </div>
 </div>
