@@ -1,5 +1,7 @@
 package com.huayuan.domain;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -9,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "ID_CARD", schema = "dbo", catalog = "MEMBER")
 public class IdCard {
-    private int id;
+    private Long id;
     private Integer memberId;
     private String idNo;
     private Byte sex;
@@ -26,11 +28,11 @@ public class IdCard {
 
     @Id
     @Column(name = "ID")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -165,46 +167,17 @@ public class IdCard {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        IdCard idCard = (IdCard) o;
-
-        if (id != idCard.id) return false;
-        if (address != null ? !address.equals(idCard.address) : idCard.address != null) return false;
-        if (applNo != null ? !applNo.equals(idCard.applNo) : idCard.applNo != null) return false;
-        if (birthday != null ? !birthday.equals(idCard.birthday) : idCard.birthday != null) return false;
-        if (createTime != null ? !createTime.equals(idCard.createTime) : idCard.createTime != null) return false;
-        if (idNo != null ? !idNo.equals(idCard.idNo) : idCard.idNo != null) return false;
-        if (imageBack != null ? !imageBack.equals(idCard.imageBack) : idCard.imageBack != null) return false;
-        if (imageFront != null ? !imageFront.equals(idCard.imageFront) : idCard.imageFront != null) return false;
-        if (issuer != null ? !issuer.equals(idCard.issuer) : idCard.issuer != null) return false;
-        if (memberId != null ? !memberId.equals(idCard.memberId) : idCard.memberId != null) return false;
-        if (nationality != null ? !nationality.equals(idCard.nationality) : idCard.nationality != null) return false;
-        if (sex != null ? !sex.equals(idCard.sex) : idCard.sex != null) return false;
-        if (validFrom != null ? !validFrom.equals(idCard.validFrom) : idCard.validFrom != null) return false;
-        if (validThru != null ? !validThru.equals(idCard.validThru) : idCard.validThru != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(idNo);
     }
 
     @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (memberId != null ? memberId.hashCode() : 0);
-        result = 31 * result + (idNo != null ? idNo.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
-        result = 31 * result + (nationality != null ? nationality.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (issuer != null ? issuer.hashCode() : 0);
-        result = 31 * result + (validFrom != null ? validFrom.hashCode() : 0);
-        result = 31 * result + (validThru != null ? validThru.hashCode() : 0);
-        result = 31 * result + (imageFront != null ? imageFront.hashCode() : 0);
-        result = 31 * result + (imageBack != null ? imageBack.hashCode() : 0);
-        result = 31 * result + (applNo != null ? applNo.hashCode() : 0);
-        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
-        return result;
+    public boolean equals(final Object obj) {
+        if (obj instanceof IdCard) {
+            final IdCard other = (IdCard) obj;
+            return Objects.equal(idNo, other.idNo);
+        } else {
+            return false;
+        }
     }
 }

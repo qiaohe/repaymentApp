@@ -1,7 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.domain.Member;
-import com.huayuan.util.BaseTest;
+import com.huayuan.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
