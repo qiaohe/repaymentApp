@@ -1,7 +1,5 @@
 package com.huayuan.domain.recognizer;
 
-import com.google.common.base.Objects;
-
 /**
  * Created by dell on 14-3-21.
  */
@@ -55,18 +53,4 @@ public final class IdCardInfo {
         this.idCardNumber = idCardNumber;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(idCardNumber);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof IdCardInfo) {
-            final IdCardInfo other = (IdCardInfo) obj;
-            return Objects.equal(idCardNumber, other.idCardNumber);
-        } else {
-            return false;
-        }
-    }
 }

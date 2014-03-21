@@ -1,18 +1,19 @@
 package com.huayuan.domain;
 
-import com.google.common.base.Objects;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class Member {
+public class Member implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Basic
     @Column(name = "USER_NAME")
     private String userName;
@@ -56,12 +57,25 @@ public class Member {
     private String blockCode;
     @Column(name = "CREATE_TIME")
     private Timestamp createTime;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
+    private IdCard idCard;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private Set<CreditCard> creditCards = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private Set<Bill> bills = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private Set<BillMailbox> billMailboxes = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private Set<PreCredit> preCredits = new HashSet<>();
 
-    public int getId() {
+    public Member() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -233,18 +247,92 @@ public class Member {
         this.createTime = createTime;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(userName, name);
+    public IdCard getIdCard() {
+        return idCard;
     }
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof Member) {
-            final Member other = (Member) obj;
-            return Objects.equal(userName, other.userName) && Objects.equal(name, other.name);
-        } else {
-            return false;
+    public void setIdCard(IdCard idCard) {
+        this.idCard = idCard;
+    }
+
+    public Set<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(Set<CreditCard> creditCards) {
+        this.creditCards = creditCards;
+    }
+
+    public void addCreditCard(CreditCard creditCard) {
+        if (!creditCards.contains(creditCard)) {
+            creditCards.add(creditCard);
         }
     }
+
+    public void removeCreditCard(CreditCard creditCard) {
+        if (creditCards.contains(creditCard)) {
+            creditCards.remove(creditCard);
+        }
+    }
+
+    public Set<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(Set<Bill> bills) {
+        this.bills = bills;
+    }
+
+    public void addBillMailbox(BillMailbox billMailbox) {
+        if (!billMailboxes.contains(billMailbox)) {
+            billMailboxes.add(billMailbox);
+        }
+    }
+
+    public void removeMailbox(BillMailbox billMailbox) {
+        if (billMailboxes.contains(billMailbox)) {
+            billMailboxes.remove(billMailbox);
+        }
+    }
+
+    public Set<BillMailbox> getBillMailboxes() {
+        return billMailboxes;
+    }
+
+    public void setBillMailboxes(Set<BillMailbox> billMailboxes) {
+        this.billMailboxes = billMailboxes;
+    }
+
+    public void addBill(Bill bill) {
+        if (!bills.contains(bill)) {
+            bills.add(bill);
+        }
+    }
+
+    public void removeBill(Bill bill) {
+        if (bills.contains(bill)) {
+            bills.remove(bill);
+        }
+    }
+
+    public Set<PreCredit> getPreCredits() {
+        return preCredits;
+    }
+
+    public void setPreCredits(Set<PreCredit> preCredits) {
+        this.preCredits = preCredits;
+    }
+
+    public void removePreCredit(PreCredit preCredit) {
+        if (preCredits.contains(preCredit)) {
+            preCredits.remove(preCredit);
+        }
+    }
+
+    public void addPreCredit(PreCredit preCredit) {
+        if (!preCredits.contains(preCredit)) {
+            preCredits.add(preCredit);
+        }
+    }
+
 }

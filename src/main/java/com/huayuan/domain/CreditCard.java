@@ -1,20 +1,17 @@
 package com.huayuan.domain;
 
-import com.google.common.base.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class CreditCard {
+public class CreditCard implements java.io.Serializable {
     private Long id;
-    private Integer memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
     private Short bank;
     private String cardNo;
     private Byte type;
@@ -36,14 +33,12 @@ public class CreditCard {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    public Integer getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Basic
@@ -146,19 +141,4 @@ public class CreditCard {
         this.createTime = createTime;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(memberId, cardNo);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof CreditCard) {
-            final CreditCard other = (CreditCard) obj;
-            return Objects.equal(memberId, other.memberId)
-                    && Objects.equal(cardNo, other.cardNo);
-        } else {
-            return false;
-        }
-    }
 }

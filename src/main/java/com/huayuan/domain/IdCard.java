@@ -1,6 +1,5 @@
 package com.huayuan.domain;
 
-import com.google.common.base.Objects;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -10,9 +9,11 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "ID_CARD", schema = "dbo", catalog = "MEMBER")
-public class IdCard {
+public class IdCard implements java.io.Serializable{
     private Long id;
-    private Integer memberId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
     private String idNo;
     private Byte sex;
     private Timestamp birthday;
@@ -36,14 +37,12 @@ public class IdCard {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    public Integer getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Basic
@@ -164,20 +163,5 @@ public class IdCard {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(idNo);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof IdCard) {
-            final IdCard other = (IdCard) obj;
-            return Objects.equal(idNo, other.idNo);
-        } else {
-            return false;
-        }
     }
 }
