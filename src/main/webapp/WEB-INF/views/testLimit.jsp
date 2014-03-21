@@ -9,19 +9,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%--<link rel="stylesheet" href="http://localhost:8080/repayment/resources/css/jquery.mobile-1.4.2.min.css"/>--%>
-    <%--<script type="javascript" scr="http://localhost:8080/repayment/resources/js/jquery.js"></script>--%>
-    <%--<script type="javascript" scr="http://localhost:8080/repayment/resources/js/jquery.mobile-1.4.2.min.js"></script>--%>
-    <link rel="stylesheet" href="http://localhost:8080/repayment/resources/css/jquery.mobile-1.4.2.min.css">
-    <script src="http://localhost:8080/repayment/resources/js/jquery.js"></script>
-    <script src="http://localhost:8080/repayment/resources/js/jquery.mobile-1.4.2.min.js"></script>
     <title>Member Register</title>
-
+    <link rel="stylesheet" href="resources/css/jquery.mobile-1.3.2.css">
+    <script src="resources/js/jquery.1.9.1.js"></script>
+    <script src="resources/js/jquery.mobile-1.3.2.min.js"></script>
 </head>
 <body>
 <div data-role="main" class="ui-content">
 
-    <form action="http://localhost:8080/repayment/register_save.do" method="post">
+    <form action="testLimit_save.do" method="post" data-ajax="false">
         <div data-demo-html="true">
             <label for="select-choice-mini" class="select">官人拿的是什么饭碗？</label>
             <select name="member.industry" id="select-choice-mini" data-mini="true" data-inline="true">
