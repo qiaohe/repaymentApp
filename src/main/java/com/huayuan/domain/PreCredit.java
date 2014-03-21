@@ -1,23 +1,23 @@
 package com.huayuan.domain;
 
-import com.google.common.base.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class PreCredit {
+public class PreCredit implements java.io.Serializable{
     private int id;
-    private Integer memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
     private String imageBill;
     private Short crl;
     private Timestamp createTime;
+
+    public PreCredit() {
+    }
 
     @Id
     @Column(name = "ID")
@@ -29,14 +29,12 @@ public class PreCredit {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    public Integer getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Basic
@@ -69,18 +67,4 @@ public class PreCredit {
         this.createTime = createTime;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(memberId, imageBill);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof PreCredit) {
-            final PreCredit other = (PreCredit) obj;
-            return Objects.equal(memberId, other.memberId) && Objects.equal(imageBill, other.imageBill);
-        } else {
-            return false;
-        }
-    }
 }

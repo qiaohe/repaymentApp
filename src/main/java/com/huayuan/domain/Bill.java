@@ -1,20 +1,16 @@
 package com.huayuan.domain;
-
-import com.google.common.base.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class Bill {
+public class Bill implements java.io.Serializable {
     private Long id;
-    private Integer memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
     private Short bank;
     private Byte type;
     private Short crl;
@@ -38,14 +34,12 @@ public class Bill {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    public Integer getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Basic
@@ -166,21 +160,5 @@ public class Bill {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id, memberId);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof Bill) {
-            final Bill other = (Bill) obj;
-            return Objects.equal(id, other.id)
-                    && memberId.equals(other.memberId);
-        } else {
-            return false;
-        }
     }
 }

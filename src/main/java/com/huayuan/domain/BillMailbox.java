@@ -1,7 +1,5 @@
 package com.huayuan.domain;
 
-import com.google.common.base.Objects;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,9 +8,11 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "BILL_MAILBOX", schema = "dbo", catalog = "MEMBER")
-public class BillMailbox {
+public class BillMailbox implements java.io.Serializable {
     private Long id;
-    private Integer memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
+    private Member member;
     private String email;
     private String password;
     private String applNo;
@@ -29,14 +29,12 @@ public class BillMailbox {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    public Integer getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     @Basic
@@ -87,20 +85,5 @@ public class BillMailbox {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(memberId, email);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof BillMailbox) {
-            final BillMailbox other = (BillMailbox) obj;
-            return Objects.equal(memberId, other.memberId) && Objects.equal(email, other.email);
-        } else {
-            return false;
-        }
     }
 }
