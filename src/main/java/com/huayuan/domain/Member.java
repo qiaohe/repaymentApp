@@ -20,7 +20,7 @@ public class Member implements java.io.Serializable {
     @Column(name = "PASSWORD")
     private String password;
     @Column(name = "ORG_FLAG")
-    private int orgFlag;
+    private Integer orgFlag;
     @Column(name = "NAME")
     private String name;
     @Column(name = "MOBILE")
@@ -28,9 +28,9 @@ public class Member implements java.io.Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "EDUCATION")
-    private int education;
+    private Integer education;
     @Column(name = "INDUSTRY")
-    private int industry;
+    private Integer industry;
     @Column(name = "WC_NO")
     private String wcNo;
     @Column(name = "WC_USER_NAME")
@@ -85,23 +85,23 @@ public class Member implements java.io.Serializable {
         this.id = id;
     }
 
-    public int getOrgFlag() {
+    public Integer getOrgFlag() {
         return orgFlag;
     }
 
-    public void setOrgFlag(int orgFlag) {
+    public void setOrgFlag(Integer orgFlag) {
         this.orgFlag = orgFlag;
     }
 
-    public int getEducation() {
+    public Integer getEducation() {
         return education;
     }
 
-    public void setEducation(int education) {
+    public void setEducation(Integer education) {
         this.education = education;
     }
 
-    public int getIndustry() {
+    public Integer getIndustry() {
         return industry;
     }
 
