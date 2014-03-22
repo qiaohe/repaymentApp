@@ -16,14 +16,28 @@
     <script src="resources/js/jquery.1.9.1.js"></script>
     <script src="resources/js/jquery.form.min.js"></script>
     <script src="resources/js/jquery.mobile-1.3.2.min.js"></script>
+    <script src="resources/js/jquery.validate.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $( "#memberInfoForm" ).validate({
+                submitHandler: function( form ) {
+                    $("#memberInfoForm").ajaxSubmit(function(data){
+                        if(data != null || data != ""){
+                            location.href = "testResult.html?crl="+data;
+                        }else{
+                            alert("提交失败!");
+                        }
+                    });
+                }
+            });
 
             //身份证正面上传
             $("#idCardFrontFile").on("change", function () {
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
                     if(data != null || data != ""){
+                        alert("上传成功!")
                         $("#idCardFrontFile").parent().append("<p style='color: red'>省份证号码为:"+data+"</p>");
                     }else{
                          alert("识别失败!");
@@ -40,20 +54,26 @@
                 return false;
             });
 
-            //memberInfo提交
-            $("#memberInfoBtn").on("click",function(){
-                $("#memberInfoForm").ajaxSubmit(function(data){
-                    if(data != null || data != ""){
-                        location.href = "testResult.html?crl="+data;
-                    }else{
-                        alert("提交失败!");
-                    }
-                });
+            //radio_email_1
+            $("#radio_email_1").on("click",function(){
+                $("#billMailbox_div").hide();
             });
 
+            //radio_email_2
+            $("#radio_email_2").on("click",function(){
+                $("#billMailbox_div").show();
+            });
         });
     </script>
 
+    <style>
+        label.error {
+            font-weight: bold;
+            color: red;
+            padding: 2px 8px;
+            margin-top: 2px;
+        }
+    </style>
 </head>
 <body>
 
@@ -126,7 +146,7 @@
 
         <div>
             <label for="member_email">官人平时鸿雁传书用哪个Email？</label>
-            <input type="email" name="email" id="member_email" value="">
+            <input type="email" name="email" id="member_email" value="" class="required email">
         </div>
         <div>
             <input type="radio" name="radio_email" id="radio_email_1" value="1" checked="checked">
@@ -142,10 +162,10 @@
             <label for="radio_email_2">我用其他Email收信用卡电子账单</label>
         </div>
 
-        <div data-role="content" style="display: none">
+        <div data-role="content" id="billMailbox_div" style="display: none">
             <div data-role="fieldcontain">
                 <label for="bill_email">账单邮箱</label>
-                <input type="text" name="billMailbox_email" id="bill_email" value="">
+                <input type="email" name="billMailbox_email" id="bill_email" value="" class="required email">
             </div>
 
             <div data-role="fieldcontain">
@@ -154,7 +174,7 @@
             </div>
         </div>
         <div>
-            <input type="button" id="memberInfoBtn" value="提交">
+            <input type="submit" id="memberInfoBtn" value="提交">
         </div>
     </form>
 </div>
