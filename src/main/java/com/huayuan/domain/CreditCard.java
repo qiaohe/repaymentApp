@@ -23,8 +23,10 @@ public class CreditCard implements java.io.Serializable {
     private String applNo;
     private Timestamp createTime;
 
+    public CreditCard() {
+    }
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

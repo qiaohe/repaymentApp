@@ -13,6 +13,8 @@ public interface MemberService {
 
     public void update(Member member);
 
+    public Member find(Long id);
+
     public void remove(Member member);
 
     public Iterable<Member> getMembers();

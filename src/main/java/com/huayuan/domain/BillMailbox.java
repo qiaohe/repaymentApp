@@ -19,8 +19,10 @@ public class BillMailbox implements java.io.Serializable {
     private Byte status;
     private Timestamp createTime;
 
+    public BillMailbox() {
+    }
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }

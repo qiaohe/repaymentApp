@@ -19,12 +19,18 @@ public class Member implements java.io.Serializable {
     private String userName;
     @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "ORG_FLAG")
+    private int orgFlag;
     @Column(name = "NAME")
     private String name;
     @Column(name = "MOBILE")
     private String mobile;
     @Column(name = "email")
     private String email;
+    @Column(name = "EDUCATION")
+    private int education;
+    @Column(name = "INDUSTRY")
+    private int industry;
     @Column(name = "WC_NO")
     private String wcNo;
     @Column(name = "WC_USER_NAME")
@@ -57,16 +63,16 @@ public class Member implements java.io.Serializable {
     private String blockCode;
     @Column(name = "CREATE_TIME")
     private Timestamp createTime;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
-    private IdCard idCard;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<Bill> bills = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<BillMailbox> billMailboxes = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+    private IdCard idCard;
 
     public Member() {
     }
@@ -77,6 +83,30 @@ public class Member implements java.io.Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getOrgFlag() {
+        return orgFlag;
+    }
+
+    public void setOrgFlag(int orgFlag) {
+        this.orgFlag = orgFlag;
+    }
+
+    public int getEducation() {
+        return education;
+    }
+
+    public void setEducation(int education) {
+        this.education = education;
+    }
+
+    public int getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(int industry) {
+        this.industry = industry;
     }
 
     public String getUserName() {

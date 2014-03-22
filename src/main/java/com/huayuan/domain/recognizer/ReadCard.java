@@ -2,7 +2,9 @@ package com.huayuan.domain.recognizer;
 
 import com.huayuan.utils.FileUtils;
 import com.huayuan.utils.ImageUtils;
+import com.huayuan.utils.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,23 +20,23 @@ public class ReadCard {
     private String ocr = "C:/Program Files (x86)/Tesseract-OCR/tesseract.exe";
 
     public static void main(String[] args) {
-        String src = "E:/world/view/ord/test/card1.png";
-        String tag = "E:/world/view/ord/test/carda.png";
+        String src = "E:/world/view/ord/test/cardd.png";
+        String tag = "E:/world/view/ord/test/card4.png";
 
         ReadCard rc = new ReadCard();
         //图片缩放
         String rcmd = rc.resize(tag, src, 700, 340);
         rc.runCmd(rcmd);
 		//姓名
-		String name = rc.readCard(src, tag, 110, 30, 180, 55);
-		//民族
-		String nation = rc.readCard(src, tag, 262, 80, 80, 50);
-		//地址
-		String addr = rc.readCard(src, tag, 110, 160, 350, 100);
+//		String name = rc.readCard(src, 110, 30, 180, 55);
+//		//民族
+//		String nation = rc.readCard(src, 262, 80, 80, 50);
+//		//地址
+//		String addr = rc.readCard(src, 110, 160, 350, 100);
 		//身份证号码
-        String num = rc.readCard(src, tag, 210, 250, 500, 100);
+        String num = rc.readCard(src, 210, 250, 500, 100);
 
-		System.out.println(name + ":" + nation + ":" + addr + ":" + num);
+//		System.out.println(name + ":" + nation + ":" + addr + ":" + num);
 
     }
 
@@ -121,13 +123,15 @@ public class ReadCard {
         return ocr + " " + src + " " + tag + " -l chi_sim -psd 7 nobatch";
     }
 
-    public String readCard(String src, String tag, int x, int y, int width, int height) {
+    public String readCard(String src, int x, int y, int width, int height) {
         //获取图片后缀
         if (src == null || src == "") {
             return "";
         }
         String postfix = src.substring(src.lastIndexOf("."), src.length());
-        String tmp = "E:/temp" + postfix;
+        String classPath = new File("").getAbsolutePath();
+        String tmp = classPath + "\\tmp" + postfix;
+        String tag = classPath + "\\tag" + postfix;
 
         ReadCard rc = new ReadCard();
         // 切图
@@ -145,8 +149,11 @@ public class ReadCard {
 
         //读取结果
         String result = FileUtils.readFile(tag + ".txt");
+        result = StringUtils.gbToUtf8(result);
+
         //删除临时文件
         FileUtils.delFile(tmp);
+        FileUtils.delFile(tag);
         FileUtils.delFile(tag + ".txt");
 
         return result;

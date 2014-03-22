@@ -4,8 +4,12 @@ import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * Created by dell on 14-3-19.
@@ -27,6 +31,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member find(Long id) {
+        return memberRepository.findOne(id);
+    }
+
+    @Override
     public void remove(Member member) {
 
     }
@@ -38,12 +47,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addIdCard(Member member, IdCard card) {
-
+        memberRepository.save(member);
     }
 
     @Override
     public void addCreditCard(Member member, CreditCard creditCard) {
-
+        memberRepository.save(member);
     }
 
     @Override
@@ -55,13 +64,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addBill(Member member, Bill bill) {
-
+        memberRepository.save(member);
     }
 
     @Override
     public void addPreCredit(Member member, PreCredit credit) {
-
+        memberRepository.save(member);
     }
-
 
 }
