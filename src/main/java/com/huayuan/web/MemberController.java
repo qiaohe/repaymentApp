@@ -1,6 +1,5 @@
 package com.huayuan.web;
 
-import com.huayuan.domain.Bill;
 import com.huayuan.domain.BillMailbox;
 import com.huayuan.domain.IdCard;
 import com.huayuan.domain.Member;
@@ -20,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -85,7 +86,7 @@ public class MemberController {
     @ResponseBody
     String uploadCreditCard(@RequestParam("creditCardFile") MultipartFile creditCardFile) {
         if (!creditCardFile.isEmpty()) {
-            return null;
+            return "1";
         }
         return null;
     }
@@ -106,9 +107,13 @@ public class MemberController {
             BillMailbox billMailbox = new BillMailbox();
             billMailbox.setEmail(billMailbox_email);
             billMailbox.setPassword(billMailbox_password);
-            member.addBillMailbox(billMailbox);
+            billMailbox.setMember(member);
+
+            Set<BillMailbox> billMailboxSet = new HashSet<BillMailbox>();
+            billMailboxSet.add(billMailbox);
+            member.setBillMailboxes(billMailboxSet);
         }
-//        memberService.register(member);
+        memberService.register(member);
 
         return "5000";
     }

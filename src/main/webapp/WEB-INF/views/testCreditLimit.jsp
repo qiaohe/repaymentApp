@@ -37,10 +37,33 @@
             $("#idCardFrontFile").on("change", function () {
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
                     if(data != null || data != ""){
-                        alert("上传成功!")
                         $("#idCardFrontFile").parent().append("<p style='color: red'>省份证号码为:"+data+"</p>");
                     }else{
                          alert("识别失败!");
+                    }
+                });
+            });
+
+            //身份证back上传
+            $("#idCardBackFile").on("change", function () {
+                $("#testCreditLimitForm").attr("action", "uploadIdCardBack.html");
+                $("#testCreditLimitForm").ajaxSubmit(function(data){
+                    if(data != null || data != ""){
+                        alert("upload success!")
+                    }else{
+                        alert("upload failed!");
+                    }
+                });
+            });
+
+            //身份证back上传
+            $("#creditCardFile").on("change", function () {
+                $("#testCreditLimitForm").attr("action", "uploadCreditCard.html");
+                $("#testCreditLimitForm").ajaxSubmit(function(data){
+                    if(data != null || data != ""){
+                        alert("上传成功!")
+                    }else{
+                        alert("upload failed!");
                     }
                 });
             });
@@ -50,8 +73,10 @@
                 var value = $("#idCardFrontFile").val();
                 if(value != null && value != ""){
                     return true;
+                }else{
+                    alert("failed")
+                    return false;
                 }
-                return false;
             });
 
             //radio_email_1
@@ -84,8 +109,8 @@
             <div data-role="header">
                 <h1>测额度</h1>
             </div>
-            <div data-role="fieldcontain" style="vertical-align: middle">
-                <img src="resources/img/testImg.png">
+            <div data-role="fieldcontain" style="text-align: center">
+                <img src="resources/img/testImg.png" >
             </div>
             <div>
                 <label for="idCardFrontFile">身份证-正面:</label>
