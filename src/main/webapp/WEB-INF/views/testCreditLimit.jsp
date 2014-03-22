@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>测额度</title>
     <link rel="stylesheet" href="resources/css/jquery.mobile-1.3.2.min.css">
     <script src="resources/js/jquery.1.9.1.js"></script>
     <script src="resources/js/jquery.form.min.js"></script>
@@ -19,6 +19,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            //身份证正面上传
             $("#idCardFrontFile").on("change", function () {
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
                     if(data != null || data != ""){
@@ -28,6 +30,27 @@
                     }
                 });
             });
+
+            //拍照提交
+            $("#link_memberInfo").on("click",function(){
+                var value = $("#idCardFrontFile").val();
+                if(value != null && value != ""){
+                    return true;
+                }
+                return false;
+            });
+
+            //memberInfo提交
+            $("#memberInfoBtn").on("click",function(){
+                $("#memberInfoForm").ajaxSubmit(function(data){
+                    if(data != null || data != ""){
+                        location.href = "testResult.html?crl="+data;
+                    }else{
+                        alert("提交失败!");
+                    }
+                });
+            });
+
         });
     </script>
 
@@ -56,8 +79,7 @@
                 <label for="creditCardFile">信用卡-正面:</label>
                 <input type="file" name="creditCardFile" id="creditCardFile" value="">
             </div>
-
-            <input type="button" id="testSubmit" value="提交">
+            <a href="#memberInfo" id="link_memberInfo" data-role="button">提交</a>
         </form>
     </div>
 </div>
@@ -65,10 +87,10 @@
 <!-- 会员信息-->
 <div data-role="page" id="memberInfo">
 
-    <form action="testLimit_save.do" method="post" data-ajax="false">
+    <form id="memberInfoForm" action="postMember.html" method="post" data-ajax="false">
         <div data-demo-html="true">
             <label for="industry" class="ui-select">官人拿的是什么饭碗？</label>
-            <select name="member.industry" id="industry">
+            <select name="industry" id="industry">
                 <option value="0">未知</option>
                 <option value="1">政府机关、社会团体</option>
                 <option value="2">军事、公检法</option>
@@ -91,7 +113,7 @@
 
         <div>
             <label for="education" class="ui-select">官人学富几车？</label>
-            <select name="member.education" id="education">
+            <select name="education" id="education">
                 <option value="0">未知</option>
                 <option value="1">初中及以下</option>
                 <option value="2">高中、中专</option>
@@ -104,7 +126,7 @@
 
         <div>
             <label for="member_email">官人平时鸿雁传书用哪个Email？</label>
-            <input type="text" name="member.email" id="member_email" value="">
+            <input type="email" name="email" id="member_email" value="">
         </div>
         <div>
             <input type="radio" name="radio_email" id="radio_email_1" value="1" checked="checked">
@@ -112,27 +134,27 @@
         </div>
 
         <div>
-            <label for="member_password">官人平时鸿雁传书用哪个Email？</label>
-            <input type="text" name="member.password" id="member_password" value="">
+            <label for="member_password">给我邮箱密码，我能更好地为官人服务？</label>
+            <input type="password" name="password" id="member_password" value="">
         </div>
         <div>
             <input type="radio" name="radio_email" id="radio_email_2" value="2">
             <label for="radio_email_2">我用其他Email收信用卡电子账单</label>
         </div>
 
-        <div data-role="content" data-display="false">
+        <div data-role="content" style="display: none">
             <div data-role="fieldcontain">
                 <label for="bill_email">账单邮箱</label>
-                <input type="text" name="member.email" id="bill_email" value="">
+                <input type="text" name="billMailbox_email" id="bill_email" value="">
             </div>
 
             <div data-role="fieldcontain">
                 <label for="bill_password">邮箱密码</label>
-                <input type="text" name="member.password" id="bill_password" value="">
+                <input type="password" name="billMailbox_password" id="bill_password" value="">
             </div>
         </div>
         <div>
-            <input type="submit" value="提交">
+            <input type="button" id="memberInfoBtn" value="提交">
         </div>
     </form>
 </div>
