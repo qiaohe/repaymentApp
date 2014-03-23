@@ -9,8 +9,6 @@ import java.sql.Timestamp;
 @Entity
 public class PreCredit implements java.io.Serializable{
     private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
     private String imageBill;
     private Short crl;
@@ -29,6 +27,8 @@ public class PreCredit implements java.io.Serializable{
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }

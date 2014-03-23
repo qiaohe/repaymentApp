@@ -38,7 +38,7 @@ public class IdCard implements java.io.Serializable {
         this.id = id;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;

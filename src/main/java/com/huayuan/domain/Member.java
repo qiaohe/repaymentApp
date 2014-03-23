@@ -1,6 +1,8 @@
 package com.huayuan.domain;
 
 
+import org.hibernate.engine.spi.CascadeStyle;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -14,64 +16,93 @@ public class Member implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Basic
     @Column(name = "USER_NAME")
     private String userName;
+
     @Column(name = "PASSWORD")
     private String password;
+
     @Column(name = "ORG_FLAG")
     private Integer orgFlag;
+
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "MOBILE")
     private String mobile;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "EDUCATION")
     private Integer education;
+
     @Column(name = "INDUSTRY")
     private Integer industry;
+
     @Column(name = "WC_NO")
     private String wcNo;
+
     @Column(name = "WC_USER_NAME")
     private String wcUserName;
+
     @Column(name = "WC_PROVINCE")
     private String wcProvince;
+
     @Column(name = "WC_CITY")
     private String wcCity;
+
     @Column(name = "WC_SIGNATURE")
     private String wcSignature;
+
     @Column(name = "TYPE")
     private Byte type;
+
     @Column(name = "CRL")
     private Short crl;
+
     @Column(name = "CRL_AVL")
     private Short crlAvl;
+
     @Column(name = "LAST_APPL_NO")
     private Integer lastApplNo;
+
     @Column(name = "LAST_SCORE")
     private Integer lastScore;
+
     @Column(name = "LAST_DECISION")
     private Byte lastDecision;
+
     @Column(name = "LAST_PBOC_BACK_TIME")
     private Timestamp lastPbocBackTime;
+
     @Column(name = "POINTS")
     private Short points;
+
     @Column(name = "STATUS")
     private Byte status;
+
     @Column(name = "BLOCK_CODE")
     private String blockCode;
+
     @Column(name = "CREATE_TIME")
     private Timestamp createTime;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<Bill> bills = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<BillMailbox> billMailboxes = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
 
     public Member() {
