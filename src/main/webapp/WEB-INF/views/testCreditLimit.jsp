@@ -28,6 +28,7 @@
                             location.href = "testResult.html?crl="+data;
                         }else{
                             alert("提交失败!");
+                            return false;
                         }
                     });
                 }
@@ -36,57 +37,71 @@
             //身份证正面上传
             $("#idCardFrontFile").on("change", function () {
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
-                    if(data != null || data != ""){
-                        $("#idCardFrontFile").parent().append("<p style='color: red'>省份证号码为:"+data+"</p>");
+                    if(data != "" && data != "1"){
+                        $("#p_idCardNumber_id").remove();
+                        $("#idCardFrontFile").parent().append("<p id='p_idCardNumber_id' style='color: red'>省份证号码为:"+data+"</p>");
+                        $("#idcardNo").val(data);
                     }else{
                          alert("识别失败!");
+                        $("#idcardNo").val("");
+                        return false;
                     }
                 });
             });
 
-            //身份证back上传
+            //身份证反面上传
             $("#idCardBackFile").on("change", function () {
                 $("#testCreditLimitForm").attr("action", "uploadIdCardBack.html");
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
                     if(data != null || data != ""){
-                        alert("upload success!")
+                        alert("上传成功并保存!")
+                        $("#idCardBackFile_isSave").val("1");
                     }else{
-                        alert("upload failed!");
+                        $("#idCardBackFile_isSave").val("");
+                        alert("上传失败");
+                        return false;
                     }
                 });
             });
 
-            //身份证back上传
+            //信用卡上传
             $("#creditCardFile").on("change", function () {
                 $("#testCreditLimitForm").attr("action", "uploadCreditCard.html");
                 $("#testCreditLimitForm").ajaxSubmit(function(data){
                     if(data != null || data != ""){
                         alert("上传成功!")
+                        $("#creditCardNo").val(data);
                     }else{
-                        alert("upload failed!");
+                        $("#creditCardNo").val("");
+                        alert("上传失败!");
+                        return false;
                     }
                 });
             });
 
             //拍照提交
             $("#link_memberInfo").on("click",function(){
-                var value = $("#idCardFrontFile").val();
-                if(value != null && value != ""){
-                    return true;
-                }else{
-                    alert("failed")
+                var idcardNo = $("#idcardNo").val();
+                var idCardBackFile_isSave = $("#idCardBackFile_isSave").val();
+                var creditCardNo = $("#creditCardNo").val();
+                if(idcardNo == "" || idcardNo == null ){
+                    alert("请扫描省份证!");
+                    return false;
+                }
+                if(creditCardNo == "" || creditCardNo == null){
+                    alert("请扫描信用卡!");
                     return false;
                 }
             });
 
             //radio_email_1
             $("#radio_email_1").on("click",function(){
-                $("#billMailbox_div").hide();
+                $("#billMailbox_other_div").hide();
             });
 
             //radio_email_2
             $("#radio_email_2").on("click",function(){
-                $("#billMailbox_div").show();
+                $("#billMailbox_other_div").show();
             });
         });
     </script>
@@ -114,15 +129,18 @@
             </div>
             <div>
                 <label for="idCardFrontFile">身份证-正面:</label>
-                <input type="file" name="idCardFrontFile" id="idCardFrontFile" value="aaa">
+                <input type="file" name="idCardFrontFile" id="idCardFrontFile">
+                <input type="hidden" id="idcardNo">
             </div>
             <div>
                 <label for="idCardBackFile">身份证-反面 :</label>
                 <input type="file" name="idCardBackFile" id="idCardBackFile" value="">
+                <input type="hidden" id="idCardBackFile_isSave">
             </div>
             <div>
                 <label for="creditCardFile">信用卡-正面:</label>
                 <input type="file" name="creditCardFile" id="creditCardFile" value="">
+                <input type="hidden" id="creditCardNo">
             </div>
             <a href="#memberInfo" id="link_memberInfo" data-role="button">提交</a>
         </form>
@@ -169,33 +187,35 @@
             </select>
         </div>
 
-        <div>
-            <label for="member_email">官人平时鸿雁传书用哪个Email？</label>
-            <input type="email" name="email" id="member_email" value="" class="required email">
-        </div>
-        <div>
-            <input type="radio" name="radio_email" id="radio_email_1" value="1" checked="checked">
-            <label for="radio_email_1">我也用这个Email收信用卡电子账单的</label>
+        <div id="billMailbox_div">
+            <div>
+                <label for="billMailbox_email">官人平时鸿雁传书用哪个Email？</label>
+                <input type="email" name="billMailbox_email" id="billMailbox_email" class="required email">
+            </div>
+            <div>
+                <input type="radio" name="radio_email" id="radio_email_1" value="1" checked="checked">
+                <label for="radio_email_1">我也用这个Email收信用卡电子账单的</label>
+            </div>
+
+            <div>
+                <label for="billMailbox_password">给我邮箱密码，我能更好地为官人服务？</label>
+                <input type="password" name="billMailbox_password" id="billMailbox_password" required>
+            </div>
+            <div>
+                <input type="radio" name="radio_email" id="radio_email_2" value="2">
+                <label for="radio_email_2">我用其他Email收信用卡电子账单</label>
+            </div>
         </div>
 
-        <div>
-            <label for="member_password">给我邮箱密码，我能更好地为官人服务？</label>
-            <input type="password" name="password" id="member_password" value="">
-        </div>
-        <div>
-            <input type="radio" name="radio_email" id="radio_email_2" value="2">
-            <label for="radio_email_2">我用其他Email收信用卡电子账单</label>
-        </div>
-
-        <div data-role="content" id="billMailbox_div" style="display: none">
+        <div data-role="content" id="billMailbox_other_div" style="display: none">
             <div data-role="fieldcontain">
-                <label for="bill_email">账单邮箱</label>
-                <input type="email" name="billMailbox_email" id="bill_email" value="" class="required email">
+                <label for="billMailbox_other_email">账单邮箱</label>
+                <input type="email" name="billMailbox_other_email" id="billMailbox_other_email" value="" class="required email">
             </div>
 
             <div data-role="fieldcontain">
-                <label for="bill_password">邮箱密码</label>
-                <input type="password" name="billMailbox_password" id="bill_password" value="">
+                <label for="billMailbox_other_password">邮箱密码</label>
+                <input type="password" name="billMailbox_other_password" id="billMailbox_other_password" value="">
             </div>
         </div>
         <div>
