@@ -1,6 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.domain.BillMailbox;
+import com.huayuan.domain.CreditCard;
 import com.huayuan.domain.IdCard;
 import com.huayuan.domain.Member;
 import com.huayuan.domain.recognizer.ReadCard;
@@ -54,14 +55,24 @@ public class MemberController {
             String reCmd = readCard.resize(savePath, reSrcPath, 700, 340);
             readCard.runCmd(reCmd);
             String idCardNumber = readCard.readCard(reSrcPath, 210, 250, 500, 100);
+            idCardNumber = idCardNumber.replaceAll(" ","");
+            if(idCardNumber.length() > 18 ){
+                return "";
+            }
             FileUtils.delFile(reSrcPath);
 
+            Member member = memberService.find(1l);
+            if(member.getIdCard() != null ){
+                return idCardNumber;
+            }
             //save IdCard
             IdCard idCard = new IdCard();
             idCard.setIdNo(idCardNumber);
-            Member member = memberService.find(1l);
+            idCard.setMember(member);
+
             member.setIdCard(idCard);
-//            memberService.addIdCard(member,idCard);
+
+            memberService.addIdCard(member,idCard);
 
             return idCardNumber;
         }
@@ -86,7 +97,18 @@ public class MemberController {
     @ResponseBody
     String uploadCreditCard(@RequestParam("creditCardFile") MultipartFile creditCardFile) {
         if (!creditCardFile.isEmpty()) {
-            return "1";
+            //读取信用卡信息并保存
+            Member member = memberService.find(1L);
+
+            CreditCard creditCard = new CreditCard();
+            creditCard.setCardNo("568454334456311247");
+            creditCard.setName("zhangsan");
+            creditCard.setMember(member);
+
+            member.addCreditCard(creditCard);
+            memberService.addCreditCard(member,creditCard);
+
+            return creditCard.getCardNo();
         }
         return null;
     }
@@ -108,10 +130,7 @@ public class MemberController {
             billMailbox.setEmail(billMailbox_email);
             billMailbox.setPassword(billMailbox_password);
             billMailbox.setMember(member);
-
-            Set<BillMailbox> billMailboxSet = new HashSet<BillMailbox>();
-            billMailboxSet.add(billMailbox);
-            member.setBillMailboxes(billMailboxSet);
+            member.addBillMailbox(billMailbox);
         }
         memberService.register(member);
 
