@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  * 读取省份证信息 1. 姓名 2. 民族 3. 地址 4. 省份证号码
- *
+ * <p/>
  * 本地需要安装 ImageMagick 和 OCR
  *
  * @author Administrator
@@ -18,27 +18,6 @@ public class ReadCard {
 
     private String im = "C:/Program Files/ImageMagick-6.8.8-Q8/convert.exe";
     private String ocr = "C:/Program Files (x86)/Tesseract-OCR/tesseract.exe";
-
-    public static void main(String[] args) {
-        String src = "E:/world/view/ord/test/cardd.png";
-        String tag = "E:/world/view/ord/test/card4.png";
-
-        ReadCard rc = new ReadCard();
-        //图片缩放
-        String rcmd = rc.resize(tag, src, 700, 340);
-        rc.runCmd(rcmd);
-		//姓名
-//		String name = rc.readCard(src, 110, 30, 180, 55);
-//		//民族
-//		String nation = rc.readCard(src, 262, 80, 80, 50);
-//		//地址
-//		String addr = rc.readCard(src, 110, 160, 350, 100);
-		//身份证号码
-        String num = rc.readCard(src, 210, 250, 500, 100);
-
-//		System.out.println(name + ":" + nation + ":" + addr + ":" + num);
-
-    }
 
     /**
      * 执行命令
