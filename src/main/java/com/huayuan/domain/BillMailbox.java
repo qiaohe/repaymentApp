@@ -10,8 +10,6 @@ import java.sql.Timestamp;
 @Table(name = "BILL_MAILBOX", schema = "dbo", catalog = "MEMBER")
 public class BillMailbox implements java.io.Serializable {
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
     private String email;
     private String password;
@@ -31,6 +29,8 @@ public class BillMailbox implements java.io.Serializable {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     public Member getMember() {
         return member;
     }

@@ -7,7 +7,7 @@ import java.io.FileInputStream;
  */
 public class CreditCardRecognizer implements Recognizer  {
     @Override
-    public Object recognize(FileInputStream fileInputStream) {
+    public Object recognize(String  fileName) {
         return null;
     }
 }

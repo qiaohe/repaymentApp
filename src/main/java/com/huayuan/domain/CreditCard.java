@@ -9,8 +9,6 @@ import java.sql.Timestamp;
 @Entity
 public class CreditCard implements java.io.Serializable {
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
     private Short bank;
     private String cardNo;
@@ -35,6 +33,8 @@ public class CreditCard implements java.io.Serializable {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }
@@ -142,5 +142,6 @@ public class CreditCard implements java.io.Serializable {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
+
 
 }

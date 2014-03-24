@@ -9,8 +9,6 @@ import java.sql.Timestamp;
 @Entity
 public class Bill implements java.io.Serializable {
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
     private Short bank;
     private Byte type;
@@ -38,6 +36,8 @@ public class Bill implements java.io.Serializable {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }
