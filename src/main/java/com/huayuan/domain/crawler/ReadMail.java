@@ -41,17 +41,6 @@ public class ReadMail {
     }
 
     /**
-     * 　ReceiveEmail类测试
-     */
-    public static void main(String args[]) throws Exception {
-        ReadMail re = new ReadMail();
-        BillMailbox billMailbox = new BillMailbox();
-        billMailbox.setEmail("595548558@qq.com");
-        billMailbox.setPassword("li+ji_WANG");
-        re.readBill(billMailbox, "estmtservice@eb.spdbccc.com.cn");
-    }
-
-    /**
      * read email bill
      *
      * @param billMailbox
