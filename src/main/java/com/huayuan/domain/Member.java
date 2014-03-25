@@ -395,5 +395,4 @@ public class Member implements java.io.Serializable {
             preCredits.add(preCredit);
         }
     }
-
 }

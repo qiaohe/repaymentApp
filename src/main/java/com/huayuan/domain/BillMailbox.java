@@ -19,6 +19,13 @@ public class BillMailbox implements java.io.Serializable {
 
     public BillMailbox() {
     }
+
+    public BillMailbox(Member member, String email, String password) {
+        this.member = member;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {

@@ -2,18 +2,11 @@ package com.huayuan.service;
 
 import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
+import com.huayuan.domain.recognizer.IdCardInfo;
 import com.huayuan.repository.MemberRepository;
-import com.huayuan.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by dell on 14-3-19.
@@ -50,7 +43,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addIdCard(Member member, IdCard card) {
+    public void addIdCard(Member member, IdCardInfo idCardInfo) {
+        IdCard ic = idCardInfo.getIdCard();
+        ic.setMember(member);
+        member.setIdCard(ic);
         memberRepository.save(member);
     }
 
@@ -61,7 +57,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addBillMailBox(Member member, BillMailbox billMailbox) {
-//        memberRepository.addBillMailBox(billMailbox);
         BillCrawler crawler = new BillCrawler();
         addBill(member, crawler.crawl(billMailbox));
     }

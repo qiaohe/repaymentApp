@@ -1,5 +1,7 @@
 package com.huayuan.domain.recognizer;
 
+import com.huayuan.domain.IdCard;
+
 /**
  * Created by dell on 14-3-21.
  */
@@ -53,4 +55,10 @@ public final class IdCardInfo {
         this.idCardNumber = idCardNumber;
     }
 
+    public IdCard getIdCard() {
+        IdCard result = new IdCard();
+        result.setNationality(nationality);
+        result.setIdNo(idCardNumber);
+        return result;
+    }
 }

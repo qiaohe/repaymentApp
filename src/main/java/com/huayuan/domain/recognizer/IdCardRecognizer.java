@@ -1,39 +1,49 @@
 package com.huayuan.domain.recognizer;
 
-import com.huayuan.domain.IdCard;
+import com.huayuan.common.imageprocessing.TesseractWrapper;
+import org.apache.commons.lang3.RandomStringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by dell on 14-3-21.
  */
-public class IdCardRecognizer implements Recognizer {
-    @Override
-    public Object recognize(String fileName) {
-        ReadCard readCard = new ReadCard();
-        File file = new File("");
-        String postfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-        String resizeFile = file.getAbsoluteFile() + "/temp" + postfix;
-        //set image size 700 * 340
-        String reCmd = readCard.resize(fileName,resizeFile,700,340);
-        readCard.runCmd(reCmd);
+public class IdCardRecognizer {
+    private static final int FILENAME_LENGTH = 12;
+    private byte[] source;
 
-        //姓名
-		String name = readCard.readCard(resizeFile, 110, 30, 180, 55);
-		//民族
-		String nationality = readCard.readCard(resizeFile, 262, 80, 80, 50);
-		//地址
-		String address = readCard.readCard(resizeFile, 110, 160, 350, 100);
-        //身份证号码
-        String idCardNumber = readCard.readCard(resizeFile, 210, 250, 500, 100);
+    public IdCardRecognizer(byte[] source) {
+        this.source = source;
+    }
 
-        IdCardInfo idCardInfo = new IdCardInfo();
-        idCardInfo.setName(name);
-        idCardInfo.setNationality(nationality);
-        idCardInfo.setAddress(address);
-        idCardInfo.setIdCardNumber(idCardNumber);
+    public byte[] getSource() {
+        return source;
+    }
 
-        return idCardInfo;
+    private String getFilerName() {
+        return RandomStringUtils.randomAlphanumeric(FILENAME_LENGTH);
+    }
+
+    private void saveFile(final String fileName) {
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(fileName));
+            stream.write(getSource());
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public IdCardInfo recognize() {
+        final String fileName = getFilerName();
+        saveFile(fileName);
+        TesseractWrapper wrapper = new TesseractWrapper();
+        final String name = wrapper.recognize(null, 110, 30, 180, 55);
+        final String nationality = wrapper.recognize(null, 262, 80, 80, 50);
+        final String address = wrapper.recognize(null, 110, 160, 350, 100);
+        final String idCardNumber = wrapper.recognize(null, 210, 250, 500, 100);
+        return new IdCardInfo(name, nationality, address, idCardNumber);
     }
 }

@@ -3,7 +3,6 @@ package com.huayuan.domain.crawler;
 
 import com.huayuan.domain.Bill;
 import com.huayuan.domain.BillMailbox;
-import com.huayuan.utils.DateUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -67,8 +66,8 @@ public class ReadMail {
 
         Set<Bill> bills = new HashSet<Bill>();
         for (int i = 0; i < message.length; i++) {
-            setMimeMessage((MimeMessage)message[i]);
-            InternetAddress address[] = (InternetAddress[])mimeMessage.getFrom();
+            setMimeMessage((MimeMessage) message[i]);
+            InternetAddress address[] = (InternetAddress[]) mimeMessage.getFrom();
             if (address[0].getAddress().equals(readEmail)) {
                 getMailContent((Part) message[i]);
                 Bill bill = parser(getBodyText());
@@ -94,8 +93,8 @@ public class ReadMail {
                 //Payment Due Date
                 if (text.indexOf("Payment Due Date") >= 0) {
                     String payDue = tdElements.get(i).parent().parent().child(1).text();
-                    if (!payDue.isEmpty())
-                        bill.setPayDue(DateUtil.parseTimestamp(payDue));
+                    if (!payDue.isEmpty()) ;
+//                        bill.setPayDue(DateUtil.parseTimestamp(payDue));
                 }
                 //AMT_RMB
                 if (text.indexOf("Cash Advance Limit") >= 0) {
