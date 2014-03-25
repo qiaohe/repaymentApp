@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,7 +26,8 @@ import java.io.IOException;
 /**
  * Created by Johnson on 3/19/14.
  */
-@Controller("/members")
+@Controller()
+@RequestMapping("/members")
 public class MemberController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
     @Autowired
@@ -34,9 +36,9 @@ public class MemberController {
     private MessageSource messageSource;
 
     @RequestMapping(value = "/{id}/testCreditLimit", method = RequestMethod.GET)
-    public ModelMap register(@PathVariable Long id) {
-        ModelMap model = new ModelMap();
-        model.addAttribute("member", new Member());
+    public ModelAndView register(@PathVariable Long id) {
+        ModelAndView model = new ModelAndView("testCreditLimit");
+        model.addObject("member", new Member());
         return model;
     }
 
