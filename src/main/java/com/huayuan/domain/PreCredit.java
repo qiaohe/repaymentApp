@@ -2,23 +2,45 @@ package com.huayuan.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
 public class PreCredit implements java.io.Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
-    private String imageBill;
+
+    @Column(name = "ID_ID")
+    private Integer idId;
+
+    @Column(name = "CC_ID")
+    private Integer ccId;
+
+    @Column(name = "BILL_ID")
+    private Integer billId;
+
+    @Column(name = "BMB_ID")
+    private Integer bmbId;
+
+    @Basic
+    @Column(name = "CRL")
     private Short crl;
-    private Timestamp createTime;
+
+    @Basic
+    @Column(name = "CREATE_TIME")
+    private Date createTime;
 
     public PreCredit() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -27,8 +49,6 @@ public class PreCredit implements java.io.Serializable{
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }
@@ -37,18 +57,38 @@ public class PreCredit implements java.io.Serializable{
         this.member = member;
     }
 
-    @Basic
-    @Column(name = "IMAGE_BILL")
-    public String getImageBill() {
-        return imageBill;
+    public Integer getIdId() {
+        return idId;
     }
 
-    public void setImageBill(String imageBill) {
-        this.imageBill = imageBill;
+    public void setIdId(Integer idId) {
+        this.idId = idId;
     }
 
-    @Basic
-    @Column(name = "CRL")
+    public Integer getCcId() {
+        return ccId;
+    }
+
+    public void setCcId(Integer ccId) {
+        this.ccId = ccId;
+    }
+
+    public Integer getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Integer billId) {
+        this.billId = billId;
+    }
+
+    public Integer getBmbId() {
+        return bmbId;
+    }
+
+    public void setBmbId(Integer bmbId) {
+        this.bmbId = bmbId;
+    }
+
     public Short getCrl() {
         return crl;
     }
@@ -57,14 +97,11 @@ public class PreCredit implements java.io.Serializable{
         this.crl = crl;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
 }

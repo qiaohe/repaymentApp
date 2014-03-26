@@ -13,11 +13,11 @@
     <util:properties id="config" location="classpath:config.properties"/>
     <mvc:annotation-driven/>
 
-    <mvc:resources mapping="/resources/css/**" location="/resources/css/"/>
-    <mvc:resources mapping="/resources/js/**" location="/resources/js/"/>
-    <mvc:resources mapping="/resources/img/**" location="/resources/img/"/>
+    <mvc:resources mapping="/resources/css/**" location="/resources/css/" />
+    <mvc:resources mapping="/resources/js/**" location="/resources/js/" />
+    <mvc:resources mapping="/resources/img/**" location="/resources/img/" />
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="800000"/>
+        <property name="maxUploadSize" value="10240000" />
     </bean>
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>

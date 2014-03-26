@@ -12,17 +12,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-    <link rel="stylesheet" href="resources/css/jquery.mobile-1.3.2.min.css">
-    <script src="resources/js/jquery.1.9.1.js"></script>
-    <script src="resources/js/jquery.form.min.js"></script>
-    <script src="resources/js/jquery.mobile-1.3.2.min.js"></script>
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/jquery.mobile-1.3.2.min.css">
+    <script src="<%=request.getContextPath() %>/resources/js/jquery.1.9.1.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/jquery.form.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/jquery.mobile-1.3.2.min.js"></script>
     <title>测试结果</title>
 </head>
 <body>
 <div data-role="page" id="testResult">
     <div style="text-align: center">
         <h1>信用额度：${crl}</h1>
-        <img src="resources/img/testResult.jpg">
+        <img src="<%=request.getContextPath() %>/resources/img/testResult.jpg">
         <p>您的额度打败了70%的用户</p>
         <p>您的额度将被保存，您可以随时使用。</p>
     </div>

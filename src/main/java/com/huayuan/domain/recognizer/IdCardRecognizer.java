@@ -1,6 +1,6 @@
 package com.huayuan.domain.recognizer;
 
-import com.huayuan.common.exception.App;
+import com.huayuan.common.App;
 import com.ocr.idcard.IDCard;
 import com.ocr.idcard.IdCardScan;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,10 +14,14 @@ import java.io.IOException;
  */
 public class IdCardRecognizer {
     private static final int FILENAME_LENGTH = 12;
+    private static final String FILENAME_PATTERN = "%s/%s.jpg";
     private byte[] source;
 
     static {
         IdCardScan.addOcrServerIP(App.getInstance().getOcrServerHost(), App.getInstance().getOcrServerPort());
+    }
+
+    public IdCardRecognizer() {
     }
 
     public IdCardRecognizer(byte[] source) {
@@ -28,8 +32,12 @@ public class IdCardRecognizer {
         return source;
     }
 
-    private String getFilerName() {
+    private String getFileName() {
         return RandomStringUtils.randomAlphanumeric(FILENAME_LENGTH);
+    }
+
+    private String getAbsoluteFileName() {
+        return String.format(FILENAME_PATTERN, App.getInstance().getIdCardImageBase(), getFileName());
     }
 
     private void saveFile(final String fileName) {
@@ -42,8 +50,13 @@ public class IdCardRecognizer {
         }
     }
 
-    public IdCardInfo recognize() {
-        IDCard card =  IdCardScan.ocr("");
-        return new IdCardInfo(card.Name, card.Folk, card.Address, card.CardNo);
+    public IdCardInfo recognize(boolean isFront) {
+        String fileName = getAbsoluteFileName();
+        saveFile(fileName);
+        IDCard card = IdCardScan.ocr(fileName);
+        if (!isFront) {
+            return new IdCardInfo(card.IssueAuthority, card.ValidPeriod);
+        }
+        return new IdCardInfo(card.Name, card.Folk, card.Address, card.CardNo, card.Birthday);
     }
 }

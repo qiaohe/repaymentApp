@@ -2,32 +2,73 @@ package com.huayuan.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
 public class Bill implements java.io.Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
-    private Short bank;
-    private Byte type;
-    private Short crl;
-    private Timestamp payDue;
+
+    @Basic
+    @Column(name = "BANK")
+    private Integer bank;
+
+    @Basic
+    @Column(name = "TYPE")
+    private Enum type;
+
+    @Basic
+    @Column(name = "CRL")
+    private Integer crl;
+
+    @Basic
+    @Column(name = "PAY_DUE")
+    private Date payDue;
+
+    @Basic
+    @Column(name = "AMT_RMB")
     private Double amtRmb;
+
+    @Basic
+    @Column(name = "AMT_USD")
     private Double amtUsd;
-    private Timestamp cycleFrom;
-    private Timestamp cycleThru;
+
+    @Basic
+    @Column(name = "CYCLE_FROM")
+    private Date cycleFrom;
+
+    @Basic
+    @Column(name = "CYCLE_THRU")
+    private Date cycleThru;
+
+    @Basic
+    @Column(name = "EMAIL")
     private String email;
+
+    @Basic
+    @Column(name = "IMAGE")
     private String image;
+
+    @Basic
+    @Column(name = "APPL_NO")
     private String applNo;
-    private Timestamp createTime;
+
+    @Basic
+    @Column(name = "CREATE_TIME")
+    private Date createTime;
 
     public Bill() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -36,8 +77,6 @@ public class Bill implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
     public Member getMember() {
         return member;
     }
@@ -46,48 +85,38 @@ public class Bill implements java.io.Serializable {
         this.member = member;
     }
 
-    @Basic
-    @Column(name = "BANK")
-    public Short getBank() {
+    public Integer getBank() {
         return bank;
     }
 
-    public void setBank(Short bank) {
+    public void setBank(Integer bank) {
         this.bank = bank;
     }
 
-    @Basic
-    @Column(name = "TYPE")
-    public Byte getType() {
+    public Enum getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Enum type) {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "CRL")
-    public Short getCrl() {
+    public Integer getCrl() {
         return crl;
     }
 
-    public void setCrl(Short crl) {
+    public void setCrl(Integer crl) {
         this.crl = crl;
     }
 
-    @Basic
-    @Column(name = "PAY_DUE")
-    public Timestamp getPayDue() {
+    public Date getPayDue() {
         return payDue;
     }
 
-    public void setPayDue(Timestamp payDue) {
+    public void setPayDue(Date payDue) {
         this.payDue = payDue;
     }
 
-    @Basic
-    @Column(name = "AMT_RMB")
     public Double getAmtRmb() {
         return amtRmb;
     }
@@ -96,8 +125,6 @@ public class Bill implements java.io.Serializable {
         this.amtRmb = amtRmb;
     }
 
-    @Basic
-    @Column(name = "AMT_USD")
     public Double getAmtUsd() {
         return amtUsd;
     }
@@ -106,28 +133,22 @@ public class Bill implements java.io.Serializable {
         this.amtUsd = amtUsd;
     }
 
-    @Basic
-    @Column(name = "CYCLE_FROM")
-    public Timestamp getCycleFrom() {
+    public Date getCycleFrom() {
         return cycleFrom;
     }
 
-    public void setCycleFrom(Timestamp cycleFrom) {
+    public void setCycleFrom(Date cycleFrom) {
         this.cycleFrom = cycleFrom;
     }
 
-    @Basic
-    @Column(name = "CYCLE_THRU")
-    public Timestamp getCycleThru() {
+    public Date getCycleThru() {
         return cycleThru;
     }
 
-    public void setCycleThru(Timestamp cycleThru) {
+    public void setCycleThru(Date cycleThru) {
         this.cycleThru = cycleThru;
     }
 
-    @Basic
-    @Column(name = "EMAIL")
     public String getEmail() {
         return email;
     }
@@ -136,8 +157,6 @@ public class Bill implements java.io.Serializable {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "IMAGE")
     public String getImage() {
         return image;
     }
@@ -146,8 +165,6 @@ public class Bill implements java.io.Serializable {
         this.image = image;
     }
 
-    @Basic
-    @Column(name = "APPL_NO")
     public String getApplNo() {
         return applNo;
     }
@@ -156,13 +173,11 @@ public class Bill implements java.io.Serializable {
         this.applNo = applNo;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

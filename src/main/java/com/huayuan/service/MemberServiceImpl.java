@@ -3,10 +3,13 @@ package com.huayuan.service;
 import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.recognizer.IdCardInfo;
+import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * Created by dell on 14-3-19.
@@ -17,6 +20,9 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Resource
+    private IdCardRepository idCardRepository;
+
     @Override
     public void register(Member member) {
         memberRepository.save(member);
@@ -24,7 +30,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void update(Member member) {
+        memberRepository.save(member);
+    }
 
+    @Override
+    public void updateIdCard(Member member, IdCard idCard) {
+        IdCard ic = idCardRepository.findOne(member.getIdCard().getId());
+        ic.setIssuer(idCard.getIssuer());
+        ic.setValidFrom(idCard.getValidFrom());
+        ic.setValidThru(idCard.getValidThru());
+        idCardRepository.save(ic);
     }
 
     @Override
@@ -34,7 +49,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void remove(Member member) {
+        memberRepository.delete(member);
+    }
 
+    @Override
+    public void removeIdCard(IdCard idCard) {
+        idCardRepository.delete(idCard);
     }
 
     @Override

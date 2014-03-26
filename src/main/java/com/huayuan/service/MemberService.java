@@ -14,9 +14,13 @@ public interface MemberService {
 
     public void update(Member member);
 
+    public void updateIdCard(Member member, IdCard idCard);
+
     public Member find(Long id);
 
     public void remove(Member member);
+
+    public void removeIdCard(IdCard idCard);
 
     public Iterable<Member> getMembers();
 

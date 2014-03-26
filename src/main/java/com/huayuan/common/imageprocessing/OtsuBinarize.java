@@ -3,8 +3,11 @@ package com.huayuan.common.imageprocessing;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+
 /**
  * Created by dell on 14-3-24.
  */
@@ -26,7 +29,7 @@ public class OtsuBinarize {
     }
 
     private static void writeImage(String output) throws IOException {
-        File file = new File(output+".jpg");
+        File file = new File(output + ".jpg");
         ImageIO.write(binarized, "jpg", file);
     }
 
@@ -35,11 +38,11 @@ public class OtsuBinarize {
 
         int[] histogram = new int[256];
 
-        for(int i=0; i<histogram.length; i++) histogram[i] = 0;
+        for (int i = 0; i < histogram.length; i++) histogram[i] = 0;
 
-        for(int i=0; i<input.getWidth(); i++) {
-            for(int j=0; j<input.getHeight(); j++) {
-                int red = new Color(input.getRGB (i, j)).getRed();
+        for (int i = 0; i < input.getWidth(); i++) {
+            for (int j = 0; j < input.getHeight(); j++) {
+                int red = new Color(input.getRGB(i, j)).getRed();
                 histogram[red]++;
             }
         }
@@ -56,8 +59,8 @@ public class OtsuBinarize {
 
         BufferedImage lum = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
 
-        for(int i=0; i<original.getWidth(); i++) {
-            for(int j=0; j<original.getHeight(); j++) {
+        for (int i = 0; i < original.getWidth(); i++) {
+            for (int j = 0; j < original.getHeight(); j++) {
 
                 // Get pixels by R, G, B
                 alpha = new Color(original.getRGB(i, j)).getAlpha();
@@ -86,7 +89,7 @@ public class OtsuBinarize {
         int total = original.getHeight() * original.getWidth();
 
         float sum = 0;
-        for(int i=0; i<256; i++) sum += i * histogram[i];
+        for (int i = 0; i < 256; i++) sum += i * histogram[i];
 
         float sumB = 0;
         int wB = 0;
@@ -95,12 +98,12 @@ public class OtsuBinarize {
         float varMax = 0;
         int threshold = 0;
 
-        for(int i=0 ; i<256 ; i++) {
+        for (int i = 0; i < 256; i++) {
             wB += histogram[i];
-            if(wB == 0) continue;
+            if (wB == 0) continue;
             wF = total - wB;
 
-            if(wF == 0) break;
+            if (wF == 0) break;
 
             sumB += (float) (i * histogram[i]);
             float mB = sumB / wB;
@@ -108,7 +111,7 @@ public class OtsuBinarize {
 
             float varBetween = (float) wB * (float) wF * (mB - mF) * (mB - mF);
 
-            if(varBetween > varMax) {
+            if (varBetween > varMax) {
                 varMax = varBetween;
                 threshold = i;
             }
@@ -127,16 +130,15 @@ public class OtsuBinarize {
 
         BufferedImage binarized = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
 
-        for(int i=0; i<original.getWidth(); i++) {
-            for(int j=0; j<original.getHeight(); j++) {
+        for (int i = 0; i < original.getWidth(); i++) {
+            for (int j = 0; j < original.getHeight(); j++) {
 
                 // Get pixels
                 red = new Color(original.getRGB(i, j)).getRed();
                 int alpha = new Color(original.getRGB(i, j)).getAlpha();
-                if(red > threshold) {
+                if (red > threshold) {
                     newPixel = 255;
-                }
-                else {
+                } else {
                     newPixel = 0;
                 }
                 newPixel = colorToRGB(alpha, newPixel, newPixel, newPixel);
@@ -155,12 +157,24 @@ public class OtsuBinarize {
         int newPixel = 0;
         newPixel += alpha;
         newPixel = newPixel << 8;
-        newPixel += red; newPixel = newPixel << 8;
-        newPixel += green; newPixel = newPixel << 8;
+        newPixel += red;
+        newPixel = newPixel << 8;
+        newPixel += green;
+        newPixel = newPixel << 8;
         newPixel += blue;
 
         return newPixel;
 
     }
 
+    public static byte[] grayAndBinarize(byte[] source) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(source));
+            ImageIO.write(binarize(toGray(bi)), "jpg", baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return baos.toByteArray();
+    }
 }
