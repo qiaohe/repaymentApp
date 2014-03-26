@@ -2,29 +2,65 @@ package com.huayuan.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Johnson on 3/19/14.
  */
 @Entity
 public class CreditCard implements java.io.Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
-    private Short bank;
+
+    @Basic
+    @Column(name = "BANK")
+    private Integer bank;
+
+    @Basic
+    @Column(name = "CARD_NO")
     private String cardNo;
-    private Byte type;
+
+    @Basic
+    @Column(name = "TYPE")
+    private Integer type;
+
+    @Basic
+    @Column(name = "NAME")
     private String name;
+
+    @Basic
+    @Column(name = "VALID_FROM")
     private Timestamp validFrom;
-    private Timestamp validThru;
+
+    @Basic
+    @Column(name = "VALID_THRU")
+    private Date validThru;
+
+    @Basic
+    @Column(name = "NAME_ENG")
     private String nameEng;
+
+    @Basic
+    @Column(name = "IMAGE")
     private String image;
+
+    @Basic
+    @Column(name = "APPL_NO")
     private String applNo;
-    private Timestamp createTime;
+
+    @Basic
+    @Column(name = "CREATE_TIME")
+    private Date createTime;
 
     public CreditCard() {
     }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public Long getId() {
         return id;
     }
@@ -33,8 +69,7 @@ public class CreditCard implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
+
     public Member getMember() {
         return member;
     }
@@ -43,18 +78,14 @@ public class CreditCard implements java.io.Serializable {
         this.member = member;
     }
 
-    @Basic
-    @Column(name = "BANK")
-    public Short getBank() {
+    public Integer getBank() {
         return bank;
     }
 
-    public void setBank(Short bank) {
+    public void setBank(Integer bank) {
         this.bank = bank;
     }
 
-    @Basic
-    @Column(name = "CARD_NO")
     public String getCardNo() {
         return cardNo;
     }
@@ -63,18 +94,14 @@ public class CreditCard implements java.io.Serializable {
         this.cardNo = cardNo;
     }
 
-    @Basic
-    @Column(name = "TYPE")
-    public Byte getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "NAME")
     public String getName() {
         return name;
     }
@@ -83,8 +110,6 @@ public class CreditCard implements java.io.Serializable {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "VALID_FROM")
     public Timestamp getValidFrom() {
         return validFrom;
     }
@@ -93,18 +118,14 @@ public class CreditCard implements java.io.Serializable {
         this.validFrom = validFrom;
     }
 
-    @Basic
-    @Column(name = "VALID_THRU")
-    public Timestamp getValidThru() {
+    public Date getValidThru() {
         return validThru;
     }
 
-    public void setValidThru(Timestamp validThru) {
+    public void setValidThru(Date validThru) {
         this.validThru = validThru;
     }
 
-    @Basic
-    @Column(name = "NAME_ENG")
     public String getNameEng() {
         return nameEng;
     }
@@ -113,8 +134,6 @@ public class CreditCard implements java.io.Serializable {
         this.nameEng = nameEng;
     }
 
-    @Basic
-    @Column(name = "IMAGE")
     public String getImage() {
         return image;
     }
@@ -123,8 +142,6 @@ public class CreditCard implements java.io.Serializable {
         this.image = image;
     }
 
-    @Basic
-    @Column(name = "APPL_NO")
     public String getApplNo() {
         return applNo;
     }
@@ -133,15 +150,11 @@ public class CreditCard implements java.io.Serializable {
         this.applNo = applNo;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
-
 }

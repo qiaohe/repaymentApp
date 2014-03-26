@@ -3,6 +3,7 @@ package com.huayuan.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -10,26 +11,99 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "ID_CARD", schema = "dbo", catalog = "MEMBER")
 public class IdCard implements java.io.Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID", nullable = false)
     private Member member;
+
+    @Basic
+    @Column(name = "ID_NO")
     private String idNo;
-    private Byte sex;
-    private Timestamp birthday;
+    @Basic
+    @Column(name = "NAME")
+    private String name;
+    @Basic
+    @Column(name = "SEX")
+    private Enum sex;
+    @Basic
+    @Column(name = "BIRTHDAY")
+    private Date birthday;
+    @Basic
+    @Column(name = "NATIONALITY")
     private String nationality;
+    @Basic
+    @Column(name = "ADDRESS")
     private String address;
+    @Basic
+    @Column(name = "ISSUER")
     private String issuer;
-    private Timestamp validFrom;
-    private Timestamp validThru;
+    @Basic
+    @Column(name = "VALID_FROM")
+    private Date validFrom;
+    @Basic
+    @Column(name = "VALID_THRU")
+    private Date validThru;
+    @Basic
+    @Column(name = "PROVINCE")
+    private String province;
+    @Basic
+    @Column(name = "CITY")
+    private String city;
+    @Basic
+    @Column(name = "NAME_ENG")
+    private String nameEng;
+    @Basic
+    @Column(name = "IMAGE_FRONT")
     private String imageFront;
+    @Basic
+    @Column(name = "IMAGE_BACK")
     private String imageBack;
+    @Basic
+    @Column(name = "APPL_NO")
     private String applNo;
-    private Timestamp createTime;
+    @Basic
+    @Column(name = "CREATE_TIME")
+    private Date createTime;
 
     public IdCard() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNameEng() {
+        return nameEng;
+    }
+
+    public void setNameEng(String nameEng) {
+        this.nameEng = nameEng;
+    }
+
     public Long getId() {
         return id;
     }
@@ -38,8 +112,7 @@ public class IdCard implements java.io.Serializable {
         this.id = id;
     }
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
+
     public Member getMember() {
         return member;
     }
@@ -48,8 +121,7 @@ public class IdCard implements java.io.Serializable {
         this.member = member;
     }
 
-    @Basic
-    @Column(name = "ID_NO")
+
     public String getIdNo() {
         return idNo;
     }
@@ -58,28 +130,25 @@ public class IdCard implements java.io.Serializable {
         this.idNo = idNo;
     }
 
-    @Basic
-    @Column(name = "SEX")
-    public Byte getSex() {
+
+    public Enum getSex() {
         return sex;
     }
 
-    public void setSex(Byte sex) {
+    public void setSex(Enum sex) {
         this.sex = sex;
     }
 
-    @Basic
-    @Column(name = "BIRTHDAY")
-    public Timestamp getBirthday() {
+
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Timestamp birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
-    @Basic
-    @Column(name = "NATIONALITY")
+
     public String getNationality() {
         return nationality;
     }
@@ -88,8 +157,7 @@ public class IdCard implements java.io.Serializable {
         this.nationality = nationality;
     }
 
-    @Basic
-    @Column(name = "ADDRESS")
+
     public String getAddress() {
         return address;
     }
@@ -98,8 +166,7 @@ public class IdCard implements java.io.Serializable {
         this.address = address;
     }
 
-    @Basic
-    @Column(name = "ISSUER")
+
     public String getIssuer() {
         return issuer;
     }
@@ -108,28 +175,25 @@ public class IdCard implements java.io.Serializable {
         this.issuer = issuer;
     }
 
-    @Basic
-    @Column(name = "VALID_FROM")
-    public Timestamp getValidFrom() {
+
+    public Date getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Timestamp validFrom) {
+    public void setValidFrom(Date validFrom) {
         this.validFrom = validFrom;
     }
 
-    @Basic
-    @Column(name = "VALID_THRU")
-    public Timestamp getValidThru() {
+
+    public Date getValidThru() {
         return validThru;
     }
 
-    public void setValidThru(Timestamp validThru) {
+    public void setValidThru(Date validThru) {
         this.validThru = validThru;
     }
 
-    @Basic
-    @Column(name = "IMAGE_FRONT")
+
     public String getImageFront() {
         return imageFront;
     }
@@ -138,8 +202,7 @@ public class IdCard implements java.io.Serializable {
         this.imageFront = imageFront;
     }
 
-    @Basic
-    @Column(name = "IMAGE_BACK")
+
     public String getImageBack() {
         return imageBack;
     }
@@ -148,8 +211,7 @@ public class IdCard implements java.io.Serializable {
         this.imageBack = imageBack;
     }
 
-    @Basic
-    @Column(name = "APPL_NO")
+
     public String getApplNo() {
         return applNo;
     }
@@ -158,13 +220,12 @@ public class IdCard implements java.io.Serializable {
         this.applNo = applNo;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME")
-    public Timestamp getCreateTime() {
+
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

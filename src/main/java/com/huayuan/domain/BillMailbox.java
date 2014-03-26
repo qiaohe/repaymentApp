@@ -2,6 +2,7 @@ package com.huayuan.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -9,13 +10,34 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "BILL_MAILBOX", schema = "dbo", catalog = "MEMBER")
 public class BillMailbox implements java.io.Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @Basic
+    @Column(name = "EMAIL")
     private String email;
+
+    @Basic
+    @Column(name = "PASSWORD")
     private String password;
+
+    @Basic
+    @Column(name = "APPL_NO")
     private String applNo;
-    private Byte status;
-    private Timestamp createTime;
+
+    @Basic
+    @Column(name = "STATUS")
+    private Enum status;
+
+    @Basic
+    @Column(name = "CREATE_TIME")
+    private Date createTime;
 
     public BillMailbox() {
     }
@@ -26,8 +48,6 @@ public class BillMailbox implements java.io.Serializable {
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -36,8 +56,6 @@ public class BillMailbox implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
     public Member getMember() {
         return member;
     }
@@ -46,8 +64,6 @@ public class BillMailbox implements java.io.Serializable {
         this.member = member;
     }
 
-    @Basic
-    @Column(name = "EMAIL")
     public String getEmail() {
         return email;
     }
@@ -56,8 +72,6 @@ public class BillMailbox implements java.io.Serializable {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "PASSWORD")
     public String getPassword() {
         return password;
     }
@@ -66,8 +80,6 @@ public class BillMailbox implements java.io.Serializable {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "APPL_NO")
     public String getApplNo() {
         return applNo;
     }
@@ -76,23 +88,19 @@ public class BillMailbox implements java.io.Serializable {
         this.applNo = applNo;
     }
 
-    @Basic
-    @Column(name = "STATUS")
-    public Byte getStatus() {
+    public Enum getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Enum status) {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

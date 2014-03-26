@@ -5,6 +5,7 @@ import org.hibernate.engine.spi.CascadeStyle;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  */
 @Entity
 public class Member implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -58,13 +60,13 @@ public class Member implements java.io.Serializable {
     private String wcSignature;
 
     @Column(name = "TYPE")
-    private Byte type;
+    private Enum type;
 
     @Column(name = "CRL")
-    private Short crl;
+    private Integer crl;
 
     @Column(name = "CRL_AVL")
-    private Short crlAvl;
+    private Integer crlAvl;
 
     @Column(name = "LAST_APPL_NO")
     private Integer lastApplNo;
@@ -72,23 +74,35 @@ public class Member implements java.io.Serializable {
     @Column(name = "LAST_SCORE")
     private Integer lastScore;
 
+    @Column(name = "LAST_RATING")
+    private String lastRating;
+
     @Column(name = "LAST_DECISION")
-    private Byte lastDecision;
+    private Integer lastDecision;
+
+    @Column(name = "LAST_REASON_1")
+    private String lastReason1;
+
+    @Column(name = "LAST_REASON_2")
+    private String lastReason2;
+
+    @Column(name = "LAST_REASON_3")
+    private String lastReason3;
 
     @Column(name = "LAST_PBOC_BACK_TIME")
-    private Timestamp lastPbocBackTime;
+    private Date lastPbocBackTime;
 
     @Column(name = "POINTS")
-    private Short points;
+    private Integer points;
 
     @Column(name = "STATUS")
-    private Byte status;
+    private Enum status;
 
     @Column(name = "BLOCK_CODE")
     private String blockCode;
 
     @Column(name = "CREATE_TIME")
-    private Timestamp createTime;
+    private Date createTime;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
@@ -108,36 +122,16 @@ public class Member implements java.io.Serializable {
     public Member() {
     }
 
+    public Member(String wcNo) {
+        this.wcNo = wcNo;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getOrgFlag() {
-        return orgFlag;
-    }
-
-    public void setOrgFlag(Integer orgFlag) {
-        this.orgFlag = orgFlag;
-    }
-
-    public Integer getEducation() {
-        return education;
-    }
-
-    public void setEducation(Integer education) {
-        this.education = education;
-    }
-
-    public Integer getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(int industry) {
-        this.industry = industry;
     }
 
     public String getUserName() {
@@ -154,6 +148,14 @@ public class Member implements java.io.Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getOrgFlag() {
+        return orgFlag;
+    }
+
+    public void setOrgFlag(Integer orgFlag) {
+        this.orgFlag = orgFlag;
     }
 
     public String getName() {
@@ -178,6 +180,22 @@ public class Member implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getEducation() {
+        return education;
+    }
+
+    public void setEducation(Integer education) {
+        this.education = education;
+    }
+
+    public Integer getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(Integer industry) {
+        this.industry = industry;
     }
 
     public String getWcNo() {
@@ -220,27 +238,27 @@ public class Member implements java.io.Serializable {
         this.wcSignature = wcSignature;
     }
 
-    public Byte getType() {
+    public Enum getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(Enum type) {
         this.type = type;
     }
 
-    public Short getCrl() {
+    public Integer getCrl() {
         return crl;
     }
 
-    public void setCrl(Short crl) {
+    public void setCrl(Integer crl) {
         this.crl = crl;
     }
 
-    public Short getCrlAvl() {
+    public Integer getCrlAvl() {
         return crlAvl;
     }
 
-    public void setCrlAvl(Short crlAvl) {
+    public void setCrlAvl(Integer crlAvl) {
         this.crlAvl = crlAvl;
     }
 
@@ -260,35 +278,67 @@ public class Member implements java.io.Serializable {
         this.lastScore = lastScore;
     }
 
-    public Byte getLastDecision() {
+    public String getLastRating() {
+        return lastRating;
+    }
+
+    public void setLastRating(String lastRating) {
+        this.lastRating = lastRating;
+    }
+
+    public Integer getLastDecision() {
         return lastDecision;
     }
 
-    public void setLastDecision(Byte lastDecision) {
+    public void setLastDecision(Integer lastDecision) {
         this.lastDecision = lastDecision;
     }
 
-    public Timestamp getLastPbocBackTime() {
+    public String getLastReason1() {
+        return lastReason1;
+    }
+
+    public void setLastReason1(String lastReason1) {
+        this.lastReason1 = lastReason1;
+    }
+
+    public String getLastReason2() {
+        return lastReason2;
+    }
+
+    public void setLastReason2(String lastReason2) {
+        this.lastReason2 = lastReason2;
+    }
+
+    public String getLastReason3() {
+        return lastReason3;
+    }
+
+    public void setLastReason3(String lastReason3) {
+        this.lastReason3 = lastReason3;
+    }
+
+    public Date getLastPbocBackTime() {
         return lastPbocBackTime;
     }
 
-    public void setLastPbocBackTime(Timestamp lastPbocBackTime) {
+    public void setLastPbocBackTime(Date lastPbocBackTime) {
         this.lastPbocBackTime = lastPbocBackTime;
     }
 
-    public Short getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(Short points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
-    public Byte getStatus() {
+    public Enum getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Enum status) {
         this.status = status;
     }
 
@@ -300,20 +350,12 @@ public class Member implements java.io.Serializable {
         this.blockCode = blockCode;
     }
 
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public IdCard getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(IdCard idCard) {
-        this.idCard = idCard;
     }
 
     public Set<CreditCard> getCreditCards() {
@@ -322,6 +364,14 @@ public class Member implements java.io.Serializable {
 
     public void setCreditCards(Set<CreditCard> creditCards) {
         this.creditCards = creditCards;
+    }
+
+    public IdCard getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(IdCard idCard) {
+        this.idCard = idCard;
     }
 
     public void addCreditCard(CreditCard creditCard) {

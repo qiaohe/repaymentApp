@@ -46,6 +46,7 @@
             <artifactId>spring-aspects</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
+
         <!--Spring Data JPA-->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -256,10 +257,7 @@
             <artifactId>jsoup</artifactId>
             <version>1.7.3</version>
         </dependency>
-
-
     </dependencies>
-
 
     <repositories>
         <!-- For testing against latest Spring snapshots -->
