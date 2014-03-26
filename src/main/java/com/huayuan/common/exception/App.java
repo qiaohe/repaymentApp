@@ -54,4 +54,12 @@ public final class App {
     public String getTesseractOCR() {
         return get("tesseractOCR.installation");
     }
+
+    public  String getOcrServerHost() {
+        return get("ocrserver.host");
+    }
+
+    public int getOcrServerPort() {
+        return Integer.valueOf(get("ocrserver.port"));
+    }
 }
