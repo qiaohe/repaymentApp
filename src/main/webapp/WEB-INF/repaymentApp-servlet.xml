@@ -11,23 +11,25 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
     <context:component-scan base-package="com.huayuan.web"/>
     <util:properties id="config" location="classpath:config.properties"/>
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+    </mvc:annotation-driven>
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false" />
+    </bean>
 
-    <mvc:resources mapping="/resources/css/**" location="/resources/css/" />
-    <mvc:resources mapping="/resources/js/**" location="/resources/js/" />
-    <mvc:resources mapping="/resources/img/**" location="/resources/img/" />
+    <mvc:resources mapping="/resources/css/**" location="/resources/css/"/>
+    <mvc:resources mapping="/resources/js/**" location="/resources/js/"/>
+    <mvc:resources mapping="/resources/img/**" location="/resources/img/"/>
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="10240000" />
+        <property name="maxUploadSize" value="10240000"/>
     </bean>
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:/i18n/messages"/>
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="useCodeAsDefaultMessage" value="true"/>
     </bean>
-
 </beans>

@@ -1,15 +1,18 @@
 package com.huayuan.service;
 
+import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.recognizer.IdCardInfo;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Locale;
 
 /**
  * Created by dell on 14-3-19.
@@ -19,6 +22,7 @@ import javax.annotation.Resource;
 public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
+    private MessageSource messageSource;
 
     @Resource
     private IdCardRepository idCardRepository;
@@ -44,7 +48,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member find(Long id) {
-        return memberRepository.findOne(id);
+        Member result = memberRepository.findOne(id);
+        if (result == null) throw new MemberNotFoundException(id);
+        return result;
     }
 
     @Override

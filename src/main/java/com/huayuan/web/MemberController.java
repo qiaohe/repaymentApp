@@ -30,9 +30,8 @@ public class MemberController {
 
     @RequestMapping(value = "/{id}/testCreditLimit", method = RequestMethod.GET)
     public ModelAndView register(@PathVariable Long id) {
+        Member member = memberService.find(id);
         ModelAndView model = new ModelAndView("testCreditLimit");
-        Member member = new Member();
-        member.setId(id);
         model.addObject("member", member);
         return model;
     }
@@ -80,11 +79,11 @@ public class MemberController {
         return "5000";
     }
 
-    @RequestMapping(value = "/{id}/testResult", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/testResult", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView testResult(@PathVariable Long id, String crl) {
         ModelAndView model = new ModelAndView("testResult");
         model.addObject("crl", crl);
-        model.addObject("id",id);
+        model.addObject("id", id);
         return model;
     }
 }

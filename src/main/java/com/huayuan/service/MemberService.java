@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.*;
 import com.huayuan.domain.recognizer.IdCardInfo;
 
@@ -16,7 +17,7 @@ public interface MemberService {
 
     public void updateIdCard(Member member, IdCard idCard);
 
-    public Member find(Long id);
+    public Member find(Long id) throws MemberNotFoundException;
 
     public void remove(Member member);
 
