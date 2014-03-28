@@ -1,16 +1,21 @@
 package com.huayuan.domain.recognizer;
 
 import com.huayuan.domain.IdCard;
-import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
 import java.util.Date;
 
 /**
  * Created by dell on 14-3-21.
  */
 public final class IdCardInfo {
+    private static final String VALID_DATE_DELIMITER = "-";
+    private static final String VALID_DATE_PATTERN = "yyyy.MM.dd";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern(VALID_DATE_PATTERN);
+
+
     private String name;
     private String nationality;
     private String address;
@@ -24,7 +29,7 @@ public final class IdCardInfo {
 
     }
 
-    public IdCardInfo(String name, String nationality, String address, String idCardNumber,String birthday) {
+    public IdCardInfo(String name, String nationality, String address, String idCardNumber, String birthday) {
         this();
         this.name = name;
         this.nationality = nationality;
@@ -33,7 +38,7 @@ public final class IdCardInfo {
         this.birthday = birthday;
     }
 
-    public IdCardInfo(String issueAuthority,String validPeriod){
+    public IdCardInfo(String issueAuthority, String validPeriod) {
         this.issueAuthority = issueAuthority;
         this.validPeriod = validPeriod;
     }
@@ -106,7 +111,7 @@ public final class IdCardInfo {
         return new Date();
     }
 
-    public  Date getValidateThru() {
+    public Date getValidateThru() {
         return new Date();
     }
 
@@ -118,15 +123,10 @@ public final class IdCardInfo {
         result.setName(name);
         result.setSex(sex);
         result.setIssuer(issueAuthority);
-        try {
-            if(!StringUtils.isEmpty(validPeriod)){
-                String validFrom = validPeriod.substring(validPeriod.indexOf("-")+1,validPeriod.length());
-                String validThru = validPeriod.substring(0,validPeriod.indexOf("-"));
-                result.setValidFrom(DateUtils.parseDate(validFrom, "yyyy.MM.dd"));
-                result.setValidThru(DateUtils.parseDate(validThru, "yyyy.MM.dd"));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (!StringUtils.isEmpty(validPeriod)) {
+            String[] vs = StringUtils.split(validPeriod, VALID_DATE_DELIMITER);
+            result.setValidFrom(DATE_FORMATTER.parseDateTime(vs[0]).toDate());
+            result.setValidThru(DATE_FORMATTER.parseDateTime(vs[1]).toDate());
         }
         return result;
     }
