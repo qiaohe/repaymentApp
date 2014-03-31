@@ -1,8 +1,8 @@
 package com.huayuan.web;
 
 import com.huayuan.domain.BillMailbox;
+import com.huayuan.domain.IdCard;
 import com.huayuan.domain.Member;
-import com.huayuan.domain.recognizer.IdCardInfo;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
 import org.slf4j.Logger;
@@ -43,13 +43,13 @@ public class MemberController {
         if (idCardFrontFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
         IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
-        IdCardInfo cardInfo = recognizer.recognize(true);
+        IdCard idCard = recognizer.recognize(true);
         Member member = memberService.find(id);
         if (member.getIdCard() != null) {
             memberService.removeIdCard(member.getIdCard());
         }
-        memberService.addIdCard(member, cardInfo);
-        return cardInfo.getIdCardNumber();
+        memberService.addIdCard(member, idCard);
+        return idCard.getIdNo();
     }
 
     @RequestMapping(value = "/{id}/idCardBack", method = RequestMethod.POST)
@@ -59,9 +59,9 @@ public class MemberController {
         if (idCardBackFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.back.bad.argument.empty");
         IdCardRecognizer recognizer = new IdCardRecognizer(idCardBackFile.getBytes());
-        IdCardInfo idCardInfo = recognizer.recognize(false);
-        memberService.updateIdCard(memberService.find(id), idCardInfo.getIdCard());
-        return idCardInfo.getValidateThru().toString();
+        IdCard idCard = recognizer.recognize(false);
+        memberService.updateIdCard(memberService.find(id), idCard);
+        return idCard.getValidThru().toString();
     }
 
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)

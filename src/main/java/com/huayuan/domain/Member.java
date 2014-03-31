@@ -57,7 +57,8 @@ public class Member implements java.io.Serializable {
     private String wcSignature;
 
     @Column(name = "TYPE")
-    private Enum type;
+    @Enumerated(EnumType.ORDINAL)
+    private MemberKindEnum type;
 
     @Column(name = "CRL")
     private Integer crl;
@@ -93,7 +94,8 @@ public class Member implements java.io.Serializable {
     private Integer points;
 
     @Column(name = "STATUS")
-    private Enum status;
+    @Enumerated(EnumType.ORDINAL)
+    private MemberStatusEnum status;
 
     @Column(name = "BLOCK_CODE")
     private String blockCode;
@@ -235,11 +237,11 @@ public class Member implements java.io.Serializable {
         this.wcSignature = wcSignature;
     }
 
-    public Enum getType() {
+    public MemberKindEnum getType() {
         return type;
     }
 
-    public void setType(Enum type) {
+    public void setType(MemberKindEnum type) {
         this.type = type;
     }
 
@@ -331,11 +333,11 @@ public class Member implements java.io.Serializable {
         this.points = points;
     }
 
-    public Enum getStatus() {
+    public MemberStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(MemberStatusEnum status) {
         this.status = status;
     }
 
