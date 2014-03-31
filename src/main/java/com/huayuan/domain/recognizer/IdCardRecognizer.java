@@ -1,13 +1,18 @@
 package com.huayuan.domain.recognizer;
 
 import com.huayuan.common.App;
+import com.huayuan.domain.IdCard;
 import com.ocr.idcard.IDCard;
 import com.ocr.idcard.IdCardScan;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by dell on 14-3-21.
@@ -15,6 +20,13 @@ import java.io.IOException;
 public class IdCardRecognizer {
     private static final int FILENAME_LENGTH = 12;
     private static final String FILENAME_PATTERN = "%s/%s.jpg";
+
+    private static final String VALID_DATE_DELIMITER = "-";
+    private static final String VALID_DATE_PATTERN = "yyyy.MM.dd";
+    private static final DateTimeFormatter VALID_DATE_FORMATTER = DateTimeFormat.forPattern(VALID_DATE_PATTERN);
+    private static final String BIRTHDAY_DATE_PATTERN = "yyyy年MM月dd日";
+    private static final DateTimeFormatter BIRTHDAY_DATE_FORMATTER = DateTimeFormat.forPattern(BIRTHDAY_DATE_PATTERN);
+
     private byte[] source;
 
     static {
@@ -50,13 +62,16 @@ public class IdCardRecognizer {
         }
     }
 
-    public IdCardInfo recognize(boolean isFront) {
+    public IdCard recognize(boolean isFront) {
         String fileName = getAbsoluteFileName();
         saveFile(fileName);
         IDCard card = IdCardScan.ocr(fileName);
         if (!isFront) {
-            return new IdCardInfo(card.IssueAuthority, card.ValidPeriod);
+            String[] vs = StringUtils.split(card.ValidPeriod, VALID_DATE_DELIMITER);
+            return new IdCard(card.IssueAuthority, VALID_DATE_FORMATTER.parseDateTime(vs[0]).toDate(),
+                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate());
         }
-        return new IdCardInfo(card.Name, card.Folk, card.Address, card.CardNo, card.Birthday);
+        Date birthday = BIRTHDAY_DATE_FORMATTER.parseDateTime(card.Birthday).toDate();
+        return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address);
     }
 }

@@ -1,8 +1,9 @@
 package com.huayuan.domain;
 
 
+import com.huayuan.domain.recognizer.SexEnum;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -26,12 +27,17 @@ public class IdCard implements java.io.Serializable {
     @Basic
     @Column(name = "NAME")
     private String name;
+
     @Basic
     @Column(name = "SEX")
-    private Enum sex;
+    @Enumerated(EnumType.ORDINAL)
+    private SexEnum sex;
+
     @Basic
     @Column(name = "BIRTHDAY")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date birthday;
+
     @Basic
     @Column(name = "NATIONALITY")
     private String nationality;
@@ -43,10 +49,14 @@ public class IdCard implements java.io.Serializable {
     private String issuer;
     @Basic
     @Column(name = "VALID_FROM")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date validFrom;
+
     @Basic
     @Column(name = "VALID_THRU")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date validThru;
+
     @Basic
     @Column(name = "PROVINCE")
     private String province;
@@ -70,6 +80,21 @@ public class IdCard implements java.io.Serializable {
     private Date createTime;
 
     public IdCard() {
+    }
+
+    public IdCard(String idNo, String name, SexEnum sex, Date birthday, String nationality, String address) {
+        this.idNo = idNo;
+        this.name = name;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.nationality = nationality;
+        this.address = address;
+    }
+
+    public IdCard(String issuer, Date validFrom, Date validThru) {
+        this.issuer = issuer;
+        this.validFrom = validFrom;
+        this.validThru = validThru;
     }
 
     public String getName() {
@@ -131,11 +156,11 @@ public class IdCard implements java.io.Serializable {
     }
 
 
-    public Enum getSex() {
+    public SexEnum getSex() {
         return sex;
     }
 
-    public void setSex(Enum sex) {
+    public void setSex(SexEnum sex) {
         this.sex = sex;
     }
 

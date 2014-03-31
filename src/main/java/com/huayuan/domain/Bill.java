@@ -48,6 +48,7 @@ public class Bill implements java.io.Serializable {
 
     @Basic
     @Column(name = "CYCLE_THRU")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date cycleThru;
 
     @Basic
@@ -64,6 +65,7 @@ public class Bill implements java.io.Serializable {
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal( TemporalType.TIMESTAMP )
     private Date createTime;
 
     public Bill() {
