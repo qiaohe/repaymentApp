@@ -1,8 +1,6 @@
 package com.huayuan.domain;
 
 
-import com.huayuan.domain.recognizer.SexEnum;
-
 import javax.persistence.*;
 import java.util.Date;
 

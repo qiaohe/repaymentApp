@@ -1,10 +1,7 @@
 package com.huayuan.domain;
 
 
-import org.hibernate.engine.spi.CascadeStyle;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -445,4 +442,6 @@ public class Member implements java.io.Serializable {
             preCredits.add(preCredit);
         }
     }
+
+
 }

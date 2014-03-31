@@ -1,4 +1,4 @@
-package com.huayuan.domain.recognizer;
+package com.huayuan.domain;
 
 /**
  * Created by Administrator on 14-3-27.
