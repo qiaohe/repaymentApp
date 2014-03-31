@@ -2,9 +2,6 @@ package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.*;
-import com.huayuan.domain.recognizer.IdCardInfo;
-
-import java.util.List;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -25,7 +22,7 @@ public interface MemberService {
 
     public Iterable<Member> getMembers();
 
-    public void addIdCard(Member member, IdCardInfo idCardInfo);
+    public void addIdCard(Member member, IdCard idCard);
 
     public void addCreditCard(Member member, CreditCard creditCard);
 

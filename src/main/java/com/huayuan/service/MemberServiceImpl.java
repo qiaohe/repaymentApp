@@ -3,7 +3,6 @@ package com.huayuan.service;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
-import com.huayuan.domain.recognizer.IdCardInfo;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,15 +68,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addIdCard(Member member, IdCardInfo idCardInfo) {
-        IdCard ic = idCardInfo.getIdCard();
-        ic.setMember(member);
-        member.setIdCard(ic);
+    public void addIdCard(Member member, IdCard idCard) {
+        idCard.setMember(member);
+        member.setIdCard(idCard);
         memberRepository.save(member);
     }
 
     @Override
     public void addCreditCard(Member member, CreditCard creditCard) {
+        member.addCreditCard(creditCard);
+        creditCard.setMember(member);
         memberRepository.save(member);
     }
 
@@ -89,11 +89,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addBill(Member member, Bill bill) {
+        member.addBill(bill);
+        bill.setMember(member);
         memberRepository.save(member);
     }
 
     @Override
     public void addPreCredit(Member member, PreCredit credit) {
+        member.addPreCredit(credit);
+        credit.setMember(member);
         memberRepository.save(member);
     }
 }

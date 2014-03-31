@@ -81,7 +81,17 @@ public class WechatController {
 
     @RequestMapping(value = "/huayuan158", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String wechatStart(HttpServletRequest request, @ModelAttribute ValidationUrl validationUrl) throws IOException {
+    public String wechatStart(HttpServletRequest request) throws IOException {
+
+        String signature = request.getParameter("signature");
+        String timestamp = request.getParameter("timestamp");
+        String nonce = request.getParameter("nonce");
+        String echostr = request.getParameter("echostr");
+        ValidationUrl validationUrl = new ValidationUrl();
+        validationUrl.setSignature(signature);
+        validationUrl.setTimestamp(timestamp);
+        validationUrl.setNonce(nonce);
+        validationUrl.setEchostr(echostr);
 
         if (!StringUtils.isEmpty(validationUrl.getEchostr())) {
             if (checkSignature(validationUrl.getSignature(), validationUrl.getTimestamp(), validationUrl.getNonce())) {
@@ -169,6 +179,7 @@ public class WechatController {
                     UserInfo userInfo = objectMapper.readValue(userListJson, UserInfo.class);
                     if(userInfo.getErrcode() < 0){
                         LOGGER.error("error: user list not is data!");
+                        return  "error:-1";
                     }
                     Member member = userInfoToMember(userInfo);
                     memberService.register(member);
