@@ -1,6 +1,7 @@
 package com.huayuan.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -8,10 +9,11 @@ import java.util.Date;
  * Created by Administrator on 14-4-3.
  */
 @Entity
-public class CreditCard {
+public class CreditCard implements Serializable {
 
+    private static final long serialVersionUID = -2172211295659368573L;
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Basic
@@ -60,9 +62,11 @@ public class CreditCard {
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 

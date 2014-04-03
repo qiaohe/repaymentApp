@@ -1,7 +1,7 @@
 package com.huayuan.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,10 +9,11 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "BILL", schema = "dbo", catalog = "REPAYMENTDB")
-public class Bill {
+public class CreditCardBill implements Serializable {
+    private static final long serialVersionUID = -890460871287898338L;
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Basic
@@ -20,16 +21,18 @@ public class Bill {
     private Short bank;
 
     @Basic
-    @Column(name = "TYPE")
-    private Byte type;
+    @Column(name = "SOURCE")
+    @Enumerated
+    private BillSourceEnum source;
 
     @Basic
     @Column(name = "CRL")
-    private Short crl;
+    private Long crl;
 
     @Basic
     @Column(name = "PAY_DUE")
-    private Timestamp payDue;
+    @Temporal(TemporalType.DATE)
+    private Date payDue;
 
     @Basic
     @Column(name = "AMT_RMB")
@@ -41,11 +44,11 @@ public class Bill {
 
     @Basic
     @Column(name = "CYCLE_FROM")
-    private Timestamp cycleFrom;
+    private Date cycleFrom;
 
     @Basic
     @Column(name = "CYCLE_THRU")
-    private Timestamp cycleThru;
+    private Date cycleThru;
 
     @Basic
     @Column(name = "EMAIL")
@@ -56,25 +59,13 @@ public class Bill {
     private String image;
 
     @Basic
-    @Column(name = "APPL_NO")
-    private String applNo;
-
-    @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
-
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
 
     public int getId() {
         return id;
@@ -84,7 +75,6 @@ public class Bill {
         this.id = id;
     }
 
-
     public Short getBank() {
         return bank;
     }
@@ -93,33 +83,29 @@ public class Bill {
         this.bank = bank;
     }
 
-
-    public Byte getType() {
-        return type;
+    public BillSourceEnum getSource() {
+        return source;
     }
 
-    public void setType(Byte type) {
-        this.type = type;
+    public void setSource(BillSourceEnum source) {
+        this.source = source;
     }
 
-
-    public Short getCrl() {
+    public Long getCrl() {
         return crl;
     }
 
-    public void setCrl(Short crl) {
+    public void setCrl(Long crl) {
         this.crl = crl;
     }
 
-
-    public Timestamp getPayDue() {
+    public Date getPayDue() {
         return payDue;
     }
 
-    public void setPayDue(Timestamp payDue) {
+    public void setPayDue(Date payDue) {
         this.payDue = payDue;
     }
-
 
     public Double getAmtRmb() {
         return amtRmb;
@@ -129,7 +115,6 @@ public class Bill {
         this.amtRmb = amtRmb;
     }
 
-
     public Double getAmtUsd() {
         return amtUsd;
     }
@@ -138,24 +123,21 @@ public class Bill {
         this.amtUsd = amtUsd;
     }
 
-
-    public Timestamp getCycleFrom() {
+    public Date getCycleFrom() {
         return cycleFrom;
     }
 
-    public void setCycleFrom(Timestamp cycleFrom) {
+    public void setCycleFrom(Date cycleFrom) {
         this.cycleFrom = cycleFrom;
     }
 
-
-    public Timestamp getCycleThru() {
+    public Date getCycleThru() {
         return cycleThru;
     }
 
-    public void setCycleThru(Timestamp cycleThru) {
+    public void setCycleThru(Date cycleThru) {
         this.cycleThru = cycleThru;
     }
-
 
     public String getEmail() {
         return email;
@@ -165,7 +147,6 @@ public class Bill {
         this.email = email;
     }
 
-
     public String getImage() {
         return image;
     }
@@ -173,16 +154,6 @@ public class Bill {
     public void setImage(String image) {
         this.image = image;
     }
-
-
-    public String getApplNo() {
-        return applNo;
-    }
-
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
-    }
-
 
     public Date getCreateTime() {
         return createTime;
@@ -192,5 +163,11 @@ public class Bill {
         this.createTime = createTime;
     }
 
+    public Member getMember() {
+        return member;
+    }
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

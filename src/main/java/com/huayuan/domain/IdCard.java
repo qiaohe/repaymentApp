@@ -12,7 +12,7 @@ import java.util.Date;
 public class IdCard {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Basic
@@ -76,23 +76,26 @@ public class IdCard {
     private String imageBack;
 
     @Basic
-    @Column(name = "APPL_NO")
-    private String applNo;
-
-    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    public IdCard() {
+    }
+
     public IdCard(String issueAuthority, Date validFrom, Date validThru) {
+        this();
         this.issuer = issueAuthority;
         this.validFrom = validFrom;
         this.validThru = validThru;
     }
 
     public IdCard(String cardNo, String name, SexEnum sexEnum, Date birthday, String folk, String address) {
+        this();
         this.idNo = cardNo;
         this.name = name;
         this.sex = sexEnum;
@@ -100,10 +103,6 @@ public class IdCard {
         this.nationality = folk;
         this.address = address;
     }
-
-    public IdCard() {
-    }
-
 
     public Member getMember() {
         return member;
@@ -256,16 +255,6 @@ public class IdCard {
     public void setImageBack(String imageBack) {
         this.imageBack = imageBack;
     }
-
-
-    public String getApplNo() {
-        return applNo;
-    }
-
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
-    }
-
 
     public Date getCreateTime() {
         return createTime;

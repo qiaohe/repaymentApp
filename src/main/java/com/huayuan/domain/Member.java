@@ -2,6 +2,7 @@ package com.huayuan.domain;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class Member implements java.io.Serializable {
+public class Member implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,41 +31,57 @@ public class Member implements java.io.Serializable {
     private String name;
 
     @Column(name = "SEX")
+    @Enumerated
     private SexEnum sex;
+
     @Column(name = "MOBILE")
     private String mobile;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "EDUCATION")
     private Integer education;
+
     @Column(name = "INDUSTRY")
     private Integer industry;
+
     @Column(name = "WC_NO")
     private String wcNo;
+
     @Column(name = "WC_USER_NAME")
     private String wcUserName;
+
     @Column(name = "WC_PROVINCE")
     private String wcProvince;
+
     @Column(name = "WC_CITY")
     private String wcCity;
+
     @Column(name = "WC_SIGNATURE")
     private String wcSignature;
+
     @Column(name = "TYPE")
     @Enumerated(EnumType.ORDINAL)
     private MemberKindEnum type;
+
     @Column(name = "POINTS")
     private Integer points;
+
     @Column(name = "STATUS")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     private MemberStatusEnum status;
+
     @Column(name = "BLOCK_CODE")
     private String blockCode;
+
     @Column(name = "CREATE_TIME")
     private Date createTime;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
-    private Set<Bill> bills = new HashSet<>();
+    private Set<CreditCardBill> creditCardBills = new HashSet<>();
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
@@ -265,24 +282,24 @@ public class Member implements java.io.Serializable {
         }
     }
 
-    public Set<Bill> getBills() {
-        return bills;
+    public Set<CreditCardBill> getCreditCardBills() {
+        return creditCardBills;
     }
 
-    public void setBills(Set<Bill> bills) {
-        this.bills = bills;
+    public void setCreditCardBills(Set<CreditCardBill> creditCardBills) {
+        this.creditCardBills = creditCardBills;
     }
 
 
-    public void addBill(Bill bill) {
-        if (!bills.contains(bill)) {
-            bills.add(bill);
+    public void addBill(CreditCardBill creditCardBill) {
+        if (!creditCardBills.contains(creditCardBill)) {
+            creditCardBills.add(creditCardBill);
         }
     }
 
-    public void removeBill(Bill bill) {
-        if (bills.contains(bill)) {
-            bills.remove(bill);
+    public void removeBill(CreditCardBill creditCardBill) {
+        if (creditCardBills.contains(creditCardBill)) {
+            creditCardBills.remove(creditCardBill);
         }
     }
 
@@ -305,6 +322,4 @@ public class Member implements java.io.Serializable {
             preCredits.add(preCredit);
         }
     }
-
-
 }

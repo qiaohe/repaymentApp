@@ -1,6 +1,5 @@
 package com.huayuan.web;
 
-import com.huayuan.domain.BillMailbox;
 import com.huayuan.domain.IdCard;
 import com.huayuan.domain.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
@@ -74,7 +73,7 @@ public class MemberController {
     @RequestMapping(value = "/{id}/updateMember", method = RequestMethod.POST)
     @ResponseBody
     public String updateMember(@ModelAttribute Member member, @PathVariable Long id, String billEmail, String passwordOfBillEmail) {
-        member.addBillMailbox(new BillMailbox(member, billEmail, passwordOfBillEmail));
+//        member.addBillMailbox(new BillMailbox(member, billEmail, passwordOfBillEmail));
         memberService.register(member);
         return "5000";
     }

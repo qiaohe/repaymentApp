@@ -11,10 +11,9 @@ import java.util.Date;
 
 @Table(name = "PRECREDIT", schema = "dbo", catalog = "REPAYMENTDB")
 public class PreCredit {
-
     @Id
-    @Column(name = "ID")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Basic
     @Column(name = "ID_ID")
@@ -40,7 +39,8 @@ public class PreCredit {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
 
@@ -53,11 +53,11 @@ public class PreCredit {
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
