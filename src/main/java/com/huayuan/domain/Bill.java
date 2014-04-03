@@ -5,34 +5,31 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by Johnson on 3/19/14.
+ * Created by Administrator on 14-4-3.
  */
 @Entity
-public class Bill implements java.io.Serializable {
+@Table(name = "BILL", schema = "dbo", catalog = "REPAYMENTDB")
+public class Bill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
-    private Member member;
+    @Column(name = "ID")
+    private int id;
 
     @Basic
     @Column(name = "BANK")
-    private Integer bank;
+    private Short bank;
 
     @Basic
     @Column(name = "TYPE")
-    private Enum type;
+    private Byte type;
 
     @Basic
     @Column(name = "CRL")
-    private Integer crl;
+    private Short crl;
 
     @Basic
     @Column(name = "PAY_DUE")
-    private Date payDue;
+    private Timestamp payDue;
 
     @Basic
     @Column(name = "AMT_RMB")
@@ -44,12 +41,11 @@ public class Bill implements java.io.Serializable {
 
     @Basic
     @Column(name = "CYCLE_FROM")
-    private Date cycleFrom;
+    private Timestamp cycleFrom;
 
     @Basic
     @Column(name = "CYCLE_THRU")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cycleThru;
+    private Timestamp cycleThru;
 
     @Basic
     @Column(name = "EMAIL")
@@ -65,19 +61,11 @@ public class Bill implements java.io.Serializable {
 
     @Basic
     @Column(name = "CREATE_TIME")
-    @Temporal( TemporalType.TIMESTAMP )
     private Date createTime;
 
-    public Bill() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Member getMember() {
         return member;
@@ -87,37 +75,51 @@ public class Bill implements java.io.Serializable {
         this.member = member;
     }
 
-    public Integer getBank() {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public Short getBank() {
         return bank;
     }
 
-    public void setBank(Integer bank) {
+    public void setBank(Short bank) {
         this.bank = bank;
     }
 
-    public Enum getType() {
+
+    public Byte getType() {
         return type;
     }
 
-    public void setType(Enum type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
-    public Integer getCrl() {
+
+    public Short getCrl() {
         return crl;
     }
 
-    public void setCrl(Integer crl) {
+    public void setCrl(Short crl) {
         this.crl = crl;
     }
 
-    public Date getPayDue() {
+
+    public Timestamp getPayDue() {
         return payDue;
     }
 
-    public void setPayDue(Date payDue) {
+    public void setPayDue(Timestamp payDue) {
         this.payDue = payDue;
     }
+
 
     public Double getAmtRmb() {
         return amtRmb;
@@ -127,6 +129,7 @@ public class Bill implements java.io.Serializable {
         this.amtRmb = amtRmb;
     }
 
+
     public Double getAmtUsd() {
         return amtUsd;
     }
@@ -135,21 +138,24 @@ public class Bill implements java.io.Serializable {
         this.amtUsd = amtUsd;
     }
 
-    public Date getCycleFrom() {
+
+    public Timestamp getCycleFrom() {
         return cycleFrom;
     }
 
-    public void setCycleFrom(Date cycleFrom) {
+    public void setCycleFrom(Timestamp cycleFrom) {
         this.cycleFrom = cycleFrom;
     }
 
-    public Date getCycleThru() {
+
+    public Timestamp getCycleThru() {
         return cycleThru;
     }
 
-    public void setCycleThru(Date cycleThru) {
+    public void setCycleThru(Timestamp cycleThru) {
         this.cycleThru = cycleThru;
     }
+
 
     public String getEmail() {
         return email;
@@ -159,6 +165,7 @@ public class Bill implements java.io.Serializable {
         this.email = email;
     }
 
+
     public String getImage() {
         return image;
     }
@@ -166,6 +173,7 @@ public class Bill implements java.io.Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
 
     public String getApplNo() {
         return applNo;
@@ -175,6 +183,7 @@ public class Bill implements java.io.Serializable {
         this.applNo = applNo;
     }
 
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -182,4 +191,6 @@ public class Bill implements java.io.Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+
 }
