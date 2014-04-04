@@ -181,13 +181,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>4.1.0.Final</version>
         </dependency>
-        <!-- Joda Time Library -->
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.3</version>
-        </dependency>
-
         <!-- File Upload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -200,22 +193,10 @@
             <version>2.0.1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.3</version>
-        </dependency>
-        <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
             <version>1.9</version>
         </dependency>
-        <!-- Security (used for CSRF protection only) -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${org.springframework.security-version}</version>
-        </dependency>
-
         <!-- Test -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -248,13 +229,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- ImageMagick -->
-        <dependency>
-            <groupId>org.im4java</groupId>
-            <artifactId>im4java</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-
         <!-- java Mail -->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -267,11 +241,6 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.7.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.8.1</version>
         </dependency>
     </dependencies>
 
