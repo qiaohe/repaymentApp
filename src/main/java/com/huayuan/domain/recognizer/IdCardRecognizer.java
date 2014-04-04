@@ -3,7 +3,9 @@ package com.huayuan.domain.recognizer;
 import com.huayuan.common.App;
 import com.huayuan.domain.IdCard;
 import com.huayuan.domain.SexEnum;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.ocr.idcard.IDCard;
+import com.ocr.idcard.IdCardScan;
+import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.util.StringUtils;
@@ -29,7 +31,7 @@ public class IdCardRecognizer {
     private byte[] source;
 
     static {
-//        IdCardScan.addOcrServerIP(App.getInstance().getOcrServerHost(), App.getInstance().getOcrServerPort());
+        IdCardScan.addOcrServerIP(App.getInstance().getOcrServerHost(), App.getInstance().getOcrServerPort());
     }
 
     public IdCardRecognizer() {
@@ -62,16 +64,15 @@ public class IdCardRecognizer {
     }
 
     public IdCard recognize(boolean isFront) {
-        return null;
-//        String fileName = getAbsoluteFileName();
-//        saveFile(fileName);
-//        IDCard card = IdCardScan.ocr(fileName);
-//        if (!isFront) {
-//            String[] vs = StringUtils.split(card.ValidPeriod, VALID_DATE_DELIMITER);
-//            return new IdCard(card.IssueAuthority, VALID_DATE_FORMATTER.parseDateTime(vs[0]).toDate(),
-//                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate());
-//        }
-//        Date birthday = BIRTHDAY_DATE_FORMATTER.parseDateTime(card.Birthday).toDate();
-//        return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address);
+        String fileName = getAbsoluteFileName();
+        saveFile(fileName);
+        IDCard card = IdCardScan.ocr(fileName);
+        if (!isFront) {
+            String[] vs = StringUtils.split(card.ValidPeriod, VALID_DATE_DELIMITER);
+            return new IdCard(card.IssueAuthority, VALID_DATE_FORMATTER.parseDateTime(vs[0]).toDate(),
+                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate());
+        }
+        Date birthday = BIRTHDAY_DATE_FORMATTER.parseDateTime(card.Birthday).toDate();
+        return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address);
     }
 }
