@@ -1,7 +1,6 @@
 package com.huayuan.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -121,16 +120,6 @@ public class ValueIdArea {
     public void setXian(String xian) {
         this.xian = xian;
     }
-
-
-    public String getUpdator() {
-        return updator;
-    }
-
-    public void setUpdator(String updator) {
-        this.updator = updator;
-    }
-
 
     public Date getCreateTime() {
         return createTime;

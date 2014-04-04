@@ -1,11 +1,11 @@
 package com.huayuan.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.domain.Member;
 import com.huayuan.domain.wechat.AcceptMessage;
 import com.huayuan.domain.wechat.UserInfo;
 import com.huayuan.domain.wechat.ValidationUrl;
 import com.huayuan.service.MemberService;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -132,7 +131,7 @@ public class WechatController {
             Document document = reader.read(inputStream);
             Element root = document.getRootElement();
             List<Element> elementList = root.elements();
-            for (Element element : elementList){
+            for (Element element : elementList) {
                 String key = element.getName();
                 String value = element.getText();
                 if (key.equals(TO_USER_NAME)) {
@@ -177,9 +176,9 @@ public class WechatController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 try {
                     UserInfo userInfo = objectMapper.readValue(userListJson, UserInfo.class);
-                    if(userInfo.getErrcode() < 0){
+                    if (userInfo.getErrcode() < 0) {
                         LOGGER.error("error: user list not is data!");
-                        return  "error:-1";
+                        return "error:-1";
                     }
                     Member member = userInfoToMember(userInfo);
                     memberService.register(member);
@@ -193,13 +192,13 @@ public class WechatController {
         return acceptMessage.getContent();
     }
 
-    public Member userInfoToMember(UserInfo userInfo){
+    public Member userInfoToMember(UserInfo userInfo) {
         Member member = new Member();
         member.setWcCity(userInfo.getCity());
         member.setWcNo(userInfo.getOpenid());
         member.setWcUserName(userInfo.getNickname());
         member.setWcProvince(userInfo.getProvince());
         member.setWcSignature("");
-        return  member;
+        return member;
     }
 }

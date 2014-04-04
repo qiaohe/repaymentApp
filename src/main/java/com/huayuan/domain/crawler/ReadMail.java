@@ -1,6 +1,7 @@
 package com.huayuan.domain.crawler;
 
 
+import com.huayuan.domain.BillMailbox;
 import com.huayuan.domain.CreditCardBill;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

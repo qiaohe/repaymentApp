@@ -1,5 +1,6 @@
 package com.huayuan.domain.crawler;
 
+import com.huayuan.domain.BillMailbox;
 import com.huayuan.domain.CreditCardBill;
 
 /**
@@ -8,7 +9,6 @@ import com.huayuan.domain.CreditCardBill;
 public class BillCrawler {
 
     /**
-     *
      * @param billMailbox
      * @return
      */
