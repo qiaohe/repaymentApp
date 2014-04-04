@@ -1,6 +1,5 @@
 package com.huayuan.repository;
 
-import com.huayuan.domain.BillMailbox;
 import com.huayuan.domain.Member;
 import org.springframework.data.repository.CrudRepository;
 

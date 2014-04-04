@@ -6,12 +6,10 @@ import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Locale;
 
 /**
  * Created by dell on 14-3-19.
@@ -21,7 +19,6 @@ import java.util.Locale;
 public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
-    private MessageSource messageSource;
 
     @Resource
     private IdCardRepository idCardRepository;
@@ -88,9 +85,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addBill(Member member, Bill bill) {
-        member.addBill(bill);
-        bill.setMember(member);
+    public void addBill(Member member, CreditCardBill creditCardBill) {
+        member.addBill(creditCardBill);
+        creditCardBill.setMember(member);
         memberRepository.save(member);
     }
 

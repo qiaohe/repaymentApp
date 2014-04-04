@@ -5,49 +5,44 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by Johnson on 3/19/14.
+ * Created by Administrator on 14-4-3.
  */
 @Entity
-public class PreCredit implements java.io.Serializable{
 
+@Table(name = "PRECREDIT", schema = "dbo", catalog = "REPAYMENTDB")
+public class PreCredit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
-    private Member member;
-
+    @Basic
     @Column(name = "ID_ID")
     private Integer idId;
 
+    @Basic
     @Column(name = "CC_ID")
     private Integer ccId;
 
+    @Basic
     @Column(name = "BILL_ID")
     private Integer billId;
 
+    @Basic
     @Column(name = "BMB_ID")
     private Integer bmbId;
 
     @Basic
     @Column(name = "CRL")
-    private Short crl;
+    private Integer crl;
 
     @Basic
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    public PreCredit() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Member getMember() {
         return member;
@@ -57,6 +52,16 @@ public class PreCredit implements java.io.Serializable{
         this.member = member;
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
     public Integer getIdId() {
         return idId;
     }
@@ -64,6 +69,7 @@ public class PreCredit implements java.io.Serializable{
     public void setIdId(Integer idId) {
         this.idId = idId;
     }
+
 
     public Integer getCcId() {
         return ccId;
@@ -73,6 +79,7 @@ public class PreCredit implements java.io.Serializable{
         this.ccId = ccId;
     }
 
+
     public Integer getBillId() {
         return billId;
     }
@@ -80,6 +87,7 @@ public class PreCredit implements java.io.Serializable{
     public void setBillId(Integer billId) {
         this.billId = billId;
     }
+
 
     public Integer getBmbId() {
         return bmbId;
@@ -89,13 +97,15 @@ public class PreCredit implements java.io.Serializable{
         this.bmbId = bmbId;
     }
 
-    public Short getCrl() {
+
+    public Integer getCrl() {
         return crl;
     }
 
-    public void setCrl(Short crl) {
+    public void setCrl(Integer crl) {
         this.crl = crl;
     }
+
 
     public Date getCreateTime() {
         return createTime;
@@ -104,4 +114,5 @@ public class PreCredit implements java.io.Serializable{
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
 }

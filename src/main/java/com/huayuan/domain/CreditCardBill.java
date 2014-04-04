@@ -1,37 +1,37 @@
 package com.huayuan.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Johnson on 3/19/14.
+ * Created by Administrator on 14-4-3.
  */
 @Entity
-public class Bill implements java.io.Serializable {
+@Table(name = "BILL", schema = "dbo", catalog = "REPAYMENTDB")
+public class CreditCardBill implements Serializable {
+    private static final long serialVersionUID = -890460871287898338L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
-    private Member member;
+    private int id;
 
     @Basic
     @Column(name = "BANK")
-    private Integer bank;
+    private Short bank;
 
     @Basic
-    @Column(name = "TYPE")
-    private Enum type;
+    @Column(name = "SOURCE")
+    @Enumerated
+    private BillSourceEnum source;
 
     @Basic
     @Column(name = "CRL")
-    private Integer crl;
+    private Long crl;
 
     @Basic
     @Column(name = "PAY_DUE")
+    @Temporal(TemporalType.DATE)
     private Date payDue;
 
     @Basic
@@ -48,7 +48,6 @@ public class Bill implements java.io.Serializable {
 
     @Basic
     @Column(name = "CYCLE_THRU")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date cycleThru;
 
     @Basic
@@ -60,54 +59,43 @@ public class Bill implements java.io.Serializable {
     private String image;
 
     @Basic
-    @Column(name = "APPL_NO")
-    private String applNo;
-
-    @Basic
     @Column(name = "CREATE_TIME")
-    @Temporal( TemporalType.TIMESTAMP )
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    public Bill() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public Integer getBank() {
+    public Short getBank() {
         return bank;
     }
 
-    public void setBank(Integer bank) {
+    public void setBank(Short bank) {
         this.bank = bank;
     }
 
-    public Enum getType() {
-        return type;
+    public BillSourceEnum getSource() {
+        return source;
     }
 
-    public void setType(Enum type) {
-        this.type = type;
+    public void setSource(BillSourceEnum source) {
+        this.source = source;
     }
 
-    public Integer getCrl() {
+    public Long getCrl() {
         return crl;
     }
 
-    public void setCrl(Integer crl) {
+    public void setCrl(Long crl) {
         this.crl = crl;
     }
 
@@ -167,19 +155,19 @@ public class Bill implements java.io.Serializable {
         this.image = image;
     }
 
-    public String getApplNo() {
-        return applNo;
-    }
-
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

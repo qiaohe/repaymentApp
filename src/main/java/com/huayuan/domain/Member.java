@@ -2,6 +2,7 @@ package com.huayuan.domain;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
  * Created by Johnson on 3/19/14.
  */
 @Entity
-public class Member implements java.io.Serializable {
+public class Member implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,10 @@ public class Member implements java.io.Serializable {
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "SEX")
+    @Enumerated
+    private SexEnum sex;
 
     @Column(name = "MOBILE")
     private String mobile;
@@ -60,41 +65,11 @@ public class Member implements java.io.Serializable {
     @Enumerated(EnumType.ORDINAL)
     private MemberKindEnum type;
 
-    @Column(name = "CRL")
-    private Integer crl;
-
-    @Column(name = "CRL_AVL")
-    private Integer crlAvl;
-
-    @Column(name = "LAST_APPL_NO")
-    private Integer lastApplNo;
-
-    @Column(name = "LAST_SCORE")
-    private Integer lastScore;
-
-    @Column(name = "LAST_RATING")
-    private String lastRating;
-
-    @Column(name = "LAST_DECISION")
-    private Integer lastDecision;
-
-    @Column(name = "LAST_REASON_1")
-    private String lastReason1;
-
-    @Column(name = "LAST_REASON_2")
-    private String lastReason2;
-
-    @Column(name = "LAST_REASON_3")
-    private String lastReason3;
-
-    @Column(name = "LAST_PBOC_BACK_TIME")
-    private Date lastPbocBackTime;
-
     @Column(name = "POINTS")
     private Integer points;
 
     @Column(name = "STATUS")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     private MemberStatusEnum status;
 
     @Column(name = "BLOCK_CODE")
@@ -105,16 +80,10 @@ public class Member implements java.io.Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
-
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
-    private Set<Bill> bills = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
-    private Set<BillMailbox> billMailboxes = new HashSet<>();
-
+    private Set<CreditCardBill> creditCardBills = new HashSet<>();
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
 
@@ -123,6 +92,14 @@ public class Member implements java.io.Serializable {
 
     public Member(String wcNo) {
         this.wcNo = wcNo;
+    }
+
+    public SexEnum getSex() {
+        return sex;
+    }
+
+    public void setSex(SexEnum sex) {
+        this.sex = sex;
     }
 
     public Long getId() {
@@ -245,86 +222,6 @@ public class Member implements java.io.Serializable {
         this.type = type;
     }
 
-    public Integer getCrl() {
-        return crl;
-    }
-
-    public void setCrl(Integer crl) {
-        this.crl = crl;
-    }
-
-    public Integer getCrlAvl() {
-        return crlAvl;
-    }
-
-    public void setCrlAvl(Integer crlAvl) {
-        this.crlAvl = crlAvl;
-    }
-
-    public Integer getLastApplNo() {
-        return lastApplNo;
-    }
-
-    public void setLastApplNo(Integer lastApplNo) {
-        this.lastApplNo = lastApplNo;
-    }
-
-    public Integer getLastScore() {
-        return lastScore;
-    }
-
-    public void setLastScore(Integer lastScore) {
-        this.lastScore = lastScore;
-    }
-
-    public String getLastRating() {
-        return lastRating;
-    }
-
-    public void setLastRating(String lastRating) {
-        this.lastRating = lastRating;
-    }
-
-    public Integer getLastDecision() {
-        return lastDecision;
-    }
-
-    public void setLastDecision(Integer lastDecision) {
-        this.lastDecision = lastDecision;
-    }
-
-    public String getLastReason1() {
-        return lastReason1;
-    }
-
-    public void setLastReason1(String lastReason1) {
-        this.lastReason1 = lastReason1;
-    }
-
-    public String getLastReason2() {
-        return lastReason2;
-    }
-
-    public void setLastReason2(String lastReason2) {
-        this.lastReason2 = lastReason2;
-    }
-
-    public String getLastReason3() {
-        return lastReason3;
-    }
-
-    public void setLastReason3(String lastReason3) {
-        this.lastReason3 = lastReason3;
-    }
-
-    public Date getLastPbocBackTime() {
-        return lastPbocBackTime;
-    }
-
-    public void setLastPbocBackTime(Date lastPbocBackTime) {
-        this.lastPbocBackTime = lastPbocBackTime;
-    }
-
     public Integer getPoints() {
         return points;
     }
@@ -385,43 +282,24 @@ public class Member implements java.io.Serializable {
         }
     }
 
-    public Set<Bill> getBills() {
-        return bills;
+    public Set<CreditCardBill> getCreditCardBills() {
+        return creditCardBills;
     }
 
-    public void setBills(Set<Bill> bills) {
-        this.bills = bills;
+    public void setCreditCardBills(Set<CreditCardBill> creditCardBills) {
+        this.creditCardBills = creditCardBills;
     }
 
-    public void addBillMailbox(BillMailbox billMailbox) {
-        if (!billMailboxes.contains(billMailbox)) {
-            billMailboxes.add(billMailbox);
+
+    public void addBill(CreditCardBill creditCardBill) {
+        if (!creditCardBills.contains(creditCardBill)) {
+            creditCardBills.add(creditCardBill);
         }
     }
 
-    public void removeMailbox(BillMailbox billMailbox) {
-        if (billMailboxes.contains(billMailbox)) {
-            billMailboxes.remove(billMailbox);
-        }
-    }
-
-    public Set<BillMailbox> getBillMailboxes() {
-        return billMailboxes;
-    }
-
-    public void setBillMailboxes(Set<BillMailbox> billMailboxes) {
-        this.billMailboxes = billMailboxes;
-    }
-
-    public void addBill(Bill bill) {
-        if (!bills.contains(bill)) {
-            bills.add(bill);
-        }
-    }
-
-    public void removeBill(Bill bill) {
-        if (bills.contains(bill)) {
-            bills.remove(bill);
+    public void removeBill(CreditCardBill creditCardBill) {
+        if (creditCardBills.contains(creditCardBill)) {
+            creditCardBills.remove(creditCardBill);
         }
     }
 
@@ -444,6 +322,4 @@ public class Member implements java.io.Serializable {
             preCredits.add(preCredit);
         }
     }
-
-
 }

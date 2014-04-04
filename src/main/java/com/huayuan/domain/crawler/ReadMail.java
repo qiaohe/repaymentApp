@@ -1,8 +1,7 @@
 package com.huayuan.domain.crawler;
 
 
-import com.huayuan.domain.Bill;
-import com.huayuan.domain.BillMailbox;
+import com.huayuan.domain.CreditCardBill;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -47,7 +46,7 @@ public class ReadMail {
      * @return
      * @throws Exception
      */
-    public Set<Bill> readBill(BillMailbox billMailbox, String readEmail) throws Exception {
+    public Set<CreditCardBill> readBill(BillMailbox billMailbox, String readEmail) throws Exception {
 
         String userEmail = billMailbox.getEmail();
         String password = billMailbox.getPassword();
@@ -64,17 +63,17 @@ public class ReadMail {
         folder.open(Folder.READ_ONLY);
         Message message[] = folder.getMessages();
 
-        Set<Bill> bills = new HashSet<Bill>();
+        Set<CreditCardBill> creditCardBills = new HashSet<CreditCardBill>();
         for (int i = 0; i < message.length; i++) {
             setMimeMessage((MimeMessage) message[i]);
             InternetAddress address[] = (InternetAddress[]) mimeMessage.getFrom();
             if (address[0].getAddress().equals(readEmail)) {
                 getMailContent((Part) message[i]);
-                Bill bill = parser(getBodyText());
-                bills.add(bill);
+                CreditCardBill creditCardBill = parser(getBodyText());
+                creditCardBills.add(creditCardBill);
             }
         }
-        return bills;
+        return creditCardBills;
     }
 
     /**
@@ -82,8 +81,8 @@ public class ReadMail {
      *
      * @param tableStr
      */
-    public Bill parser(String tableStr) {
-        Bill bill = new Bill();
+    public CreditCardBill parser(String tableStr) {
+        CreditCardBill creditCardBill = new CreditCardBill();
         Document doc = Jsoup.parse(tableStr);
         try {
             Elements tdElements = doc.select("table tr td font");
@@ -94,19 +93,19 @@ public class ReadMail {
                 if (text.indexOf("Payment Due Date") >= 0) {
                     String payDue = tdElements.get(i).parent().parent().child(1).text();
                     if (!payDue.isEmpty()) ;
-//                        bill.setPayDue(DateUtil.parseTimestamp(payDue));
+//                        creditCardBill.setPayDue(DateUtil.parseTimestamp(payDue));
                 }
                 //AMT_RMB
                 if (text.indexOf("Cash Advance Limit") >= 0) {
                     String amtRmb = tdElements.get(i).parent().parent().child(1).text();
                     if (!amtRmb.isEmpty())
-                        bill.setAmtRmb(Double.parseDouble(amtRmb.replaceAll(",", "")));
+                        creditCardBill.setAmtRmb(Double.parseDouble(amtRmb.replaceAll(",", "")));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return bill;
+        return creditCardBill;
     }
 
     public void setMimeMessage(MimeMessage mimeMessage) {

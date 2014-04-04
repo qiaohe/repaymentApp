@@ -28,7 +28,7 @@ public interface MemberService {
 
     public void addBillMailBox(Member member, BillMailbox billMailbox);
 
-    public void addBill(Member member, Bill bill);
+    public void addBill(Member member, CreditCardBill creditCardBill);
 
     public void addPreCredit(Member member, PreCredit credit);
 }

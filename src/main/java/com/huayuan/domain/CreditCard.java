@@ -1,26 +1,24 @@
 package com.huayuan.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by Johnson on 3/19/14.
+ * Created by Administrator on 14-4-3.
  */
 @Entity
-public class CreditCard implements java.io.Serializable {
+public class CreditCard implements Serializable {
 
+    private static final long serialVersionUID = -2172211295659368573L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "MEMBER_ID", nullable = false)
-    private Member member;
+    private int id;
 
     @Basic
     @Column(name = "BANK")
-    private Integer bank;
+    private Short bank;
 
     @Basic
     @Column(name = "CARD_NO")
@@ -28,7 +26,7 @@ public class CreditCard implements java.io.Serializable {
 
     @Basic
     @Column(name = "TYPE")
-    private Integer type;
+    private Byte type;
 
     @Basic
     @Column(name = "NAME")
@@ -36,7 +34,7 @@ public class CreditCard implements java.io.Serializable {
 
     @Basic
     @Column(name = "VALID_FROM")
-    private Timestamp validFrom;
+    private Date validFrom;
 
     @Basic
     @Column(name = "VALID_THRU")
@@ -51,23 +49,25 @@ public class CreditCard implements java.io.Serializable {
     private String image;
 
     @Basic
-    @Column(name = "APPL_NO")
-    private String applNo;
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Basic
+    @Column(name = "PASSWORD")
+    private String password;
+
+    @Basic
+    @Column(name = "STATUS")
+    private Byte status;
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    public CreditCard() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
 
     public Member getMember() {
@@ -78,13 +78,24 @@ public class CreditCard implements java.io.Serializable {
         this.member = member;
     }
 
-    public Integer getBank() {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public Short getBank() {
         return bank;
     }
 
-    public void setBank(Integer bank) {
+    public void setBank(Short bank) {
         this.bank = bank;
     }
+
 
     public String getCardNo() {
         return cardNo;
@@ -94,13 +105,15 @@ public class CreditCard implements java.io.Serializable {
         this.cardNo = cardNo;
     }
 
-    public Integer getType() {
+
+    public Byte getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Byte type) {
         this.type = type;
     }
+
 
     public String getName() {
         return name;
@@ -110,13 +123,15 @@ public class CreditCard implements java.io.Serializable {
         this.name = name;
     }
 
-    public Timestamp getValidFrom() {
+
+    public Date getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Timestamp validFrom) {
+    public void setValidFrom(Date validFrom) {
         this.validFrom = validFrom;
     }
+
 
     public Date getValidThru() {
         return validThru;
@@ -126,6 +141,7 @@ public class CreditCard implements java.io.Serializable {
         this.validThru = validThru;
     }
 
+
     public String getNameEng() {
         return nameEng;
     }
@@ -133,6 +149,7 @@ public class CreditCard implements java.io.Serializable {
     public void setNameEng(String nameEng) {
         this.nameEng = nameEng;
     }
+
 
     public String getImage() {
         return image;
@@ -142,13 +159,33 @@ public class CreditCard implements java.io.Serializable {
         this.image = image;
     }
 
-    public String getApplNo() {
-        return applNo;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
 
     public Date getCreateTime() {
         return createTime;
@@ -157,4 +194,5 @@ public class CreditCard implements java.io.Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
 }
