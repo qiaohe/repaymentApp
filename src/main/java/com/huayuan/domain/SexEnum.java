@@ -7,7 +7,7 @@ public enum SexEnum {
     MALE("女"),
     FEMALE("男");
 
-    private String name;
+    private final String name;
 
     SexEnum(String name) {
         this.name = name;
