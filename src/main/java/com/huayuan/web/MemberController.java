@@ -4,10 +4,7 @@ import com.huayuan.domain.IdCard;
 import com.huayuan.domain.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,11 +18,8 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/members")
 public class MemberController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
     @Autowired
     MemberService memberService;
-    @Autowired
-    private MessageSource messageSource;
 
     @RequestMapping(value = "/{id}/testCreditLimit", method = RequestMethod.GET)
     public ModelAndView register(@PathVariable Long id) {
