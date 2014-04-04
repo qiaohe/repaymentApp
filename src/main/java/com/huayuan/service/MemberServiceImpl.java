@@ -3,17 +3,14 @@ package com.huayuan.service;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.member.*;
-import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
 import com.huayuan.repository.ValueBinRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import java.util.Date;
 
