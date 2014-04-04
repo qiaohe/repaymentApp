@@ -2,6 +2,7 @@ package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.*;
+import com.huayuan.domain.member.*;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -24,9 +25,9 @@ public interface MemberService {
 
     public void addIdCard(Member member, IdCard idCard);
 
-    public void addCreditCard(Member member, CreditCard creditCard);
+    public void addCreditCard(Member member, String creditNo);
 
-    public void addBillMailBox(Member member, BillMailbox billMailbox);
+    public void updateBillEmail(Member member, String billEmail, String password);
 
     public void addBill(Member member, CreditCardBill creditCardBill);
 

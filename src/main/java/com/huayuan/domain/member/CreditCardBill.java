@@ -1,4 +1,5 @@
-package com.huayuan.domain;
+package com.huayuan.domain.member;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,13 +9,13 @@ import java.util.Date;
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "BILL", schema = "dbo", catalog = "REPAYMENTDB")
+@Table(name = "BILL")
 public class CreditCardBill implements Serializable {
     private static final long serialVersionUID = -890460871287898338L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Basic
     @Column(name = "BANK")
@@ -67,11 +68,11 @@ public class CreditCardBill implements Serializable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int Long) {
         this.id = id;
     }
 

@@ -14,7 +14,7 @@
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
     </mvc:annotation-driven>
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-        <property name="favorPathExtension" value="false" />
+        <property name="favorPathExtension" value="false"/>
     </bean>
 
     <mvc:resources mapping="/resources/css/**" location="/resources/css/"/>

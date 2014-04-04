@@ -1,19 +1,20 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "APPROVAL", schema = "dbo", catalog = "REPAYMENTDB")
+@Table(name = "APPROVAL")
 public class Approval {
-
     @Id
-    @Column(name = "APPL_NO")
-    private String applNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "APPL_NO")
+    private Appl appl;
 
     @Basic
     @Column(name = "DECISION")
@@ -29,11 +30,12 @@ public class Approval {
 
     @Basic
     @Column(name = "TERM")
-    private Byte term;
+    private int term;
 
     @Basic
     @Column(name = "REPAY_TYPE")
-    private Byte repayType;
+    @Enumerated
+    private RepaymentModeEnum repayType;
 
     @Basic
     @Column(name = "PROFILE")
@@ -65,17 +67,25 @@ public class Approval {
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.DATE)
     private Date createTime;
 
 
-    public String getApplNo() {
-        return applNo;
+    public Long getId() {
+        return id;
     }
 
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public Appl getAppl() {
+        return appl;
+    }
+
+    public void setAppl(Appl appl) {
+        this.appl = appl;
+    }
 
     public String getDecision() {
         return decision;
@@ -104,20 +114,20 @@ public class Approval {
     }
 
 
-    public Byte getTerm() {
+    public int getTerm() {
         return term;
     }
 
-    public void setTerm(Byte term) {
+    public void setTerm(int term) {
         this.term = term;
     }
 
 
-    public Byte getRepayType() {
+    public RepaymentModeEnum getRepayType() {
         return repayType;
     }
 
-    public void setRepayType(Byte repayType) {
+    public void setRepayType(RepaymentModeEnum repayType) {
         this.repayType = repayType;
     }
 

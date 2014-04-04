@@ -1,75 +1,393 @@
 /* CSS Document */
 
-html {	_text-overflow: ellipsis}
-body {	margin: 0 auto;	font-size: 15px;	font-family: Verdana;	line-height: 1.5;	display: block;	}
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {	margin: 0;	padding: 0;}
-table {	border-collapse: collapse;	border-spacing: 0;}
-fieldset, img {	border: 0;}
-address, caption, cite, code, dfn, em, th, var, optgroup {	font-style: inherit;	font-weight: inherit;}
-del, ins {	text-decoration: none;}
-li {	list-style: none;}
-caption, th {	text-align: left;}
-h1, h2, h3, h4, h5, h6 {	font-size: 100%;font-weight: normal;}
-q:before, q:after {	content: '';}
-abbr, acronym {	border: 0;	font-variant: normal;}
-sup {	vertical-align: baseline;}
-sub {	vertical-align: baseline;}
-legend {	color: #000;}
-element.style {display:none;}
-input, button, textarea, select, optgroup, option {font-family: inherit;	font-size: inherit;	font-style: inherit;	font-weight: inherit;}
-input, button, textarea, select {	*font-size: 100%;}
-b, em, i, s, u {	font-weight: normal;	font-size: 12px;	font-style: normal;	text-decoration: none;}
-a {	color: #537912;	text-decoration: none;}
-a:hover {	text-decoration: underline;}
+html {
+    _text-overflow: ellipsis
+}
+
+body {
+    margin: 0 auto;
+    font-size: 15px;
+    font-family: Verdana;
+    line-height: 1.5;
+    display: block;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, th, var, optgroup {
+    font-style: inherit;
+    font-weight: inherit;
+}
+
+del, ins {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+q:before, q:after {
+    content: '';
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal;
+}
+
+sup {
+    vertical-align: baseline;
+}
+
+sub {
+    vertical-align: baseline;
+}
+
+legend {
+    color: #000;
+}
+
+element.style {
+    display: none;
+}
+
+input, button, textarea, select, optgroup, option {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+}
+
+input, button, textarea, select {
+    *font-size: 100%;
+}
+
+b, em, i, s, u {
+    font-weight: normal;
+    font-size: 12px;
+    font-style: normal;
+    text-decoration: none;
+}
+
+a {
+    color: #537912;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 /**各个页面的公共样式**/
-.main,.personMessageMain{overflow: hidden;width: 100%;}
-.content,.personMessage_content{overflow: hidden;}
-form{margin: 0px;padding: 0px;}
-label .error {font-weight: bold;color: #f80808;padding: 2px 8px;margin-top: 2px;}
+.main, .personMessageMain {
+    overflow: hidden;
+    width: 100%;
+}
+
+.content, .personMessage_content {
+    overflow: hidden;
+}
+
+form {
+    margin: 0px;
+    padding: 0px;
+}
+
+label .error {
+    font-weight: bold;
+    color: #f80808;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+
 /**index graygreen**/
-.main{background-color: #e5e7eb;}
-.header{width: 100%;overflow: hidden;position: relative; }
-.header .header_icon{display: block;background: url("../img/iphone.png") center no-repeat;width: 280px;height: 226px;margin: 0px auto;}
-.header .header_icon_text{font-size: 20px;font-family: '宋体';font-weight: bold;display: block;color: #2eb458;margin:0px auto;text-align: center;line-height: 20px;margin-top: 6px;}
-.menu{width: 100%;height: 60px; border: 0px;border-radius:15px;background-color: #fff; position: relative;overflow: hidden;margin-top: 10px;}
-.menu_left{background-color: #00a733;height: 100%;width:100px;float: left;border-radius:15px 0px 0px 15px;position: relative;}
-.menu_left .menu_icon1{background: url("../img/icon1.png")center no-repeat;}
-.menu_left .menu_icon2{background: url("../img/icon2.png")center no-repeat;}
-.menu_left .menu_icon3{background: url("../img/icon3.png")center no-repeat;}
-.menu_left .menu_icon1,.menu_left .menu_icon2,.menu_left .menu_icon3{display: block;width: 57px;height: 38px;position: absolute;top:20%;left:20%;}
-.url_space{height: 100%;position: relative;float: left;width: 94%;}
-.url_space .txtInput {float: left;width:100%;font-size: 15px;border: 0px;height: 95%;padding-left: 10px;}
-.url_space .selectVal {color: #969696;font-size: 15px;text-align: center;position: absolute;top: 20px;left: 20%;}
-.url_space .font_yh {font-family: "微软雅黑","宋体",bold;float-size:28px;color:#bdbab4;float: left;position: absolute;}
-.menu .camera{background: url("../img/camera.png")center no-repeat;width: 56px;height: 38px;float: left;position: absolute;top:15%;right:1%;display:block;}
-.menu .ui-btn{width:44px;background-color: #fff;border: 0px;height: 30px;}
-.url_space .ui-input-text{margin: .5em 0;border-width: 0px; border-style:none; }
-.footer{position: relative;}
-.form .number,.button .number,.select_space .number{font-size: 24px;color:#333;font-family:Arial,Regular;float: right;}
-.form .next{text-align: center;font-size: 24px;color:#333;}
-form a{text-decoration: none;}
+.main {
+    background-color: #e5e7eb;
+}
+
+.header {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.header .header_icon {
+    display: block;
+    background: url("../img/iphone.png") center no-repeat;
+    width: 280px;
+    height: 226px;
+    margin: 0px auto;
+}
+
+.header .header_icon_text {
+    font-size: 20px;
+    font-family: '宋体';
+    font-weight: bold;
+    display: block;
+    color: #2eb458;
+    margin: 0px auto;
+    text-align: center;
+    line-height: 20px;
+    margin-top: 6px;
+}
+
+.menu {
+    width: 100%;
+    height: 60px;
+    border: 0px;
+    border-radius: 15px;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.menu_left {
+    background-color: #00a733;
+    height: 100%;
+    width: 100px;
+    float: left;
+    border-radius: 15px 0px 0px 15px;
+    position: relative;
+}
+
+.menu_left .menu_icon1 {
+    background: url("../img/icon1.png") center no-repeat;
+}
+
+.menu_left .menu_icon2 {
+    background: url("../img/icon2.png") center no-repeat;
+}
+
+.menu_left .menu_icon3 {
+    background: url("../img/icon3.png") center no-repeat;
+}
+
+.menu_left .menu_icon1, .menu_left .menu_icon2, .menu_left .menu_icon3 {
+    display: block;
+    width: 57px;
+    height: 38px;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+}
+
+.url_space {
+    height: 100%;
+    position: relative;
+    float: left;
+    width: 94%;
+}
+
+.url_space .txtInput {
+    float: left;
+    width: 100%;
+    font-size: 15px;
+    border: 0px;
+    height: 95%;
+    padding-left: 10px;
+}
+
+.url_space .selectVal {
+    color: #969696;
+    font-size: 15px;
+    text-align: center;
+    position: absolute;
+    top: 20px;
+    left: 20%;
+}
+
+.url_space .font_yh {
+    font-family: "微软雅黑", "宋体", bold;
+    float-size: 28px;
+    color: #bdbab4;
+    float: left;
+    position: absolute;
+}
+
+.menu .camera {
+    background: url("../img/camera.png") center no-repeat;
+    width: 56px;
+    height: 38px;
+    float: left;
+    position: absolute;
+    top: 15%;
+    right: 1%;
+    display: block;
+}
+
+.menu .ui-btn {
+    width: 44px;
+    background-color: #fff;
+    border: 0px;
+    height: 30px;
+}
+
+.url_space .ui-input-text {
+    margin: .5em 0;
+    border-width: 0px;
+    border-style: none;
+}
+
+.footer {
+    position: relative;
+}
+
+.form .number, .button .number, .select_space .number {
+    font-size: 24px;
+    color: #333;
+    font-family: Arial, Regular;
+    float: right;
+}
+
+.form .next {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+}
+
+form a {
+    text-decoration: none;
+}
+
 /**return money**/
-.border_up{width: 100%;background: url("../img/border_up.png")center no-repeat;overflow: hidden;height:21px; }
-.return_data{width: 100%;overflow: hidden;background-color: #2ecc71;border-radius: 15px;border: 2px solid #fff;}
-.next_data_return_money{border-right: 2px solid #fff;}
+.border_up {
+    width: 100%;
+    background: url("../img/border_up.png") center no-repeat;
+    overflow: hidden;
+    height: 21px;
+}
+
+.return_data {
+    width: 100%;
+    overflow: hidden;
+    background-color: #2ecc71;
+    border-radius: 15px;
+    border: 2px solid #fff;
+}
+
+.next_data_return_money {
+    border-right: 2px solid #fff;
+}
 
 /**personMessageMain**/
-.personMessageMain{background-color: #fff;margin-bottom: 10px;}
-.header .personMessage_header_icon{display: block;background: url("../img/iphone.png") center no-repeat;width: 280px;height: 226px;margin: 0px auto;}
-.personMessage_content{background-color: #fff;}
-.personMessage_form{margin-top: 30px;position: relative;background-color: #e5e7eb;padding-bottom: 20px;}
-.personMessage_icon{background: url("../img/border_up.png")center no-repeat;width: 34px;height: 21px;text-align: center;display:block;position: absolute;top:-20px;left:50%;}
-.ui-select{padding: 4px;}
-.select_space{margin: 0px 20px 0px 20px;}
-.button{margin-bottom: 20px;position: relative;}
-.button .number{position: absolute;right: 1%;top:12px;font-size: 14px;color:#333;font-family:Arial,Regular;float: right;}
+.personMessageMain {
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.header .personMessage_header_icon {
+    display: block;
+    background: url("../img/iphone.png") center no-repeat;
+    width: 280px;
+    height: 226px;
+    margin: 0px auto;
+}
+
+.personMessage_content {
+    background-color: #fff;
+}
+
+.personMessage_form {
+    margin-top: 30px;
+    position: relative;
+    background-color: #e5e7eb;
+    padding-bottom: 20px;
+}
+
+.personMessage_icon {
+    background: url("../img/border_up.png") center no-repeat;
+    width: 34px;
+    height: 21px;
+    text-align: center;
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+}
+
+.ui-select {
+    padding: 4px;
+}
+
+.select_space {
+    margin: 0px 20px 0px 20px;
+}
+
+.button {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.button .number {
+    position: absolute;
+    right: 1%;
+    top: 12px;
+    font-size: 14px;
+    color: #333;
+    font-family: Arial, Regular;
+    float: right;
+}
 
 /**confirmationMessageMain**/
-.confirmationMessageMain{border-radius:15px;border: 1px solid #131313;width: 288px;height: 350px;}
-.emm{position: relative;}
-.required{width: 100%;height: 40px;margin: 0;min-height: 2.2em;text-align: left;border: 0;-webkit-appearance: none;-webkit-border-radius: inherit;border-radius: inherit;color: inherit;text-shadow: inherit;}
-.error{display: none;right: 1%;top: 50%;z-index: 1000;color:red;}
-.emm .error {display: none;}
+.confirmationMessageMain {
+    border-radius: 15px;
+    border: 1px solid #131313;
+    width: 288px;
+    height: 350px;
+}
+
+.emm {
+    position: relative;
+}
+
+.required {
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    min-height: 2.2em;
+    text-align: left;
+    border: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: inherit;
+    border-radius: inherit;
+    color: inherit;
+    text-shadow: inherit;
+}
+
+.error {
+    display: none;
+    right: 1%;
+    top: 50%;
+    z-index: 1000;
+    color: red;
+}
+
+.emm .error {
+    display: none;
+}
 
 
 

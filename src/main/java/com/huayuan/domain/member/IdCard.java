@@ -1,16 +1,17 @@
-package com.huayuan.domain;
+package com.huayuan.domain.member;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "ID_CARD", schema = "dbo", catalog = "REPAYMENTDB")
-public class IdCard {
+@Table(name = "ID_CARD")
+public class IdCard implements Serializable {
 
+    private static final long serialVersionUID = -5246285602045762161L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -85,6 +86,7 @@ public class IdCard {
     private Member member;
 
     public IdCard() {
+        this.createTime = new Date();
     }
 
     public IdCard(String issueAuthority, Date validFrom, Date validThru) {

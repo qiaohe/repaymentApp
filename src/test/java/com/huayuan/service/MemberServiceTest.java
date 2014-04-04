@@ -1,21 +1,22 @@
 package com.huayuan.service;
 
-import com.huayuan.domain.Member;
 import com.huayuan.common.BaseTest;
+import com.huayuan.domain.member.Member;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 
 /**
  * Created by Administrator on 14-3-20.
  */
-public class MemberServiceTest extends BaseTest{
+public class MemberServiceTest extends BaseTest {
 
-    @Resource
+    @Inject
     MemberService memberService;
 
     @Test
-    public void save(){
+    public void save() {
         Member member = new Member();
         member.setName("dd");
         memberService.register(member);

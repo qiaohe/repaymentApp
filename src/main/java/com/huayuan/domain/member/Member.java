@@ -1,5 +1,7 @@
-package com.huayuan.domain;
+package com.huayuan.domain.member;
 
+
+import com.huayuan.domain.loanapplication.LastAppl;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,12 +13,13 @@ import java.util.Set;
  * Created by Johnson on 3/19/14.
  */
 @Entity
+@Table(name = "MEMBER")
 public class Member implements Serializable {
 
+    private static final long serialVersionUID = 4541559421896160856L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Basic
     @Column(name = "USER_NAME")
     private String userName;
@@ -86,6 +89,9 @@ public class Member implements Serializable {
     private Set<PreCredit> preCredits = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "member")
+    private LastAppl lastAppl;
+
 
     public Member() {
     }
@@ -321,5 +327,13 @@ public class Member implements Serializable {
         if (!preCredits.contains(preCredit)) {
             preCredits.add(preCredit);
         }
+    }
+
+    public LastAppl getLastAppl() {
+        return lastAppl;
+    }
+
+    public void setLastAppl(LastAppl lastAppl) {
+        this.lastAppl = lastAppl;
     }
 }

@@ -33,14 +33,15 @@
             <span class="header_icon_text">请拍摄身份证、信用卡</span>
             <span class="header_icon_text">请保持卡片充满屏幕</span>
         </div>
-        <form id="testCreditLimitForm" action="idCardFront.html" enctype="multipart/form-data" method="post" class="form">
+        <form id="testCreditLimitForm" action="idCardFront.html" enctype="multipart/form-data" method="post"
+              class="form">
             <div class="menu">
                 <div class="menu_left">
                     <span class="menu_icon1"></span>
                 </div>
                 <div class="url_space">
                     <input type="file" class="txtInput" style="visibility: hidden" id="uploadFile1">
-                    <input type="text" class="txtInput font_yh" placeholder="拍摄身份证正面" id="open_text1" >
+                    <input type="text" class="txtInput font_yh" placeholder="拍摄身份证正面" id="open_text1">
                 </div>
                 <sapn class="camera" id="open1"></sapn>
             </div>
@@ -72,7 +73,6 @@
 </div>
 
 
-
 <!---personMessage-->
 <div data-role="page" id="personMessage" class="personMessageMain">
     <div class="personMessage_content" data-role="content">
@@ -80,8 +80,9 @@
             <span class="personMessage_header_icon"></span>
         </div>
 
-        <form id="memberInfoForm" action="updateMember.html" method="post" data-ajax="false"class="personMessage_form">
+        <form id="memberInfoForm" action="updateMember.html" method="post" data-ajax="false" class="personMessage_form">
             <span class="personMessage_icon"></span>
+
             <div data-demo-html="true" class="select_space">
                 <label for="industry" class="ui-select">请选择您从事的职业</label>
                 <select name="industry" id="industry">
@@ -123,7 +124,7 @@
 
                     <input type="email" name="email" id="email" placeholder="您的邮箱地址..">
                 </div>
-                <a href="#testLimitBillbox"  data-role="button" class="footer">
+                <a href="#testLimitBillbox" data-role="button" class="footer">
                     <span class="next">提交</span><span class="number">2/2</span>
                 </a>
 
@@ -148,15 +149,15 @@
                 </tr>
                 <tr>
                     <td width="10%">
-                        <input type="radio" name="radioEmail"  value="" checked="true"/>
+                        <input type="radio" name="radioEmail" value="" checked="true"/>
                     </td>
-                    <td  width="90%">
+                    <td width="90%">
                         <input type="email" placeholder="信用卡账单Email" id="emailAddress1">
                     </td>
                 </tr>
                 <tr>
                     <td width="10%">
-                        <input type="radio" name="radioEmail"  value="" />
+                        <input type="radio" name="radioEmail" value=""/>
                     </td>
                     <td width="90%">
                         <label>feitian.gan@gmail.com</label>
@@ -169,7 +170,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="text" placeholder="上述Email密码" >
+                        <input type="text" placeholder="上述Email密码">
                     </td>
                 </tr>
             </table>
@@ -192,7 +193,9 @@
         <div style="text-align: center">
             <h1>信用额度：50000</h1>
             <img src="<%=request.getContextPath() %>/resources/img/testResult.jpg">
+
             <p>您的额度打败了70%的用户</p>
+
             <p>您的额度将被保存，您可以随时使用。</p>
         </div>
         <div>
@@ -204,8 +207,8 @@
 </div>
 <script type="text/javascript" src="<%=request.getContextPath() %>/resources/js/testCreditLimit.js"></script>
 <script>
-    $(function(){
-        $("#useLimitLink").click(function(){
+    $(function () {
+        $("#useLimitLink").click(function () {
             location.href = 'useLimit.html';
         });
     });

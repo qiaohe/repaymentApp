@@ -1,7 +1,7 @@
 package com.huayuan.web;
 
-import com.huayuan.domain.IdCard;
-import com.huayuan.domain.Member;
+import com.huayuan.domain.member.IdCard;
+import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -18,7 +19,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/members")
 public class MemberController {
-    @Autowired
+    @Inject
     MemberService memberService;
 
     @RequestMapping(value = "/{id}/testCreditLimit", method = RequestMethod.GET)
@@ -60,8 +61,10 @@ public class MemberController {
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)
     public
     @ResponseBody
-    String uploadCreditCard(@PathVariable Long id, @RequestParam("creditCardFile") MultipartFile creditCardFile) {
-        return "1";
+    String uploadCreditCard(@PathVariable Long id, @RequestParam("creditCardNo") String creditCardNo) {
+        Member member = memberService.find(id);
+        memberService.addCreditCard(member, creditCardNo);
+        return creditCardNo;
     }
 
     @RequestMapping(value = "/{id}/updateMember", method = RequestMethod.POST)

@@ -1,51 +1,23 @@
 /**
  * Created by dell on 14-4-2.
  */
-$(function(){
+$(function () {
     /**启动摄像机功能**/
-    $(document).ready(function(){
-        $('#open1'||'#open_text1').click(function(){
+    $(document).ready(function () {
+        $('#open1' || '#open_text1').click(function () {
             $('#uploadFile1[type=file]:first').trigger('click');
-            $('#open_text1').css('display','none');
+            $('#open_text1').css('display', 'none');
         });
-        $('#open2'||'#open_text2').click(function(){
+        $('#open2' || '#open_text2').click(function () {
             $('#uploadFile2[type=file]:first').trigger('click');
-            $('#open_text2').css('display','none');
+            $('#open_text2').css('display', 'none');
         });
-        $('#open3'||'#open_text3').click(function(){
+        $('#open3' || '#open_text3').click(function () {
             $('#uploadFile3[type=file]:first').trigger('click');
-            $('#open_text3').css('display','none');
+            $('#open_text3').css('display', 'none');
         });
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    $(document).ready(function(){

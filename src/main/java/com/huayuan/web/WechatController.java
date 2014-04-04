@@ -1,7 +1,7 @@
 package com.huayuan.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huayuan.domain.Member;
+import com.huayuan.domain.member.Member;
 import com.huayuan.domain.wechat.AcceptMessage;
 import com.huayuan.domain.wechat.UserInfo;
 import com.huayuan.domain.wechat.ValidationUrl;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class WechatController {
     private final String CONTENT = "Content";
     private final String EVENT = "Event";
     private final String EVENT_KEY = "EventKey";
-    @Resource
+    @Inject
     private MemberService memberService;
 
     /**

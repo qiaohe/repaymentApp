@@ -1,19 +1,19 @@
-package com.huayuan.domain;
+package com.huayuan.domain.dictionary;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "VALUE_BIN", schema = "dbo", catalog = "REPAYMENTDB")
-public class ValueBin {
-
+@Table(name = "VALUE_BIN")
+public class ValueBin implements Serializable {
+    private static final long serialVersionUID = 5095339860747619966L;
     @Id
-    @Column(name = "ID")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Basic
     @Column(name = "BANK")
@@ -21,7 +21,7 @@ public class ValueBin {
 
     @Basic
     @Column(name = "BANK_NO")
-    private String bankNo;
+    private int bankNo;
 
     @Basic
     @Column(name = "CARD_NAME")
@@ -65,6 +65,7 @@ public class ValueBin {
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.DATE)
     private Date createTime;
 
     public String getIcon() {
@@ -83,11 +84,11 @@ public class ValueBin {
         this.isValid = isValid;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,11 +102,11 @@ public class ValueBin {
     }
 
 
-    public String getBankNo() {
+    public int getBankNo() {
         return bankNo;
     }
 
-    public void setBankNo(String bankNo) {
+    public void setBankNo(int bankNo) {
         this.bankNo = bankNo;
     }
 

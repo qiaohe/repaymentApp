@@ -1,7 +1,6 @@
 package com.huayuan.domain.crawler;
 
-import com.huayuan.domain.BillMailbox;
-import com.huayuan.domain.CreditCardBill;
+import com.huayuan.domain.member.CreditCardBill;
 
 /**
  * Created by dell on 14-3-21.
@@ -12,7 +11,7 @@ public class BillCrawler {
      * @param billMailbox
      * @return
      */
-    public CreditCardBill crawl(BillMailbox billMailbox) {
+    public CreditCardBill crawl(final String email, final String password) {
 
         return new CreditCardBill();
     }

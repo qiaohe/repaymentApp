@@ -1,4 +1,4 @@
-package com.huayuan.domain;
+package com.huayuan.domain.member;
 
 /**
  * Created by Administrator on 14-3-27.

@@ -1,8 +1,8 @@
 package com.huayuan.domain.recognizer;
 
 import com.huayuan.common.App;
-import com.huayuan.domain.IdCard;
-import com.huayuan.domain.SexEnum;
+import com.huayuan.domain.member.IdCard;
+import com.huayuan.domain.member.SexEnum;
 import com.ocr.idcard.IDCard;
 import com.ocr.idcard.IdCardScan;
 import org.apache.commons.lang.RandomStringUtils;

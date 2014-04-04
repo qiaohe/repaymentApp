@@ -1,4 +1,6 @@
-package com.huayuan.domain;
+package com.huayuan.domain.member;
+
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +11,7 @@ import java.util.Date;
  * Created by Administrator on 14-4-3.
  */
 @Entity
+@Table(name = "CREDITCARD")
 public class CreditCard implements Serializable {
 
     private static final long serialVersionUID = -2172211295659368573L;
@@ -18,7 +21,7 @@ public class CreditCard implements Serializable {
 
     @Basic
     @Column(name = "BANK")
-    private Short bank;
+    private int bank;
 
     @Basic
     @Column(name = "CARD_NO")
@@ -88,11 +91,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public Short getBank() {
+    public int getBank() {
         return bank;
     }
 
-    public void setBank(Short bank) {
+    public void setBank(int bank) {
         this.bank = bank;
     }
 
@@ -195,4 +198,8 @@ public class CreditCard implements Serializable {
         this.createTime = createTime;
     }
 
+    @Transient
+    public String getBinCode() {
+        return StringUtils.substring(cardNo, 0, 6);
+    }
 }

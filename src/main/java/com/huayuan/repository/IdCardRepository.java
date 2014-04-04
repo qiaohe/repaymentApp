@@ -1,7 +1,7 @@
 package com.huayuan.repository;
 
 
-import com.huayuan.domain.IdCard;
+import com.huayuan.domain.member.IdCard;
 import org.springframework.data.repository.CrudRepository;
 
 /**

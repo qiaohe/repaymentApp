@@ -1,4 +1,4 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
 
 /**
  * Created by Johnson on 4/3/14.

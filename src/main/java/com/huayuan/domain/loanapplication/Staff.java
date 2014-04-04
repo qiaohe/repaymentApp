@@ -1,15 +1,16 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-
-@Table(name = "STAFF", schema = "dbo", catalog = "REPAYMENTDB")
-public class Staff {
+@Table(name = "STAFF")
+public class Staff implements Serializable {
+    private static final long serialVersionUID = -8453855512273993675L;
 
     @Id
     @Column(name = "STAFF_ID")
@@ -17,15 +18,17 @@ public class Staff {
 
     @Basic
     @Column(name = "ROLE")
-    private Byte role;
+    private int role;
 
     @Basic
     @Column(name = "ENROLL_TIME")
-    private Timestamp enrollTime;
+    @Temporal(TemporalType.DATE)
+    private Date enrollTime;
 
     @Basic
     @Column(name = "QUIT_TIME")
-    private Timestamp quitTime;
+    @Temporal(TemporalType.DATE)
+    private Date quitTime;
 
     @Basic
     @Column(name = "STATUS")
@@ -37,7 +40,8 @@ public class Staff {
 
     @Basic
     @Column(name = "CREATE_TIME")
-    private Timestamp createTime;
+    @Temporal(TemporalType.DATE)
+    private Date createTime;
 
 
     public String getStaffId() {
@@ -49,29 +53,29 @@ public class Staff {
     }
 
 
-    public Byte getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Byte role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
 
-    public Timestamp getEnrollTime() {
+    public Date getEnrollTime() {
         return enrollTime;
     }
 
-    public void setEnrollTime(Timestamp enrollTime) {
+    public void setEnrollTime(Date enrollTime) {
         this.enrollTime = enrollTime;
     }
 
 
-    public Timestamp getQuitTime() {
+    public Date getQuitTime() {
         return quitTime;
     }
 
-    public void setQuitTime(Timestamp quitTime) {
+    public void setQuitTime(Date quitTime) {
         this.quitTime = quitTime;
     }
 
@@ -94,11 +98,11 @@ public class Staff {
     }
 
 
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

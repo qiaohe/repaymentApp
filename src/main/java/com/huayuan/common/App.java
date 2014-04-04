@@ -47,15 +47,7 @@ public final class App {
         return getImageBase() + "/creditCard";
     }
 
-    public String getImageMagickInstallation() {
-        return get("imageMagick.installation");
-    }
-
-    public String getTesseractOCR() {
-        return get("tesseractOCR.installation");
-    }
-
-    public  String getOcrServerHost() {
+    public String getOcrServerHost() {
         return get("ocrserver.host");
     }
 

@@ -1,4 +1,4 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,12 +8,14 @@ import java.util.Date;
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "APPL_TV", schema = "dbo", catalog = "REPAYMENTDB")
+@Table(name = "APPL_TV")
 public class ApplTv {
-
     @Id
-    @Column(name = "APPL_NO")
-    private String applNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "APPL_NO")
+    private Appl appl;
     @Basic
     @Column(name = "TYPE")
     private Byte type;
@@ -40,17 +42,16 @@ public class ApplTv {
 
     @Basic
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.DATE)
     private Date createTime;
 
-
-    public String getApplNo() {
-        return applNo;
+    public Appl getAppl() {
+        return appl;
     }
 
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
+    public void setAppl(Appl appl) {
+        this.appl = appl;
     }
-
 
     public Byte getType() {
         return type;
@@ -113,5 +114,4 @@ public class ApplTv {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
 }

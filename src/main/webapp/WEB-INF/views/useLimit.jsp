@@ -19,25 +19,26 @@
 
 
     <style>
-        .errorCss{
+        .errorCss {
             border: 1px solid red;
-            background: url(../../resources/img/error.jpg) no-repeat right ;
+            background: url(../../resources/img/error.jpg) no-repeat right;
         }
-        .successCss{
-            background: url(../../resources/img/success.jpg) no-repeat right ;
+
+        .successCss {
+            background: url(../../resources/img/success.jpg) no-repeat right;
         }
     </style>
 
     <script>
-        $(function(){
-            $("#crlTextId").on("change",function(){
+        $(function () {
+            $("#crlTextId").on("change", function () {
                 var crlText = $("#crlTextId");
-                if(crlText.val() < 100 ){
+                if (crlText.val() < 100) {
                     crlText.parent().removeClass("ui-body-inherit ui-corner-all successCss");
                     crlText.parent().addClass("errorCss");
                     crlText.parent().innerHTML("<span style='color: red'>请输入整百数字</span>");
                     return false;
-                }else{
+                } else {
                     crlText.parent().removeClass("ui-body-inherit ui-corner-all errorCss");
                     crlText.parent().addClass("successCss");
                     return true;
@@ -49,7 +50,6 @@
 <body>
 
 
-
 <div data-role="page" id="useLimit">
     <div data-role="content">
         <div style="text-align: center;background-color: #d3d3d3">
@@ -59,7 +59,7 @@
 
             <div>
                 <label for="crlTextId">官人本次想动用多少额度？（仅支持整百）</label>
-                <input type="number" min="0" step="100" name="crl" id="crlTextId" value="" >
+                <input type="number" min="0" step="100" name="crl" id="crlTextId" value="">
             </div>
 
             <fieldset class="ui-grid-a">
@@ -82,7 +82,8 @@
                 <label for="log">同意借贷协议</label>
                 <input type="checkbox" name="login" id="log" value="1" data-mini="true" width="20%">
                 <a href="#towDayWaitResult" class="ui-btn ui-shadow ui-corner-all ui-btn-a">提交申请（新户）</a>
-                <a href="#useLimitOfGridDialog" id="useLimitBtn" class="ui-btn ui-shadow ui-corner-all ui-btn-a" data-rel="dialog">确认，去复活信用卡（老户）</a>
+                <a href="#useLimitOfGridDialog" id="useLimitBtn" class="ui-btn ui-shadow ui-corner-all ui-btn-a"
+                   data-rel="dialog">确认，去复活信用卡（老户）</a>
             </div>
         </form>
 
@@ -94,12 +95,15 @@
         <div style="text-align: center">
             <img src="<%= request.getContextPath()%>/resources/img/2day.jpg">
         </div>
-        <div  style="text-align: center">
+        <div style="text-align: center">
             <p>银行对于信用卡还款都有3天的宽限期</p>
+
             <p>我们不会让您出滞纳金的[酷]</p>
 
             <p>• 由于这是您的“第一次”，故申请的结果（额</p>
+
             <p>度和每期还款金额）可能与预估数值有出入。</p>
+
             <p>• 申请结果出来后，我们会及时通知您。</p>
         </div>
         <div>
@@ -140,6 +144,7 @@
         </div>
         <div style="text-align: right">
             <p style="color: red">相比信用卡，总计帮您省了￥150！</p>
+
             <p style="color: red">相当于一个月的早饭啊！</p>
         </div>
         <div>
@@ -163,13 +168,13 @@
             <li>
                 <div>
                     <img src="<%= request.getContextPath()%>/resources/img/cmb.jpg">
-                    <a href="#useLimitOfCreditDialog" data-rel="dialog" >4392********9950</a>
+                    <a href="#useLimitOfCreditDialog" data-rel="dialog">4392********9950</a>
                 </div>
             </li>
             <li>
                 <div>
                     <img src="<%= request.getContextPath()%>/resources/img/cmb.jpg">
-                    <a href="#useLimitOfCreditDialog" data-rel="dialog" >4392********9950</a>
+                    <a href="#useLimitOfCreditDialog" data-rel="dialog">4392********9950</a>
                 </div>
             </li>
         </ul>
@@ -211,10 +216,11 @@
         <div>
             <p style="color: sandybrown">请使用您自己的卡片，否则款项可能无法注入</p>
         </div>
-        <div >
+        <div>
             <fieldset class="ui-grid-a">
                 <div class="ui-block-a">
-                    <a href="#useLimitOfGridDialog" class="ui-shadow ui-btn ui-corner-all ui-mini" data-rel="dialog">返回</a>
+                    <a href="#useLimitOfGridDialog" class="ui-shadow ui-btn ui-corner-all ui-mini"
+                       data-rel="dialog">返回</a>
                 </div>
                 <div class="ui-block-b">
                     <a href="#useLimitOfCreditDialog" class="ui-shadow ui-btn ui-corner-all ui-mini" data-rel="dialog">确定</a>

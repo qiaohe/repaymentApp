@@ -1,15 +1,21 @@
 package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
-import com.huayuan.domain.*;
 import com.huayuan.domain.crawler.BillCrawler;
+import com.huayuan.domain.member.*;
+import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
+import com.huayuan.repository.ValueBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
+import java.util.Date;
 
 /**
  * Created by dell on 14-3-19.
@@ -17,10 +23,12 @@ import javax.annotation.Resource;
 @Service(value = "memberService")
 @Transactional
 public class MemberServiceImpl implements MemberService {
-    @Autowired
+    @Inject
     private MemberRepository memberRepository;
+    @Inject
+    private ValueBinRepository valueBinRepository;
 
-    @Resource
+    @Inject
     private IdCardRepository idCardRepository;
 
     @Override
@@ -72,16 +80,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addCreditCard(Member member, CreditCard creditCard) {
+    public void addCreditCard(Member member, String creditCardNo) {
+        CreditCard creditCard = new CreditCard();
+        creditCard.setCardNo(creditCardNo);
+        creditCard.setBank(valueBinRepository.findByBinNo(creditCard.getBinCode()).getBankNo());
         member.addCreditCard(creditCard);
         creditCard.setMember(member);
         memberRepository.save(member);
     }
 
     @Override
-    public void addBillMailBox(Member member, BillMailbox billMailbox) {
+    public void updateBillEmail(Member member, String billEmail, String password) {
         BillCrawler crawler = new BillCrawler();
-        addBill(member, crawler.crawl(billMailbox));
+        addBill(member, crawler.crawl(billEmail, password));
     }
 
     @Override
@@ -96,5 +107,16 @@ public class MemberServiceImpl implements MemberService {
         member.addPreCredit(credit);
         credit.setMember(member);
         memberRepository.save(member);
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        Member member = new Member();
+        member.setEmail("tusc_heqiO@163.com");
+        member.setCreateTime(new Date());
+        member.setIndustry(1);
+        member.setEducation(2);
+        memberService.register(member);
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Li JiWang on 14-3-25.
  */
-public class ValidationUrl implements Serializable{
+public class ValidationUrl implements Serializable {
 
     private String signature;   //微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
     private String timestamp;   //时间戳

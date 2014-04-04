@@ -1,26 +1,30 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
+
+import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "LAST_APPL", schema = "dbo", catalog = "REPAYMENTDB")
-public class LastAppl {
+@Table(name = "LAST_APPL")
+public class LastAppl implements Serializable {
+    private static final long serialVersionUID = -3751309910672351082L;
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
-    @Basic
-    @Column(name = "MEMBER_ID")
-    private String memberId;
-
-    @Basic
-    @Column(name = "LAST_APPL_NO")
-    private Integer lastApplNo;
+    @Id
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "LAST_APPL_NO")
+    private Appl lastApplNo;
 
     @Basic
     @Column(name = "LAST_SCORE")
@@ -48,29 +52,45 @@ public class LastAppl {
 
     @Basic
     @Column(name = "LAST_PBOC_BACK_TIME")
-    private Timestamp lastPbocBackTime;
+    @Temporal(TemporalType.DATE)
+    private Date lastPbocBackTime;
 
     @Basic
     @Column(name = "CREATE_TIME")
-    private Timestamp createTime;
+    @Temporal(TemporalType.DATE)
+    private Date createTime;
 
-    public String getMemberId() {
-        return memberId;
+    public Long getId() {
+        return id;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public Member getMember() {
+        return member;
+    }
 
-    public Integer getLastApplNo() {
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public Appl getLastApplNo() {
         return lastApplNo;
     }
 
-    public void setLastApplNo(Integer lastApplNo) {
+    public void setLastApplNo(Appl lastApplNo) {
         this.lastApplNo = lastApplNo;
     }
 
+    public void setLastPbocBackTime(Date lastPbocBackTime) {
+        this.lastPbocBackTime = lastPbocBackTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getLastScore() {
         return lastScore;
@@ -125,23 +145,11 @@ public class LastAppl {
         this.lastReason3 = lastReason3;
     }
 
-
-    public Timestamp getLastPbocBackTime() {
+    public Date getLastPbocBackTime() {
         return lastPbocBackTime;
     }
 
-    public void setLastPbocBackTime(Timestamp lastPbocBackTime) {
-        this.lastPbocBackTime = lastPbocBackTime;
-    }
-
-
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-
 }

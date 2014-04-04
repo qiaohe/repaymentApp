@@ -15,15 +15,15 @@
         </encoder>
     </appender>
 
-    <logger name="ch.qos.logback" level="WARN" />
-    <logger name="org.mortbay.log" level="WARN" />
-    <logger name="org.springframework" level="INFO" />
-    <logger name="org.springframework.beans" level="WARN" />
-    <logger name="org.ibatis" level="INFO" />
-    <logger name="com.huayuan" level="DEBUG" />
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="org.mortbay.log" level="WARN"/>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.beans" level="WARN"/>
+    <logger name="org.ibatis" level="INFO"/>
+    <logger name="com.huayuan" level="DEBUG"/>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

@@ -1,19 +1,23 @@
-package com.huayuan.domain;
+package com.huayuan.domain.loanapplication;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "A_SCORE", schema = "dbo", catalog = "REPAYMENTDB")
-public class AScore {
+@Table(name = "A_SCORE")
+public class AScore implements Serializable {
+    private static final long serialVersionUID = 7012088286194895365L;
 
     @Id
-    @Column(name = "APPL_NO")
-    private String applNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "APPL_NO")
+    private Appl appl;
 
     @Basic
     @Column(name = "PBOC_TIME")
@@ -40,14 +44,21 @@ public class AScore {
     private Date createTime;
 
 
-    public String getApplNo() {
-        return applNo;
+    public Long getId() {
+        return id;
     }
 
-    public void setApplNo(String applNo) {
-        this.applNo = applNo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
+    public Appl getAppl() {
+        return appl;
+    }
+
+    public void setAppl(Appl appl) {
+        this.appl = appl;
+    }
 
     public Date getPbocTime() {
         return pbocTime;

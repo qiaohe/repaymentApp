@@ -1,8 +1,7 @@
 package com.huayuan.domain.crawler;
 
 
-import com.huayuan.domain.BillMailbox;
-import com.huayuan.domain.CreditCardBill;
+import com.huayuan.domain.member.CreditCardBill;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -47,35 +46,35 @@ public class ReadMail {
      * @return
      * @throws Exception
      */
-    public Set<CreditCardBill> readBill(BillMailbox billMailbox, String readEmail) throws Exception {
-
-        String userEmail = billMailbox.getEmail();
-        String password = billMailbox.getPassword();
-
-        String host = "pop." + userEmail.substring(userEmail.indexOf("@") + 1, userEmail.length());
-
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-
-        Store store = session.getStore("pop3");
-        store.connect(host, userEmail, password);
-
-        Folder folder = store.getFolder("INBOX");
-        folder.open(Folder.READ_ONLY);
-        Message message[] = folder.getMessages();
-
-        Set<CreditCardBill> creditCardBills = new HashSet<CreditCardBill>();
-        for (int i = 0; i < message.length; i++) {
-            setMimeMessage((MimeMessage) message[i]);
-            InternetAddress address[] = (InternetAddress[]) mimeMessage.getFrom();
-            if (address[0].getAddress().equals(readEmail)) {
-                getMailContent((Part) message[i]);
-                CreditCardBill creditCardBill = parser(getBodyText());
-                creditCardBills.add(creditCardBill);
-            }
-        }
-        return creditCardBills;
-    }
+//    public Set<CreditCardBill> readBill(BillMailbox billMailbox, String readEmail) throws Exception {
+//
+//        String userEmail = billMailbox.getEmail();
+//        String password = billMailbox.getPassword();
+//
+//        String host = "pop." + userEmail.substring(userEmail.indexOf("@") + 1, userEmail.length());
+//
+//        Properties props = new Properties();
+//        Session session = Session.getDefaultInstance(props, null);
+//
+//        Store store = session.getStore("pop3");
+//        store.connect(host, userEmail, password);
+//
+//        Folder folder = store.getFolder("INBOX");
+//        folder.open(Folder.READ_ONLY);
+//        Message message[] = folder.getMessages();
+//
+//        Set<CreditCardBill> creditCardBills = new HashSet<CreditCardBill>();
+//        for (int i = 0; i < message.length; i++) {
+//            setMimeMessage((MimeMessage) message[i]);
+//            InternetAddress address[] = (InternetAddress[]) mimeMessage.getFrom();
+//            if (address[0].getAddress().equals(readEmail)) {
+//                getMailContent((Part) message[i]);
+//                CreditCardBill creditCardBill = parser(getBodyText());
+//                creditCardBills.add(creditCardBill);
+//            }
+//        }
+//        return creditCardBills;
+//    }
 
     /**
      * parser Mail

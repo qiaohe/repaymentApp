@@ -2,7 +2,6 @@ package com.huayuan.web;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.common.exception.RestError;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ public class RestExceptionProcessor {
     private static final int ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE_CODE = 1001;
     private static final int MEMBER_NOT_FOUND_MESSAGE_CODE = 2001;
 
-    @Autowired
+    @Inject
     private MessageSource messageSource;
 
     @ExceptionHandler(IllegalArgumentException.class)
