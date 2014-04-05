@@ -1,7 +1,6 @@
 package com.huayuan.domain.loanapplication;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -9,13 +8,15 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "APPL_TV")
-public class ApplTv {
+public class TelephoneVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
-    private Appl appl;
+    private Application application;
+
     @Basic
     @Column(name = "TYPE")
     private Byte type;
@@ -45,12 +46,20 @@ public class ApplTv {
     @Temporal(TemporalType.DATE)
     private Date createTime;
 
-    public Appl getAppl() {
-        return appl;
+    public Long getId() {
+        return id;
     }
 
-    public void setAppl(Appl appl) {
-        this.appl = appl;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     public Byte getType() {

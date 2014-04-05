@@ -43,6 +43,9 @@ public class Staff implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createTime;
 
+    public Staff() {
+        createTime = new Date();
+    }
 
     public String getStaffId() {
         return staffId;

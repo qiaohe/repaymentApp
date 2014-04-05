@@ -1,5 +1,7 @@
 package com.huayuan.domain.dictionary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +15,7 @@ public class ValueBin implements Serializable {
     private static final long serialVersionUID = 5095339860747619966L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Basic
@@ -33,10 +36,12 @@ public class ValueBin implements Serializable {
 
     @Basic
     @Column(name = "CARD_LEVEL")
+    @JsonIgnore
     private String cardLevel;
 
     @Basic
     @Column(name = "LEN_CARD")
+    @JsonIgnore
     private Byte lenCard;
 
     @Basic
@@ -45,6 +50,7 @@ public class ValueBin implements Serializable {
 
     @Basic
     @Column(name = "LEN_BIN")
+    @JsonIgnore
     private Byte lenBin;
 
     @Basic
@@ -53,10 +59,12 @@ public class ValueBin implements Serializable {
 
     @Basic
     @Column(name = "TYPE")
+    @JsonIgnore
     private String type;
 
     @Basic
     @Column(name = "IS_VALID")
+    @JsonIgnore
     private Boolean isValid;
 
     @Basic
@@ -66,7 +74,12 @@ public class ValueBin implements Serializable {
     @Basic
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
+    @JsonIgnore
     private Date createTime;
+
+    public ValueBin() {
+        createTime = new Date();
+    }
 
     public String getIcon() {
         return icon;
