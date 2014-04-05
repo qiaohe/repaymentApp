@@ -11,20 +11,20 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "LAST_APPL")
-public class LastAppl implements Serializable {
+public class CreditResult implements Serializable {
     private static final long serialVersionUID = -3751309910672351082L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Id
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "LAST_APPL_NO")
-    private Appl lastApplNo;
+    private Application lastApplicationNo;
 
     @Basic
     @Column(name = "LAST_SCORE")
@@ -60,6 +60,10 @@ public class LastAppl implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createTime;
 
+    public CreditResult() {
+        createTime = new Date();
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,12 +80,12 @@ public class LastAppl implements Serializable {
         this.member = member;
     }
 
-    public Appl getLastApplNo() {
-        return lastApplNo;
+    public Application getLastApplicationNo() {
+        return lastApplicationNo;
     }
 
-    public void setLastApplNo(Appl lastApplNo) {
-        this.lastApplNo = lastApplNo;
+    public void setLastApplicationNo(Application lastApplicationNo) {
+        this.lastApplicationNo = lastApplicationNo;
     }
 
     public void setLastPbocBackTime(Date lastPbocBackTime) {

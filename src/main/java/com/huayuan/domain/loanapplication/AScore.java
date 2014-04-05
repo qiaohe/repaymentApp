@@ -17,7 +17,7 @@ public class AScore implements Serializable {
     private Long id;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
-    private Appl appl;
+    private Application application;
 
     @Basic
     @Column(name = "PBOC_TIME")
@@ -52,12 +52,12 @@ public class AScore implements Serializable {
         this.id = id;
     }
 
-    public Appl getAppl() {
-        return appl;
+    public Application getApplication() {
+        return application;
     }
 
-    public void setAppl(Appl appl) {
-        this.appl = appl;
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     public Date getPbocTime() {

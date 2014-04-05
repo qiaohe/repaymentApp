@@ -11,18 +11,19 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "APPL")
-public class Appl {
+public class Application {
     @Id
     @Column(name = "APPL_NO")
-    private String APPL_NO;
+    private String applicationNo;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "appl")
-    private ApplTv applTv;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "appl")
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
+    private TelephoneVerification telphoneVerification;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private AScore aScore;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "appl")
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private Approval approval;
 
     @Basic
@@ -70,12 +71,12 @@ public class Appl {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    public String getAPPL_NO() {
-        return APPL_NO;
+    public String getApplicationNo() {
+        return applicationNo;
     }
 
-    public void setAPPL_NO(String APPL_NO) {
-        this.APPL_NO = APPL_NO;
+    public void setApplicationNo(String applicationNo) {
+        this.applicationNo = applicationNo;
     }
 
     public Member getMember() {
@@ -174,12 +175,12 @@ public class Appl {
         this.createTime = createTime;
     }
 
-    public ApplTv getApplTv() {
-        return applTv;
+    public TelephoneVerification getTelphoneVerification() {
+        return telphoneVerification;
     }
 
-    public void setApplTv(ApplTv applTv) {
-        this.applTv = applTv;
+    public void setTelphoneVerification(TelephoneVerification telphoneVerification) {
+        this.telphoneVerification = telphoneVerification;
     }
 
     public AScore getaScore() {

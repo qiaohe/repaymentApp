@@ -1,5 +1,7 @@
 package com.huayuan.domain.dictionary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,12 +14,14 @@ import java.util.Date;
 public class Dictionary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Basic
     @Column(name = "VALUE")
     private String value;
     @Basic
     @Column(name = "TYPE")
+    @JsonIgnore
     private String type;
 
     @Basic
@@ -26,12 +30,15 @@ public class Dictionary implements Serializable {
 
     @Basic
     @Column(name = "STATUS")
+    @JsonIgnore
     private int status;
     @Basic
     @Column(name = "CRL_INDEX")
+    @JsonIgnore
     private Double crlIndex;
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
+    @JsonIgnore
     private Date createDate;
 
     public Dictionary() {

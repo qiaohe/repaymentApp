@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,13 +26,16 @@ public class DictionaryController {
     private DictionaryRepository dictionaryRepository;
 
     @RequestMapping(value = "/binCode", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<ValueBin> getBankBinCode() {
         return valueBinRepository.findAll();
     }
 
     @RequestMapping(value = "/{type}", method = RequestMethod.GET)
-    public @ResponseBody List<Dictionary> getDictionaryBy(@PathVariable String type) {
+    public
+    @ResponseBody
+    List<Dictionary> getDictionaryBy(@PathVariable String type) {
         return dictionaryRepository.findByType(type);
     }
 }
