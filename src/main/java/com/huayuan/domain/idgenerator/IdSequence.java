@@ -17,7 +17,10 @@ public class IdSequence {
     @Column(name = "NEXT_VALUE")
     private Long nextValue;
 
+    public IdSequence() {
+    }
     public IdSequence(String name, Long nextValue) {
+        this();
         this.name = name;
         this.nextValue = nextValue;
     }

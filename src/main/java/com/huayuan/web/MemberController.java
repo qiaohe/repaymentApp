@@ -4,7 +4,8 @@ import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.huayuan.web.vo.MemberVO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,13 +68,25 @@ public class MemberController {
         return creditCardNo;
     }
 
-    @RequestMapping(value = "/{id}/updateMember", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public String updateMember(@ModelAttribute Member member, @PathVariable Long id, String billEmail, String passwordOfBillEmail) {
-//        member.addBillMailbox(new BillMailbox(member, billEmail, passwordOfBillEmail));
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateMember(@PathVariable Long id, @RequestBody MemberVO memberVO) {
+        Member member = memberService.find(id);
+        member.setEducation(memberVO.getEducation());
+        member.setIndustry(memberVO.getIndustry());
+        member.setEmail(member.getEmail());
         memberService.register(member);
-        return "5000";
     }
+
+    @RequestMapping(value = "/{id}/billEmail", method = RequestMethod.POST)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateBillEmail(@PathVariable Long id, String billEmail, String password) {
+        Member member = memberService.find(id);
+        memberService.updateBillEmail(member, billEmail, password);
+    }
+
 
     @RequestMapping(value = "/{id}/testResult", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView testResult(@PathVariable Long id, String crl) {

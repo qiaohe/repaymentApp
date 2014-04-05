@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Johnson on 4/4/14.
  */
-@Component(value = "sequenceIdGenerator")
-public class SequenceIdGenerator {
+@Component(value = "idSequenceGenerator")
+public class IdSequenceGenerator {
     public static final long NOT_FOUND = 0;
     private static final long STEP = 100;
     private static final ConcurrentHashMap<String, Long> NAME_VALUES_MAP = new ConcurrentHashMap<>();

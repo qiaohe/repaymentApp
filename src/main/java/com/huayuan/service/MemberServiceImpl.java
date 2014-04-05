@@ -2,6 +2,8 @@ package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillCrawler;
+import com.huayuan.domain.idgenerator.IdSequence;
+import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.member.*;
 import com.huayuan.repository.IdCardRepository;
 import com.huayuan.repository.MemberRepository;
@@ -104,16 +106,5 @@ public class MemberServiceImpl implements MemberService {
         member.addPreCredit(credit);
         credit.setMember(member);
         memberRepository.save(member);
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
-        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
-        Member member = new Member();
-        member.setEmail("tusc_heqiO@163.com");
-        member.setCreateTime(new Date());
-        member.setIndustry(1);
-        member.setEducation(2);
-        memberService.register(member);
     }
 }

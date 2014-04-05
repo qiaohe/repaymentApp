@@ -19,7 +19,9 @@
     <logger name="org.mortbay.log" level="WARN"/>
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.springframework.beans" level="WARN"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
     <logger name="org.ibatis" level="INFO"/>
+
     <logger name="com.huayuan" level="DEBUG"/>
 
     <root level="INFO">

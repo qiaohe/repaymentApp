@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta chareset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>化缘</title>
+<link rel="stylesheet" href="../../resources/css/jquery.mobile.structure-1.4.2.min.css">
+<link rel="stylesheet" href="../../resources/css/app.css">
+<script src="../../resources/js/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+	<div data-role="main" class="ui-content" id="idx">
+		
+	</div>
+
+<script>
+var istscript = [];
+istscript[0] = "../../resources/js/jquery.mobile-1.4.2.min.js";
+istscript[1] = "../../resources/js/app.js";
+
+for(i in istscript){
+	insertScript(istscript[i]);
+}
+
+function insertScript(scriptpath){
+	var s = document.createElement("script");
+	s.src=scriptpath;
+	document.getElementsByTagName("head")[0].appendChild(s);
+}
+</script>
+</body>
+</html>

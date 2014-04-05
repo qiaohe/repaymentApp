@@ -19,7 +19,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>repaymentApp</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -36,6 +36,6 @@
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.*</url-pattern>
     </filter-mapping>
 </web-app>
