@@ -1,7 +1,7 @@
 package com.huayuan.domain.member;
 
 
-import com.huayuan.domain.loanapplication.LastAppl;
+import com.huayuan.domain.loanapplication.CreditResult;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -90,7 +90,7 @@ public class Member implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "member")
-    private LastAppl lastAppl;
+    private CreditResult creditResult;
 
 
     public Member() {
@@ -329,11 +329,11 @@ public class Member implements Serializable {
         }
     }
 
-    public LastAppl getLastAppl() {
-        return lastAppl;
+    public CreditResult getCreditResult() {
+        return creditResult;
     }
 
-    public void setLastAppl(LastAppl lastAppl) {
-        this.lastAppl = lastAppl;
+    public void setCreditResult(CreditResult creditResult) {
+        this.creditResult = creditResult;
     }
 }

@@ -107,7 +107,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
         MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
         Member member = new Member();
         member.setEmail("tusc_heqiO@163.com");
