@@ -3,19 +3,42 @@
 <head>
 <meta chareset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../../resources/css/jquery.mobile.structure-1.4.2.min.css">
-<link rel="stylesheet" href="../../resources/css/app.css">
-<script src="../../resources/js/jquery-1.11.0.min.js"></script>
+<title>化缘</title>
+<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
+<link rel="stylesheet" href="resources/css/app.css">
+<script src="resources/js/jquery-1.11.0.min.js"></script>
 </head>
 <body>
-	<div data-role="main" class="ui-content" id="idx" data-title="化缘">
-		
+	<div data-role="page" id="home">
+		<div data-role="main" class="ui-content">Main Content</div>
+		<div data-role="footer"><a href="#limit">测额度</a></div>
+	</div>
+	
+	<div data-role="page" id="limit" data-title="测额度">
+		<div data-role="main" class="ui-content">
+			<div>img &amp sentence</div>
+			<ul data-role="listview" data-inset="true">
+				<li>
+					<p>身份证·正面</p>
+					<input type="textarea" placeholder="请点击拍摄·正面" id="id-card-front">
+				</li>
+				<li>
+					<p>身份证·反面</p>
+					<input type="textarea" placeholder="请点击拍摄·反面" id="id-card-back">
+				</li>
+				<li>
+					<p>信用卡卡号<p>
+					<input type="textarea" placeholder="请填写" id="credit-card-number">
+				</li>
+				<input type="button" value="下一步" class="custom-btn">
+			</ul>
+		</div>
 	</div>
 
 <script>
 var istscript = [];
-istscript[0] = "../../resources/js/jquery.mobile-1.4.2.min.js";
-istscript[1] = "../../resources/js/app.js";
+istscript[0] = "resources/js/jquery.mobile-1.4.2.min.js";
+istscript[1] = "resources/js/app.js";
 
 for(i in istscript){
 	insertScript(istscript[i]);
