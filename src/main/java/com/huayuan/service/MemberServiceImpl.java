@@ -2,6 +2,7 @@ package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillCrawler;
+import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.idgenerator.IdSequence;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.member.*;
@@ -94,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateBillEmail(Member member, String billEmail, String password) {
         BillCrawler crawler = new BillCrawler();
-        addBill(member, crawler.crawl(billEmail, password));
+        addBill(member, crawler.crawl(new BillEmail(billEmail, password, "")));
     }
 
     @Override
