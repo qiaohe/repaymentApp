@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bills>
+    <bill>
+        <bank>中国建设银行</bank>
+        <title>中国建设银行信用卡电子账单</title>
+        <amtRmb></amtRmb>
+        <amtUsd></amtUsd>
+        <crl>信用额度</crl>
+        <cycleFrom></cycleFrom>
+        <cycleThru></cycleThru>
+        <payDue>到期还款日</payDue>
+    </bill>
+</bills>
+
