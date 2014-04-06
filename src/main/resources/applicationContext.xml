@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/oxm
+         http://www.springframework.org/schema/oxm/spring-oxm.xsd
          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
          http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
     <context:property-placeholder location="classpath*:/config.properties"/>
@@ -38,5 +41,9 @@
     </bean>
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
     <tx:annotation-driven/>
-    <bean id="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <oxm:jaxb2-marshaller id="jaxbMarshaller">
+        <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinition"/>
+        <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinitions"/>
+    </oxm:jaxb2-marshaller>
+
 </beans>
