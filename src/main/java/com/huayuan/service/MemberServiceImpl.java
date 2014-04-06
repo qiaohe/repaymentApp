@@ -73,6 +73,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addIdCard(Member member, IdCard idCard) {
+        if (member.getIdCard() != null) {
+            removeIdCard(idCard);
+        }
         idCard.setMember(member);
         member.setIdCard(idCard);
         memberRepository.save(member);

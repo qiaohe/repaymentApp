@@ -1,7 +1,9 @@
 package com.huayuan.web;
 
+import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.PreCredit;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.vo.MemberVO;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -39,11 +42,7 @@ public class MemberController {
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
         IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
         IdCard idCard = recognizer.recognize(true);
-        Member member = memberService.find(id);
-        if (member.getIdCard() != null) {
-            memberService.removeIdCard(member.getIdCard());
-        }
-        memberService.addIdCard(member, idCard);
+        memberService.addIdCard(memberService.find(id), idCard);
         return idCard.getIdNo();
     }
 
@@ -62,10 +61,26 @@ public class MemberController {
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)
     public
     @ResponseBody
-    String uploadCreditCard(@PathVariable Long id, @RequestParam("creditCardNo") String creditCardNo) {
+    String addCreditCard(@PathVariable Long id, @RequestParam("creditCardNo") String creditCardNo) {
         Member member = memberService.find(id);
         memberService.addCreditCard(member, creditCardNo);
         return creditCardNo;
+    }
+
+    @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Set<CreditCard> addCreditCard(@PathVariable Long id) {
+        Member member = memberService.find(id);
+        return member.getCreditCards();
+    }
+
+    @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    IdCard getIdCard(@PathVariable Long id) {
+        Member member = memberService.find(id);
+        return member.getIdCard();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)

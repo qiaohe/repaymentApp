@@ -17,7 +17,7 @@ public class CreditCard implements Serializable {
     private static final long serialVersionUID = -2172211295659368573L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Basic
     @Column(name = "BANK")
@@ -82,11 +82,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
