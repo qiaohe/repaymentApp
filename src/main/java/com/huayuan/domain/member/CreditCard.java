@@ -17,53 +17,42 @@ public class CreditCard implements Serializable {
     private static final long serialVersionUID = -2172211295659368573L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @Basic
     @Column(name = "BANK")
     private int bank;
 
-    @Basic
-    @Column(name = "CARD_NO")
+    @Column(name = "CARD_NO", unique = true)
     private String cardNo;
 
-    @Basic
     @Column(name = "TYPE")
-    private Byte type;
+    private int type;
 
-    @Basic
     @Column(name = "NAME")
     private String name;
 
-    @Basic
     @Column(name = "VALID_FROM")
     private Date validFrom;
 
-    @Basic
     @Column(name = "VALID_THRU")
     private Date validThru;
 
-    @Basic
     @Column(name = "NAME_ENG")
     private String nameEng;
 
-    @Basic
     @Column(name = "IMAGE")
     private String image;
 
-    @Basic
     @Column(name = "EMAIL")
     private String email;
 
-    @Basic
     @Column(name = "PASSWORD")
     private String password;
 
-    @Basic
     @Column(name = "STATUS")
-    private Byte status;
+    private int status;
 
-    @Basic
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -109,11 +98,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public Byte getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -181,11 +170,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

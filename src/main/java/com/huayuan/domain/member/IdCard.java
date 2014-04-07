@@ -10,73 +10,57 @@ import java.util.Date;
 @Entity
 @Table(name = "ID_CARD")
 public class IdCard implements Serializable {
-
     private static final long serialVersionUID = -5246285602045762161L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @Basic
     @Column(name = "ID_NO")
     private String idNo;
 
-    @Basic
     @Column(name = "NAME")
     private String name;
 
-    @Basic
     @Column(name = "SEX")
     private SexEnum sex;
 
-    @Basic
     @Column(name = "BIRTHDAY")
     private Date birthday;
 
-    @Basic
     @Column(name = "NATIONALITY")
     private String nationality;
 
-    @Basic
     @Column(name = "ADDRESS")
     private String address;
 
-    @Basic
     @Column(name = "ISSUER")
     private String issuer;
 
-    @Basic
     @Column(name = "VALID_FROM")
     private Date validFrom;
 
-    @Basic
     @Column(name = "VALID_THRU")
     private Date validThru;
 
-    @Basic
     @Column(name = "PROVINCE")
     private String province;
 
-    @Basic
     @Column(name = "CITY")
     private String city;
 
-    @Basic
     @Column(name = "XIAN")
     private String xian;
 
-    @Basic
     @Column(name = "NAME_ENG")
     private String nameEng;
 
-    @Basic
     @Column(name = "IMAGE_FRONT")
     private String imageFront;
 
-    @Basic
     @Column(name = "IMAGE_BACK")
     private String imageBack;
 
-    @Basic
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_TIME")
     private Date createTime;

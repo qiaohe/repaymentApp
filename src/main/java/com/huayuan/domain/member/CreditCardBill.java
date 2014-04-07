@@ -15,51 +15,41 @@ public class CreditCardBill implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @Basic
     @Column(name = "BANK")
     private Short bank;
 
-    @Basic
     @Column(name = "SOURCE")
     @Enumerated
     private BillSourceEnum source;
 
-    @Basic
     @Column(name = "CRL")
     private Long crl;
 
-    @Basic
     @Column(name = "PAY_DUE")
     @Temporal(TemporalType.DATE)
     private Date payDue;
 
-    @Basic
     @Column(name = "AMT_RMB")
     private Double amtRmb;
 
-    @Basic
     @Column(name = "AMT_USD")
     private Double amtUsd;
 
-    @Basic
     @Column(name = "CYCLE_FROM")
     private Date cycleFrom;
 
-    @Basic
     @Column(name = "CYCLE_THRU")
     private Date cycleThru;
 
-    @Basic
     @Column(name = "EMAIL")
     private String email;
 
-    @Basic
     @Column(name = "IMAGE")
     private String image;
 
-    @Basic
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;

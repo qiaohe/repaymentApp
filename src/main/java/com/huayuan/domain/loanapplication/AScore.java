@@ -14,32 +14,34 @@ public class AScore implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
+
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
     private Application application;
 
-    @Basic
+
     @Column(name = "PBOC_TIME")
     private Date pbocTime;
 
-    @Basic
+
     @Column(name = "PBOC_BACK_TIME")
     private Date pbocBackTime;
 
-    @Basic
+
     @Column(name = "SCORE")
     private Integer score;
 
-    @Basic
+
     @Column(name = "RATING")
     private String rating;
 
-    @Basic
+
     @Column(name = "RISK_REMIND")
     private String riskRemind;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     private Date createTime;
 

@@ -20,33 +20,33 @@ public class Application {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
-    private TelephoneVerification telphoneVerification;
+    private TelephoneVerification telephoneVerification;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private AScore aScore;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private Approval approval;
 
-    @Basic
-    @Column(name = "ISNEW")
-    private boolean isNew;
 
-    @Basic
+    @Column(name = "EXISTING_FLAG")
+    private int existingFlag;
+
+
     @Column(name = "ID_ID")
     private Long idId;
 
-    @Basic
+
     @Column(name = "CC_ID")
     private Long ccId;
 
-    @Basic
+
     @Column(name = "BILL_ID")
     private Long billId;
 
-    @Basic
+
     @Column(name = "AMT")
     private Double amt;
 
-    @Basic
+
     @Column(name = "TERM")
     private int term;
 
@@ -54,19 +54,19 @@ public class Application {
     @Column(name = "REPAY_TYPE")
     private RepaymentModeEnum repayType;
 
-    @Basic
+
     @Column(name = "TITLE")
     private String title;
 
-    @Basic
+
     @Column(name = "PRE_SCORE")
     private String preScore;
 
-    @Basic
+
     @Column(name = "STATUS")
     private int status;
 
-    @Basic
+
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATE_TIME")
     private Date createTime;
@@ -87,12 +87,12 @@ public class Application {
         this.member = member;
     }
 
-    public boolean isNew() {
-        return isNew;
+    public int getExistingFlag() {
+        return existingFlag;
     }
 
-    public void setNew(boolean isNew) {
-        this.isNew = isNew;
+    public void setExistingFlag(int existingFlag) {
+        this.existingFlag = existingFlag;
     }
 
     public Long getIdId() {
@@ -175,12 +175,12 @@ public class Application {
         this.createTime = createTime;
     }
 
-    public TelephoneVerification getTelphoneVerification() {
-        return telphoneVerification;
+    public TelephoneVerification getTelephoneVerification() {
+        return telephoneVerification;
     }
 
-    public void setTelphoneVerification(TelephoneVerification telphoneVerification) {
-        this.telphoneVerification = telphoneVerification;
+    public void setTelephoneVerification(TelephoneVerification telphoneVerification) {
+        this.telephoneVerification = telphoneVerification;
     }
 
     public AScore getaScore() {

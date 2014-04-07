@@ -19,13 +19,13 @@ public interface MemberService {
 
     public void remove(Member member);
 
-    public void removeIdCard(IdCard idCard);
-
     public Iterable<Member> getMembers();
 
     public void addIdCard(Member member, IdCard idCard);
 
     public void addCreditCard(Member member, String creditNo);
+
+    public void  removeCreditCard(Member member, String creditNo);
 
     public void updateBillEmail(Member member, String billEmail, String password);
 

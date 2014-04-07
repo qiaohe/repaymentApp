@@ -16,23 +16,23 @@ public class Dictionary implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long id;
-    @Basic
+
     @Column(name = "VALUE")
     private String value;
-    @Basic
+
     @Column(name = "TYPE")
     @JsonIgnore
     private String type;
 
-    @Basic
+
     @Column(name = "NAME")
     private String name;
 
-    @Basic
+
     @Column(name = "STATUS")
     @JsonIgnore
     private int status;
-    @Basic
+
     @Column(name = "CRL_INDEX")
     @JsonIgnore
     private Double crlIndex;

@@ -16,56 +16,56 @@ public class Approval {
     @JoinColumn(name = "APPL_NO")
     private Application application;
 
-    @Basic
+
     @Column(name = "DECISION")
     private String decision;
 
-    @Basic
+
     @Column(name = "AMT")
     private Double amt;
 
-    @Basic
+
     @Column(name = "APR")
     private Double apr;
 
-    @Basic
+
     @Column(name = "TERM")
     private int term;
 
-    @Basic
+
     @Column(name = "REPAY_TYPE")
     @Enumerated
     private RepaymentModeEnum repayType;
 
-    @Basic
+
     @Column(name = "PROFILE")
     private String profile;
 
-    @Basic
+
     @Column(name = "REASON_1")
     private String reason1;
 
-    @Basic
+
     @Column(name = "REASON_2")
     private String reason2;
 
-    @Basic
+
     @Column(name = "REASON_3")
     private String reason3;
 
-    @Basic
+
     @Column(name = "OPINION")
     private String opinion;
 
-    @Basic
+
     @Column(name = "CREDITOR")
     private String creditor;
 
-    @Basic
+
     @Column(name = "CLASS")
     private String clazz;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
     private Date createTime;
