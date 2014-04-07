@@ -7,6 +7,9 @@ body{
 }
 
 .custom-btn{
-	width: 15% !important;
-	border: 1px solid red !important;
+	/* width: 20% !important; */
+}
+
+#id-card-front-upload{
+	display: none;
 }

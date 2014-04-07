@@ -20,17 +20,17 @@
 			<ul data-role="listview" data-inset="true">
 				<li>
 					<p>身份证·正面</p>
-					<input type="textarea" placeholder="请点击拍摄·正面" id="id-card-front">
+					<input type="textarea" placeholder="请点击拍摄·正面" id="id-card-front" readonly>
 				</li>
 				<li>
 					<p>身份证·反面</p>
-					<input type="textarea" placeholder="请点击拍摄·反面" id="id-card-back">
+					<input type="textarea" placeholder="请点击拍摄·反面" id="id-card-back" readonly>
 				</li>
 				<li>
 					<p>信用卡卡号<p>
 					<input type="textarea" placeholder="请填写" id="credit-card-number">
 				</li>
-				<input type="button" value="下一步" class="custom-btn">
+				<button class="ui-btn custom-btn" id="credit-card-number">下一步</button>
 			</ul>
 		</div>
 	</div>
@@ -50,6 +50,5 @@ function insertScript(scriptpath){
 	document.getElementsByTagName("head")[0].appendChild(s);
 }
 </script>
-<a>test&#183;test</a>
 </body>
 </html>
