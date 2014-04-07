@@ -1,0 +1,12 @@
+body{
+	font-size: 62.5%;
+}
+
+#limit li{
+	border: none;
+}
+
+.custom-btn{
+	width: 15% !important;
+	border: 1px solid red !important;
+}
