@@ -6,12 +6,14 @@ $(function(){
     });
     $('#id-card-front-upload').change(function(e){
         var formData = new FormData(e.target.result);
+        formData.append("idCardFrontFile", e.target.files[0]);
         $.ajax({
-            url: "http://192.168.0.191:8080/repaymentApp/api/members/1/idCardFront",
+            url: "http://192.168.0.191:8080/repayment/api/members/1/idCardFront",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
+            dataType: 'text',
             success: function(json){
                 alert('oh yeah!');
                 console.log(json);
