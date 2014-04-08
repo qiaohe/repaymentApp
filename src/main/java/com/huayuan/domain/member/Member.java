@@ -19,8 +19,9 @@ public class Member implements Serializable {
     private static final long serialVersionUID = 4541559421896160856L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
-    @Basic
+
     @Column(name = "USER_NAME")
     private String userName;
 
@@ -81,11 +82,11 @@ public class Member implements Serializable {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCardBill> creditCardBills = new HashSet<>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<PreCredit> preCredits = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
@@ -94,6 +95,7 @@ public class Member implements Serializable {
 
 
     public Member() {
+        createTime = new Date();
     }
 
     public Member(String wcNo) {

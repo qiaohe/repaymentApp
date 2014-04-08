@@ -16,6 +16,7 @@ public class CreditResult implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
@@ -26,36 +27,36 @@ public class CreditResult implements Serializable {
     @JoinColumn(name = "LAST_APPL_NO")
     private Application lastApplicationNo;
 
-    @Basic
+
     @Column(name = "LAST_SCORE")
     private Integer lastScore;
 
-    @Basic
+
     @Column(name = "LAST_RATING")
     private String lastRating;
 
-    @Basic
-    @Column(name = "LAST_DECISION")
-    private Byte lastDecision;
 
-    @Basic
+    @Column(name = "LAST_DECISION")
+    private int lastDecision;
+
+
     @Column(name = "LAST_REASON_1")
     private String lastReason1;
 
-    @Basic
+
     @Column(name = "LAST_REASON_2")
     private String lastReason2;
 
-    @Basic
+
     @Column(name = "LAST_REASON_3")
     private String lastReason3;
 
-    @Basic
+
     @Column(name = "LAST_PBOC_BACK_TIME")
     @Temporal(TemporalType.DATE)
     private Date lastPbocBackTime;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
     private Date createTime;
@@ -114,11 +115,11 @@ public class CreditResult implements Serializable {
     }
 
 
-    public Byte getLastDecision() {
+    public int getLastDecision() {
         return lastDecision;
     }
 
-    public void setLastDecision(Byte lastDecision) {
+    public void setLastDecision(int lastDecision) {
         this.lastDecision = lastDecision;
     }
 

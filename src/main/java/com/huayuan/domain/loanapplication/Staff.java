@@ -16,29 +16,29 @@ public class Staff implements Serializable {
     @Column(name = "STAFF_ID")
     private String staffId;
 
-    @Basic
+
     @Column(name = "ROLE")
     private int role;
 
-    @Basic
+
     @Column(name = "ENROLL_TIME")
     @Temporal(TemporalType.DATE)
     private Date enrollTime;
 
-    @Basic
+
     @Column(name = "QUIT_TIME")
     @Temporal(TemporalType.DATE)
     private Date quitTime;
 
-    @Basic
+
     @Column(name = "STATUS")
     private String status;
 
-    @Basic
+
     @Column(name = "CREATOR")
     private String creator;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
     private Date createTime;

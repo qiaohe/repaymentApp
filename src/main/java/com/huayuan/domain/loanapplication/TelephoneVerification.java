@@ -11,37 +11,38 @@ import java.util.Date;
 public class TelephoneVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
     private Application application;
 
-    @Basic
-    @Column(name = "TYPE")
-    private Byte type;
 
-    @Basic
+    @Column(name = "TYPE")
+    private int type;
+
+
     @Column(name = "TV_QUES_1")
     private String tvQues1;
 
-    @Basic
+
     @Column(name = "TV_MEM_ANS_1")
     private String tvMemAns1;
 
-    @Basic
+
     @Column(name = "TV_QUES_2")
     private String tvQues2;
 
-    @Basic
+
     @Column(name = "TV_MEM_ANS_2")
     private String tvMemAns2;
 
-    @Basic
-    @Column(name = "DECISION")
-    private Byte decision;
 
-    @Basic
+    @Column(name = "DECISION")
+    private int decision;
+
+
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
     private Date createTime;
@@ -62,11 +63,11 @@ public class TelephoneVerification {
         this.application = application;
     }
 
-    public Byte getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Byte type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -107,11 +108,11 @@ public class TelephoneVerification {
     }
 
 
-    public Byte getDecision() {
+    public int getDecision() {
         return decision;
     }
 
-    public void setDecision(Byte decision) {
+    public void setDecision(int decision) {
         this.decision = decision;
     }
 

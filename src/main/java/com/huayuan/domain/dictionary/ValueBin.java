@@ -18,60 +18,60 @@ public class ValueBin implements Serializable {
     @JsonIgnore
     private Long id;
 
-    @Basic
+
     @Column(name = "BANK")
     private String bank;
 
-    @Basic
+
     @Column(name = "BANK_NO")
     private int bankNo;
 
-    @Basic
+
     @Column(name = "CARD_NAME")
     private String cardName;
 
-    @Basic
+
     @Column(name = "FULL_NAME")
     private String fullName;
 
-    @Basic
+
     @Column(name = "CARD_LEVEL")
     @JsonIgnore
     private String cardLevel;
 
-    @Basic
+
     @Column(name = "LEN_CARD")
     @JsonIgnore
-    private Byte lenCard;
+    private int lenCard;
 
-    @Basic
+
     @Column(name = "CARD_NO")
     private String cardNo;
 
-    @Basic
+
     @Column(name = "LEN_BIN")
     @JsonIgnore
-    private Byte lenBin;
+    private int lenBin;
 
-    @Basic
+
     @Column(name = "BIN_NO")
     private String binNo;
 
-    @Basic
+
     @Column(name = "TYPE")
     @JsonIgnore
     private String type;
 
-    @Basic
+
     @Column(name = "IS_VALID")
     @JsonIgnore
     private Boolean isValid;
 
-    @Basic
+
     @Column(name = "ICON")
     private String icon;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
     @JsonIgnore
@@ -151,11 +151,11 @@ public class ValueBin implements Serializable {
     }
 
 
-    public Byte getLenCard() {
+    public int getLenCard() {
         return lenCard;
     }
 
-    public void setLenCard(Byte lenCard) {
+    public void setLenCard(int lenCard) {
         this.lenCard = lenCard;
     }
 
@@ -169,11 +169,11 @@ public class ValueBin implements Serializable {
     }
 
 
-    public Byte getLenBin() {
+    public int getLenBin() {
         return lenBin;
     }
 
-    public void setLenBin(Byte lenBin) {
+    public void setLenBin(int lenBin) {
         this.lenBin = lenBin;
     }
 

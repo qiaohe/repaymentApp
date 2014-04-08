@@ -1,20 +1,20 @@
-package com.huayuan.web.vo;
+package com.huayuan.web.dto;
 
 import java.io.Serializable;
 
 /**
  * Created by dell on 14-4-5.
  */
-public class MemberVO implements Serializable {
+public class MemberDto implements Serializable {
     private static final long serialVersionUID = 6133417800869029252L;
     private int education;
     private String email;
     private int industry;
 
-    public MemberVO() {
+    public MemberDto() {
     }
 
-    public MemberVO(int education, String email, int industry) {
+    public MemberDto(int education, String email, int industry) {
         this();
         this.education = education;
         this.email = email;

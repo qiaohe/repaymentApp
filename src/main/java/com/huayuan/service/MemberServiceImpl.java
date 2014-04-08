@@ -3,12 +3,8 @@ package com.huayuan.service;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
-import com.huayuan.domain.idgenerator.IdSequence;
-import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.member.*;
-import com.huayuan.repository.IdCardRepository;
-import com.huayuan.repository.MemberRepository;
-import com.huayuan.repository.ValueBinRepository;
+import com.huayuan.repository.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -16,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dell on 14-3-19.
@@ -27,9 +24,14 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
     @Inject
     private ValueBinRepository valueBinRepository;
-
     @Inject
     private IdCardRepository idCardRepository;
+    @Inject
+    private CreditCardRepository creditCardRepository;
+    @Inject
+    private CreditCardBillRepository creditCardBillRepository;
+    @Inject
+    private PreCreditRepository preCreditRepository;
 
     @Override
     public void register(Member member) {
@@ -63,11 +65,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void removeIdCard(IdCard idCard) {
-        idCardRepository.delete(idCard);
-    }
-
-    @Override
     public Iterable<Member> getMembers() {
         return memberRepository.findAll();
     }
@@ -75,21 +72,28 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void addIdCard(Member member, IdCard idCard) {
         if (member.getIdCard() != null) {
-            removeIdCard(idCard);
+            idCardRepository.delete(member.getIdCard());
         }
         idCard.setMember(member);
-        member.setIdCard(idCard);
-        memberRepository.save(member);
+        idCardRepository.save(idCard);
     }
 
     @Override
     public void addCreditCard(Member member, String creditCardNo) {
+        removeCreditCard(member, creditCardNo);
         CreditCard creditCard = new CreditCard();
         creditCard.setCardNo(creditCardNo);
         creditCard.setBank(valueBinRepository.findByBinNo(creditCard.getBinCode()).getBankNo());
-        member.addCreditCard(creditCard);
         creditCard.setMember(member);
-        memberRepository.save(member);
+        creditCardRepository.save(creditCard);
+    }
+
+    @Override
+    public void removeCreditCard(Member member, String creditNo) {
+        List<CreditCard> cards = creditCardRepository.findByCardNo(creditNo);
+        if (cards != null) {
+            creditCardRepository.delete(cards.get(0));
+        }
     }
 
     @Override
@@ -100,15 +104,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addBill(Member member, CreditCardBill creditCardBill) {
-        member.addBill(creditCardBill);
         creditCardBill.setMember(member);
-        memberRepository.save(member);
+        creditCardBillRepository.save(creditCardBill);
     }
 
     @Override
     public void addPreCredit(Member member, PreCredit credit) {
-        member.addPreCredit(credit);
         credit.setMember(member);
-        memberRepository.save(member);
+        preCreditRepository.save(credit);
     }
 }

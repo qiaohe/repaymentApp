@@ -15,28 +15,30 @@ public class PreCredit implements Serializable {
     private static final long serialVersionUID = 7095907989201261838L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ID")
     private IdCard idCard;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "CC_ID")
     private CreditCard creditCard;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "BILL_ID")
     private CreditCardBill creditCardBill;
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Basic
+
     @Column(name = "CRL")
     private Integer crl;
 
-    @Basic
+
     @Column(name = "CREATE_TIME")
     private Date createTime;
 

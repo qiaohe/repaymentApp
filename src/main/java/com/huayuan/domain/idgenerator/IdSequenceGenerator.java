@@ -1,9 +1,12 @@
 package com.huayuan.domain.idgenerator;
 
 import com.huayuan.repository.IdSequenceRepository;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -40,5 +43,18 @@ public class IdSequenceGenerator {
         }
         NAME_VALUES_MAP.put(name, value);
         return value;
+    }
+
+    public synchronized String nextValAsString(final String name) {
+        return String.valueOf(nextVal(name));
+    }
+
+    public String getApplicationNo() {
+        DateTime today = new DateTime();
+        return MessageFormat.format("{0}10{1}", today.toString("yyyyMMdd"), StringUtils.leftPad(nextValAsString("APPL"), 6, "0"));
+    }
+
+    public String getStaffNo() {
+        return StringUtils.leftPad(nextValAsString("STAFF"), 10, "0");
     }
 }

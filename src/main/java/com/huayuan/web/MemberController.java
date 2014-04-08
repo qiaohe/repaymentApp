@@ -3,10 +3,9 @@ package com.huayuan.web;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
-import com.huayuan.domain.member.PreCredit;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
-import com.huayuan.web.vo.MemberVO;
+import com.huayuan.web.dto.MemberDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -86,10 +85,10 @@ public class MemberController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateMember(@PathVariable Long id, @RequestBody MemberVO memberVO) {
+    public void updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         Member member = memberService.find(id);
-        member.setEducation(memberVO.getEducation());
-        member.setIndustry(memberVO.getIndustry());
+        member.setEducation(memberDto.getEducation());
+        member.setIndustry(memberDto.getIndustry());
         member.setEmail(member.getEmail());
         memberService.register(member);
     }
