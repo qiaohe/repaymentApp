@@ -113,39 +113,4 @@ public class MemberServiceImpl implements MemberService {
         credit.setMember(member);
         preCreditRepository.save(credit);
     }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
-        MemberService ms = applicationContext.getBean("memberService", MemberService.class);
-//        Member member = new Member();
-//        member.setEducation(1);
-//        member.setEmail("tuscP_heqiao@163.com");
-//        member.setMobile("12388822");
-
-//       ms.register(member);
-        Member member = ms.find(1l);
-//        IdCard card = new IdCard();
-//        card.setAddress("shanghai");
-//        card.setIdNo("522526197405183017");
-//        card.setCity("shanghai");
-//        CreditCard creditCard = new CreditCard();
-//        creditCard.setCardNo("62250089992992929292");
-//        creditCard.setBank(1);
-//        CreditCardBill bill = new CreditCardBill();
-//        bill.setAmtRmb(100d);
-//        bill.setAmtUsd(200d);
-//        bill.setCycleFrom(new Date());
-//        bill.setCycleThru(new Date());
-//        bill.setEmail("tusc_heqiao@163.com");
-//        bill.setCrl(100l);
-
-        PreCredit preCredit = new PreCredit();
-        preCredit.setCrl(1000);
-        preCredit.setMember(member);
-        preCredit.setIdCard(member.getIdCard());
-        preCredit.setCreditCard((CreditCard)member.getCreditCards().toArray()[0]);
-        preCredit.setCreditCardBill((CreditCardBill) member.getCreditCardBills().toArray()[0]);
-        ms.addPreCredit(member, preCredit);
-
-    }
 }
