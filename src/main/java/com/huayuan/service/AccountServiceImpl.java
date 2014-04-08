@@ -44,6 +44,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Loan getLoan(Long id) {
+        return loanRepository.findOne(id);
+    }
+
+    @Override
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }

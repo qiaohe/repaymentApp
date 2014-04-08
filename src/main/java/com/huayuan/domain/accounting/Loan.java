@@ -35,7 +35,7 @@ public class Loan {
     @Column(name = "PRINAIPAL")
     private Double principal;
     @Column(name = "INTEREST")
-    private Double Integererest;
+    private Double interest;
     @Column(name = "PAID_PRINAIPAL")
     private Double paidPrincipal;
     @Column(name = "PAID_INTEREST")
@@ -114,11 +114,11 @@ public class Loan {
     }
 
     public Double getInterest() {
-        return Integererest;
+        return interest;
     }
 
     public void setInterest(Double Integererest) {
-        this.Integererest = Integererest;
+        this.interest = Integererest;
     }
 
     public Double getPaidPrincipal() {
@@ -159,6 +159,14 @@ public class Loan {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public List<RepayPlan> getRepayPlans() {
+        return repayPlans;
+    }
+
+    public void setRepayPlans(List<RepayPlan> repayPlans) {
+        this.repayPlans = repayPlans;
     }
 }
 

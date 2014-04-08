@@ -17,6 +17,8 @@ public interface AccountService {
 
     public Loan createLoan(Loan loan);
 
+    public Loan getLoan(Long loanId);
+
     public List<Account> getAccounts();
 
     public List<RepayPlan> getRepayPlan(Long accountId);
