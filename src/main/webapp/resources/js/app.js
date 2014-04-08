@@ -5,16 +5,21 @@ $('#id-card-front').click(function(){
 	$('#id-card-front-upload').trigger('click');
 });
 $('#id-card-front-upload').change(function(e){
-	var reader = new FileReader();
-	reader.readAsDataURL(e.target.files[0]);
-	reader.onload = function(e){
-		$.ajax({
-			url: "192.168.0.186:8080/repaymentApp/api/dict/binCode",
-			data: {
-				id-card-front: 
-			},
-		});
-	};
+	var formData = new FormData(e.target.result);
+	$.ajax({
+		url: "http://192.168.0.186:8080/repaymentApp/api/members/1/idCardFront",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(json){
+			alert('oh yeah!');
+			console.log(json);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+		}
+	});
 });
 //
 });
