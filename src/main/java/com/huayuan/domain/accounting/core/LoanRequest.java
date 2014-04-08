@@ -1,5 +1,7 @@
 package com.huayuan.domain.accounting.core;
 
+import org.apache.commons.math.util.MathUtils;
+
 /**
  * Created by dell on 14-4-8.
  */
@@ -26,7 +28,12 @@ public class LoanRequest {
         return term;
     }
 
-    private Double getAprByMonth() {
+    public Double getAprByMonth() {
         return apr / 12;
+    }
+
+    public Double getMonthlyRepay() {
+        final double d = principal * getAprByMonth() * Math.pow(1 + getAprByMonth(), term) / (Math.pow(1 + getAprByMonth(), term) - 1);
+        return MathUtils.round(d, 2, 6);
     }
 }
