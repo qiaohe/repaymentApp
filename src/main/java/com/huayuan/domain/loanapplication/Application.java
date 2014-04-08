@@ -26,9 +26,8 @@ public class Application {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private Approval approval;
 
-
     @Column(name = "EXISTING_FLAG")
-    private int existingFlag;
+    private Integer existingFlag;
 
 
     @Column(name = "ID_ID")
@@ -48,7 +47,7 @@ public class Application {
 
 
     @Column(name = "TERM")
-    private int term;
+    private Integer term;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "REPAY_TYPE")
@@ -64,7 +63,7 @@ public class Application {
 
 
     @Column(name = "STATUS")
-    private int status;
+    private Integer status;
 
 
     @Temporal(TemporalType.DATE)
@@ -87,11 +86,11 @@ public class Application {
         this.member = member;
     }
 
-    public int getExistingFlag() {
+    public Integer getExistingFlag() {
         return existingFlag;
     }
 
-    public void setExistingFlag(int existingFlag) {
+    public void setExistingFlag(Integer existingFlag) {
         this.existingFlag = existingFlag;
     }
 
@@ -127,11 +126,11 @@ public class Application {
         this.amt = amt;
     }
 
-    public int getTerm() {
+    public Integer getTerm() {
         return term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(Integer term) {
         this.term = term;
     }
 
@@ -159,11 +158,11 @@ public class Application {
         this.preScore = preScore;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

@@ -14,6 +14,7 @@ import java.util.Date;
 public class Dictionary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     @JsonIgnore
     private Long id;
 

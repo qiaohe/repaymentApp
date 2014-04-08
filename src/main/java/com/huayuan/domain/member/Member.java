@@ -70,7 +70,7 @@ public class Member implements Serializable {
     private MemberKindEnum type;
 
     @Column(name = "POINTS")
-    private Integer points;
+    private Integer poIntegers;
 
     @Column(name = "STATUS")
     @Enumerated
@@ -230,12 +230,12 @@ public class Member implements Serializable {
         this.type = type;
     }
 
-    public Integer getPoints() {
-        return points;
+    public Integer getPoIntegers() {
+        return poIntegers;
     }
 
-    public void setPoints(Integer points) {
-        this.points = points;
+    public void setPoIntegers(Integer poIntegers) {
+        this.poIntegers = poIntegers;
     }
 
     public MemberStatusEnum getStatus() {

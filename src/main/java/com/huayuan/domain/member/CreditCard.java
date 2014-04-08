@@ -21,13 +21,13 @@ public class CreditCard implements Serializable {
     private Long id;
 
     @Column(name = "BANK")
-    private int bank;
+    private Integer bank;
 
     @Column(name = "CARD_NO", unique = true)
     private String cardNo;
 
     @Column(name = "TYPE")
-    private int type;
+    private Integer type;
 
     @Column(name = "NAME")
     private String name;
@@ -51,7 +51,7 @@ public class CreditCard implements Serializable {
     private String password;
 
     @Column(name = "STATUS")
-    private int status;
+    private Integer status;
 
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
@@ -80,11 +80,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public int getBank() {
+    public Integer getBank() {
         return bank;
     }
 
-    public void setBank(int bank) {
+    public void setBank(Integer bank) {
         this.bank = bank;
     }
 
@@ -98,11 +98,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -170,11 +170,11 @@ public class CreditCard implements Serializable {
     }
 
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

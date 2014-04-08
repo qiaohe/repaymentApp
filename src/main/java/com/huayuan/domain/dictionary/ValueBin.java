@@ -15,6 +15,7 @@ public class ValueBin implements Serializable {
     private static final long serialVersionUID = 5095339860747619966L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     @JsonIgnore
     private Long id;
 

@@ -30,7 +30,7 @@ public class Approval {
 
 
     @Column(name = "TERM")
-    private int term;
+    private Integer term;
 
 
     @Column(name = "REPAY_TYPE")
@@ -114,11 +114,11 @@ public class Approval {
     }
 
 
-    public int getTerm() {
+    public Integer getTerm() {
         return term;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(Integer term) {
         this.term = term;
     }
 

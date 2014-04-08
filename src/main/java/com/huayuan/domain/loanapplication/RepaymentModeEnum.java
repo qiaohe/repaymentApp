@@ -9,15 +9,15 @@ public enum RepaymentModeEnum {
     INTEREST_PLUS_CAPITAL(2, "随本付息"),
     INTEREST_ONLY(3, "按期付息，到期还本");
 
-    private final int id;
+    private final Integer id;
     private final String name;
 
-    RepaymentModeEnum(int id, String name) {
+    RepaymentModeEnum(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

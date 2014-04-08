@@ -58,6 +58,7 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
     String addCreditCard(@PathVariable Long id, @RequestParam("creditCardNo") String creditCardNo) {

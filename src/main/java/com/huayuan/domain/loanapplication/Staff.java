@@ -18,7 +18,7 @@ public class Staff implements Serializable {
 
 
     @Column(name = "ROLE")
-    private int role;
+    private Integer role;
 
 
     @Column(name = "ENROLL_TIME")
@@ -56,11 +56,11 @@ public class Staff implements Serializable {
     }
 
 
-    public int getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 

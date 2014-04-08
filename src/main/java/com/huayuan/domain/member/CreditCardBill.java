@@ -62,7 +62,7 @@ public class CreditCardBill implements Serializable {
         return id;
     }
 
-    public void setId(int Long) {
+    public void setId(Integer Long) {
         this.id = id;
     }
 

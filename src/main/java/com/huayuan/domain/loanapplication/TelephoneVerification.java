@@ -20,7 +20,7 @@ public class TelephoneVerification {
 
 
     @Column(name = "TYPE")
-    private int type;
+    private Integer type;
 
 
     @Column(name = "TV_QUES_1")
@@ -40,7 +40,7 @@ public class TelephoneVerification {
 
 
     @Column(name = "DECISION")
-    private int decision;
+    private Integer decision;
 
 
     @Column(name = "CREATE_TIME")
@@ -63,11 +63,11 @@ public class TelephoneVerification {
         this.application = application;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -108,11 +108,11 @@ public class TelephoneVerification {
     }
 
 
-    public int getDecision() {
+    public Integer getDecision() {
         return decision;
     }
 
-    public void setDecision(int decision) {
+    public void setDecision(Integer decision) {
         this.decision = decision;
     }
 
