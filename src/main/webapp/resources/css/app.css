@@ -2,12 +2,13 @@ body{
 	font-size: 62.5%;
 }
 
-#limit li{
+#limit li, #limit-step2 li{
 	border: none;
 }
 
 .custom-btn{
-	/* width: 20% !important; */
+	/* border: 1px solid #00aacc;
+	border-radius: 5px; */
 }
 
 #id-card-front-upload{
