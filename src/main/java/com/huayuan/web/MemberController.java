@@ -25,14 +25,6 @@ public class MemberController {
     @Inject
     MemberService memberService;
 
-    @RequestMapping(value = "/{id}/testCreditLimit", method = RequestMethod.GET)
-    public ModelAndView register(@PathVariable Long id) {
-        Member member = memberService.find(id);
-        ModelAndView model = new ModelAndView("testCreditLimit");
-        model.addObject("member", member);
-        return model;
-    }
-
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -41,7 +33,7 @@ public class MemberController {
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
         IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
         IdCard idCard = recognizer.recognize(true);
-        memberService.addIdCard(memberService.find(id), idCard);
+        idCard = memberService.addIdCard(memberService.find(id), idCard);
         return idCard.getIdNo();
     }
 
@@ -67,14 +59,6 @@ public class MemberController {
         return creditCardNo;
     }
 
-    @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Set<CreditCard> addCreditCard(@PathVariable Long id) {
-        Member member = memberService.find(id);
-        return member.getCreditCards();
-    }
-
     @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -86,12 +70,9 @@ public class MemberController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
-        Member member = memberService.find(id);
-        member.setEducation(memberDto.getEducation());
-        member.setIndustry(memberDto.getIndustry());
-        member.setEmail(member.getEmail());
-        memberService.register(member);
+    public Integer updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
+        memberDto.setMemberId(id);
+        return memberService.testCreditLimit(memberDto);
     }
 
     @RequestMapping(value = "/{id}/billEmail", method = RequestMethod.POST)

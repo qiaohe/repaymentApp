@@ -21,10 +21,12 @@ public class ValueBin implements Serializable {
 
 
     @Column(name = "BANK")
+    @JsonIgnore
     private String bank;
 
 
     @Column(name = "BANK_NO")
+    @JsonIgnore
     private int bankNo;
 
 
@@ -33,6 +35,7 @@ public class ValueBin implements Serializable {
 
 
     @Column(name = "FULL_NAME")
+    @JsonIgnore
     private String fullName;
 
 
@@ -70,6 +73,7 @@ public class ValueBin implements Serializable {
 
 
     @Column(name = "ICON")
+    @JsonIgnore
     private String icon;
 
 

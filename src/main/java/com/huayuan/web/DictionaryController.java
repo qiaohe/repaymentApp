@@ -4,6 +4,7 @@ import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,6 @@ public class DictionaryController {
     public
     @ResponseBody
     List<Dictionary> getDictionaryBy(@PathVariable String type) {
-        return dictionaryRepository.findByType(type);
+        return dictionaryRepository.findByType( StringUtils.upperCase(type));
     }
 }

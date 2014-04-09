@@ -90,7 +90,7 @@ public class Member implements Serializable {
     private Set<PreCredit> preCredits = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "member")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "member")
     private CreditResult creditResult;
 
 

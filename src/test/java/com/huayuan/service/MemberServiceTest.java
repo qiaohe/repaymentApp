@@ -19,6 +19,6 @@ public class MemberServiceTest extends BaseTest {
     public void save() {
         Member member = new Member();
         member.setName("dd");
-        memberService.register(member);
+        memberService.update(member);
     }
 }

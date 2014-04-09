@@ -23,6 +23,9 @@ public class CreditCard implements Serializable {
     @Column(name = "BANK")
     private Integer bank;
 
+    @Column(name = "ISVALID")
+    private Boolean isValid;
+
     @Column(name = "CARD_NO", unique = true)
     private String cardNo;
 
@@ -185,6 +188,14 @@ public class CreditCard implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Boolean isValid) {
+        this.isValid = isValid;
     }
 
     @Transient

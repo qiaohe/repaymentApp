@@ -1,4 +1,4 @@
-package com.huayuan.repository;
+package com.huayuan.repository.member;
 
 import com.huayuan.domain.member.Member;
 import org.springframework.data.repository.CrudRepository;

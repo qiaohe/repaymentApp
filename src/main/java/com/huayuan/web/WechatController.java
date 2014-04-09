@@ -182,7 +182,7 @@ public class WechatController {
                         return "error:-1";
                     }
                     Member member = userInfoToMember(userInfo);
-                    memberService.register(member);
+                    memberService.update(member);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

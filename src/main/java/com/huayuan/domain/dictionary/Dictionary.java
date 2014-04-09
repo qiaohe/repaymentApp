@@ -1,6 +1,7 @@
 package com.huayuan.domain.dictionary;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Dictionary implements Serializable {
     private Long id;
 
     @Column(name = "VALUE")
+    @JsonProperty(value = "key")
     private String value;
 
     @Column(name = "TYPE")
@@ -27,6 +29,7 @@ public class Dictionary implements Serializable {
 
 
     @Column(name = "NAME")
+    @JsonProperty(value = "value")
     private String name;
 
 

@@ -1,4 +1,4 @@
-package com.huayuan.repository;
+package com.huayuan.repository.member;
 
 import com.huayuan.domain.member.PreCredit;
 import org.springframework.data.repository.CrudRepository;
@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by Johnson on 4/7/14.
  */
-public interface PreCreditRepository extends CrudRepository<PreCredit, Long> {
+public interface PreCreditRepository extends CrudRepository<PreCredit, Long>, PreCreditRepositoryCustom {
 }
