@@ -1,17 +1,16 @@
 package com.huayuan.domain.crawler;
 
 import com.huayuan.domain.member.CreditCardBill;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.mail.*;
-import javax.mail.search.SubjectTerm;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * Created by dell on 14-3-21.
@@ -30,20 +29,19 @@ public class BillCrawler {
     }
 
     public CreditCardBill crawl(BillEmail billEmail) {
-        BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        try {
-            Store store = session.getStore("pop3");
-            store.connect(billEmail.getPop3(), billEmail.getEmail(), billEmail.getPassword());
-            Folder folder = store.getFolder("INBOX");
-            folder.open(Folder.READ_ONLY);
-            for (Message message : folder.search(new SubjectTerm(bd.getTitle()))) {
-                System.out.println(message.getSubject());
-            }
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        final BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
+        final String content = new EmailSearcher(billEmail).search(bd.getTitle());
+        new BillEmailParser(bd).parse(content);
+
         return new CreditCardBill();
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        BillCrawler crawler = context.getBean("billCrawler", BillCrawler.class);
+        long start = System.currentTimeMillis();
+        crawler.crawl(new BillEmail("tusc_heqiao@163.com", "Forest2003", "中国建设银行"));
+        System.out.println((System.currentTimeMillis() - start) / 1000);
+        System.out.println("ending");
     }
 }

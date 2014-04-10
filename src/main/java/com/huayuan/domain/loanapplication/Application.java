@@ -59,8 +59,10 @@ public class Application {
 
 
     @Column(name = "PRE_SCORE")
-    private String preScore;
+    private Double preScore;
 
+    @Column(name = "PRE_RATING")
+    private String preRating;
 
     @Column(name = "STATUS")
     private Integer status;
@@ -150,11 +152,11 @@ public class Application {
         this.title = title;
     }
 
-    public String getPreScore() {
+    public Double getPreScore() {
         return preScore;
     }
 
-    public void setPreScore(String preScore) {
+    public void setPreScore(Double preScore) {
         this.preScore = preScore;
     }
 

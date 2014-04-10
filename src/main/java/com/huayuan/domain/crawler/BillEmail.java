@@ -9,6 +9,7 @@ import java.text.MessageFormat;
  */
 public class BillEmail {
     private static final String POP3_PATTERN = "pop.{0}";
+    private static final String IMAP_PATTERN = "imap.{0}";
     private final String email;
     private final String password;
     private final String bank;
@@ -33,5 +34,9 @@ public class BillEmail {
 
     public String getPop3() {
         return MessageFormat.format(POP3_PATTERN, StringUtils.substringAfter(email, "@"));
+    }
+
+    public String getImap() {
+        return MessageFormat.format(IMAP_PATTERN, StringUtils.substringAfter(email, "@"));
     }
 }
