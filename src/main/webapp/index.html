@@ -3,20 +3,17 @@
 <head>
 <meta chareset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>化缘</title>
 <link rel="stylesheet" href="resources/css/jquery.mobile-1.4.2.min.css">
 <link rel="stylesheet" href="resources/css/app.css">
 <script src="resources/js/jquery-1.11.0.min.js"></script>
 </head>
 <body>
-	<div data-role="page" id="home">
-		<div data-role="main" class="ui-content">Main Content</div>
-		<div data-role="footer"><a href="#limit">测额度</a></div>
-	</div>
-	
 	<div data-role="page" id="limit" data-title="测额度">
 		<div data-role="main" class="ui-content">
-			<div>img &amp sentence</div>
+			<div id="front-cover">
+				<img src="resources/img/2-1-1(1.0).png">
+				<h3>废话少说, 直接啪啪啪吧~<br>请横向拍摄, 尽量让卡片填满镜头.</h3>
+			</div>
 			<ul data-role="listview" data-inset="true">
 				<li>
 					<p>身份证·正面</p>
@@ -37,21 +34,35 @@
 	
 	<div data-role="page" id="limit-step2">
 		<div data-role="main" class="ui-content">
-			<ul data-role="listview" data-inset="true">
+			<!-- <ul data-role="listview" data-inset="true">
 				<li>
 					<p>官人拿的什么金饭碗?</p>
-					<input type="textarea" placeholder="请选择" id="industry" readonly>
+					<input type="textarea" placeholder="请选择" id="industry">
 				</li>
 				<li>
 					<p>官人学富几车?</p>
-					<input type="textarea" placeholder="请选择" id="education" readonly>
+					<input type="textarea" placeholder="请选择" id="education">
 				</li>
 				<li>
 					<p>官人平时鸿雁传书用哪个E-mail?<p>
 					<input type="textarea" placeholder="请填写" id="email-addr">
 				</li>
 				<a href="#limit-step2" class="ui-btn ui-btn-inline custom-btn" id="credit-card-number">提交</a>
-			</ul>
+			</ul> -->
+				<fieldset class="ui-field-contain">
+				<label for="day">Select Day</label>
+				<select name="day" id="industry-select" data-native-menu="false">
+					
+				</select>
+				</fieldset>
+				<fieldset class="ui-field-contain">
+				<label for="day">Select Day</label>
+				<select name="day" id="education-select" data-native-menu="false">
+					
+				</select>
+				</fieldset>
+				<input type="textarea" placeholder="e-mail" id="e-mail">
+				<a id="submit" type="submit" data-inline="true" value="><a>提交">
 		</div>
 	</div>
 

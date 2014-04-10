@@ -1,6 +1,38 @@
 body{
 	font-size: 62.5%;
 }
+/* limit */
+#front-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+	text-align: center;
+}
+
+#front-cover:before{
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 45%;
+	border-color: rgb(170, 207, 93) transparent transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	width: 0;
+	height: 0;
+}
+
+#front-cover img{
+	margin-top: 3%;
+	min-width: 45%;
+	min-height:40%;
+	max-width: 50%;
+	max-height: 45%;
+}
+
+#front-cover h3{
+	padding-top: 1.5%;
+	color: white;
+	font-family: Microsoft YaHei;
+}
 
 #limit li, #limit-step2 li{
 	border: none;
