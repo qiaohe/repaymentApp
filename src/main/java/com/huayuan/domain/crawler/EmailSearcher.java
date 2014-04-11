@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.SentDateTerm;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -17,7 +18,7 @@ import java.util.Properties;
 public final class EmailSearcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailSearcher.class);
     private static final Properties PROPS = new Properties();
-    private static final int STEP = 200;
+    private static final int STEP = 100;
 
     private BillEmail billEmail;
 
@@ -44,6 +45,12 @@ public final class EmailSearcher {
             Folder folder = getFolder();
             int index = folder.getMessageCount();
             final Date date = Day.TODAY.plusMonths(-2);
+//            Message[] messages = folder.search(new SentDateTerm(SentDateTerm.GT, date));
+//            for (Message message : messages) {
+//                if (isMatch(message, subject)) return getContent(message);
+//            }
+//            return null;
+
             while (index > 0) {
                 Message[] messages = folder.getMessages(index - STEP < 0 ? 1 : index - STEP, index);
                 FetchProfile fp = new FetchProfile();

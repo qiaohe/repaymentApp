@@ -31,8 +31,7 @@ public class BillCrawler {
     public CreditCardBill crawl(BillEmail billEmail) {
         final BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
         final String content = new EmailSearcher(billEmail).search(bd.getTitle());
-        new BillEmailParser(bd).parse(content);
-
+        System.out.println(content);
         return new CreditCardBill();
     }
 
