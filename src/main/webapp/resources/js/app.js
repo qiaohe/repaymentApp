@@ -33,12 +33,10 @@ $(function(){
             type: "POST",
             data: formData,
             processData: false,
-			// contentType: false,
+			contentType: false,
             dataType: "json",
             success: function(json){
-                $('#id-card-front-text').attr('value', json.idCardFront);
-				console.log(json.idCardFront + ' xxxxx');
-				alert('xxx');
+                $('input[id=id-card-front-text]').val(json.idCardFront);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
@@ -56,14 +54,14 @@ $(function(){
         var formData = new FormData();
         formData.append("idCardBackFile", e.target.files[0]);
         $.ajax({
-            url: "http://192.168.0.191:8080/repayment/api/members/1/idCardFront",
+            url: "http://192.168.0.191:8080/repayment/api/members/1/idCardBack",
             type: "POST",
             data: formData,
             processData: false,
 			contentType: false,
             dataType: "json",
             success: function(json){
-                $('#id-card-back-text').attr('value', json.idCardBack);
+                $('input[id=id-card-back-text]').val(json.idCardBack);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
@@ -71,38 +69,34 @@ $(function(){
         });
     });
 	// credit card number
-	$('#credit-card-number-text').click(function(){
-		$.ajax({
-			url: "http://192.168.0.191:8080/repayment/api/dict/binCode",
-            type: "GET",
-            dataType: "json",
-            success: function(json){
-                console.log(json);
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-            }
-		});
+	$.get("http://192.168.0.191:8080/repayment/api/dict/binCode", function(json){
+		// for(var i in json){
+			// console.log(json[i]);
+		// }
+		alert(json);
 	});
-//#limit-step2
-	setHeight($('#front-cover2'), 0.35);
-	setHeight($('#email-text'), $('#id-card-front-text').height());
-	// industry
-	$('#industry-select').click(function(){
+
+	$.get("http://192.168.0.191:8080/repayment/api/dict/education", function(json){
+		
+	});
+	
+	$('#next-step').click(function(){
 		$.get("http://192.168.0.191:8080/repayment/api/dict/industry", function(json){
 			for(var i in json){
 				$('#industry-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
 			}
 		});
-	});
-	// education
-	$('#education-select').click(function(){
+		
 		$.get("http://192.168.0.191:8080/repayment/api/dict/education", function(json){
 			for(var i in json){
 				$('#education-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
 			}
 		});
 	});
+	
+//#limit-step2
+	setHeight($('#front-cover2'), 0.35);
+	setHeight($('#email-text'), $('#id-card-front-text').height());
 	//step2-submit
 	$('#step2-submit').click(function(){
 		$('#billmail-same-shown').html($('#email-text').val());
@@ -117,7 +111,7 @@ $(function(){
 			url: "http://192.168.0.191:8080/repayment/api/dict/...",
             type: "POST",
 			data: {
-				creditCardNo: $('#credit-card-number-text').val(),
+				creditCarNo: $('#credit-card-number-text').val(),
 				industry: $('#key_industry').val(),
 				education: $('#key_education').val(),
 				email: $('#email-text').val()
@@ -153,7 +147,7 @@ $(function(){
 		});
 	});
 
-
+	
 
 
 
