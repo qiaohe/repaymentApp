@@ -108,14 +108,14 @@ $(function(){
 	// without the billmail
 	$('#skip').click(function(){
 		$.ajax({
-			url: "http://192.168.0.191:8080/repayment/api/dict/...",
+			url: "http://192.168.0.191:8080/repayment/api/members/1",
             type: "POST",
-			data: {
+			data: JSON.stringify({
 				creditCarNo: $('#credit-card-number-text').val(),
-				industry: $('#key_industry').val(),
-				education: $('#key_education').val(),
+				industry: $('#industry-select').val(),
+				education: $('#education-select').val(),
 				email: $('#email-text').val()
-			},
+			}),
             dataType: "json",
             success: function(json){
                 console.log(json);
