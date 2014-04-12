@@ -1,18 +1,19 @@
 body{
 	font-size: 62.5%;
 }
-/* limit */
-#front-cover{
+
+/* #limit */
+#front-cover, #front-cover2{
 	position: relative;
 	background-color: rgb(170, 207, 93);
 	text-align: center;
 }
 
-#front-cover:before{
+#front-cover:before, #front-cover2:before, #billmail-cover:before{
 	content: '';
 	position: absolute;
 	top: 100%;
-	left: 45%;
+	left: 48%;
 	border-color: rgb(170, 207, 93) transparent transparent transparent;
 	border-style: solid;
 	border-width: 10px;
@@ -20,29 +21,82 @@ body{
 	height: 0;
 }
 
-#front-cover img{
-	margin-top: 3%;
-	min-width: 45%;
-	min-height:40%;
-	max-width: 50%;
-	max-height: 45%;
+#front-cover *, #front-cover2 *{
+	position: relative;
+	top: 12%;
 }
 
-#front-cover h3{
-	padding-top: 1.5%;
+#front-cover img, #front-cover2 img{
+	min-width: 40%;
+	min-height:40%;
+	max-width: 50%;
+	max-height: 50%;
+}
+
+#front-cover h2, #front-cover2 h2{
 	color: white;
 	font-family: Microsoft YaHei;
 }
 
-#limit li, #limit-step2 li{
-	border: none;
+#credit-card-number-text, #email-text{
+	font-size: 1.8em;
 }
 
-.custom-btn{
-	/* border: 1px solid #00aacc;
-	border-radius: 5px; */
+#limit label{
+	margin: 0;
+	height: 100%;
 }
 
-#id-card-front-upload{
-	display: none;
+#next-step, #step2-submit, #billmail a{
+	margin: auto;
+	background-color: rgb(60, 160, 230);
+	font-family: Microsoft YaHei;
+	color: white;
 }
+
+/* limit-step2 */
+#limit-step2 p{
+	font-size: 1.4em;
+	color: rgb(230, 126, 34);
+}
+
+/* billmail */
+#billmail-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+}
+
+#billmail-cover img{
+	min-width: 28%;
+	max-width: 33%;
+	min-height: 60%;
+	max-height: 80%;
+	position: relative;
+	top: 10%;
+	left: 15%;
+	float: left;
+}
+
+#billmail-tip{
+	height: 100%;
+	position: relative;
+	top: 10%;
+}
+
+#billmail-tip p , #billmail-tip h2{
+	position: relative;
+	left: 30%;
+	top: 12%;
+	font-family: Microsoft YaHei;
+	color: white;
+	font-size: 2.6em;
+}
+
+#billmail-tip h2{
+	font-size: 3.6em;
+}
+
+#mail-password{
+	font-size: 1.8em;
+}
+
