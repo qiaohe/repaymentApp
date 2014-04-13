@@ -170,10 +170,10 @@ $(function () {
             url: "http://localhost:8080/repayment/api/members/1",
             type: "POST",
             data: {
-                creditCardNo: $('#credit-card-number-text').val(),
-                industry: $('#key_industry').val(),
-                education: $('#key_education').val(),
-                email: $('#email-text').val()
+                "creditCardNo": $('#credit-card-number-text').val(),
+                "industry": $('#key_industry').val(),
+                "education": $('#key_education').val(),
+                "email": $('#email-text').val()
                 // billmail: ,
             },
             dataType: "json",
@@ -192,8 +192,8 @@ $(function () {
             url: "http://192.168.0.191:8080/repayment/api/members/1/app",
             type: "POST",
             data: JSON.stringify({
-                amt: 1000,
-                term: 3
+                "amt": 1000,
+                "term": 3
             }),
 			contentType: "json",
             dataType: "json",
