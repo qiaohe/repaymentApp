@@ -1,19 +1,17 @@
 package com.huayuan.service;
 
-import com.huayuan.domain.loanapplication.*;
-import com.huayuan.domain.member.Member;
+import com.huayuan.domain.loanapplication.AScore;
+import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.loanapplication.Approval;
+import com.huayuan.domain.loanapplication.TelephoneVerification;
 import com.huayuan.repository.applicationloan.AScoreRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TvRepository;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Johnson on 4/7/14.
@@ -37,7 +35,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application applyLoan(Application application) {
-        return applicationRepository.save(application);
+        Application app = applicationRepository.save(application);
+        applicationRepository.execute(app);
+        return app;
     }
 
     @Override
