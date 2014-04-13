@@ -1,0 +1,112 @@
+body{
+	font-size: 62.5%;
+}
+
+/* #limit */
+#front-cover, #front-cover2{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+	text-align: center;
+}
+
+#front-cover:before, #front-cover2:before, #billmail-cover:before{
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 48%;
+	border-color: rgb(170, 207, 93) transparent transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	width: 0;
+	height: 0;
+}
+
+#front-cover *, #front-cover2 *{
+	position: relative;
+}
+
+#front-cover img, #front-cover2 img{
+	padding-top: 7%;
+	min-width: 40%;
+	min-height:40%;
+	max-width: 50%;
+	max-height: 50%;
+}
+
+#front-cover h2, #front-cover2 h2{
+	color: white;
+	/* font-family: Microsoft YaHei; */
+}
+
+.input-container{
+	float: right;
+	width:70%;
+	margin-right: 2%;
+}
+
+#container-credit{
+	padding-top: 1%;
+}
+
+#credit-card-number-text, #email-text{
+	font-size: 2em;
+}
+
+.tip-image{
+	padding: 3% 0 0 2%;
+	float: left;
+}
+
+#next-step, #step2-submit, #billmail a{
+	margin: auto;
+	background-color: gray;
+	/* font-family: Microsoft YaHei; */
+	color: white;
+}
+
+/* limit-step2 */
+#limit-step2 p{
+	font-size: 1.4em;
+	color: rgb(230, 126, 34);
+}
+
+/* billmail */
+#billmail-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+}
+
+#billmail-cover img{
+	min-width: 28%;
+	max-width: 33%;
+	min-height: 60%;
+	max-height: 80%;
+	position: relative;
+	top: 10%;
+	left: 5%;
+	float: left;
+}
+
+#billmail-tip{
+	height: 100%;
+	position: relative;
+	top: 10%;
+}
+
+#billmail-tip p , #billmail-tip h2{
+	position: relative;
+	left: 8%;
+	top: 5%;
+	/* font-family: Microsoft YaHei; */
+	color: white;
+	font-size: 1.8em;
+}
+
+#billmail-tip h2{
+	font-size: 2em;
+}
+
+#mail-password{
+	font-size: 1.8em;
+}
+
