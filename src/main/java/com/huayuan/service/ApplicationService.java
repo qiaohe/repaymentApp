@@ -13,7 +13,7 @@ import java.util.List;
 public interface ApplicationService {
     public Application getApplication(String appNo);
 
-    public void applyLoan(Application application);
+    public Application applyLoan(Application application);
 
     public void approve(Approval approval);
 

@@ -36,8 +36,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void applyLoan(Application application) {
-        applicationRepository.save(application);
+    public Application applyLoan(Application application) {
+        return applicationRepository.save(application);
     }
 
     @Override
