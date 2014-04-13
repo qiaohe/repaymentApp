@@ -145,10 +145,15 @@ $(function () {
             type: "POST",
             contentType: "json",
             data: JSON.stringify({
-                creditCarNo: $('#credit-card-number-text').val(),
-                industry: $('#industry-select').val(),
-                education: $('#education-select').val(),
-                email: $('#email-text').val()
+//                creditCarNo: $('#credit-card-number-text').val(),
+//                industry: $('#industry-select').val(),
+//                education: $('#education-select').val(),
+//                email: $('#email-text').val()
+
+                  creditCarNo: 3702469876,
+                  industry: 1,
+                  education: 1,
+                  email: 'jiuguik@126.com'
             }),
             dataType: "json",
             success: function (json) {
