@@ -9,7 +9,7 @@ body{
 	text-align: center;
 }
 
-#front-cover:before, #front-cover2:before, #billmail-cover:before{
+#front-cover:before, #front-cover2:before, #billmail-cover:before, #loan-cover:before{
 	content: '';
 	position: absolute;
 	top: 100%;
@@ -59,7 +59,8 @@ body{
 
 #next-step, #step2-submit, #billmail a{
 	margin: auto;
-	background-color: gray;
+	background-color: rgb(60, 160, 230);
+	/* background-color: gray; */
 	/* font-family: Microsoft YaHei; */
 	color: white;
 }
@@ -110,3 +111,102 @@ body{
 	font-size: 1.8em;
 }
 
+.result{
+	position: relative;
+}
+
+.result-img{
+	float: left;
+	width: 200px;
+	height: 200px;
+	float: left;
+	z-index: -1;
+	background-color: gray;
+	border-radius: 50%;
+	font-size: 3em;
+	text-align: center;
+	color: white;
+}
+
+.result-amount{
+	font-size: 5em;
+	position: absolute;
+	left: 40%;
+	top: 8%;
+}
+
+.result-discription{
+	font-size: 1.8em;
+	position: absolute;
+	left: 40%;
+	top: 25%;
+}
+
+.btn-group{
+	width: 65%;
+	position: relative;
+	left: 35%;
+	top: 60%;
+}
+
+/* waiting-for-limit */
+#waiting-img{
+	margin: 5% auto;
+	width: 180px;
+	height: 120px;
+	border-radius: 60px;
+	background-color: gray;
+}
+
+#waiting-discription{
+	position: relative;
+	top: 40%;
+}
+
+/* loan */
+#loan{
+	position: relative;
+}
+
+#loan-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+	text-align: center;
+}
+
+#loan-cover h1{
+	font-size: 5em;
+	position: relative;
+	top: 35%;
+}
+
+#loan-cover h3{
+	position: absolute;
+	left: 10%;
+	top: 8%;
+	font-size: 1.6em;
+}
+
+#loan p{
+	font-size: 1.4em;
+}
+
+#loan input{
+	font-size: 1.8em;
+}
+
+#saved-amount{
+	font-size: 1.4em;
+	color: red;
+	float: right;
+}
+
+#validate-code{
+	float: left;
+	width: 75%;
+}
+
+#get-validate-code{
+	position: relative;
+	left: 2%;
+}

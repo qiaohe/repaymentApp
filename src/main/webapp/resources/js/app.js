@@ -1,4 +1,7 @@
 $(function () {
+	var api_path = "http://localhost:8080/repayment/api/";
+    var bincode, industry, education;
+
     window_height = $(window).height();
     window_width = $(window).width();
 
@@ -16,8 +19,6 @@ $(function () {
             $obj.css('width', para);
     }
 
-    var bincode, industry, education;
-
 //#limit
     setHeight($('#front-cover'), 0.35);
     $('.tip-image').css({'max-height': $('#id-card-front-text').height(), 'min-height': $('#id-card-front-text').height()});
@@ -32,20 +33,19 @@ $(function () {
         var formData = new FormData();
         formData.append("idCardFrontFile", e.target.files[0]);
         $.ajax({
-            url: "http://localhost:8080/repayment/api/members/1/idCardFront",
+            url: api_path + "members/1/idCardFront",
             type: "POST",
+			async: false,
             data: formData,
             processData: false,
             contentType: false,
             dataType: "json",
             success: function (json) {
-                if (json.idCardFront.length > 1) {
-                    $('input[id=id-card-front-text]').val(json.idCardFront);
-                    $('input[id=id-card-front-text]').css('color', 'black');
+                if (json[0].length > 1) {
+                    $('input[id=id-card-front-text]').val(json[0]).css('color', 'black');
                 }
                 else {
-                    $('input[id=id-card-front-text]').val("无法识别, 请重新拍摄");
-                    $('input[id=id-card-front-text]').css('color', 'red');
+                    $('input[id=id-card-front-text]').val("无法识别, 请重新拍摄").css('color', 'red');
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -64,20 +64,19 @@ $(function () {
         var formData = new FormData();
         formData.append("idCardBackFile", e.target.files[0]);
         $.ajax({
-            url: "http://localhost:8080/repayment/api/members/1/idCardBack",
+            url: api_path + "members/1/idCardBack",
             type: "POST",
+			async: false,
             data: formData,
             processData: false,
             contentType: false,
             dataType: "json",
             success: function (json) {
-                if (json.idCardBack.length > 1) {
-                    $('input[id=id-card-back-text]').val(json.idCardBack);
-                    $('input[id=id-card-back-text]').css('color', 'black');
+                if (json[0].length > 1) {
+                    $('input[id=id-card-back-text]').val(json[0]).css('color', 'black');
                 }
                 else {
-                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄");
-                    $('input[id=id-card-back-text]').css('color', 'red');
+                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄").css('color', 'red');
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -88,19 +87,19 @@ $(function () {
     // credit card number
     $('#credit-card-number-text').keyup(function () {
         if (!bincode) {
-            $.getJSON("http://localhost:8080/repayment/api/dict/binCode", function (json) {
+            $.getJSON(api_path + "dict/binCode", function (json) {
                 bincode = json;
             });
         }
 
         if ($(this).val().length == 6) {
             // validation
-            $.each(bincode, function (key, val) {
-                if (val == $(this).val()) {
+            $.each(bincode, function (key, val, bcode) {
+                if (bcode == $(this).val()) {
                     $('#next-step').attr('href', '#limit-step2').css('background-color', 'rgb(60, 160, 230)');
                     $('#next-step').click(function () {
                         if (!industry) {
-                            $.getJSON("http://localhost:8080/repayment/api/dict/industry", function (json) {
+                            $.getJSON(api_path + "dict/industry", function (json) {
                                 $.each(json, function (key, val) {
                                     $('#industry-select').append('<option value=' + key + '>' + val + '</option>');
                                 });
@@ -109,7 +108,7 @@ $(function () {
                         }
 
                         if (!education) {
-                            $.getJSON("http://localhost:8080/repayment/api/dict/education", function (json) {
+                            $.getJSON(api_path + "dict/education", function (json) {
                                 $.each(json, function (key, val) {
                                     $('#education-select').append('<option value=' + key + '>' + val + '</option>');
                                 });
@@ -141,23 +140,19 @@ $(function () {
     // without the billmail
     $('#skip').click(function () {
         $.ajax({
-            url: "http://localhost:8080/repayment/api/members/1",
+            url: api_path + "members/1",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-//                creditCarNo: $('#credit-card-number-text').val(),
-//                industry: $('#industry-select').val(),
-//                education: $('#education-select').val(),
-//                email: $('#email-text').val()
-
-                  creditCarNo: 3702469876,
-                  industry: 1,
-                  education: 1,
-                  email: 'jiuguik@126.com'
+               creditCarNo: $('#credit-card-number-text').val(),
+               industry: $('#industry-select').val(),
+               education: $('#education-select').val(),
+               email: $('#email-text').val()
             }),
             dataType: "json",
             success: function (json) {
                 console.log(json);
+				$.mobile.changePage($("#wait-for-limit"), "none");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
@@ -167,19 +162,21 @@ $(function () {
     // with the billmail
     $('#confirm').click(function () {
         $.ajax({
-            url: "http://localhost:8080/repayment/api/members/1",
+            url: api_path + "members/1",
             type: "POST",
             contentType: "application/json",
-            data: {
-                "creditCardNo": $('#credit-card-number-text').val(),
-                "industry": $('#key_industry').val(),
-                "education": $('#key_education').val(),
-                "email": $('#email-text').val()
-                // billmail: ,
-            },
+            data: JSON.stringify({
+				creditCarNo: $('#credit-card-number-text').val(),
+				industry: $('#industry-select').val(),
+				education: $('#education-select').val(),
+				email: $('#email-text').val(),
+				billEmail: $('#email-text').val(),
+				billPassword: $('#mail-password').val()
+            }),
             dataType: "json",
             success: function (json) {
                 console.log(json);
+				$.mobile.changePage($("#wait-for-limit"), "none");
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
@@ -187,10 +184,12 @@ $(function () {
         });
     });
 
-    //
+    //loan
+	setHeight($('#loan-cover'), 0.35);
+	
     $('#loan-request').click(function () {
         $.ajax({
-            url: "http://192.168.0.191:8080/repayment/api/members/1/app",
+            url: api_path + "members/1/app",
             type: "POST",
             data: JSON.stringify({
                 "amt": 1000,
@@ -206,4 +205,6 @@ $(function () {
             }
         });
     });
+	
+	
 });

@@ -70,9 +70,9 @@
 		<div data-role="popup" id="billmail" class="ui-content">
 			<div id="billmail-cover">
 				<img src="resources/img/3-2(1.0).png">
-				<div id="billmail-tip"->
+				<div id="billmail-tip">
 					<p>想获得更高的额度?<br>推荐您填写一</p>
-					<h2>信用卡账单E-mail<h2>
+					<h2>信用卡账单E-mail</h2>
 				</div>
 			</div>
 			<p>信用卡账单E-mail</p>
@@ -82,30 +82,61 @@
 					<input type="email" style="margin-top: 0;" id="billmail-different-text">
 				</label>
 				<input type="radio" name="billmail-text" id="billmail-same" checked="checked">
-				<label for="billmail-same" id="billmail-same-shown"><label>
+				<label for="billmail-same" id="billmail-same-shown"></label>
 			</fieldset>
 			<p>上述E-mail密码</p>
 			<input type="password" id="mail-password">
 			<div class="ui-grid-a">
 				<div class="ui-block-a">
-					<a href="#result" class="ui-btn ui-corner-all ui-shadow" id="skip">跳过本步</a>
+					<a href="#waiting-for-limit" class="ui-btn ui-corner-all ui-shadow" id="skip">跳过本步</a>
 				</div>
 
 				<div class="ui-block-b">
-					<a href="#result" class="ui-btn ui-corner-all ui-shadow" id="confirm">确认, 继续</a>
+					<a href="#result-high" class="ui-btn ui-corner-all ui-shadow" id="confirm">确认, 继续</a>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<div data-role="page" id="result" data-title="测额度">
+	<div data-role="page" id="waiting-for-limit" data-title="测额度">
 		<div data-role="main" class="ui-content">
-			<div id="result-img">img</div>
-			<div id="result-amount">&yen 50,000</div>
-			<div id="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
-			<a href="#loan" class="ui-btn ui-btn-inline" id="result-btn-1">巨款啊!现在就去复活信用卡</a><br>
-			<a href="#" class="ui-btn ui-btn-inline" id="result-btn-2">去跟小伙伴得瑟一下</a><br>
-			<a href="#" class="ui-btn ui-btn-inline" id="result-btn-3">换张信用卡再试试</a><br>
+			<div id="waiting-img" style="text-align: center">img</div>
+			<div id="waiting-discription" style="font-size: 2.6em; text-align: center;">深呼吸!<br>用力!<br>额度马上就出来了...</div>
+		</div>
+	</div>
+	
+	<div data-role="page" class="result" id="result-high" data-title="测额度">
+		<div data-role="main" class="ui-content">
+			<div class="result-img">img</div>
+			<div class="result-amount">&yen 50,000</div>
+			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
+			<div class="btn-group">
+			<a href="#loan" class="ui-btn result-btn">巨款啊!现在就去复活信用卡</a><br>
+			<a href="#" class="ui-btn result-btn">去跟小伙伴得瑟一下</a><br>
+			<a href="#" class="ui-btn result-btn">换张信用卡再试试</a><br>
+			</div>
+		</div>
+	</div>
+	
+	<div data-role="page" class="result" id="result-median" data-title="测额度">
+		<div data-role="main" class="ui-content">
+			<div class="result-img">img</div>
+			<div class="result-amount">&yen 50,000</div>
+			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
+			<a href="#loan" class="ui-btn ui-btn-inline">巨款啊!现在就去复活信用卡</a><br>
+			<a href="#" class="ui-btn ui-btn-inline">去跟小伙伴得瑟一下</a><br>
+			<a href="#" class="ui-btn ui-btn-inline">换张信用卡再试试</a><br>
+		</div>
+	</div>
+	
+	<div data-role="page" class="result" id="result-low" data-title="测额度">
+		<div data-role="main" class="ui-content">
+			<div class="result-img">img</div>
+			<div class="result-amount">&yen 50,000</div>
+			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
+			<a href="#loan" class="ui-btn ui-btn-inline">巨款啊!现在就去复活信用卡</a><br>
+			<a href="#" class="ui-btn ui-btn-inline">去跟小伙伴得瑟一下</a><br>
+			<a href="#" class="ui-btn ui-btn-inline">换张信用卡再试试</a><br>
 		</div>
 	</div>
 	
@@ -118,7 +149,7 @@
 			<p>官人本次想动用多少额度?(仅支持整百)</p>
 			<input type="number">
 			<p>官人想分几期来还清?(一个月还一期)</p>
-			<div class="ui-grid-b">
+			<div class="ui-grid-a">
 				<div class="ui-block-a">
 					<a href="#" class="ui-btn ui-corner-all ui-shadow">3期</a>
 				</div>
@@ -145,7 +176,7 @@
 				<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom">
 				<label for="checkbox-1">我同意借款条款</label>
 			</fieldset>
-			<a href="#" class="ui-btn" id="loan-request">提交申请</a>
+			<a href="#" class="ui-btn" id="loan-request">确认, 去复活信用卡</a>
 		</div>
 	</div>
 	
@@ -170,6 +201,3 @@ function insertScript(scriptpath){
 </script>
 </body>
 </html>
-
-
-ssss
