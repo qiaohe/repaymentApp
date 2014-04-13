@@ -190,6 +190,7 @@ $(function () {
                 amt: 1000,
                 term: 3
             }),
+			contentType: "application/json",
             dataType: "json",
             success: function (json) {
                 console.log(json);
