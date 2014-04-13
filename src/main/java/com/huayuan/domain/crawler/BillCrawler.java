@@ -1,6 +1,8 @@
 package com.huayuan.domain.crawler;
 
+import com.huayuan.domain.member.BillSourceEnum;
 import com.huayuan.domain.member.CreditCardBill;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -31,8 +33,16 @@ public class BillCrawler {
     public CreditCardBill crawl(BillEmail billEmail) {
         final BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
         final String content = new EmailSearcher(billEmail).search(bd.getTitle());
-        System.out.println(content);
-        return new CreditCardBill();
+        String[] items = new BillEmailParser(bd).parse(content);
+        CreditCardBill result = new CreditCardBill();
+        result.setEmail(billEmail.getEmail());
+        result.setSource(BillSourceEnum.CRAWLER);
+        result.setBank((short) 1);
+        result.setAmtRmb(55000d);
+        result.setCrl(55000l);
+        result.setCycleFrom(new DateTime(2014, 4, 11, 0, 0, 0).toDate());
+        result.setCycleFrom(new DateTime(2014, 5, 11, 0, 0, 0).toDate());
+        return result;
     }
 
     public static void main(String[] args) {

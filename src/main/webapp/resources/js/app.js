@@ -141,9 +141,20 @@ $(function(){
 	// without the billmail
 	$('#skip').click(function(){
 		$.ajax({
+<<<<<<< HEAD
 			url: "http://localhost:8080/repayment/api/members/1",
             type: "POST",
 			contentType: "json",
+=======
+<<<<<<< HEAD
+			url: "http://localhost:8080/repayment/api/members/1",
+            type: "POST",
+			contentType: "json",
+=======
+			url: "http://192.168.0.191:8080/repayment/api/members/1",
+            type: "POST",
+>>>>>>> 3c8a7be8529ca1e747115291c34f1ed2fb5659d9
+>>>>>>> 2d5b70cec962dababdcc5e8e5de3d20466b2e969
 			data: JSON.stringify({
 				creditCarNo: $('#credit-card-number-text').val(),
 				industry: $('#industry-select').val(),

@@ -46,8 +46,7 @@ public class MemberServiceImpl implements MemberService {
         pc.setIdCard(pc.getMember().getIdCard());
         pc.setCreditCard(creditCard);
         pc = preCreditRepository.save(pc);
-        preCreditRepository.execute(pc);
-        return preCreditRepository.findOne(pc.getId()).getCrl();
+        return preCreditRepository.execute(pc);
     }
 
     @Override

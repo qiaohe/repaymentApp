@@ -1,12 +1,8 @@
 package com.huayuan.domain.crawler;
 
-import com.huayuan.domain.member.CreditCardBill;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.io.File;
-import java.io.IOException;
+import org.jsoup.select.Elements;
 
 /**
  * Created by dell on 14-4-10.
@@ -18,19 +14,14 @@ public class BillEmailParser {
         this.billDefinition = billDefinition;
     }
 
-    public CreditCardBill parse(String content) throws IOException {
-        File input = new File("c:/a.html");
-        Document doc = Jsoup.parse(input, "UTF-8");
-        for(Element element : doc.getElementsMatchingOwnText("信用额度\\s*</font>")) {
-            System.out.println(element.toString());
-        }
-
-
-        return null;
+    public String[] parse(String content) {
+        Document doc = Jsoup.parse(content);
+        String[] result = new String[3];
+        Elements es = doc.select("table table table table").first().select("tbody tr td:nth-child(2n)");
+        result[0] = es.get(1).text();
+        result[1] = es.get(2).text();
+        Elements es1 = doc.select("table table table table").get(1).select("tbody tr td:nth-child(2)");
+        result[2] = es1.get(1).text();
+        return result;
     }
-
-    public static void main(String[] args) throws IOException {
-        new BillEmailParser(null).parse(null);
-    }
-
 }

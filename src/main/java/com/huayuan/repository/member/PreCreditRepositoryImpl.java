@@ -14,10 +14,10 @@ public class PreCreditRepositoryImpl implements PreCreditRepositoryCustom {
     private EntityManager em;
 
     @Override
-    public void execute(PreCredit preCredit) {
+    public Integer execute(PreCredit preCredit) {
         Query query = em.createNativeQuery("{call PRECREDIT_CRL_BILL(?)}")
                 .setParameter(1, preCredit.getId());
-        query.executeUpdate();
+        return (Integer) query.getSingleResult();
     }
 }
 
