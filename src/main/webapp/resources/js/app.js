@@ -143,7 +143,7 @@ $(function () {
         $.ajax({
             url: "http://localhost:8080/repayment/api/members/1",
             type: "POST",
-            contentType: "json",
+            contentType: "application/json",
             data: JSON.stringify({
 //                creditCarNo: $('#credit-card-number-text').val(),
 //                industry: $('#industry-select').val(),
