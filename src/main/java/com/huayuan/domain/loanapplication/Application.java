@@ -16,7 +16,7 @@ public class Application {
     @Column(name = "APPL_NO")
     private String applicationNo;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
@@ -27,7 +27,7 @@ public class Application {
     private Approval approval;
 
     @Column(name = "EXISTING_FLAG")
-    private Integer existingFlag;
+    private Integer existingFlag = 0;
 
 
     @Column(name = "ID_ID")
@@ -65,7 +65,7 @@ public class Application {
     private String preRating;
 
     @Column(name = "STATUS")
-    private Integer status;
+    private Integer status = 0;
 
 
     @Temporal(TemporalType.DATE)
