@@ -2,8 +2,8 @@ $(function () {
 	var api_path = "http://localhost:8080/repayment/api/";
     var bincode, industry, education;
 
-    window_height = $(window).height();
-    window_width = $(window).width();
+    var window_height = $(window).height();
+    var window_width = $(window).width();
 
     function setHeight($obj, para) {
         if (para <= 1)
