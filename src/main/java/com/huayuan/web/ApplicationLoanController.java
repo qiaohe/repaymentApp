@@ -3,6 +3,7 @@ package com.huayuan.web;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
+import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.ApplicationDto;
@@ -19,7 +20,8 @@ import javax.inject.Inject;
 public class ApplicationLoanController {
     @Inject
     private IdSequenceGenerator idSequenceGenerator;
-
+    @Inject
+    private ApplicationRepository applicationRepository;
     @Inject
     private ApplicationService applicationService;
     @Inject
@@ -38,6 +40,7 @@ public class ApplicationLoanController {
         application.setApplicationNo(idSequenceGenerator.getApplicationNo());
         application.setMember(memberService.find(id));
         application = applicationService.applyLoan(application);
+        applicationRepository.execute(application);
         return application.getApplicationNo();
     }
 }
