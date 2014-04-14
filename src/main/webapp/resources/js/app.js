@@ -85,20 +85,20 @@ $(function () {
         });
     });
     // credit card number
-    $('#credit-card-number-text').keyup(function () {
-        if (!bincode) {
-            $.getJSON(api_path + "dict/binCode", function (json) {
+	$.getJSON(api_path + "dict/binCode", function (json) {
                 bincode = json;
-            });
-        }
-
+	});
+	
+    $('#credit-card-number-text').keyup(function () {
         if ($(this).val().length == 6) {
+			alert('xxx');
             // validation
-            $.each(bincode, function (name, cardNo, binNo) {
-                if (binNo == $(this).val()) {
-                
+			for(var i in bincode){
+				if (bincode[i].binNo == $(this).val()){
+					alert('xxx');
+					$(this).css('border-color', 'rgb(170, 207, 93)');
 				}
-            });
+			}
         }
     });
 
