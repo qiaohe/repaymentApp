@@ -7,6 +7,8 @@ import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.web.dto.MemberDto;
 
+import java.util.List;
+
 /**
  * Created by Johnson on 3/19/14.
  */
@@ -33,4 +35,6 @@ public interface MemberService {
     public void updateBillEmail(Member member, String billEmail, String password);
 
     public void addBill(Member member, CreditCardBill creditCardBill);
+
+    public List<CreditCard> getCreditCards(Long memberId);
 }

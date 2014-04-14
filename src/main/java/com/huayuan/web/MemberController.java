@@ -1,10 +1,12 @@
 package com.huayuan.web;
 
+import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
+import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,6 +27,8 @@ import java.util.Set;
 public class MemberController {
     @Inject
     MemberService memberService;
+    @Inject
+    CreditLimitRanges creditLimitRanges;
 
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public
@@ -59,6 +64,14 @@ public class MemberController {
         return creditCardNo;
     }
 
+    @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public
+    @ResponseBody
+    List<CreditCard> getCreditCards(@PathVariable Long id) {
+        return memberService.getCreditCards(id);
+    }
+
     @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -70,9 +83,11 @@ public class MemberController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public Integer updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
+    public CreditLimitDto updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         memberDto.setMemberId(id);
-        return memberService.testCreditLimit(memberDto);
+        Integer creditLimit = memberService.testCreditLimit(memberDto);
+        String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
+        return new CreditLimitDto(creditLimit, rankOfLimit);
     }
 
     @RequestMapping(value = "/{id}/billEmail", method = RequestMethod.POST)
