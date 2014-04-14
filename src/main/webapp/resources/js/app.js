@@ -41,11 +41,11 @@ $(function () {
             contentType: false,
             dataType: "json",
             success: function (json) {
-                if (json[0].length > 1) {
-                    $('input[id=id-card-front-text]').val(json[0]).css('color', 'black');
+                if (json > 1) {
+                    $('input[id=id-card-front-text]').val(json).button("refresh").css('color', 'black');
                 }
                 else {
-                    $('input[id=id-card-front-text]').val("无法识别, 请重新拍摄").css('color', 'red');
+                    $('input[id=id-card-front-text]').val("无法识别, 请重新拍摄").button("refresh").css('color', 'red');
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -70,13 +70,13 @@ $(function () {
             data: formData,
             processData: false,
             contentType: false,
-            dataType: "json",
-            success: function (json) {
-                if (json[0].length > 1) {
-                    $('input[id=id-card-back-text]').val(json[0]).css('color', 'black');
+            dataType: "text",
+            success: function (text) {
+                if (text.length > 10) {
+                    $('input[id=id-card-back-text]').val(text).button("refresh").css('color', 'black');
                 }
                 else {
-                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄").css('color', 'red');
+                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄").button("refresh").css('color', 'red');
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -94,33 +94,31 @@ $(function () {
 
         if ($(this).val().length == 6) {
             // validation
-            $.each(bincode, function (key, val, bcode) {
-                if (bcode == $(this).val()) {
-                    $('#next-step').attr('href', '#limit-step2').css('background-color', 'rgb(60, 160, 230)');
-                    $('#next-step').click(function () {
-                        if (!industry) {
-                            $.getJSON(api_path + "dict/industry", function (json) {
-                                $.each(json, function (key, val) {
-                                    $('#industry-select').append('<option value=' + key + '>' + val + '</option>');
-                                });
-                                industry = 1;
-                            });
-                        }
-
-                        if (!education) {
-                            $.getJSON(api_path + "dict/education", function (json) {
-                                $.each(json, function (key, val) {
-                                    $('#education-select').append('<option value=' + key + '>' + val + '</option>');
-                                });
-                                education = 1;
-                            });
-                        }
-                    });
-                }
+            $.each(bincode, function (name, cardNo, binNo) {
+                if (binNo == $(this).val()) {
+                
+				}
             });
         }
     });
 
+		if (!industry) {
+			$.getJSON(api_path + "dict/industry", function (json) {
+				for(var i in json) {
+					$('#industry-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+				}
+				industry = 1;
+            });
+        }
+
+		if (!education) {
+			$.getJSON(api_path + "dict/education", function (json) {
+				for(var i in json) {
+					$('#education-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+				}
+				education = 1;
+			});
+		}
 //#limit-step2
     setHeight($('#front-cover2'), 0.35);
     setHeight($('#email-text'), $('#id-card-front-text').height());
