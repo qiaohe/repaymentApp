@@ -122,4 +122,9 @@ public class MemberServiceImpl implements MemberService {
         creditCardBill.setMember(member);
         creditCardBillRepository.save(creditCardBill);
     }
+
+    @Override
+    public List<CreditCard> getCreditCards(Long memberId) {
+        return creditCardRepository.findByMemberId(memberId);
+    }
 }

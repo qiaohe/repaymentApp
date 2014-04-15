@@ -4,8 +4,8 @@ package com.huayuan.domain.member;
  * Created by Administrator on 14-3-27.
  */
 public enum SexEnum {
-    MALE("女"),
-    FEMALE("男");
+    FEMALE("男"),
+    MALE("女");
 
     private final String name;
 

@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by Administrator on 14-4-3.
  */
 @Entity
-@Table(name = "LAST_APPL")
+@Table(name = "LAST_CREDIT")
 public class CreditResult implements Serializable {
     private static final long serialVersionUID = -3751309910672351082L;
 

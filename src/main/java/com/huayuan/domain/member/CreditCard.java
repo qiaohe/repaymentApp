@@ -1,5 +1,6 @@
 package com.huayuan.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
@@ -42,15 +43,18 @@ public class CreditCard implements Serializable {
     private Date validThru;
 
     @Column(name = "NAME_ENG")
+    @JsonIgnore
     private String nameEng;
 
     @Column(name = "IMAGE")
     private String image;
 
     @Column(name = "EMAIL")
+    @JsonIgnore
     private String email;
 
     @Column(name = "PASSWORD")
+    @JsonIgnore
     private String password;
 
     @Column(name = "STATUS")
@@ -58,10 +62,12 @@ public class CreditCard implements Serializable {
 
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
 
