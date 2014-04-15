@@ -44,6 +44,7 @@
     <oxm:jaxb2-marshaller id="jaxbMarshaller">
         <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinition"/>
         <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinitions"/>
+        <oxm:class-to-be-bound name="com.huayuan.integration.wechat.domain.EventMessage"/>
     </oxm:jaxb2-marshaller>
 
 </beans>

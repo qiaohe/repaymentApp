@@ -45,8 +45,8 @@ public final class EmailSearcher {
             Folder folder = getFolder();
             int index = folder.getMessageCount();
             final Date date = Day.TODAY.plusMonths(-2);
-//            Message[] messages = folder.search(new SentDateTerm(SentDateTerm.GT, date));
-//            for (Message message : messages) {
+//            TextMessage[] messages = folder.search(new SentDateTerm(SentDateTerm.GT, date));
+//            for (TextMessage message : messages) {
 //                if (isMatch(message, subject)) return getContent(message);
 //            }
 //            return null;
