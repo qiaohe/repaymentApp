@@ -1,15 +1,19 @@
 package com.huayuan.integration.wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.SexEnum;
 import com.huayuan.domain.wechat.User;
 import com.huayuan.integration.wechat.domain.EventMessage;
+import com.huayuan.integration.wechat.domain.TextMessage;
+import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +23,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
+import javax.inject.Qualifier;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by Johnson on 4/14/14.
@@ -35,10 +43,13 @@ public class MessageController {
     private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
     private static final ObjectMapper MAPPER = new ObjectMapper();
-
+    @Inject
+    private MemberService memberService;
 
     @Inject
-    private Unmarshaller jaxbMarshaller;
+    private Unmarshaller unmarshaller;
+    @Inject
+    private Marshaller marshaller;
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
     @ResponseBody
@@ -53,13 +64,42 @@ public class MessageController {
     @RequestMapping(value = "/huayuan158", method = RequestMethod.POST)
     @ResponseBody
     public String handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestMessageXml = IOUtils.toString(request.getInputStream(), "utf-8");
-        request.setCharacterEncoding("utf-8");
+        EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
+        if (eventMessage.isSubscribeEvent()) {
+            addMember(getUser(eventMessage.getFromUserName()));
+        } else if (eventMessage.isCustomMenuEvent()) {
+            final String rm = getReplyMessage(eventMessage);
+            response.getWriter().write(rm);
+        }
+        return eventMessage.getFromUserName();
 
-        EventMessage eventMessage = (EventMessage)jaxbMarshaller.unmarshal(new StreamSource(request.getInputStream()));
-        System.out.println(eventMessage.getEventKey());
-        return requestMessageXml;
+    }
 
+    private String getReplyMessage(EventMessage eventMessage) {
+        TextMessage rm = new TextMessage();
+        rm.setFromUserName(eventMessage.getToUserName());
+        rm.setToUserName(eventMessage.getFromUserName());
+        rm.setMsgType("text");
+        rm.setCreateTime(new Date().getTime());
+        rm.setContent("<a href=\"http://180.168.35.37/repaymentApp/index.html\">信用卡</a> ");
+        StringWriter sw = new StringWriter();
+        try {
+            marshaller.marshal(rm, new StreamResult(sw));
+            return sw.toString();
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    private void addMember(User user) {
+        Member member = new Member(user.getOpenid());
+        member.setSex(user.getSex() == 1 ? SexEnum.MALE : SexEnum.FEMALE);
+        member.setWcProvince(user.getProvince());
+        member.setWcCity(user.getCity());
+        member.setWcSignature(user.getNickname());
+        member.setWcUserName(user.getNickname());
+        memberService.update(member);
     }
 
     private String getAccessToken() {
