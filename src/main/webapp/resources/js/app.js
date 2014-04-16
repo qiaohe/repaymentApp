@@ -1,4 +1,19 @@
 $(function () {
+
+var browser= (function(){
+    var ua= navigator.userAgent, tem, 
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*([\d\.]+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+(\.\d+)?)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    M= M[2]? [M[1], M[2]]:[navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+    return M.join(' ');
+})();
+alert(browser);
+
+
 	var api_path = "http://192.168.0.185:8080/repayment/api/";
     var bincode, industry, education;
 
@@ -20,8 +35,8 @@ $(function () {
     }
 
 //#limit
-    setHeight($('#front-cover'), 0.4);
-    $('.tip-image').css({'max-height': $('#id-card-front-text').height(), 'min-height': $('#id-card-front-text').height()});
+    setHeight($('#front-cover'), 0.39);
+    $('.tip-image').css({'max-height': 0.8 * $('#id-card-front-text').height(), 'min-height': 0.8 * $('#id-card-front-text').height()});
     // upload front
     $('#id-card-front-text').after($('<div><input type="file" accept="image/jpg, image/jpeg" id="id-card-front-upload" capture></div>').css('display', 'none'));
 
@@ -36,17 +51,16 @@ $(function () {
         $.ajax({
             url: api_path + "members/1/idCardFront",
             type: "POST",
-			async: false,
             data: formData,
             processData: false,
             contentType: false,
             dataType: "json",
             success: function (json) {
-				$('input[id=id-card-front-text]').val(json).button("refresh").css('color', 'black');
+				$('input[id=id-card-front-text]').val(json).css('background-color', 'green').button("refresh");
 				$.mobile.loading('hide');
             },
             error: function () {
-				$('input[id=id-card-front-text]').val('无法识别, 请重新拍摄!').css('color', 'red').button("refresh");
+				$('input[id=id-card-front-text]').val('无法识别, 请重新拍摄!').css('background-color', 'red').button("refresh");
 				$.mobile.loading('hide');
 			}
         });
@@ -65,24 +79,18 @@ $(function () {
         $.ajax({
             url: api_path + "members/1/idCardBack",
             type: "POST",
-			async: false,
             data: formData,
             processData: false,
             contentType: false,
-            dataType: "text",
-            success: function (text) {
-                if (text.length > 10) {
-                    $('input[id=id-card-back-text]').val(text).button("refresh").css('color', 'black');
-                }
-                else {
-                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄").button("refresh").css('color', 'red');
-                }
+            dataType: "json",
+            success: function (json) {
+				$('input[id=id-card-back-text]').val(json).css('background-color', 'green').button("refresh");
 				$.mobile.loading('hide');
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            error: function () {
+				$('input[id=id-card-back-text]').val('无法识别, 请重新拍摄!').css('background-color', 'red').button("refresh");
 				$.mobile.loading('hide');
-            }
+			}
         });
     });
     // credit card number
@@ -90,17 +98,34 @@ $(function () {
                 bincode = json;
 	});
 	
+	// $('#credit-card-number-text').removeClass('ccnt-1').trigger('create');
+	$('#credit-card-number-text').css({'background-color': 'red', 'background': 'http://192.168.0.185:8080/repayment/resources/img/ccb.png'});
+	// $('#limit').trigger('create');
+	
     $('#credit-card-number-text').keyup(function () {
-        if ($(this).val().length == 6) {
-            // validation
-			for(var i in bincode){
-				if (bincode[i].binNo == $(this).val()){
-					$(this).css('color', 'rgb(170, 207, 93)');
-				}
-			}
-        }
+		num = $(this).val();
+		if(num.length > 1){
+			if(3 == num[0]){
+				if(5 == num[1])
+					$(this).css('background', 'url(../img/jcb.png) no-repeat scroll 3px 3px');
+				else if(6 == num[1])
+					$(this).css('background', 'url(../img/dalai.png) no-repeat scroll 3px 3px');
+				else if(7 == num[1])
+					$(this).css('background', 'url(../img/yuntong.png) no-repeat scroll 3px 3px');
+			}	
+			else if(4 == num[0])
+				$(this).css('background', 'url(../img/visa.png) no-repeat scroll 3px 3px');
+			else if(5 == num[0])
+				$(this).css('background', 'url(../img/mastercard.png) no-repeat scroll 3px 3px');
+			else if(6 == num[0] && 2 == num[1])
+				$(this).css('background', 'url(../img/cup.png) no-repeat scroll 3px 3px !important');
+			else
+				// $(this).css('background', 'url(../img/ccb.png) no-repeat scroll 3px 3px');
+				console.log(num + ' is invalid');
+		}
     });
 
+	$('#next-step').click(function(){
 		if (!industry) {
 			$.getJSON(api_path + "dict/industry", function (json) {
 				for(var i in json) {
@@ -118,6 +143,7 @@ $(function () {
 				education = 1;
 			});
 		}
+	});
 //#limit-step2
     setHeight($('#front-cover2'), 0.35);
     setHeight($('#email-text'), $('#id-card-front-text').height());

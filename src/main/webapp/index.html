@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="resources/css/jquery.mobile-1.4.2.min.css">
 <link rel="stylesheet" href="resources/css/app.css">
 <script src="resources/js/jquery-1.11.0.min.js"></script>
+<script src="resources/js/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
 	<div data-role="page" id="limit" data-title="信用评估">
@@ -14,13 +15,13 @@
 				<img src="resources/img/2-1-1(1.0).png">
 				<h2>废话少说, 直接啪啪啪吧~<br>请横向拍摄, 尽量让卡片填满镜头.</h2>
 			</div>
-			<div id="front-main">
-				<li>
-					<fieldset class="ui-field-contain" id="id-card-front">
+			<div>
+				<br><li>
+					<!-- <fieldset class="ui-field-contain" id="id-card-front"> -->
 						<img src="resources/img/front-tip-img-1.png" class="tip-image">
-						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-front-text" value="拍摄身份证·正面"></div>
-					</fieldset>
-				</li><hr>
+						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-front-text" value="拍摄身份证·正面"></div><hr>
+					<!-- </fieldset> -->
+				</li>
 				<li>
 					<fieldset class="ui-field-contain" id="id-card-back">
 						<img src="resources/img/front-tip-img-2.png" class="tip-image">
@@ -30,7 +31,7 @@
 				<li>
 					<fieldset class="ui-field-contain" id="credit-card-number">
 						<img src="resources/img/front-tip-img-3.png" class="tip-image">
-						<div class="input-container" id="container-credit"><input type="number" id="credit-card-number-text" placeholder="请输入信用卡卡号"></div>
+						<div class="input-container" id="container-credit"><input type="number" id="credit-card-number-text" placeholder="请输入信用卡卡号" data-enhanced="false"></div>
 					</fieldset>
 				</li>
 			</div>
@@ -44,27 +45,21 @@
 				<img src="resources/img/3-1(1.0).png">
 				<h2>再来填三个空, 填完就完成了哦~</h2>
 			</div>
-			<ul data-role="listview" data-inset="true">
+			<div>
 				<li>
 					<p>官人拿什么金饭碗?</p>
-					<fieldset class="ui-field-contain" id="industry">
-						<select id="industry-select" data-native-menu="false" placeholder="请选择"><option></option></select>
-					</fieldset>
+					<select id="industry-select" data-native-menu="false" placeholder="请选择"><option></option></select>
 				</li>
 				<li>
 					<p>官人学富几车?</p>
-					<fieldset class="ui-field-contain" id="education">
-						<select id="education-select" data-native-menu="false"><option></option></select>
-					</fieldset>
+					<select id="education-select" data-native-menu="false"><option></option></select>
 				</li>
 				<li>
-					<p>官人平时鸿雁传书用哪个E-mail?<p>
-					<fieldset class="ui-field-contain">
-						<input type="email" id="email-text">
-					</fieldset>
+					<p>官人平时鸿雁传书用哪个E-mail?</p>
+					<input type="email" id="email-text">
 				</li>
 				<a href="#billmail" data-rel="popup" class="ui-btn" id="step2-submit">提交</a>
-			</ul>
+			</div>
 		</div>
 		
 		<div data-role="popup" id="billmail" class="ui-content">
@@ -218,20 +213,6 @@
 	
 	
 
-<script>
-var istscript = [];
-istscript[0] = "resources/js/jquery.mobile-1.4.2.min.js";
-istscript[1] = "resources/js/app.js";
-
-for(i in istscript){
-	insertScript(istscript[i]);
-}
-
-function insertScript(scriptpath){
-	var s = document.createElement("script");
-	s.src=scriptpath;
-	document.getElementsByTagName("head")[0].appendChild(s);
-}
-</script>
+<script src="resources/js/app.js"></script>
 </body>
 </html>
