@@ -1,217 +1,227 @@
-$(function () {
-	var api_path = "http://192.168.0.185:8080/repayment/api/";
-    var bincode, industry, education;
+body{
+	font-size: 62.5%;
+}
 
-    var window_height = $(window).height();
-    var window_width = $(window).width();
+/* #limit */
+#front-cover, #front-cover2{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+	text-align: center;
+}
 
-    function setHeight($obj, para) {
-        if (para <= 1)
-            $obj.css('height', para * window_height);
-        else
-            $obj.css('height', para);
-    }
+#front-cover:before, #front-cover2:before, #billmail-cover:before, #loan-cover:before{
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 48%;
+	border-color: rgb(170, 207, 93) transparent transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	width: 0;
+	height: 0;
+}
 
-    function setWidth($obj, para) {
-        if (para <= 1)
-            $obj.css('width', para * window_width);
-        else
-            $obj.css('width', para);
-    }
+#front-cover *, #front-cover2 *{
+	position: relative;
+}
 
-//#limit
-    setHeight($('#front-cover'), 0.4);
-    $('.tip-image').css({'max-height': $('#id-card-front-text').height(), 'min-height': $('#id-card-front-text').height()});
-    // upload front
-    $('#id-card-front-text').after($('<div><input type="file" accept="image/jpg, image/jpeg" id="id-card-front-upload" capture></div>').css('display', 'none'));
+#front-cover img, #front-cover2 img{
+	padding-top: 8%;
+	min-width: 40%;
+	min-height:40%;
+	max-width: 50%;
+	max-height: 50%;
+}
 
-    $('#id-card-front-text').click(function () {
-        $('#id-card-front-upload').trigger('click');
-    });
+#front-cover h2, #front-cover2 h2{
+	color: white;
+	font-weight: normal !important;
+	/* font-family: Microsoft YaHei; */
+}
 
-    $('#id-card-front-upload').change(function (e) {
-        var formData = new FormData();
-        formData.append("idCardFrontFile", e.target.files[0]);
-		$.mobile.loading('show');
-        $.ajax({
-            url: api_path + "members/1/idCardFront",
-            type: "POST",
-			async: false,
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            success: function (json) {
-				$('input[id=id-card-front-text]').val(json).button("refresh").css('color', 'black');
-				$.mobile.loading('hide');
-            },
-            error: function () {
-				$('input[id=id-card-front-text]').val('无法识别, 请重新拍摄!').css('color', 'red').button("refresh");
-				$.mobile.loading('hide');
-			}
-        });
-    });
-    // upload back
-    $('#id-card-back-text').after($('<div><input type="file" accept="image/jpg, image/jpeg" id="id-card-back-upload" capture></div>').css('display', 'none'));
+#limit li, #limit-step2 li{
+	list-style: none;
+}
 
-    $('#id-card-back-text').click(function () {
-        $('#id-card-back-upload').trigger('click');
-    });
+.input-container{
+	float: right;
+	width: 80%;
+	margin: 0;
+}
 
-    $('#id-card-back-upload').change(function (e) {
-        var formData = new FormData();
-        formData.append("idCardBackFile", e.target.files[0]);
-		$.mobile.loading('show');
-        $.ajax({
-            url: api_path + "members/1/idCardBack",
-            type: "POST",
-			async: false,
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: "text",
-            success: function (text) {
-                if (text.length > 10) {
-                    $('input[id=id-card-back-text]').val(text).button("refresh").css('color', 'black');
-                }
-                else {
-                    $('input[id=id-card-back-text]').val("无法识别, 请重新拍摄").button("refresh").css('color', 'red');
-                }
-				$.mobile.loading('hide');
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-				$.mobile.loading('hide');
-            }
-        });
-    });
-    // credit card number
-	$.getJSON(api_path + "dict/binCode", function (json) {
-                bincode = json;
-	});
-	
-    $('#credit-card-number-text').keyup(function () {
-        if ($(this).val().length == 6) {
-            // validation
-			for(var i in bincode){
-				if (bincode[i].binNo == $(this).val()){
-					$(this).css('color', 'rgb(170, 207, 93)');
-				}
-			}
-        }
-    });
+#container-credit{
+	padding-top: 1%;
+}
 
-		if (!industry) {
-			$.getJSON(api_path + "dict/industry", function (json) {
-				for(var i in json) {
-					$('#industry-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
-				}
-				industry = 1;
-            });
-        }
+#credit-card-number-text, #email-text{
+	font-size: 1.8em;
+}
 
-		if (!education) {
-			$.getJSON(api_path + "dict/education", function (json) {
-				for(var i in json) {
-					$('#education-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
-				}
-				education = 1;
-			});
-		}
-//#limit-step2
-    setHeight($('#front-cover2'), 0.35);
-    setHeight($('#email-text'), $('#id-card-front-text').height());
-    //step2-submit
-    $('#email-text').keyup(function () {
-        if ($('#industry-select').val() && $('#education-select').val() && $(this).val())
-            $('#step2-submit').attr('href', '#billmail').css('background-color', 'rgb(60, 160, 230)');
-    });
+#credit-card-number-text{
+	background: url(../img/icbc.png) no-repeat scroll 3px 3px;
+	padding-left: 55px;
+}
 
-    $('#step2-submit').click(function () {
-        $('#billmail-same-shown').html($('#email-text').val());
-    });
-//billmail
-    setWidth($('#billmail'), 0.8);
-    setHeight($('#billmail'), 0.75);
-    setHeight($('#billmail-cover'), 0.25);
-    // without the billmail
-    $('#skip').click(function () {
-        $.ajax({
-            url: api_path + "members/1",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-               creditCarNo: $('#credit-card-number-text').val(),
-               industry: $('#industry-select').val(),
-               education: $('#education-select').val(),
-               email: $('#email-text').val()
-            }),
-            dataType: "json",
-            success: function (json) {
-                console.log(json);
-				$.mobile.changePage($("#wait-for-limit"), "none");
-				alert('您的额度是' + json);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-            }
-        });
-    });
-    // with the billmail
-    $('#confirm').click(function () {
-        $.ajax({
-            url: api_path + "members/1",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-				creditCarNo: $('#credit-card-number-text').val(),
-				industry: $('#industry-select').val(),
-				education: $('#education-select').val(),
-				email: $('#email-text').val(),
-				billEmail: $('#email-text').val(),
-				billPassword: $('#mail-password').val()
-            }),
-            dataType: "json",
-            success: function (json) {
-                console.log(json);
-				$.mobile.changePage($("#wait-for-limit"), "none");
-				alert('您的额度是' + json);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-            }
-        });
-    });
+.tip-image{
+	padding: 3.8% 0 0 2%;
+	float: left;
+}
 
-    //loan
-	setHeight($('#loan-cover'), 0.35);
-	
-	var creditCards=[];
-    $('#loan-request').click(function(){
-		if(creditCards.length < 2){
-			$.get(api_path + "members/1/creditCard", function(data){
-				var $chosen_number = $('#chosen-number');
-				
-				$.each(data, function(idx, obj){
-					$chosen_number.append('<option>' + obj.cardNo + '</option>');
-					creditCards.push([obj.cardNo, obj.bank]);
-				});
-				
-				$chosen_number.attr('size', creditCards.length);
-				$chosen_number.selectmenu('refresh');
-				
-			});
-		}
-	});
-	
-	$('#chosen-number').change(function(){
-		var num = $('#chosen-number').val();
-		if(confirm('你确定要复活尾号' + num.slice(num.length - 4, num.length) + '的卡片?')){
-			$.mobile.navigate('#success-tip');
-		}
-	});
-	
-	
-	
-	
-});
+#next-step, #step2-submit, #billmail a{
+	margin: auto;
+	background-color: rgb(60, 160, 230);
+	color: white;
+	font-weight: normal !important;
+	border-radius: 5px;
+}
+
+/* limit-step2 */
+#limit-step2 h2{
+	color: white;
+	tont-weight: normal !important;
+}
+
+#limit-step2 p{
+	font-size: 1.4em;
+	color: rgb(230, 126, 34);
+}
+
+/* billmail */
+#billmail-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+}
+
+#billmail-cover img{
+	min-width: 28%;
+	max-width: 33%;
+	min-height: 60%;
+	max-height: 80%;
+	position: relative;
+	top: 10%;
+	left: 5%;
+	float: left;
+}
+
+#billmail-tip{
+	height: 100%;
+	position: relative;
+	top: 10%;
+}
+
+#billmail-tip p , #billmail-tip h2{
+	position: relative;
+	left: 8%;
+	top: 5%;
+	/* font-family: Microsoft YaHei; */
+	color: white;
+	font-size: 1.8em;
+}
+
+#billmail-tip h2{
+	font-size: 2em;
+}
+
+#mail-password{
+	font-size: 1.8em;
+}
+
+.result{
+	position: relative;
+}
+
+.result-img{
+	float: left;
+	width: 200px;
+	height: 200px;
+	float: left;
+	z-index: -1;
+	background-color: gray;
+	border-radius: 50%;
+	font-size: 3em;
+	text-align: center;
+	color: white;
+}
+
+.result-amount{
+	font-size: 5em;
+	position: absolute;
+	left: 40%;
+	top: 8%;
+}
+
+.result-discription{
+	font-size: 1.8em;
+	position: absolute;
+	left: 40%;
+	top: 25%;
+}
+
+.btn-group{
+	width: 65%;
+	position: relative;
+	left: 35%;
+	top: 60%;
+}
+
+/* waiting-for-limit */
+#waiting-img{
+	margin: 5% auto;
+	width: 180px;
+	height: 120px;
+	border-radius: 60px;
+	background-color: gray;
+}
+
+#waiting-discription{
+	position: relative;
+	top: 40%;
+}
+
+/* loan */
+#loan{
+	position: relative;
+}
+
+#loan-cover{
+	position: relative;
+	background-color: rgb(170, 207, 93);
+	text-align: center;
+}
+
+#loan-cover h1{
+	font-size: 5em;
+	position: relative;
+	top: 35%;
+}
+
+#loan-cover h3{
+	position: absolute;
+	left: 10%;
+	top: 8%;
+	font-size: 1.6em;
+}
+
+#loan p{
+	font-size: 1.4em;
+}
+
+#loan input{
+	font-size: 1.8em;
+}
+
+#saved-amount{
+	font-size: 1.4em;
+	color: red;
+	float: right;
+}
+
+#validate-code{
+	float: left;
+	width: 75%;
+}
+
+#get-validate-code{
+	position: relative;
+	left: 2%;
+}
