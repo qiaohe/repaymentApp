@@ -14,7 +14,7 @@ public class Configuration {
 
     static {
         try {
-            CONFIG = new PropertiesConfiguration("com/huayuan/integration/wechat/config.properties");
+            CONFIG = new PropertiesConfiguration(Thread.currentThread().getContextClassLoader().getResource("wechatconfig.properties"));
         } catch (ConfigurationException e) {
             LOGGER.error(e.getMessage());
         }
