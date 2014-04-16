@@ -1,5 +1,7 @@
 package com.huayuan.integration.wechat.domain;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EventMessage {
+    private static final String SUBSCRIBE_EVENT = "subscribe";
     @XmlElement(name = "ToUserName")
     private String toUserName;
     @XmlElement(name = "FromUserName")
@@ -74,5 +77,13 @@ public class EventMessage {
 
     public void setEventKey(String eventKey) {
         this.eventKey = eventKey;
+    }
+
+    public boolean isSubscribeEvent() {
+        return StringUtils.isNotEmpty(event) && event.equalsIgnoreCase(SUBSCRIBE_EVENT);
+    }
+
+    public boolean isCustomMenuEvent() {
+        return StringUtils.isNotEmpty(event) && (event.equals("VIEW") || event.equals("CLICK"));
     }
 }

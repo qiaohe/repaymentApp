@@ -1,6 +1,5 @@
 $(function () {
-	$.mobile.loading("show",{text: '识别中'});
-	var api_path = "http://localhost:8080/repayment/api/";
+	var api_path = "http://192.168.0.185:8080/repayment/api/";
     var bincode, industry, education;
 
     var window_height = $(window).height();
@@ -43,16 +42,11 @@ $(function () {
             contentType: false,
             dataType: "json",
             success: function (json) {
-                if (json > 1) {
-                    $('input[id=id-card-front-text]').val(json).button("refresh").css('color', 'black');
-                }
-                else {
-                    $('input[id=id-card-front-text]').val("无法识别, 请重新拍摄").button("refresh").css('color', 'red');
-                }
+				$('input[id=id-card-front-text]').val(json).button("refresh").css('color', 'black');
 				$.mobile.loading('hide');
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            error: function () {
+				$('input[id=id-card-front-text]').val('无法识别, 请重新拍摄!').css('color', 'red').button("refresh");
 				$.mobile.loading('hide');
 			}
         });
@@ -192,34 +186,32 @@ $(function () {
     //loan
 	setHeight($('#loan-cover'), 0.35);
 	
-    $('#loan-request').click(function () {
-        $.ajax({
-            url: api_path + "members/1/app",
-            type: "POST",
-            data: JSON.stringify({
-                "amt": 1000,
-                "term": 3
-            }),
-			contentType: "application/json",
-            dataType: "json",
-            success: function (json) {
-                console.log(json);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-            }
-        });
-    });
-	
-	$.post(api_path + "members/1/creditCard", '1', function(data){
-		alert(data);
+	var creditCards=[];
+    $('#loan-request').click(function(){
+		if(creditCards.length < 2){
+			$.get(api_path + "members/1/creditCard", function(data){
+				var $chosen_number = $('#chosen-number');
+				
+				$.each(data, function(idx, obj){
+					$chosen_number.append('<option>' + obj.cardNo + '</option>');
+					creditCards.push([obj.cardNo, obj.bank]);
+				});
+				
+				$chosen_number.attr('size', creditCards.length);
+				$chosen_number.selectmenu('refresh');
+				
+			});
+		}
 	});
 	
-	// $.getJSON(api_path + "members/1/creditCard", function(json){
-		// console.log(json);
-		// alert('see creditCard list!');
-	// });
-		
+	$('#chosen-number').change(function(){
+		var num = $('#chosen-number').val();
+		if(confirm('你确定要复活尾号' + num.slice(num.length - 4, num.length) + '的卡片?')){
+			$.mobile.navigate('#success-tip');
+		}
+	});
+	
+	
 	
 	
 });

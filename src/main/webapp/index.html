@@ -177,9 +177,40 @@
 				<label for="checkbox-1">我同意借款条款</label>
 			</fieldset>
 			<a href="#choose-credit-card" class="ui-btn" id="loan-request">确认, 去复活信用卡</a>
-			
-			<div data-role="popup" class="ui-content" id="choose-credit-card">
-				<select value="" id="chosen-number"></select>
+		</div>
+	</div>
+	
+	<div data-role="page" id="choose-credit-card" data-title="复活信用卡">
+		<div data-role="main" class="ui-content">
+			<select id="chosen-number" data-native-menu="false"><option></option></select>
+			<a href="#add-credit-card" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-left">添加信用卡</a>
+		</div>
+		
+		<div data-role="popup" id="add-credit-card">
+		<div class"ui-content">
+			<h1>添加信用卡</h1>
+			<input type="number">
+			<p>请使用您自己的卡片, 否则缘可能无法化到</p>
+			<div class="ui-grid-a">
+				<div class="ui-block-a"><a href="#choose-credit-card" class="ui-btn ui-corner-all ui-shadow">返回</a></div>
+				<div class="ui-block-b"><a href="#success-tip" class="ui-btn ui-corner-all ui-shadow">确认</a></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<div data-role="page" class="ui-content" id="success-tip">
+		<div>
+			<div style="margin: auto; width: 300px; height: 300; border-radius: 150px; background-color: gray; font-size: 2em;">img</div>
+			<p>您的信用卡将在1个工作日内收到借款!</p>
+			<a href="#" class="ui-btn">知道了</a>
+		</div>
+	</div>
+	
+	<div data-role="dialog" id="payback">
+		<div class"ui-content">
+			<div>
+				
 			</div>
 		</div>
 	</div>
