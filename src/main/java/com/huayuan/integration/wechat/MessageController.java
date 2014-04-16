@@ -62,13 +62,13 @@ public class MessageController {
 
     }
 
-    private String getAccessToken() {
+    public String getAccessToken() {
         String token = REST_TEMPLATE.getForObject(ACCESS_TOKEN_URL_PATTERN,
                 String.class, Configuration.appId(), Configuration.appSecret());
-        return StringUtils.split(token, ":")[2];
+        return  StringUtils.mid(token, 15, token.length() - 35);
     }
 
-    private User getUser(final String openId) {
+    public User getUser(final String openId) {
         String userResponseJson = REST_TEMPLATE.getForObject(GET_USER_URL_PATTERN, String.class, openId);
         try {
             return MAPPER.readValue(userResponseJson, User.class);
@@ -91,8 +91,9 @@ public class MessageController {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
+        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         MessageController messageController = context.getBean("messageController", MessageController.class);
+        messageController.getAccessToken();
 
     }
 }
