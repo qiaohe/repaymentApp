@@ -11,6 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.oxm.Marshaller;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Qualifier;
 import javax.servlet.http.HttpServletRequest;
@@ -38,18 +40,19 @@ import java.util.Date;
  */
 @Controller(value = "messageController")
 public class MessageController {
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
     private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     @Inject
     private MemberService memberService;
-
     @Inject
     private Unmarshaller unmarshaller;
     @Inject
     private Marshaller marshaller;
+    @Resource
+    private RestTemplate restTemplate;
+
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
     @ResponseBody
@@ -62,26 +65,25 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.POST)
-    @ResponseBody
-    public String handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
         if (eventMessage.isSubscribeEvent()) {
             addMember(getUser(eventMessage.getFromUserName()));
         } else if (eventMessage.isCustomMenuEvent()) {
             final String rm = getReplyMessage(eventMessage);
-            response.getWriter().write(rm);
+            response.getWriter().println(rm);
         }
-        return eventMessage.getFromUserName();
-
     }
 
     private String getReplyMessage(EventMessage eventMessage) {
-        TextMessage rm = new TextMessage();
+        EventMessage rm = new EventMessage();
         rm.setFromUserName(eventMessage.getToUserName());
         rm.setToUserName(eventMessage.getFromUserName());
         rm.setMsgType("text");
         rm.setCreateTime(new Date().getTime());
-        rm.setContent("<a href=\"http://180.168.35.37/repaymentApp/index.html\">信用卡</a> ");
+        rm.setFuncFlag("0");
+        rm.setContent("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId=1\">评估您的信用</a> ");
         StringWriter sw = new StringWriter();
         try {
             marshaller.marshal(rm, new StreamResult(sw));
@@ -103,13 +105,14 @@ public class MessageController {
     }
 
     public String getAccessToken() {
-        String token = REST_TEMPLATE.getForObject(ACCESS_TOKEN_URL_PATTERN,
+        String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN,
                 String.class, Configuration.appId(), Configuration.appSecret());
-        return  StringUtils.mid(token, 15, token.length() - 35);
+        System.out.println(StringUtils.mid(token, 17, token.length() - 37));
+        return StringUtils.mid(token, 17, token.length() - 37);
     }
 
     public User getUser(final String openId) {
-        String userResponseJson = REST_TEMPLATE.getForObject(GET_USER_URL_PATTERN, String.class, openId);
+        String userResponseJson = restTemplate.getForObject(GET_USER_URL_PATTERN, String.class, getAccessToken(), openId);
         try {
             return MAPPER.readValue(userResponseJson, User.class);
         } catch (IOException e) {

@@ -2,14 +2,12 @@ package com.huayuan.integration.wechat.domain;
 
 import org.apache.commons.lang.StringUtils;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by Johnson on 4/15/14.
  */
+@XmlType(name = "eventMessage")
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EventMessage {
@@ -26,6 +24,11 @@ public class EventMessage {
     private String event;
     @XmlElement(name = "EventKey")
     private String eventKey;
+    @XmlElement(name = "Content")
+    private String content;
+    @XmlElement(name = "FuncFlag")
+    private String funcFlag;
+
 
     public EventMessage() {
 
@@ -77,6 +80,22 @@ public class EventMessage {
 
     public void setEventKey(String eventKey) {
         this.eventKey = eventKey;
+    }
+
+    public String getFuncFlag() {
+        return funcFlag;
+    }
+
+    public void setFuncFlag(String funcFlag) {
+        this.funcFlag = funcFlag;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public boolean isSubscribeEvent() {

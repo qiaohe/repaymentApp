@@ -1,16 +1,14 @@
 package com.huayuan.integration.wechat.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by Johnson on 4/14/14.
  */
-@XmlRootElement(name = "xml")
+@XmlRootElement(name = "TextMessage")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TextMessage {
+    @XmlElement(name = "ToUserName")
     private String toUserName;
     @XmlElement(name = "FromUserName")
     private String fromUserName;
@@ -22,6 +20,8 @@ public class TextMessage {
     private String content;
     @XmlElement(name = "MsgId")
     private Long msgId;
+    @XmlElement(name = "FuncFlag")
+    private String funcFlag;
 
     public TextMessage() {
 
@@ -73,5 +73,13 @@ public class TextMessage {
 
     public void setMsgId(Long msgId) {
         this.msgId = msgId;
+    }
+
+    public String getFuncFlag() {
+        return funcFlag;
+    }
+
+    public void setFuncFlag(String funcFlag) {
+        this.funcFlag = funcFlag;
     }
 }
