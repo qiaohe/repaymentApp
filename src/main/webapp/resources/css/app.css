@@ -58,8 +58,11 @@ body{
 }
 
 #credit-card-number-text{
-	background: url(../img/icbc.png) no-repeat scroll 3px 3px;
-	padding-left: 55px;
+	/* background-image: url(../img/icbc.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	padding-left: 55px; */
+	width: 80%;
 }
 
 .tip-image{
@@ -84,6 +87,7 @@ body{
 #limit-step2 p{
 	font-size: 1.4em;
 	color: rgb(230, 126, 34);
+	margin-bottom: 0;
 }
 
 /* billmail */

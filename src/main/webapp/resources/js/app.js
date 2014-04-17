@@ -1,20 +1,25 @@
 $(function () {
-
-var browser= (function(){
-    var ua= navigator.userAgent, tem, 
-    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*([\d\.]+)/i) || [];
-    if(/trident/i.test(M[1])){
-        tem=  /\brv[ :]+(\d+(\.\d+)?)/g.exec(ua) || [];
-        return 'IE '+(tem[1] || '');
-    }
-    M= M[2]? [M[1], M[2]]:[navigator.appName, navigator.appVersion, '-?'];
-    if((tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
-    return M.join(' ');
-})();
-alert(browser);
-
+	// show the browser version
+	var browser= (function(){
+		var ua= navigator.userAgent, tem, 
+		M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*([\d\.]+)/i) || [];
+		if(/trident/i.test(M[1])){
+			tem=  /\brv[ :]+(\d+(\.\d+)?)/g.exec(ua) || [];
+			return 'IE '+(tem[1] || '');
+		}
+		M= M[2]? [M[1], M[2]]:[navigator.appName, navigator.appVersion, '-?'];
+		if((tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+		return M.join(' ');
+	})();
+	// alert(browser);
 
 	var api_path = "http://192.168.0.185:8080/repayment/api/";
+	// var id_pattern = /(?:memberId=)[\d+](&|\s)/;
+	var id_pattern = /[memberId=]\d+/;
+	var member_id = id_pattern.exec("xxx192.168xxxxx?memberId=3245678");
+	member_id = member_id[0].slice(1, member_id[0].length);
+	var member_path = api_path + "members/" + member_id +"/";
+	
     var bincode, industry, education;
 
     var window_height = $(window).height();
@@ -49,7 +54,7 @@ alert(browser);
         formData.append("idCardFrontFile", e.target.files[0]);
 		$.mobile.loading('show');
         $.ajax({
-            url: api_path + "members/1/idCardFront",
+            url: member_path + "idCardFront",
             type: "POST",
             data: formData,
             processData: false,
@@ -77,7 +82,7 @@ alert(browser);
         formData.append("idCardBackFile", e.target.files[0]);
 		$.mobile.loading('show');
         $.ajax({
-            url: api_path + "members/1/idCardBack",
+            url: member_path + "idCardBack",
             type: "POST",
             data: formData,
             processData: false,
@@ -98,48 +103,47 @@ alert(browser);
                 bincode = json;
 	});
 	
-	// $('#credit-card-number-text').removeClass('ccnt-1').trigger('create');
-	$('#credit-card-number-text').css({'background-color': 'red', 'background': 'http://192.168.0.185:8080/repayment/resources/img/ccb.png'});
-	// $('#limit').trigger('create');
-	
     $('#credit-card-number-text').keyup(function () {
 		num = $(this).val();
 		if(num.length > 1){
 			if(3 == num[0]){
 				if(5 == num[1])
-					$(this).css('background', 'url(../img/jcb.png) no-repeat scroll 3px 3px');
+					$('#card-img').attr('src', 'resources/img/jcb.png');
 				else if(6 == num[1])
-					$(this).css('background', 'url(../img/dalai.png) no-repeat scroll 3px 3px');
+					$('#card-img').attr('src', 'resources/img/dalai.png');
 				else if(7 == num[1])
-					$(this).css('background', 'url(../img/yuntong.png) no-repeat scroll 3px 3px');
+					$('#card-img').attr('src', 'resources/img/yuntong.png');
 			}	
 			else if(4 == num[0])
-				$(this).css('background', 'url(../img/visa.png) no-repeat scroll 3px 3px');
+				$('#card-img').attr('src', 'resources/img/visa.png');
 			else if(5 == num[0])
-				$(this).css('background', 'url(../img/mastercard.png) no-repeat scroll 3px 3px');
+				$('#card-img').attr('src', 'resources/img/mastercard.png');
 			else if(6 == num[0] && 2 == num[1])
-				$(this).css('background', 'url(../img/cup.png) no-repeat scroll 3px 3px !important');
-			else
-				// $(this).css('background', 'url(../img/ccb.png) no-repeat scroll 3px 3px');
-				console.log(num + ' is invalid');
+				$('#card-img').attr('src', 'resources/img/cup.png');
 		}
+		else
+			$('#card-img').attr('src', 'resources/img/blank.png');
     });
 
 	$('#next-step').click(function(){
 		if (!industry) {
 			$.getJSON(api_path + "dict/industry", function (json) {
+				var $industry_select = $('#industry-select');
 				for(var i in json) {
-					$('#industry-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+					$industry_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
 				}
+				$industry_select.selectmenu('refresh');
 				industry = 1;
             });
         }
 
 		if (!education) {
 			$.getJSON(api_path + "dict/education", function (json) {
+				var $education_select = $('#education-select');
 				for(var i in json) {
-					$('#education-select').append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+					$education_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
 				}
+				$education_select.selectmenu('refresh');
 				education = 1;
 			});
 		}
@@ -215,7 +219,7 @@ alert(browser);
 	var creditCards=[];
     $('#loan-request').click(function(){
 		if(creditCards.length < 2){
-			$.get(api_path + "members/1/creditCard", function(data){
+			$.get(member_path + "creditCard", function(data){
 				var $chosen_number = $('#chosen-number');
 				
 				$.each(data, function(idx, obj){

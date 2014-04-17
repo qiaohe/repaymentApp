@@ -16,26 +16,29 @@
 				<h2>废话少说, 直接啪啪啪吧~<br>请横向拍摄, 尽量让卡片填满镜头.</h2>
 			</div>
 			<div>
-				<br><li>
-					<!-- <fieldset class="ui-field-contain" id="id-card-front"> -->
+				<li>
+					<fieldset class="ui-field-contain" id="id-card-front">
 						<img src="resources/img/front-tip-img-1.png" class="tip-image">
-						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-front-text" value="拍摄身份证·正面"></div><hr>
-					<!-- </fieldset> -->
+						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-front-text" value="拍摄身份证·正面"></div>
+					</fieldset>
 				</li>
 				<li>
 					<fieldset class="ui-field-contain" id="id-card-back">
 						<img src="resources/img/front-tip-img-2.png" class="tip-image">
 						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-back-text" value="拍摄身份证·反面"></div>
 					</fieldset>
-				</li><hr>
+				</li>
 				<li>
 					<fieldset class="ui-field-contain" id="credit-card-number">
 						<img src="resources/img/front-tip-img-3.png" class="tip-image">
-						<div class="input-container" id="container-credit"><input type="number" id="credit-card-number-text" placeholder="请输入信用卡卡号" data-enhanced="false"></div>
-					</fieldset>
+						<div class="input-container" id="container-credit">
+							<img src="resources/img/blank.png" style="float: left; margin: 9px 0 0 3px;" id="card-img"><input type="number" id="credit-card-number-text" placeholder="请输入信用卡卡号">
+						</div>
+					</fieldset>	
 				</li>
 			</div>
 			<a href="#limit-step2" class="ui-btn" id="next-step">下一步</a>
+			<a href="test.html" class="ui-btn">To test.html</a>
 		</div>
 	</div>
 	
@@ -72,12 +75,13 @@
 			</div>
 			<p>信用卡账单E-mail</p>
 			<fieldset data-role="controlgroup">
-				<input type="radio" name="billmail-text" id="billmail-type-in">
+				<!-- <input type="radio" name="billmail-text" id="billmail-type-in">
 				<label for="billmail-type-in">
 					<input type="email" style="margin-top: 0;" id="billmail-different-text">
 				</label>
 				<input type="radio" name="billmail-text" id="billmail-same" checked="checked">
-				<label for="billmail-same" id="billmail-same-shown"></label>
+				<label for="billmail-same" id="billmail-same-shown"></label> -->
+				<div style="width: 5%;"><label for="xxx"><input type="radio"></label></div><div style="float: left; length: 20%;"><input type="email" id="xxx"></div>
 			</fieldset>
 			<p>上述E-mail密码</p>
 			<input type="password" id="mail-password">
