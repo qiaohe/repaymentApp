@@ -29,7 +29,6 @@ public class EventMessage {
     @XmlElement(name = "FuncFlag")
     private String funcFlag;
 
-
     public EventMessage() {
 
     }

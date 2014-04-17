@@ -5,15 +5,14 @@ import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.SexEnum;
 import com.huayuan.domain.wechat.User;
 import com.huayuan.integration.wechat.domain.EventMessage;
-import com.huayuan.integration.wechat.domain.TextMessage;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
@@ -23,15 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.inject.Qualifier;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -50,7 +48,7 @@ public class MessageController {
     private Unmarshaller unmarshaller;
     @Inject
     private Marshaller marshaller;
-    @Resource
+    @Inject
     private RestTemplate restTemplate;
 
 
@@ -70,10 +68,28 @@ public class MessageController {
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
         if (eventMessage.isSubscribeEvent()) {
             addMember(getUser(eventMessage.getFromUserName()));
-        } else if (eventMessage.isCustomMenuEvent()) {
-            final String rm = getReplyMessage(eventMessage);
-            response.getWriter().println(rm);
         }
+        final String rm = getReplyMessage(eventMessage);
+        response.getWriter().println(rm);
+    }
+
+    private String getContent(EventMessage message) {
+        final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
+        if (message.isSubscribeEvent()) {
+            return MessageFormat.format("欢迎关注“化缘“。\n" +
+                    "\n" +
+                    "卡中羞涩？来化缘吧！足不出户就申请到借款，偿还信用卡账，最高比还信用卡最低还款额省50%。\n" +
+                    "\n" +
+                    "心动了吗？<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
+        } else if (message.isCustomMenuEvent()) {
+            if (message.getEventKey().equalsIgnoreCase("M_001_CREDIT_ESTIMATION")) {
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", message.getEventKey());
+            } else if (message.getEventKey().equalsIgnoreCase("M_002_APPLY_LOAN")) {
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此申请借款</a>", message.getEventKey());
+            } else if (message.getEventKey().equalsIgnoreCase("M_003_REPAYMENT"))
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此归还借款</a>", message.getEventKey());
+        }
+        return "";
     }
 
     private String getReplyMessage(EventMessage eventMessage) {
@@ -83,7 +99,7 @@ public class MessageController {
         rm.setMsgType("text");
         rm.setCreateTime(new Date().getTime());
         rm.setFuncFlag("0");
-        rm.setContent("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId=1\">评估您的信用</a> ");
+        rm.setContent(getContent(eventMessage));
         StringWriter sw = new StringWriter();
         try {
             marshaller.marshal(rm, new StreamResult(sw));
@@ -92,6 +108,12 @@ public class MessageController {
             LOGGER.error(e.getLocalizedMessage());
         }
         return null;
+    }
+
+    public String test() {
+
+        ResponseEntity<String> response = restTemplate.getForEntity("http://www.sina.com.cn", String.class);
+        return response.getBody();
     }
 
     private void addMember(User user) {
@@ -134,9 +156,13 @@ public class MessageController {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        MessageController messageController = context.getBean("messageController", MessageController.class);
-        messageController.getAccessToken();
+//        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+//        MemberService messageController = context.getBean("memberService", MemberService.class);
+//        Member member = new Member();
+//        member.setWcNo("oJBxVuI4nC9SHOLEPwoYtmUzYASs");
+//        System.out.println(messageController.createMemberFromWeChat(member));
+
+        System.out.println(MessageFormat.format("{0}", 12l));
 
     }
 }

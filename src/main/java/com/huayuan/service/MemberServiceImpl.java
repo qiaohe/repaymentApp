@@ -55,6 +55,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member createMemberFromWeChat(Member member) {
+        Member mb = memberRepository.findByWcNo(member.getWcNo());
+        if (mb == null) return update(member);
+        return mb;
+    }
+
+    @Override
+    public Member findMemberBy(String weChatNo) {
+        return memberRepository.findByWcNo(weChatNo);
+    }
+
+    @Override
     public void updateIdCard(Member member, IdCard idCard) {
         IdCard ic = idCardRepository.findOne(member.getIdCard().getId());
         ic.setIssuer(idCard.getIssuer());

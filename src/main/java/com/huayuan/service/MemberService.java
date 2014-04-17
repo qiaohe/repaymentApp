@@ -18,6 +18,10 @@ public interface MemberService {
 
     public Member update(Member member);
 
+    public Member createMemberFromWeChat(Member member);
+
+    public Member findMemberBy(String weChatNo);
+
     public void updateIdCard(Member member, IdCard idCard);
 
     public Member find(Long id) throws MemberNotFoundException;
