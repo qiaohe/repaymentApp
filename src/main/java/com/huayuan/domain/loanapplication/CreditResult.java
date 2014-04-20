@@ -37,7 +37,7 @@ public class CreditResult implements Serializable {
 
 
     @Column(name = "LAST_DECISION")
-    private Integer lastDecision;
+    private String lastDecision;
 
 
     @Column(name = "LAST_REASON_1")
@@ -115,11 +115,11 @@ public class CreditResult implements Serializable {
     }
 
 
-    public Integer getLastDecision() {
+    public String getLastDecision() {
         return lastDecision;
     }
 
-    public void setLastDecision(Integer lastDecision) {
+    public void setLastDecision(String lastDecision) {
         this.lastDecision = lastDecision;
     }
 

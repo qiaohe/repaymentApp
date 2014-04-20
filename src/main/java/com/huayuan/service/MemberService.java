@@ -41,4 +41,8 @@ public interface MemberService {
     public void addBill(Member member, CreditCardBill creditCardBill);
 
     public List<CreditCard> getCreditCards(Long memberId);
+
+    public Integer getCrl(Long id);
+
+    public Integer getStatus(Long memberId);
 }

@@ -82,6 +82,15 @@ public class Member implements Serializable {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
+    @Column(name = "PRE_CRL")
+    private Integer preCrl;
+
+    @Column(name = "PRE_SCORE")
+    private Double preScore;
+
+    @Column(name = "PRE_RATING")
+    private Double preRating;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
@@ -276,6 +285,30 @@ public class Member implements Serializable {
 
     public void setIdCard(IdCard idCard) {
         this.idCard = idCard;
+    }
+
+    public Integer getPreCrl() {
+        return preCrl;
+    }
+
+    public void setPreCrl(Integer preCrl) {
+        this.preCrl = preCrl;
+    }
+
+    public Double getPreScore() {
+        return preScore;
+    }
+
+    public void setPreScore(Double preScore) {
+        this.preScore = preScore;
+    }
+
+    public Double getPreRating() {
+        return preRating;
+    }
+
+    public void setPreRating(Double preRating) {
+        this.preRating = preRating;
     }
 
     public void addCreditCard(CreditCard creditCard) {
