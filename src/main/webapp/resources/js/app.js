@@ -13,17 +13,18 @@ $(function () {
 	})();
 	// alert(browser);
 
-	var api_path = "http://192.168.0.185:8080/repayment/api/";
-	// var id_pattern = /(?:memberId=)[\d+](&|\s)/;
-	var id_pattern = /[memberId=]\d+/;
-	var member_id = id_pattern.exec("xxx192.168xxxxx?memberId=3245678");
-	member_id = member_id[0].slice(1, member_id[0].length);
-	var member_path = api_path + "members/" + member_id +"/";
+	var api_path = "http://180.168.35.37:80/repaymentApp/api/";
+	// var member_path = api_path + "members/1/";
+	// var id_pattern = /(?:memberId=)\d+/;
+	// var member_id = id_pattern.exec(window.location).toString();
+	// member_id = member_id.slice(9, member_id.length);
+	var member_path = api_path + "members/" + "11" +"/";
+	alert(member_path);
 	
     var bincode, industry, education;
 
-    var window_height = $(window).height();
-    var window_width = $(window).width();
+    var window_height = window.innerHeight;
+    var window_width = window.innerWidth;
 
     function setHeight($obj, para) {
         if (para <= 1)
@@ -43,11 +44,8 @@ $(function () {
     setHeight($('#front-cover'), 0.39);
     $('.tip-image').css({'max-height': 0.8 * $('#id-card-front-text').height(), 'min-height': 0.8 * $('#id-card-front-text').height()});
     // upload front
-    $('#id-card-front-text').after($('<div><input type="file" accept="image/jpg, image/jpeg" id="id-card-front-upload" capture></div>').css('display', 'none'));
 
-    $('#id-card-front-text').click(function () {
-        $('#id-card-front-upload').trigger('click');
-    });
+    
 
     $('#id-card-front-upload').change(function (e) {
         var formData = new FormData();
@@ -61,22 +59,16 @@ $(function () {
             contentType: false,
             dataType: "json",
             success: function (json) {
-				$('input[id=id-card-front-text]').val(json).css('background-color', 'green').button("refresh");
+				$('#id-card-front').html(json).css('color', '#aacc00');
 				$.mobile.loading('hide');
             },
             error: function () {
-				$('input[id=id-card-front-text]').val('无法识别, 请重新拍摄!').css('background-color', 'red').button("refresh");
+				$('#id-card-front').html('无法识别, 请重新拍摄!').css('color', '#cc0000');
 				$.mobile.loading('hide');
 			}
         });
     });
     // upload back
-    $('#id-card-back-text').after($('<div><input type="file" accept="image/jpg, image/jpeg" id="id-card-back-upload" capture></div>').css('display', 'none'));
-
-    $('#id-card-back-text').click(function () {
-        $('#id-card-back-upload').trigger('click');
-    });
-
     $('#id-card-back-upload').change(function (e) {
         var formData = new FormData();
         formData.append("idCardBackFile", e.target.files[0]);
@@ -87,13 +79,13 @@ $(function () {
             data: formData,
             processData: false,
             contentType: false,
-            dataType: "json",
-            success: function (json) {
-				$('input[id=id-card-back-text]').val(json).css('background-color', 'green').button("refresh");
+            dataType: "text",
+            success: function (text) {
+				$('#id-card-back').html(text).css('color', '#aacc00');
 				$.mobile.loading('hide');
             },
             error: function () {
-				$('input[id=id-card-back-text]').val('无法识别, 请重新拍摄!').css('background-color', 'red').button("refresh");
+				$('#id-card-back').html('无法识别, 请重新拍摄!').css('color', '#cc0000');
 				$.mobile.loading('hide');
 			}
         });
@@ -103,7 +95,7 @@ $(function () {
                 bincode = json;
 	});
 	
-    $('#credit-card-number-text').keyup(function () {
+    $('#credit-card-number').keyup(function () {
 		num = $(this).val();
 		if(num.length > 1){
 			if(3 == num[0]){
@@ -128,6 +120,11 @@ $(function () {
 	$('#next-step').click(function(){
 		if (!industry) {
 			$.getJSON(api_path + "dict/industry", function (json) {
+			
+				if(!json[0]){
+					json = [{"key":"1","value":"政府机关、社会团体"},{"key":"2","value":"军事、公检法"},{"key":"3","value":"学校、医院"},{"key":"4","value":"专业事务所"},{"key":"5","value":"信息通信、IT互联网"},{"key":"6","value":"金融业"},{"key":"7","value":"交通运输"},{"key":"8","value":"公共事业"},{"key":"9","value":"能源矿产"},{"key":"10","value":"商业零售、内外贸易"},{"key":"11","value":"房地产、建筑业"},{"key":"12","value":"加工、制造业"},{"key":"13","value":"餐饮、酒店、旅游"},{"key":"14","value":"服务、咨询"},{"key":"15","value":"媒体、体育、娱乐"},{"key":"16","value":"农林牧渔"},{"key":"17","value":"网店店主"},{"key":"18","value":"学生"},{"key":"19","value":"自由职业者"},{"key":"20","value":"其他"}];
+				}
+				
 				var $industry_select = $('#industry-select');
 				for(var i in json) {
 					$industry_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
@@ -139,6 +136,11 @@ $(function () {
 
 		if (!education) {
 			$.getJSON(api_path + "dict/education", function (json) {
+				
+				if(!json[0]){
+					json = [{"key":"1","value":"初中及以下"},{"key":"2","value":"高中、中专"},{"key":"3","value":"大专"},{"key":"4","value":"本科"},{"key":"5","value":"硕士"},{"key":"6","value":"博士"}];
+				}
+				
 				var $education_select = $('#education-select');
 				for(var i in json) {
 					$education_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
@@ -158,7 +160,7 @@ $(function () {
     });
 
     $('#step2-submit').click(function () {
-        $('#billmail-same-shown').html($('#email-text').val());
+        $('#same-mail-shown').html($('#email-text').val());
     });
 //billmail
     setWidth($('#billmail'), 0.8);
@@ -166,31 +168,45 @@ $(function () {
     setHeight($('#billmail-cover'), 0.25);
     // without the billmail
     $('#skip').click(function () {
+		// $.mobile.navigate('#waiting-for-limit');
         $.ajax({
-            url: api_path + "members/1",
+            url: member_path,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-               creditCarNo: $('#credit-card-number-text').val(),
+               creditCarNo: $('#credit-card-number').val(),
                industry: $('#industry-select').val(),
                education: $('#education-select').val(),
                email: $('#email-text').val()
             }),
             dataType: "json",
             success: function (json) {
-                console.log(json);
-				$.mobile.changePage($("#wait-for-limit"), "none");
-				alert('您的额度是' + json);
+                // json = $.parseJSON(json);
+				$('#result-amount').html("&yen " + json.creditLimit);
+				$('#result-discription').html("您的额度打败了" + 100 * json.rankOfLimit + "&#37的用户! xxxxxxx");
+				$('#option-1').html("现在就去复活信用卡");
+				$('#option-2').html("share it");
+				$('#option-3').html("换张信用卡再试试");
+				alert(json.creditLimit + ' ' + json.rankOfLimit);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
-            }
+            error: function () {
+                alert('error!');
+            },
+			complete: function(){
+				$.mobile.navigate('#limit-result');
+			}
         });
     });
     // with the billmail
     $('#confirm').click(function () {
+		$.mobile.navigate('#waiting-for-limit');
+		var ml;
+		if($('#bill-mail-typein').val())
+			ml = $('#bill-mail-typein').val();
+		else
+			ml = $('#email-text').val();
         $.ajax({
-            url: api_path + "members/1",
+            url: member_path,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
@@ -198,17 +214,20 @@ $(function () {
 				industry: $('#industry-select').val(),
 				education: $('#education-select').val(),
 				email: $('#email-text').val(),
-				billEmail: $('#email-text').val(),
+				billEmail: ml,
 				billPassword: $('#mail-password').val()
             }),
             dataType: "json",
             success: function (json) {
-                console.log(json);
-				$.mobile.changePage($("#wait-for-limit"), "none");
-				alert('您的额度是' + json);
+				$('#result-amount').html("&yen " + json.creditLimit);
+				$('#result-discription').html("您的额度打败了" + 100 * json.rankOfLimit + "&#37的用户! xxxxxxx");
+				$('#option-1').html("现在就去复活信用卡");
+				$('#option-2').html("share it");
+				$('#option-3').html("换张信用卡再试试");
+				$.mobile.navigate($("#limit-result"), "none");
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            error: function () {
+                console.log('error!');
             }
         });
     });
@@ -242,6 +261,40 @@ $(function () {
 	});
 	
 	
+	var validate_code;
+	$('#acquire-vcode').click(function(){
+		var phone_num = $('#phone-number').val();
+		if(!phone_num || phone_num.length != 11)
+			alert('wrong number!');
+		else{
+			$.get(api_path + phone_num, function(vcode){
+				alert("your validate code is " + vcode + "!");
+				validate_code = vcode;
+			});
+		}
+	});
+	
+	$('#vcode-typed-in').keyup(function(){
+		var vcode = $(this).val();
+		if(vcode.length == 6){
+			$.ajax({
+				url: api_path + /mobilePhone/code,
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				dataType: "json",
+				success: function (json) {
+					$('#id-card-front').html(json).css('color', '#aacc00');
+					$.mobile.loading('hide');
+				},
+				error: function () {
+					$('#id-card-front').html('无法识别, 请重新拍摄!').css('color', '#cc0000');
+					$.mobile.loading('hide');
+				}
+			});
+		}
+	});
 	
 	
 });
