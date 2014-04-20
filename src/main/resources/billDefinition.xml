@@ -12,7 +12,17 @@
     </bill>
     <bill>
         <bank>浦东发展银行</bank>
-        <title>中国建设银行信用卡电子账单</title>
+        <title>浦发银行-信用卡电子账单</title>
+        <amtRmb></amtRmb>
+        <amtUsd></amtUsd>
+        <crl>信用额度</crl>
+        <cycleFrom></cycleFrom>
+        <cycleThru></cycleThru>
+        <payDue>到期还款日</payDue>
+    </bill>
+    <bill>
+        <bank>广发银行</bank>
+        <title>广发卡</title>
         <amtRmb></amtRmb>
         <amtUsd></amtUsd>
         <crl>信用额度</crl>

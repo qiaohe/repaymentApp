@@ -13,9 +13,9 @@ public class BillEmail {
     private static final String IMAP_PATTERN = "imap.{0}";
     private final String email;
     private final String password;
-    private final Integer bank;
+    private final String bank;
 
-    public BillEmail(String email, String password, Integer bank) {
+    public BillEmail(String email, String password, String bank) {
         this.email = email;
         this.password = password;
         this.bank = bank;
@@ -29,7 +29,7 @@ public class BillEmail {
         return password;
     }
 
-    public Integer getBank() {
+    public String getBank() {
         return bank;
     }
 
