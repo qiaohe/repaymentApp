@@ -3,16 +3,13 @@ package com.huayuan.integration.wechat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.SexEnum;
-import com.huayuan.domain.wechat.User;
 import com.huayuan.integration.wechat.domain.EventMessage;
+import com.huayuan.integration.wechat.domain.User;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
@@ -83,11 +80,11 @@ public class MessageController {
                     "心动了吗？<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
         } else if (message.isCustomMenuEvent()) {
             if (message.getEventKey().equalsIgnoreCase("M_001_CREDIT_ESTIMATION")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", message.getEventKey());
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_002_APPLY_LOAN")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此申请借款</a>", message.getEventKey());
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此申请借款</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_003_REPAYMENT"))
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此归还借款</a>", message.getEventKey());
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此归还借款</a>", memberId);
         }
         return "";
     }
@@ -108,12 +105,6 @@ public class MessageController {
             LOGGER.error(e.getLocalizedMessage());
         }
         return null;
-    }
-
-    public String test() {
-
-        ResponseEntity<String> response = restTemplate.getForEntity("http://www.sina.com.cn", String.class);
-        return response.getBody();
     }
 
     private void addMember(User user) {
@@ -153,16 +144,5 @@ public class MessageController {
         }
         final String checkedSignature = DigestUtils.shaHex(content.toString());
         return StringUtils.isNotEmpty(checkedSignature) && checkedSignature.equals(signature.toUpperCase());
-    }
-
-    public static void main(String[] args) {
-//        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-//        MemberService messageController = context.getBean("memberService", MemberService.class);
-//        Member member = new Member();
-//        member.setWcNo("oJBxVuI4nC9SHOLEPwoYtmUzYASs");
-//        System.out.println(messageController.createMemberFromWeChat(member));
-
-        System.out.println(MessageFormat.format("{0}", 12l));
-
     }
 }

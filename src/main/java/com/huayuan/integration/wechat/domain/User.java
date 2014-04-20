@@ -1,10 +1,6 @@
-package com.huayuan.domain.wechat;
-
+package com.huayuan.integration.wechat.domain;
 import java.io.Serializable;
 
-/**
- * Created by Johnson He  on 14-3-25.
- */
 public class User implements Serializable {
     private static final long serialVersionUID = 8195479836500869759L;
 

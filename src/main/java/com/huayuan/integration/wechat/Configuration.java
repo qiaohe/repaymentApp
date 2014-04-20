@@ -21,14 +21,14 @@ public class Configuration {
     }
 
     public static String token() {
-        return CONFIG.getString("token");
+        return CONFIG.getString("weChat.token");
     }
 
     public static String appId() {
-        return CONFIG.getString("appId");
+        return CONFIG.getString("weChat.appId");
     }
 
     public static String appSecret() {
-        return CONFIG.getString("appSecret");
+        return CONFIG.getString("weChat.appSecret");
     }
 }
