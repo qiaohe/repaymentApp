@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.search.SentDateTerm;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -45,17 +44,8 @@ public final class EmailSearcher {
             Folder folder = getFolder();
             int index = folder.getMessageCount();
             final Date date = Day.TODAY.plusMonths(-2);
-//            TextMessage[] messages = folder.search(new SentDateTerm(SentDateTerm.GT, date));
-//            for (TextMessage message : messages) {
-//                if (isMatch(message, subject)) return getContent(message);
-//            }
-//            return null;
-
             while (index > 0) {
                 Message[] messages = folder.getMessages(index - STEP < 0 ? 1 : index - STEP, index);
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.ENVELOPE);
-                folder.fetch(messages, fp);
                 for (Message message : messages) {
                     if (message.getSentDate().before(date)) return null;
                     if (isMatch(message, subject)) return getContent(message);

@@ -83,27 +83,10 @@ public class MemberController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public CreditLimitDto updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {
+    public CreditLimitDto testCreditLimit(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         memberDto.setMemberId(id);
         Integer creditLimit = memberService.testCreditLimit(memberDto);
         String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
-    }
-
-    @RequestMapping(value = "/{id}/billEmail", method = RequestMethod.POST)
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    public void updateBillEmail(@PathVariable Long id, String billEmail, String password) {
-        Member member = memberService.find(id);
-        memberService.updateBillEmail(member, billEmail, password);
-    }
-
-
-    @RequestMapping(value = "/{id}/testResult", method = RequestMethod.GET, produces = "application/json")
-    public ModelAndView testResult(@PathVariable Long id, String crl) {
-        ModelAndView model = new ModelAndView("testResult");
-        model.addObject("crl", crl);
-        model.addObject("id", id);
-        return model;
     }
 }

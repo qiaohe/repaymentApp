@@ -2,6 +2,7 @@ package com.huayuan.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -16,9 +17,9 @@ public class MemberDto implements Serializable {
     private String email;
     private int industry;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int billEmail;
+    private String billEmail;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int billPassword;
+    private String billPassword;
 
     public MemberDto() {
     }
@@ -72,19 +73,23 @@ public class MemberDto implements Serializable {
         return creditCarNo;
     }
 
-    public int getBillEmail() {
+    public String getBillEmail() {
         return billEmail;
     }
 
-    public void setBillEmail(int billEmail) {
+    public void setBillEmail(String billEmail) {
         this.billEmail = billEmail;
     }
 
-    public int getBillPassword() {
+    public String getBillPassword() {
         return billPassword;
     }
 
-    public void setBillPassword(int billPassword) {
+    public void setBillPassword(String billPassword) {
         this.billPassword = billPassword;
+    }
+
+    public boolean crawlBillIfNeeded() {
+       return StringUtils.isNotEmpty(billEmail) && StringUtils.isNotEmpty(billPassword);
     }
 }

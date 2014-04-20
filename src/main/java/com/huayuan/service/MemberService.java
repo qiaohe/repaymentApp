@@ -1,6 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
+import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.CreditCardBill;
 import com.huayuan.domain.member.IdCard;
@@ -36,9 +37,7 @@ public interface MemberService {
 
     public void removeCreditCard(Member member, String creditNo);
 
-    public void updateBillEmail(Member member, String billEmail, String password);
-
-    public void addBill(Member member, CreditCardBill creditCardBill);
+    public CreditCardBill addBill(Member member, BillEmail billEmail);
 
     public List<CreditCard> getCreditCards(Long memberId);
 }

@@ -45,6 +45,11 @@ public class MemberServiceImpl implements MemberService {
         pc.setMember(creditCard.getMember());
         pc.setIdCard(pc.getMember().getIdCard());
         pc.setCreditCard(creditCard);
+        if (memberDto.crawlBillIfNeeded()) {
+            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), creditCard.getBank());
+            CreditCardBill bill = addBill(member, billEmail);
+            pc.setCreditCardBill(bill);
+        }
         pc = preCreditRepository.save(pc);
         return preCreditRepository.execute(pc);
     }
@@ -124,15 +129,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateBillEmail(Member member, String billEmail, String password) {
+    public CreditCardBill addBill(Member member, BillEmail billEmail) {
         BillCrawler crawler = new BillCrawler();
-        addBill(member, crawler.crawl(new BillEmail(billEmail, password, "")));
-    }
-
-    @Override
-    public void addBill(Member member, CreditCardBill creditCardBill) {
-        creditCardBill.setMember(member);
-        creditCardBillRepository.save(creditCardBill);
+        CreditCardBill bill = crawler.crawl(billEmail);
+        bill.setMember(member);
+        return creditCardBillRepository.save(bill);
     }
 
     @Override
