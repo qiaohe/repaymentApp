@@ -2,6 +2,7 @@ package com.huayuan.domain.crawler;
 
 import org.apache.commons.lang.StringUtils;
 
+import javax.inject.Inject;
 import java.text.MessageFormat;
 
 /**
@@ -12,9 +13,9 @@ public class BillEmail {
     private static final String IMAP_PATTERN = "imap.{0}";
     private final String email;
     private final String password;
-    private final String bank;
+    private final Integer bank;
 
-    public BillEmail(String email, String password, String bank) {
+    public BillEmail(String email, String password, Integer bank) {
         this.email = email;
         this.password = password;
         this.bank = bank;
@@ -28,7 +29,7 @@ public class BillEmail {
         return password;
     }
 
-    public String getBank() {
+    public Integer getBank() {
         return bank;
     }
 
