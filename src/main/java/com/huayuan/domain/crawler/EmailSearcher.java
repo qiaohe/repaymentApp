@@ -61,7 +61,7 @@ public final class EmailSearcher {
     private String getContent(Message message) throws IOException, MessagingException {
         if (message.getContent() instanceof MimeMultipart) {
             MimeMultipart part = (MimeMultipart) message.getContent();
-            return part.getBodyPart(0).getContent().toString();
+            return part.getBodyPart(1).getContent().toString();
         }
         return null;
     }
