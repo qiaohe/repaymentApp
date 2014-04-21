@@ -13,13 +13,13 @@ $(function () {
 	})();
 	// alert(browser);
 
-	var api_path = "http://180.168.35.37:80/repaymentApp/api/";
+	var api_path = "http://192.168.0.185:8080/repayment/api/";
 	// var member_path = api_path + "members/1/";
 	// var id_pattern = /(?:memberId=)\d+/;
 	// var member_id = id_pattern.exec(window.location).toString();
+	var member_id = "1";
 	// member_id = member_id.slice(9, member_id.length);
-	var member_path = api_path + "members/" + "11" +"/";
-	alert(member_path);
+	var member_path = api_path + "members/" + "1" +"/";
 	
     var bincode, industry, education;
 
@@ -59,7 +59,7 @@ $(function () {
             contentType: false,
             dataType: "json",
             success: function (json) {
-				$('#id-card-front').html(json).css('color', '#aacc00');
+				$('#id-card-front').html(json).css('color', '#00cc00');
 				$.mobile.loading('hide');
             },
             error: function () {
@@ -97,6 +97,11 @@ $(function () {
 	
     $('#credit-card-number').keyup(function () {
 		num = $(this).val();
+		if(num.length > 0)
+			$('#placeholder-credit').hide();
+		else
+			$('#placeholder-credit').show();
+
 		if(num.length > 1){
 			if(3 == num[0]){
 				if(5 == num[1])
@@ -125,11 +130,11 @@ $(function () {
 					json = [{"key":"1","value":"政府机关、社会团体"},{"key":"2","value":"军事、公检法"},{"key":"3","value":"学校、医院"},{"key":"4","value":"专业事务所"},{"key":"5","value":"信息通信、IT互联网"},{"key":"6","value":"金融业"},{"key":"7","value":"交通运输"},{"key":"8","value":"公共事业"},{"key":"9","value":"能源矿产"},{"key":"10","value":"商业零售、内外贸易"},{"key":"11","value":"房地产、建筑业"},{"key":"12","value":"加工、制造业"},{"key":"13","value":"餐饮、酒店、旅游"},{"key":"14","value":"服务、咨询"},{"key":"15","value":"媒体、体育、娱乐"},{"key":"16","value":"农林牧渔"},{"key":"17","value":"网店店主"},{"key":"18","value":"学生"},{"key":"19","value":"自由职业者"},{"key":"20","value":"其他"}];
 				}
 				
-				var $industry_select = $('#industry-select');
+				var tmp = [];
 				for(var i in json) {
-					$industry_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+					tmp += '<option value=' + json[i].key + '>' + json[i].value + '</option>';
 				}
-				$industry_select.selectmenu('refresh');
+				$('#industry-select').append($(tmp)).selectmenu('refresh');
 				industry = 1;
             });
         }
@@ -141,11 +146,11 @@ $(function () {
 					json = [{"key":"1","value":"初中及以下"},{"key":"2","value":"高中、中专"},{"key":"3","value":"大专"},{"key":"4","value":"本科"},{"key":"5","value":"硕士"},{"key":"6","value":"博士"}];
 				}
 				
-				var $education_select = $('#education-select');
+				var tmp = [];
 				for(var i in json) {
-					$education_select.append('<option value=' + json[i].key + '>' + json[i].value + '</option>');
+					tmp += '<option value=' + json[i].key + '>' + json[i].value + '</option>';
 				}
-				$education_select.selectmenu('refresh');
+				$('#education-select').append($(tmp)).selectmenu('refresh');
 				education = 1;
 			});
 		}
@@ -167,6 +172,7 @@ $(function () {
     setHeight($('#billmail'), 0.75);
     setHeight($('#billmail-cover'), 0.25);
     // without the billmail
+	var limit, rank;
     $('#skip').click(function () {
 		// $.mobile.navigate('#waiting-for-limit');
         $.ajax({
@@ -182,21 +188,22 @@ $(function () {
             dataType: "json",
             success: function (json) {
                 // json = $.parseJSON(json);
-				$('#result-amount').html("&yen " + json.creditLimit);
-				$('#result-discription').html("您的额度打败了" + 100 * json.rankOfLimit + "&#37的用户! xxxxxxx");
+				limit = json.creditLimit;
+				rank = json.rankOfLimit;
+				$('#result-amount').html("&yen " + limit);
+				$('#result-discription').html("您的额度打败了" + 100 * rank + "&#37的用户!");
 				$('#option-1').html("现在就去复活信用卡");
-				$('#option-2').html("share it");
+				$('#option-2').html("与小伙伴们分享");
 				$('#option-3').html("换张信用卡再试试");
-				alert(json.creditLimit + ' ' + json.rankOfLimit);
+				$('#loan h1').html('&yen ' + limit);
+				$.mobile.navigate('#limit-result');
             },
             error: function () {
                 alert('error!');
             },
-			complete: function(){
-				$.mobile.navigate('#limit-result');
-			}
         });
     });
+	
     // with the billmail
     $('#confirm').click(function () {
 		$.mobile.navigate('#waiting-for-limit');
@@ -219,82 +226,130 @@ $(function () {
             }),
             dataType: "json",
             success: function (json) {
-				$('#result-amount').html("&yen " + json.creditLimit);
-				$('#result-discription').html("您的额度打败了" + 100 * json.rankOfLimit + "&#37的用户! xxxxxxx");
+				limit = json.creditLimit;
+				rank = json.rankOfLimit;
+				$('#result-amount').html("&yen " + limit);
+				$('#result-discription').html("您的额度打败了" + 100 * rank + "&#37的用户!");
 				$('#option-1').html("现在就去复活信用卡");
-				$('#option-2').html("share it");
+				$('#option-2').html("与小伙伴们分享");
 				$('#option-3').html("换张信用卡再试试");
-				$.mobile.navigate($("#limit-result"), "none");
+				$('#loan h1').html('&yen ' + limit);
+				$('#cong-show-limit').html('&yen ' + limit);
+				$.mobile.navigate('#limit-result');
             },
             error: function () {
                 console.log('error!');
             }
         });
     });
-
+	
+	var crl;
+	$('#option-1').click(function(){
+		if(!crl){
+			$.get(api_path + "members/" + member_id + "/crl", function(text){
+				crl = text;
+			});
+		}
+	});
+	 
+	$('#loan input[name="term"]').click(function(){
+		$.ajax({
+			url: api_path + 'app/saveCost',
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({
+				term: $(this).val(),
+				amt: $('#amount').val(),
+				memberId: member_id
+			}),
+			dataType: "json",
+			success: function (json) {
+				alert(json);
+			},
+			error: function () {
+				alert("error!");
+			}
+		});
+	});
     //loan
-	setHeight($('#loan-cover'), 0.35);
+	setHeight($('#loan-cover'), 0.4);
 	
 	var creditCards=[];
     $('#loan-request').click(function(){
 		if(creditCards.length < 2){
 			$.get(member_path + "creditCard", function(data){
-				var $chosen_number = $('#chosen-number');
-				
+				var tmp = [];
 				$.each(data, function(idx, obj){
-					$chosen_number.append('<option>' + obj.cardNo + '</option>');
+					tmp += '<option type="radio" data-role="none" id=' + 'card-' + idx + ' value=' + obj.cardNo + '>' + obj.cardNo + '</option>';
 					creditCards.push([obj.cardNo, obj.bank]);
 				});
-				
-				$chosen_number.attr('size', creditCards.length);
-				$chosen_number.selectmenu('refresh');
-				
+				$('#card-list').html(tmp).selectmenu('refresh');
 			});
 		}
 	});
 	
-	$('#chosen-number').change(function(){
-		var num = $('#chosen-number').val();
-		if(confirm('你确定要复活尾号' + num.slice(num.length - 4, num.length) + '的卡片?')){
-			$.mobile.navigate('#success-tip');
-		}
-	});
-	
-	
-	var validate_code;
+	var phone_num, validate_code;
 	$('#acquire-vcode').click(function(){
-		var phone_num = $('#phone-number').val();
+		phone_num = $('#phone-number').val();
 		if(!phone_num || phone_num.length != 11)
 			alert('wrong number!');
 		else{
-			$.get(api_path + phone_num, function(vcode){
+			$.get(api_path + "sms/" + phone_num, function(vcode){
 				alert("your validate code is " + vcode + "!");
 				validate_code = vcode;
 			});
 		}
 	});
 	
+	phone_num = "18692130530";
 	$('#vcode-typed-in').keyup(function(){
 		var vcode = $(this).val();
-		if(vcode.length == 6){
+		if(vcode.length == 6 && phone_num.length == 11){
 			$.ajax({
-				url: api_path + /mobilePhone/code,
+				url: api_path + 'sms/' + phone_num + '/' + vcode,
 				type: "POST",
-				data: formData,
-				processData: false,
-				contentType: false,
-				dataType: "json",
-				success: function (json) {
-					$('#id-card-front').html(json).css('color', '#aacc00');
-					$.mobile.loading('hide');
+				data: JSON.stringify({
+					mobilePhone: phone_num,
+					code: vcode
+				}),
+				dataType: "text",
+				success: function (text) {
+					if("true" == text)
+						alert("Now you are authorised!");
+					else
+						alert("wrong validate code!");
 				},
 				error: function () {
-					$('#id-card-front').html('无法识别, 请重新拍摄!').css('color', '#cc0000');
-					$.mobile.loading('hide');
+					alert("error!");
 				}
 			});
 		}
 	});
+	
+	setHeight($('#congratulation-cover'), 0.5);
+	//
+	$('#request-loan').click(function(){
+		$.ajax({
+			url: api_path + "app",
+			type: "POST",
+			data: JSON.stringify({
+				term: $('#loan input[name="term"]').val(),
+				amt: $('#amount').val(),
+				memberId: member_id
+			}),
+			dataType: "text",
+			success: function (text) {
+				alert(text);
+			},
+			error: function () {
+				alert("error!");
+			}
+		});
+	});
+	
+	
+	
+	
 	
 	
 });
