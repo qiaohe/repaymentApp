@@ -1,13 +1,24 @@
 package com.huayuan.web.dto;
 
+import com.huayuan.domain.accounting.Loan;
+
 /**
  * Created by Johnson on 4/7/14.
  */
 public class ApplicationDto {
+    private Long memberId;
     private double amt;
     private int term;
 
     public ApplicationDto() {
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public double getAmt() {
