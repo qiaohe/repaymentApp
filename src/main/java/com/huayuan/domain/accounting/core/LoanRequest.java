@@ -21,6 +21,7 @@ public class LoanRequest {
         this.startDate = startDate;
     }
 
+
     public Double getPrincipal() {
         return principal;
     }

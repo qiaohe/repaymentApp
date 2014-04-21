@@ -4,34 +4,31 @@ package com.huayuan.web.dto;
  * Created by dell on 14-4-21.
  */
 public class SavedCostDto {
-    private int term;
-    private Double amt;
-    private Long memberId;
+    private Double savedCost;
+    private Double payBackEachTerm;
 
     public SavedCostDto() {
+
     }
 
-    public int getTerm() {
-        return term;
+    public SavedCostDto(Double savedCost, Double payBackEachTerm) {
+        this.savedCost = savedCost;
+        this.payBackEachTerm = payBackEachTerm;
     }
 
-    public void setTerm(int term) {
-        this.term = term;
+    public Double getSavedCost() {
+        return savedCost;
     }
 
-    public Double getAmt() {
-        return amt;
+    public void setSavedCost(Double savedCost) {
+        this.savedCost = savedCost;
     }
 
-    public void setAmt(Double amt) {
-        this.amt = amt;
+    public Double getPayBackEachTerm() {
+        return payBackEachTerm;
     }
 
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setPayBackEachTerm(Double payBackEachTerm) {
+        this.payBackEachTerm = payBackEachTerm;
     }
 }

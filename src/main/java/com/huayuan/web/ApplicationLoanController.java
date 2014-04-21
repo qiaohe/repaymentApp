@@ -1,6 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.domain.accounting.Pricing;
+import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
@@ -37,10 +38,12 @@ public class ApplicationLoanController {
 
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
-    public Double getSavedCost(@RequestBody SavedCostDto savedCostDto) {
-        final String rating = memberService.getRating(savedCostDto.getMemberId());
-        Pricing pricing = pricingRepository.findByRatingAndTerm(rating, savedCostDto.getTerm());
-        return pricing.getSavedPerOneHundred() * savedCostDto.getAmt() / 100;
+    public SavedCostDto getSavedCost(@RequestBody ApplicationDto applicationDto) {
+        final String rating = memberService.getRating(applicationDto.getMemberId());
+        Pricing pricing = pricingRepository.findByRatingAndTerm(rating, applicationDto.getTerm());
+        final Double saved = pricing.getSavedPerOneHundred() * applicationDto.getAmt() / 100;
+        final double payBackEachTerm = new LoanRequest(applicationDto.getAmt(), pricing.getApr(), applicationDto.getTerm(), null).getMonthlyRepay();
+        return new SavedCostDto(saved, payBackEachTerm);
     }
 
 
