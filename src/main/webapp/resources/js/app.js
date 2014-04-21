@@ -81,7 +81,7 @@ $(function () {
             contentType: false,
             dataType: "text",
             success: function (text) {
-				$('#id-card-back').html(text).css('color', '#aacc00');
+				$('#id-card-back').html("有效期至" + text).css('color', '#aacc00');
 				$.mobile.loading('hide');
             },
             error: function () {
@@ -264,7 +264,8 @@ $(function () {
 			}),
 			dataType: "json",
 			success: function (json) {
-				alert(json);
+				$('#payback-each').val(json.payBackEachTerm);
+				$('#saved').html(json.savedCost);
 			},
 			error: function () {
 				alert("error!");
@@ -295,7 +296,7 @@ $(function () {
 			alert('wrong number!');
 		else{
 			$.get(api_path + "sms/" + phone_num, function(vcode){
-				alert("your validate code is " + vcode + "!");
+				alert("您的验证码已发送!");
 				validate_code = vcode;
 			});
 		}
@@ -315,9 +316,9 @@ $(function () {
 				dataType: "text",
 				success: function (text) {
 					if("true" == text)
-						alert("Now you are authorised!");
+						alert("您已输入有效的验证码!");
 					else
-						alert("wrong validate code!");
+						alert("验证码错误!");
 				},
 				error: function () {
 					alert("error!");
@@ -332,6 +333,7 @@ $(function () {
 		$.ajax({
 			url: api_path + "app",
 			type: "POST",
+			contentType: "application/json",
 			data: JSON.stringify({
 				term: $('#loan input[name="term"]').val(),
 				amt: $('#amount').val(),
@@ -339,7 +341,7 @@ $(function () {
 			}),
 			dataType: "text",
 			success: function (text) {
-				alert(text);
+				alert("借款申请成功!");
 			},
 			error: function () {
 				alert("error!");
