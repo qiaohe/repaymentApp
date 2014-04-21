@@ -39,6 +39,7 @@ public class ApplicationLoanController {
         application.setTerm(applicationDto.getTerm());
         application.setApplicationNo(idSequenceGenerator.getApplicationNo());
         application.setMember(memberService.find(id));
+        application.setExistingFlag(memberService.getApplicationStatus(id));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
         return application.getApplicationNo();

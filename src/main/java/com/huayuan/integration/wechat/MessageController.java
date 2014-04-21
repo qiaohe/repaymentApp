@@ -10,6 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,7 @@ public class MessageController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
     private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
+    private static final String RESPONSE_URL_PATTERN = "{0}/index.html?memberId={1}&status={2}";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     @Inject
     private MemberService memberService;
@@ -47,6 +49,8 @@ public class MessageController {
     private Marshaller marshaller;
     @Inject
     private RestTemplate restTemplate;
+    @Value("${weChat.integration.baseUrl}")
+    private String baseUrl;
 
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
@@ -70,21 +74,26 @@ public class MessageController {
         response.getWriter().println(rm);
     }
 
+    private String getResponseMessageUrl(Long memberId, Integer status) {
+        return MessageFormat.format(RESPONSE_URL_PATTERN, baseUrl, memberId, status);
+    }
+
     private String getContent(EventMessage message) {
         final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
+        final Integer status = memberService.getStatus(memberId);
         if (message.isSubscribeEvent()) {
             return MessageFormat.format("欢迎关注“化缘“。\n" +
                     "\n" +
                     "卡中羞涩？来化缘吧！足不出户就申请到借款，偿还信用卡账，最高比还信用卡最低还款额省50%。\n" +
                     "\n" +
-                    "心动了吗？<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
+                    "心动了吗？<a href=\"" +getResponseMessageUrl(memberId,  status) + "\">点此先做个信用评估</a>", memberId);
         } else if (message.isCustomMenuEvent()) {
             if (message.getEventKey().equalsIgnoreCase("M_001_CREDIT_ESTIMATION")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
+                return MessageFormat.format("<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此先做个信用评估</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_002_APPLY_LOAN")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此申请借款</a>", memberId);
+                return MessageFormat.format("\"<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此申请借款</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_003_REPAYMENT"))
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此归还借款</a>", memberId);
+                return MessageFormat.format("\"<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此归还借款</a>", memberId);
         }
         return "";
     }

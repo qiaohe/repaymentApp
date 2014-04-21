@@ -14,6 +14,7 @@ import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,8 +72,7 @@ public class MemberServiceImpl implements MemberService {
         pc.setIdCard(pc.getMember().getIdCard());
         pc.setCreditCard(creditCard);
         if (memberDto.crawlBillIfNeeded()) {
-            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(),
-                    memberDto.getBillPassword(), BANK_MAP.get(creditCard.getBank()));
+            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), BANK_MAP.get(creditCard.getBank()));
             CreditCardBill bill = addBill(member, billEmail);
             pc.setCreditCardBill(bill);
         }
@@ -176,11 +176,28 @@ public class MemberServiceImpl implements MemberService {
         return member.getPreCrl();
     }
 
+    private boolean repayImmediatelyIfNeeded(Member member, CreditResult creditResult) {
+       return (StringUtils.containsAny(member.getBlockCode(), new char[]{'C','D', 'F', 'G', 'I'}) ||
+               creditResult.getLastReason1().equalsIgnoreCase("D101") ||
+               creditResult.getLastReason2().equalsIgnoreCase("D101")||
+               creditResult.getLastReason2().equalsIgnoreCase("D101"));
+    }
     @Override
     public Integer getStatus(Long id) {
-        Member member = memberRepository.findOne(id);
-        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) return 3;
         CreditResult creditResult = creditResultRepository.findByMemberId(id);
+        Member member = memberRepository.findOne(id);
+        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) {
+            if (repayImmediatelyIfNeeded(member, creditResult)) return 31;
+            return 32;
+        }
+        if ((creditResult != null) && creditResult.getLastDecision().equals("D")) return 1;
+        if ((creditResult != null) && creditResult.getLastDecision().equals("A")) return 2;
+        return 0;
+    }
+
+    @Override
+    public Integer getApplicationStatus(Long memberId) {
+        CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if ((creditResult != null) && creditResult.getLastDecision().equals("D")) return 1;
         if ((creditResult != null) && creditResult.getLastDecision().equals("A")) return 2;
         return 0;

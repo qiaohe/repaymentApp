@@ -12,12 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -89,17 +87,6 @@ public class MemberController {
         String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }
-
-
-
-//    @RequestMapping(value = "/{id}/billEmail", method = RequestMethod.POST)
-//    @ResponseBody
-//    @ResponseStatus(value = HttpStatus.OK)
-//    public void updateBillEmail(@PathVariable Long id, String billEmail, String password) {
-//        Member member = memberService.find(id);
-//        memberService.updateBillEmail(member, billEmail, password);
-//    }
-
 
     @RequestMapping(value = "/{id}/crl", method = RequestMethod.GET)
     public Integer testResult(@PathVariable Long id) {

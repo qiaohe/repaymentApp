@@ -44,4 +44,6 @@ public interface MemberService {
     public Integer getCrl(Long id);
 
     public Integer getStatus(Long memberId);
+
+    public Integer getApplicationStatus(Long memberId);
 }
