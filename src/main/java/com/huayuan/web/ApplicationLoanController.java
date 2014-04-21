@@ -47,14 +47,14 @@ public class ApplicationLoanController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String applyLoan(@PathVariable Long id, @RequestBody ApplicationDto applicationDto) {
+    public String applyLoan(@RequestBody ApplicationDto applicationDto) {
         Application application = new Application();
         application.setAmt(applicationDto.getAmt());
         application.setRepayType(RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST);
         application.setTerm(applicationDto.getTerm());
         application.setApplicationNo(idSequenceGenerator.getApplicationNo());
-        application.setMember(memberService.find(id));
-        application.setExistingFlag(memberService.getApplicationStatus(id));
+        application.setMember(memberService.find(applicationDto.getMemberId()));
+        application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
         return application.getApplicationNo();
