@@ -18,7 +18,7 @@ public class Pricing {
     private int term;
     @Column(name = "APR")
     private Double apr;
-    @Column(name = "saved")
+    @Column(name = "SAVED")
     private Double savedPerOneHundred;
 
     public Long getId() {
