@@ -1,7 +1,5 @@
 package com.huayuan.web.dto;
 
-import com.huayuan.domain.accounting.Loan;
-
 /**
  * Created by Johnson on 4/7/14.
  */
