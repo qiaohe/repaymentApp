@@ -35,7 +35,7 @@ public class ApplicationLoanController {
     private PricingRepository pricingRepository;
 
 
-    @RequestMapping(value = "/saveCost", method = RequestMethod.GET)
+    @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     public Double getSavedCost(@RequestBody SavedCostDto savedCostDto) {
         final String rating = memberService.getRating(savedCostDto.getMemberId());
         Pricing pricing = pricingRepository.findByRatingAndTerm(rating, savedCostDto.getTerm());
