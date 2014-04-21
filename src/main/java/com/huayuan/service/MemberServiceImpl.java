@@ -1,18 +1,26 @@
 package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
+import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
+import com.huayuan.domain.dictionary.Dictionary;
+import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
+import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
+import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by dell on 14-3-19.
@@ -20,6 +28,7 @@ import java.util.List;
 @Service(value = "memberService")
 @Transactional
 public class MemberServiceImpl implements MemberService {
+    private static final ConcurrentHashMap<Integer, String> BANK_MAP = new ConcurrentHashMap<>();
     @Inject
     private MemberRepository memberRepository;
     @Inject
@@ -32,6 +41,22 @@ public class MemberServiceImpl implements MemberService {
     private CreditCardBillRepository creditCardBillRepository;
     @Inject
     private PreCreditRepository preCreditRepository;
+    @Inject
+    private AccountRepository accountRepository;
+    @Inject
+    private CreditResultRepository creditResultRepository;
+
+    @Inject
+    private DictionaryRepository dictionaryRepository;
+
+
+    @PostConstruct
+    private void init() {
+        List<Dictionary> banks = dictionaryRepository.findByType("BANK");
+        for (Dictionary dictionary : banks) {
+            BANK_MAP.put(Integer.valueOf(dictionary.getValue()), dictionary.getName());
+        }
+    }
 
     @Override
     public Integer testCreditLimit(MemberDto memberDto) {
@@ -45,6 +70,12 @@ public class MemberServiceImpl implements MemberService {
         pc.setMember(creditCard.getMember());
         pc.setIdCard(pc.getMember().getIdCard());
         pc.setCreditCard(creditCard);
+        if (memberDto.crawlBillIfNeeded()) {
+            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(),
+                    memberDto.getBillPassword(), BANK_MAP.get(creditCard.getBank()));
+            CreditCardBill bill = addBill(member, billEmail);
+            pc.setCreditCardBill(bill);
+        }
         pc = preCreditRepository.save(pc);
         return preCreditRepository.execute(pc);
     }
@@ -124,19 +155,34 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateBillEmail(Member member, String billEmail, String password) {
+    public CreditCardBill addBill(Member member, BillEmail billEmail) {
         BillCrawler crawler = new BillCrawler();
-        addBill(member, crawler.crawl(new BillEmail(billEmail, password, "")));
+        CreditCardBill bill = crawler.crawl(billEmail);
+        bill.setMember(member);
+        return creditCardBillRepository.save(bill);
     }
 
-    @Override
-    public void addBill(Member member, CreditCardBill creditCardBill) {
-        creditCardBill.setMember(member);
-        creditCardBillRepository.save(creditCardBill);
-    }
 
     @Override
     public List<CreditCard> getCreditCards(Long memberId) {
         return creditCardRepository.findByMemberId(memberId);
+    }
+
+    @Override
+    public Integer getCrl(Long id) {
+        Account account = accountRepository.findByMemberId(id);
+        if (account != null) return account.getCrl();
+        Member member = find(id);
+        return member.getPreCrl();
+    }
+
+    @Override
+    public Integer getStatus(Long id) {
+        Member member = memberRepository.findOne(id);
+        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) return 3;
+        CreditResult creditResult = creditResultRepository.findByMemberId(id);
+        if ((creditResult != null) && creditResult.getLastDecision().equals("D")) return 1;
+        if ((creditResult != null) && creditResult.getLastDecision().equals("A")) return 2;
+        return 0;
     }
 }
