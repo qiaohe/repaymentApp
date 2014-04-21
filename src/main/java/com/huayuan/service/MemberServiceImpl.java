@@ -16,6 +16,7 @@ import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -60,6 +61,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer testCreditLimit(MemberDto memberDto) {
         Member member = find(memberDto.getMemberId());
         member.setEducation(memberDto.getEducation());
@@ -69,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
         CreditCard creditCard = addCreditCard(member, memberDto.getCreditCarNo());
         PreCredit pc = new PreCredit();
         pc.setMember(creditCard.getMember());
-        pc.setIdCard(pc.getMember().getIdCard());
+        pc.setIdCard(member.getIdCard());
         pc.setCreditCard(creditCard);
         if (memberDto.crawlBillIfNeeded()) {
             BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), BANK_MAP.get(creditCard.getBank()));
