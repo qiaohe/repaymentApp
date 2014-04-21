@@ -26,4 +26,5 @@ public interface AccountService {
     public List<Loan> getLoans();
 
     public List<Loan> getLoansBy(Member member);
+
 }

@@ -202,4 +202,11 @@ public class MemberServiceImpl implements MemberService {
         if ((creditResult != null) && creditResult.getLastDecision().equals("A")) return 2;
         return 0;
     }
+
+    @Override
+    public String getRating(Long memberId) {
+        CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
+        if (creditResult != null) return creditResult.getLastRating();
+        return find(memberId).getPreRating();
+    }
 }

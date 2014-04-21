@@ -89,6 +89,7 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/{id}/crl", method = RequestMethod.GET)
+    @ResponseBody
     public Integer testResult(@PathVariable Long id) {
         return memberService.getCrl(id);
     }

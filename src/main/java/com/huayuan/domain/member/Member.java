@@ -89,7 +89,7 @@ public class Member implements Serializable {
     private Double preScore;
 
     @Column(name = "PRE_RATING")
-    private Double preRating;
+    private String preRating;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
@@ -303,11 +303,11 @@ public class Member implements Serializable {
         this.preScore = preScore;
     }
 
-    public Double getPreRating() {
+    public String getPreRating() {
         return preRating;
     }
 
-    public void setPreRating(Double preRating) {
+    public void setPreRating(String preRating) {
         this.preRating = preRating;
     }
 

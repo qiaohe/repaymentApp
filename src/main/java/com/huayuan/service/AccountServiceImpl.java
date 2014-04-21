@@ -68,30 +68,5 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext ctx = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        AccountService accountService = ctx.getBean("accountService", AccountService.class);
-        MemberService memberServcie = ctx.getBean("memberService", MemberService.class);
-        ApplicationService applicationService = ctx.getBean("applicationService", ApplicationService.class);
-        Application application = applicationService.getApplication("2014040601100000001");
-
-        Member member = memberServcie.find(1l);
-//
-//        Account account = new Account();
-//        account.setCrl(1000);
-//        account.setCrlAvl(1000);
-//        account.setCrlUsed(900);
-//        account.setDebit_amt(90000.12);
-//        account.setMember(member);
-//        accountService.createAccount(account);
-        Account account = accountService.getAccount(2l);
-        Loan loan = new Loan();
-        loan.setMember(member);
-        loan.setApplication(application);
-        loan.setMaxDelq(100);
-        loan.setApr(12.90);
-        loan.setPaidInterest(100d);
-        accountService.createLoan(loan);
-    }
 
 }

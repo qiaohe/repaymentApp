@@ -46,4 +46,6 @@ public interface MemberService {
     public Integer getStatus(Long memberId);
 
     public Integer getApplicationStatus(Long memberId);
+
+    public String getRating(Long memberId);
 }
