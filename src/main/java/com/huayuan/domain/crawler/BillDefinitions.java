@@ -12,6 +12,10 @@ import java.util.List;
 @XmlRootElement(name = "bills")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BillDefinitions {
+    public BillDefinitions() {
+
+    }
+
     @XmlElement(name = "bill")
     private List<BillDefinition> billDefinitions = null;
 

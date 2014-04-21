@@ -1,14 +1,10 @@
 package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
-import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
-import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
 import com.huayuan.repository.ValueBinRepository;
-import com.huayuan.repository.account.AccountRepository;
-import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,11 +32,6 @@ public class MemberServiceImpl implements MemberService {
     private CreditCardBillRepository creditCardBillRepository;
     @Inject
     private PreCreditRepository preCreditRepository;
-    @Inject
-    private AccountRepository accountRepository;
-    @Inject
-    private CreditResultRepository creditResultRepository;
-
 
     @Override
     public Integer testCreditLimit(MemberDto memberDto) {
@@ -147,23 +138,5 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<CreditCard> getCreditCards(Long memberId) {
         return creditCardRepository.findByMemberId(memberId);
-    }
-
-    @Override
-    public Integer getCrl(Long id) {
-        Account account = accountRepository.findByMemberId(id);
-        if (account != null) return account.getCrl();
-        Member member = find(id);
-        return member.getPreCrl();
-    }
-
-    @Override
-    public Integer getStatus(Long id) {
-        Member member = memberRepository.findOne(id);
-        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) return 3;
-        CreditResult creditResult = creditResultRepository.findByMemberId(id);
-        if ((creditResult != null) && creditResult.getLastDecision().equals("D")) return 1;
-        if ((creditResult != null) && creditResult.getLastDecision().equals("A")) return 2;
-        return 0;
     }
 }

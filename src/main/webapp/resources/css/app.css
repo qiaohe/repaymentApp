@@ -43,31 +43,20 @@ body{
 	list-style: none;
 }
 
-.input-container{
-	float: right;
-	width: 80%;
-	margin: 0;
+#id-card-front-upload::-webkit-file-upload-button {
+  visibility: hidden;
 }
 
 #container-credit{
 	padding-top: 1%;
 }
 
-#credit-card-number-text, #email-text{
-	font-size: 1.8em;
-}
-
-#credit-card-number-text{
-	background: url(../img/icbc.png) no-repeat scroll 3px 3px;
-	padding-left: 55px;
-}
-
-.tip-image{
-	padding: 3.8% 0 0 2%;
-	float: left;
+#email-text{
+	font-size: 1.6em;
 }
 
 #next-step, #step2-submit, #billmail a{
+	width: 80%;
 	margin: auto;
 	background-color: rgb(60, 160, 230);
 	color: white;
@@ -84,6 +73,7 @@ body{
 #limit-step2 p{
 	font-size: 1.4em;
 	color: rgb(230, 126, 34);
+	margin: 0;
 }
 
 /* billmail */
@@ -123,19 +113,18 @@ body{
 }
 
 #mail-password{
-	font-size: 1.8em;
+	font-size: 1.4em;
 }
 
-.result{
+#limit-result{
 	position: relative;
 }
 
-.result-img{
+#result-img{
 	float: left;
 	width: 200px;
 	height: 200px;
 	float: left;
-	z-index: -1;
 	background-color: gray;
 	border-radius: 50%;
 	font-size: 3em;
@@ -143,14 +132,14 @@ body{
 	color: white;
 }
 
-.result-amount{
+#result-amount{
 	font-size: 5em;
 	position: absolute;
 	left: 40%;
 	top: 8%;
 }
 
-.result-discription{
+#result-discription{
 	font-size: 1.8em;
 	position: absolute;
 	left: 40%;

@@ -15,24 +15,36 @@
 				<img src="resources/img/2-1-1(1.0).png">
 				<h2>废话少说, 直接啪啪啪吧~<br>请横向拍摄, 尽量让卡片填满镜头.</h2>
 			</div>
-			<div>
-				<br><li>
-					<!-- <fieldset class="ui-field-contain" id="id-card-front"> -->
-						<img src="resources/img/front-tip-img-1.png" class="tip-image">
-						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-front-text" value="拍摄身份证·正面"></div><hr>
-					<!-- </fieldset> -->
+			<div style="margin: 5% 0;">
+				<li>
+					<fieldset class="ui-field-contain">
+						<img style="float: left; max-width: 40px; max-height: 25px; margin-top: 2.5%; margin-left: 5%;" src="resources/img/front-tip-img-1.png">
+						<div style="float: right; width: 75%; position: relative; top: 0; margin-right: 5%">
+							<input style="z-index:2; opacity: 0;" type="file" accept="image/jpg, image/jpeg" id="id-card-front-upload" capture>
+							<label for="id-card-front-upload" style="position: absolute; top: 30%; left: 5%; z-index=0; font-size: 1.6em" id="id-card-front">id-card front</label>
+							<label for="id-card-front-upload" class="ui-icon-camera ui-btn-icon-notext" style="position: absolute; top: 18%; left: 88%; z-index=1"></label>
+						</div>
+					</fieldset>
 				</li>
 				<li>
-					<fieldset class="ui-field-contain" id="id-card-back">
-						<img src="resources/img/front-tip-img-2.png" class="tip-image">
-						<div class="input-container"><input type="button" data-icon="camera" data-iconpos="right" id="id-card-back-text" value="拍摄身份证·反面"></div>
+					<fieldset class="ui-field-contain">
+						<img style="float: left; max-width: 40px; max-height: 25px; margin-top: 2.5%; margin-left: 5%;" src="resources/img/front-tip-img-2.png">
+						<div style="float: right; width: 75%; position: relative; top: 0; margin-right: 5%">
+							<input style="z-index:2; opacity: 0;" type="file" accept="image/jpg, image/jpeg" id="id-card-back-upload" capture>
+							<label for="id-card-back-upload" style="position: absolute; top: 30%; left: 5%; z-index=0; font-size: 1.6em" id="id-card-back">id-card back</label>
+							<label for="id-card-back-upload" class="ui-icon-camera ui-btn-icon-notext" style="position: absolute; top: 18%; left: 88%; z-index=1"></label>
+						</div>
 					</fieldset>
-				</li><hr>
+				</li>
 				<li>
-					<fieldset class="ui-field-contain" id="credit-card-number">
-						<img src="resources/img/front-tip-img-3.png" class="tip-image">
-						<div class="input-container" id="container-credit"><input type="number" id="credit-card-number-text" placeholder="请输入信用卡卡号" data-enhanced="false"></div>
-					</fieldset>
+					<fieldset class="ui-field-contain">
+						<img style="float: left; max-width: 40px; max-height: 25px; margin-top: 2.5%; margin-left: 5%;" src="resources/img/front-tip-img-3.png">
+						<div style="float: right; width: 75%; position: relative; top: 0; margin-right: 5%">
+							<input style="font-size: 1.4em; padding: 10px 0 0 34px;" type="number" id="credit-card-number" placeholder="input your credit card number">
+							<label for="id-card-back-upload" class="ui-icon-edit ui-btn-icon-notext" style="position: absolute; top: 18%; left: 88%; z-index=0"></label>
+							<img src="resources/img/blank.png" style="max-height: 20px; max-width: 40px; position: absolute; top: 27%; left: 1%;" id="card-img">
+						</div>
+					</fieldset>	
 				</li>
 			</div>
 			<a href="#limit-step2" class="ui-btn" id="next-step">下一步</a>
@@ -45,18 +57,24 @@
 				<img src="resources/img/3-1(1.0).png">
 				<h2>再来填三个空, 填完就完成了哦~</h2>
 			</div>
-			<div>
+			<div style="margin-top: 5%;">
 				<li>
 					<p>官人拿什么金饭碗?</p>
-					<select id="industry-select" data-native-menu="false" placeholder="请选择"><option></option></select>
+					<fieldset class="ui-field-contain" style="width: 80%; margin-left: 10%;">
+						<select id="industry-select" data-native-menu="false"><option></option></select>
+					</fieldset>
 				</li>
 				<li>
 					<p>官人学富几车?</p>
-					<select id="education-select" data-native-menu="false"><option></option></select>
+					<fieldset class="ui-field-contain" style="width: 80%; margin-left: 10%;">
+						<select id="education-select" data-native-menu="false"><option></option></select>
+					</fieldset>
 				</li>
 				<li>
 					<p>官人平时鸿雁传书用哪个E-mail?</p>
-					<input type="email" id="email-text">
+					<fieldset class="ui-field-contain" style="width: 80%; margin-left: 10%;">
+						<input type="email" id="email-text">
+					</fieldset>
 				</li>
 				<a href="#billmail" data-rel="popup" class="ui-btn" id="step2-submit">提交</a>
 			</div>
@@ -70,14 +88,12 @@
 					<h2>信用卡账单E-mail</h2>
 				</div>
 			</div>
-			<p>信用卡账单E-mail</p>
+			<p style="margin-top: 3%;">信用卡账单E-mail</p>
 			<fieldset data-role="controlgroup">
-				<input type="radio" name="billmail-text" id="billmail-type-in">
-				<label for="billmail-type-in">
-					<input type="email" style="margin-top: 0;" id="billmail-different-text">
-				</label>
-				<input type="radio" name="billmail-text" id="billmail-same" checked="checked">
-				<label for="billmail-same" id="billmail-same-shown"></label>
+				<label for="another-email"><input type="email" id="bill-mail-typein"></label>
+				<input type="radio" name="billmail-text" id="another-email" value="male">
+				<label for="same-email" id="same-mail-shown"></label>
+				<input type="radio" name="billmail-text" id="same-email" value="female">
 			</fieldset>
 			<p>上述E-mail密码</p>
 			<input type="password" id="mail-password">
@@ -100,38 +116,16 @@
 		</div>
 	</div>
 	
-	<div data-role="page" class="result" id="result-high" data-title="信用评估">
+	<div data-role="page" class="result" id="limit-result" data-title="信用评估">
 		<div data-role="main" class="ui-content">
-			<div class="result-img">img</div>
-			<div class="result-amount">&yen 50,000</div>
-			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
+			<div id="result-img">img</div>
+			<div id="result-amount"></div>
+			<div id="result-discription"></div>
 			<div class="btn-group">
-			<a href="#loan" class="ui-btn result-btn">巨款啊!现在就去复活信用卡</a><br>
-			<a href="#" class="ui-btn result-btn">去跟小伙伴得瑟一下</a><br>
-			<a href="#limit" class="ui-btn result-btn">换张信用卡再试试</a><br>
+			<a href="#loan" class="ui-btn result-btn" id="option-1"></a><br>
+			<a href="#" class="ui-btn result-btn" id="option-2"></a><br>
+			<a href="#limit" class="ui-btn result-btn" id="option-3"></a><br>
 			</div>
-		</div>
-	</div>
-	
-	<div data-role="page" class="result" id="result-median" data-title="信用评估">
-		<div data-role="main" class="ui-content">
-			<div class="result-img">img</div>
-			<div class="result-amount">&yen 50,000</div>
-			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
-			<a href="#loan" class="ui-btn ui-btn-inline">巨款啊!现在就去复活信用卡</a><br>
-			<a href="#" class="ui-btn ui-btn-inline">去跟小伙伴得瑟一下</a><br>
-			<a href="#" class="ui-btn ui-btn-inline">换张信用卡再试试</a><br>
-		</div>
-	</div>
-	
-	<div data-role="page" class="result" id="result-low" data-title="信用评估">
-		<div data-role="main" class="ui-content">
-			<div class="result-img">img</div>
-			<div class="result-amount">&yen 50,000</div>
-			<div class="result-discription">您的额度打败了97%的用户, 官人您是权贵啊!</div>
-			<a href="#loan" class="ui-btn ui-btn-inline">巨款啊!现在就去复活信用卡</a><br>
-			<a href="#" class="ui-btn ui-btn-inline">去跟小伙伴得瑟一下</a><br>
-			<a href="#" class="ui-btn ui-btn-inline">换张信用卡再试试</a><br>
 		</div>
 	</div>
 	
@@ -164,8 +158,8 @@
 			<input type="number" id="phone-number">
 			<p>手机验证码</p>
 			
-			<div id="validate-code"><input type="number"></div>
-			<div id="get-validate-code"><input type="button" value="获取验证码"></div>
+			<div id="validate-code"><input type="number" id="vcode-typed-in"></div>
+			<div id="get-validate-code"><input type="button" value="获取验证码" id="acquire-vcode"></div>
 			
 			<fieldset data-role="controlgroup">
 				<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom">

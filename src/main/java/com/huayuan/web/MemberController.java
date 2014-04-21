@@ -99,8 +99,11 @@ public class MemberController {
     }
 
 
-    @RequestMapping(value = "/{id}/crl", method = RequestMethod.GET)
-    public Integer testResult(@PathVariable Long id) {
-        return memberService.getCrl(id);
+    @RequestMapping(value = "/{id}/testResult", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView testResult(@PathVariable Long id, String crl) {
+        ModelAndView model = new ModelAndView("testResult");
+        model.addObject("crl", crl);
+        model.addObject("id", id);
+        return model;
     }
 }

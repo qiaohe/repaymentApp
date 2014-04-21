@@ -2,6 +2,7 @@ package com.huayuan.domain.crawler;
 
 import org.apache.commons.lang.StringUtils;
 
+import javax.inject.Inject;
 import java.text.MessageFormat;
 
 /**

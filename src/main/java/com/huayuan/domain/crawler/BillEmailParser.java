@@ -2,6 +2,7 @@ package com.huayuan.domain.crawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -15,13 +16,21 @@ public class BillEmailParser {
     }
 
     public String[] parse(String content) {
+//     建设银行   Document doc = Jsoup.parse(content);
+//        String[] result = new String[3];
+//        Elements es = doc.select("table table table table").first().select("tbody tr td:nth-child(2n)");
+//        result[0] = es.get(1).text();
+//        result[1] = es.get(2).text();
+//        Elements es1 = doc.select("table table table table").get(1).select("tbody tr td:nth-child(2)");
+//        result[2] = es1.get(1).text();
         Document doc = Jsoup.parse(content);
         String[] result = new String[3];
-        Elements es = doc.select("table table table table").first().select("tbody tr td:nth-child(2n)");
-        result[0] = es.get(1).text();
-        result[1] = es.get(2).text();
-        Elements es1 = doc.select("table table table table").get(1).select("tbody tr td:nth-child(2)");
-        result[2] = es1.get(1).text();
+        Elements es = doc.select("table tr").get(1).select("table table").select(" tbody tr td:nth-child(2n)");
+
+        for (Element element : es) {
+            System.out.println(element.text());
+        }
+
         return result;
     }
 }

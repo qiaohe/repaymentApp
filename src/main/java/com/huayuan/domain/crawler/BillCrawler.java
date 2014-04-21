@@ -33,6 +33,7 @@ public class BillCrawler {
     public CreditCardBill crawl(BillEmail billEmail) {
         final BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
         final String content = new EmailSearcher(billEmail).search(bd.getTitle());
+        System.out.println(content);
         String[] items = new BillEmailParser(bd).parse(content);
         CreditCardBill result = new CreditCardBill();
         result.setEmail(billEmail.getEmail());
@@ -46,10 +47,10 @@ public class BillCrawler {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
         BillCrawler crawler = context.getBean("billCrawler", BillCrawler.class);
         long start = System.currentTimeMillis();
-        crawler.crawl(new BillEmail("tusc_heqiao@163.com", "Forest2003", "中国建设银行"));
+        crawler.crawl(new BillEmail("tusc_heqiao@163.com", "Forest2003", "广发银行"));
         System.out.println((System.currentTimeMillis() - start) / 1000);
         System.out.println("ending");
     }
