@@ -1,5 +1,6 @@
 package com.huayuan.web;
 
+import com.huayuan.common.Day;
 import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
@@ -49,7 +50,7 @@ public class MemberController {
         IdCardRecognizer recognizer = new IdCardRecognizer(idCardBackFile.getBytes());
         IdCard idCard = recognizer.recognize(false);
         memberService.updateIdCard(memberService.find(id), idCard);
-        return idCard.getValidThru().toString();
+        return new Day(idCard.getValidThru()).toString();
     }
 
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)
