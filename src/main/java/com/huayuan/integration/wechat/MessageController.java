@@ -80,20 +80,19 @@ public class MessageController {
 
     private String getContent(EventMessage message) {
         final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
-        final Integer status = memberService.getStatus(memberId);
         if (message.isSubscribeEvent()) {
             return MessageFormat.format("欢迎关注“化缘“。\n" +
                     "\n" +
                     "卡中羞涩？来化缘吧！足不出户就申请到借款，偿还信用卡账，最高比还信用卡最低还款额省50%。\n" +
                     "\n" +
-                    "心动了吗？<a href=\"" +getResponseMessageUrl(memberId,  status) + "\">点此先做个信用评估</a>", memberId);
+                    "心动了吗？<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
         } else if (message.isCustomMenuEvent()) {
             if (message.getEventKey().equalsIgnoreCase("M_001_CREDIT_ESTIMATION")) {
-                return MessageFormat.format("<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此先做个信用评估</a>", memberId);
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_002_APPLY_LOAN")) {
-                return MessageFormat.format("\"<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此申请借款</a>", memberId);
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html#loan?memberId={0}\">点此申请借款</a>", memberId);
             } else if (message.getEventKey().equalsIgnoreCase("M_003_REPAYMENT"))
-                return MessageFormat.format("\"<a href=\"\" +getResponseMessageUrl(memberId,  status) + \"\">点此归还借款</a>", memberId);
+                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html#repay?memberId={0}\">点此归还还款</a>", memberId);
         }
         return "";
     }

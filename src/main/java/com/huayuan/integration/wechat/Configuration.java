@@ -14,7 +14,7 @@ public class Configuration {
 
     static {
         try {
-            CONFIG = new PropertiesConfiguration(Thread.currentThread().getContextClassLoader().getResource("wechatconfig.properties"));
+            CONFIG = new PropertiesConfiguration(Thread.currentThread().getContextClassLoader().getResource("config.properties"));
         } catch (ConfigurationException e) {
             LOGGER.error(e.getMessage());
         }
