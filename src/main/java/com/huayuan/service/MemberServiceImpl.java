@@ -179,7 +179,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean repayImmediatelyIfNeeded(Member member, CreditResult creditResult) {
-       return (StringUtils.containsAny(member.getBlockCode(), new char[]{'C','D', 'F', 'G', 'I'}) ||
+       return (StringUtils.containsAny(member.getBlockCode(), new char[]{'D','E', 'F', 'G', 'I'}) ||
                creditResult.getLastReason1().equalsIgnoreCase("D101") ||
                creditResult.getLastReason2().equalsIgnoreCase("D101")||
                creditResult.getLastReason2().equalsIgnoreCase("D101"));
