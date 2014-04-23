@@ -2,15 +2,18 @@ package com.huayuan.integration.wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.MemberStatusEvaluator;
 import com.huayuan.domain.member.SexEnum;
 import com.huayuan.integration.wechat.domain.EventMessage;
+import com.huayuan.integration.wechat.domain.Menu;
+import com.huayuan.integration.wechat.domain.MessageTemplate;
 import com.huayuan.integration.wechat.domain.User;
+import com.huayuan.repository.integration.MenuRepository;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +34,7 @@ import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Johnson on 4/14/14.
@@ -39,7 +44,6 @@ public class MessageController {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
     private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
-    private static final String RESPONSE_URL_PATTERN = "{0}/index.html?memberId={1}&status={2}";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     @Inject
     private MemberService memberService;
@@ -49,15 +53,32 @@ public class MessageController {
     private Marshaller marshaller;
     @Inject
     private RestTemplate restTemplate;
-    @Value("${weChat.integration.baseUrl}")
-    private String baseUrl;
+    @Inject
+    private MemberStatusEvaluator memberStatusEvaluator;
+    @Inject
+    private MenuRepository menuRepository;
+    private List<Menu> menus;
 
+    @PostConstruct
+    public void init() {
+        menus = menuRepository.findAll();
+    }
+
+    public MessageTemplate getTemplates(final String menu_Key, String status) {
+        for (Menu menu : menus) {
+            if (menu.getMenu_key().equalsIgnoreCase(menu_Key)) {
+                for (MessageTemplate template : menu.getTemplates()) {
+                    if (StringUtils.contains(template.getStatuses(), status)) return template;
+                }
+            }
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
     @ResponseBody
     public String init(@RequestParam String signature, @RequestParam String timestamp,
                        @RequestParam String nonce, @RequestParam String echostr) throws IOException {
-
         if (checkSignaturePass(signature, timestamp, nonce))
             return echostr;
         return null;
@@ -74,27 +95,11 @@ public class MessageController {
         response.getWriter().println(rm);
     }
 
-    private String getResponseMessageUrl(Long memberId, Integer status) {
-        return MessageFormat.format(RESPONSE_URL_PATTERN, baseUrl, memberId, status);
-    }
-
     private String getContent(EventMessage message) {
         final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
-        if (message.isSubscribeEvent()) {
-            return MessageFormat.format("欢迎关注“化缘“。\n" +
-                    "\n" +
-                    "卡中羞涩？来化缘吧！足不出户就申请到借款，偿还信用卡账，最高比还信用卡最低还款额省50%。\n" +
-                    "\n" +
-                    "心动了吗？<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
-        } else if (message.isCustomMenuEvent()) {
-            if (message.getEventKey().equalsIgnoreCase("M_001_CREDIT_ESTIMATION")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html?memberId={0}\">点此先做个信用评估</a>", memberId);
-            } else if (message.getEventKey().equalsIgnoreCase("M_002_APPLY_LOAN")) {
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html#loan?memberId={0}\">点此申请借款</a>", memberId);
-            } else if (message.getEventKey().equalsIgnoreCase("M_003_REPAYMENT"))
-                return MessageFormat.format("<a href=\"http://180.168.35.37/repaymentApp/index.html#repay?memberId={0}\">点此归还还款</a>", memberId);
-        }
-        return "";
+        final String status = memberStatusEvaluator.evaluate(memberId);
+        String tp = getTemplates(message.getEventKey(), status).getTemplate();
+        return MessageFormat.format(tp, memberId, status);
     }
 
     private String getReplyMessage(EventMessage eventMessage) {

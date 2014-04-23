@@ -105,9 +105,12 @@ public class Member implements Serializable {
 
     public Member() {
         createTime = new Date();
+        this.status = MemberStatusEnum.NORMAL;
+        this.createTime = new Date();
     }
 
     public Member(String wcNo) {
+        this();
         this.wcNo = wcNo;
     }
 
