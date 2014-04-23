@@ -9,6 +9,8 @@ import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.IntRange;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -33,7 +35,7 @@ public class MemberStatusEvaluator {
 
     public String evaluate(final Long memberId) {
         Member member = memberRepository.findOne(memberId);
-        if (member.getPreCrl() == 0) return "1";
+        if (member.getPreCrl() == null || member.getPreCrl() == 0) return "1";
         if (member.getPreCrl() > 0 && member.getEducation() != null) return "2";
         List<Application> applications = applicationRepository.findByMemberIdOrderByApplicationNoDesc(memberId);
         boolean hasApplication = CollectionUtils.isNotEmpty(applications);
@@ -60,5 +62,11 @@ public class MemberStatusEvaluator {
                 ) return "12";
         if (accountRepository.findByMemberId(memberId).getCrlAvl() < 1000) return "9";
         return null;
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        MemberStatusEvaluator memberStatusEvaluator = applicationContext.getBean("memberStatusEvaluator", MemberStatusEvaluator.class);
+        System.out.println(memberStatusEvaluator.evaluate(2l));
     }
 }
