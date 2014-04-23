@@ -17,8 +17,6 @@ public class Account {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-    @Column(name = "PRE_CRL")
-    private Integer preCrl;
     @Column(name = "CRL")
     private Integer crl;
     @Column(name = "CRL_AVL")
@@ -34,14 +32,6 @@ public class Account {
 
     public void setMember(Member member) {
         this.member = member;
-    }
-
-    public Integer getPreCrl() {
-        return preCrl;
-    }
-
-    public void setPreCrl(Integer pre_Crl) {
-        this.preCrl = pre_Crl;
     }
 
     public Integer getCrl() {
