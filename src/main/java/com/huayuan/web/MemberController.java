@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -32,25 +33,32 @@ public class MemberController {
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public
     @ResponseBody
-    String uploadIdCardFront(@PathVariable Long id, @RequestParam("idCardFrontFile") MultipartFile idCardFrontFile) throws IOException {
+    Callable<String> uploadIdCardFront(@PathVariable final Long id, @RequestParam("idCardFrontFile") final MultipartFile idCardFrontFile) throws IOException {
         if (idCardFrontFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
-        IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
-        IdCard idCard = recognizer.recognize(true);
-        idCard = memberService.addIdCard(memberService.find(id), idCard);
-        return idCard.getIdNo();
+        return new Callable<String>() {
+            public String call() throws Exception {
+                IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
+                IdCard idCard = recognizer.recognize(true);
+                idCard = memberService.addIdCard(memberService.find(id), idCard);
+                return idCard.getIdNo();
+            }
+        };
     }
 
     @RequestMapping(value = "/{id}/idCardBack", method = RequestMethod.POST)
-    public
     @ResponseBody
-    String uploadIdCardBack(@PathVariable Long id, @RequestParam("idCardBackFile") MultipartFile idCardBackFile) throws IOException {
+    public Callable<String> uploadIdCardBack(@PathVariable final Long id, @RequestParam("idCardBackFile") final MultipartFile idCardBackFile) throws IOException {
         if (idCardBackFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.back.bad.argument.empty");
-        IdCardRecognizer recognizer = new IdCardRecognizer(idCardBackFile.getBytes());
-        IdCard idCard = recognizer.recognize(false);
-        memberService.updateIdCard(memberService.find(id), idCard);
-        return new Day(idCard.getValidThru()).toString();
+        return new Callable<String>() {
+            public String call() throws Exception {
+                IdCardRecognizer recognizer = new IdCardRecognizer(idCardBackFile.getBytes());
+                IdCard idCard = recognizer.recognize(false);
+                memberService.updateIdCard(memberService.find(id), idCard);
+                return new Day(idCard.getValidThru()).toString();
+            }
+        };
     }
 
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)

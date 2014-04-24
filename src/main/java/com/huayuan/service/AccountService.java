@@ -27,4 +27,6 @@ public interface AccountService {
 
     public List<Loan> getLoansBy(Member member);
 
+    public void setOff(Account account, Double amount);
+
 }

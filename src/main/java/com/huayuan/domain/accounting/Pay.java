@@ -11,8 +11,8 @@ import java.util.Date;
  * Created by Johnson on 4/23/14.
  */
 @Entity
-@Table(name = "TRANSFER")
-public class Transfer implements Serializable {
+@Table(name = "PAY")
+public class Pay implements Serializable {
     private static final long serialVersionUID = -5049726809728605176L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class Transfer implements Serializable {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APP_NO")
     private Application application;
-    @Column(name = "TRANSFER_AMT")
-    private Double transferAmt;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "STAFF_ID")
+    @Column(name = "PAY_AMT")
+    private Double payAmt;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "STAFF_ID", nullable = true)
     private Staff staff;
     @Column(name = "TRANS_CODE")
     private String code;
@@ -40,6 +40,10 @@ public class Transfer implements Serializable {
     @Column(name = "ERROR_MESSAGE")
 
     private String errorMessage;
+
+    public Pay() {
+        this.payAmt = 0d;
+    }
 
     public Long getId() {
         return id;
@@ -57,12 +61,12 @@ public class Transfer implements Serializable {
         this.application = application;
     }
 
-    public Double getTransferAmt() {
-        return transferAmt;
+    public Double getPayAmt() {
+        return payAmt;
     }
 
-    public void setTransferAmt(Double transferAmt) {
-        this.transferAmt = transferAmt;
+    public void setPayAmt(Double transferAmt) {
+        this.payAmt = transferAmt;
     }
 
     public Staff getStaff() {

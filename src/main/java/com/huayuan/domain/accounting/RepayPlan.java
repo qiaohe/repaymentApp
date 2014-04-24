@@ -15,10 +15,10 @@ public class RepayPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
     private Loan loan;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @Column(name = "TERM")
@@ -45,6 +45,12 @@ public class RepayPlan {
     private Integer overDueDay;
     @Column(name = "OVERDUE_INTEREST")
     private Double overDue_Interest;
+
+    public RepayPlan() {
+        this.overDue_Interest = 0d;
+        this.overDueAmt = 0d;
+        this.overDueDay = 0;
+    }
 
     public Loan getLoan() {
         return loan;

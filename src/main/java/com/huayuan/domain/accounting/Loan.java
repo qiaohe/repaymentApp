@@ -1,5 +1,8 @@
 package com.huayuan.domain.accounting;
 
+import com.huayuan.domain.accounting.core.LoanRequest;
+import com.huayuan.domain.accounting.core.RepayItem;
+import com.huayuan.domain.accounting.core.RepayListCalculator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
 
@@ -46,7 +49,7 @@ public class Loan {
     private Integer maxDelq;
     @Column(name = "STATUS")
     private Integer status;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
     public Long getId() {
@@ -167,6 +170,36 @@ public class Loan {
 
     public void setRepayPlans(List<RepayPlan> repayPlans) {
         this.repayPlans = repayPlans;
+    }
+
+    public Pay createTransfer() {
+        Pay transfer = new Pay();
+        transfer.setApplication(application);
+        transfer.setLoan(this);
+        return transfer;
+    }
+
+    public LoanRequest getLoanRequest() {
+        return new LoanRequest(this.amt, apr, term, startDate);
+    }
+
+    public List<RepayPlan> createRepayPlan() {
+        List<RepayPlan> result = new ArrayList<>();
+        List<RepayItem> items =  new RepayListCalculator(getLoanRequest()).calculate();
+        for (RepayItem repayItem : items) {
+            RepayPlan rp = new RepayPlan();
+            rp.setLoan(this);
+            rp.setTermNo(repayItem.getTermNo());
+            rp.setTerm(term);
+            rp.setDueDate(repayItem.getDueDate());
+            rp.setDueInterest(repayItem.getDueInterest());
+            rp.setDuePrincipal(repayItem.getDuePrincipal());
+            rp.setRestPrincipal(repayItem.getRestPrincipal());
+            rp.setDueAmt(repayItem.getAmt());
+            rp.setMember(this.getMember());
+            result.add(rp);
+        }
+        return result;
     }
 }
 
