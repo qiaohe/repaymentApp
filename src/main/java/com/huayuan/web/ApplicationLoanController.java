@@ -5,6 +5,7 @@ import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
+import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.service.ApplicationService;
@@ -56,7 +57,9 @@ public class ApplicationLoanController {
         application.setRepayType(RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST);
         application.setTerm(applicationDto.getTerm());
         application.setApplicationNo(idSequenceGenerator.getApplicationNo());
-        application.setMember(memberService.find(applicationDto.getMemberId()));
+        Member member = memberService.find(applicationDto.getMemberId());
+        application.setMember(member);
+        application.setIdId(member.getIdCard().getId());
         application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);

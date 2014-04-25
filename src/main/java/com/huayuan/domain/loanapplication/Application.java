@@ -72,6 +72,10 @@ public class Application {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
+    public Application() {
+        this.createTime = new Date();
+    }
+
     public String getApplicationNo() {
         return applicationNo;
     }
