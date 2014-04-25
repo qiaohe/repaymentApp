@@ -36,7 +36,6 @@ public class MemberStatusEvaluator {
     public String evaluate(final Long memberId) {
         Member member = memberRepository.findOne(memberId);
         if (member.getPreCrl() == null || member.getPreCrl() == 0) return "1";
-        if (member.getPreCrl() > 0 && member.getEducation() != null) return "2";
         List<Application> applications = applicationRepository.findByMemberIdOrderByApplicationNoDesc(memberId);
         boolean hasApplication = CollectionUtils.isNotEmpty(applications);
         if (!hasApplication) {

@@ -91,7 +91,10 @@ public class MessageController {
         response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
         if (eventMessage.isSubscribeEvent()) {
-            addMember(getUser(eventMessage.getFromUserName()));
+            Member member = memberService.findMemberBy(eventMessage.getFromUserName());
+            if (member == null) {
+                addMember(getUser(eventMessage.getFromUserName()));
+            }
         }
         final String rm = getReplyMessage(eventMessage);
         response.getWriter().println(rm);
