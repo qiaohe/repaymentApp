@@ -31,4 +31,8 @@ public class Configuration {
     public static String appSecret() {
         return CONFIG.getString("weChat.appSecret");
     }
+
+    public static String baseUrl() {
+        return CONFIG.getString("weChat.baseUrl");
+    }
 }

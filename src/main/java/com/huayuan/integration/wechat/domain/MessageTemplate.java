@@ -53,4 +53,20 @@ public class MessageTemplate implements Serializable {
     public void setTemplate(String template) {
         this.template = template;
     }
+
+    public boolean isCreditLimit() {
+        return getStatuses().equalsIgnoreCase("3.1,3.2,4,13") || getStatuses().equalsIgnoreCase("5,6,7,8,9,10,11,12");
+    }
+
+    public boolean isUsedCrl() {
+        return getStatuses().equalsIgnoreCase("9");
+    }
+
+    public boolean isRepay() {
+        return getStatuses().equalsIgnoreCase("8,9");
+    }
+
+    public boolean isUrlNotNeeded() {
+        return getStatuses().equalsIgnoreCase("1,2,3,4,5,6,7,12,13") || getStatuses().equalsIgnoreCase("12,13") ;
+    }
 }

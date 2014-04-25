@@ -9,9 +9,12 @@ import com.huayuan.integration.wechat.domain.Menu;
 import com.huayuan.integration.wechat.domain.MessageTemplate;
 import com.huayuan.integration.wechat.domain.User;
 import com.huayuan.repository.integration.MenuRepository;
+import com.huayuan.service.AccountService;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.Marshaller;
@@ -59,11 +62,17 @@ public class MessageController {
     private MemberStatusEvaluator memberStatusEvaluator;
     @Inject
     private MenuRepository menuRepository;
+    @Inject
+    private AccountService accountService;
     private List<Menu> menus;
 
     @PostConstruct
     public void init() {
         menus = menuRepository.findAll();
+    }
+
+    private String getBaseUrl() {
+        return Configuration.baseUrl();
     }
 
     public MessageTemplate getTemplates(final String menu_Key, String status) {
@@ -102,9 +111,12 @@ public class MessageController {
 
     private String getContent(EventMessage message) {
         final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
-        final String status = memberStatusEvaluator.evaluate(memberId);
-        String tp = getTemplates(message.getEventKey(), status).getTemplate();
-        return MessageFormat.format(tp, memberId, status);
+        String status = memberStatusEvaluator.evaluate(memberId);
+        MessageTemplate tp = getTemplates(message.getEventKey(), status);
+        status += "&&random=" + RandomStringUtils.randomNumeric(15);
+        if (tp.isCreditLimit()) return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status, memberService.getCrl(memberId));
+        if (tp.isUrlNotNeeded()) return tp.getTemplate();
+        return MessageFormat.format(tp.getTemplate(),getBaseUrl(), memberId, status);
     }
 
     private String getReplyMessage(EventMessage eventMessage) {
