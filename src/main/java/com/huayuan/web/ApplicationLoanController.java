@@ -10,7 +10,8 @@ import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
-import com.huayuan.web.dto.ApplicationDto;
+import com.huayuan.web.dto.LoanDto;
+import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class ApplicationLoanController {
 
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
-    public SavedCostDto getSavedCost(@RequestBody ApplicationDto applicationDto) {
+    public SavedCostDto getSavedCost(@RequestBody LoanRequestDto applicationDto) {
         final String rating = memberService.getRating(applicationDto.getMemberId());
         Pricing pricing = pricingRepository.findByRatingAndTerm(rating, applicationDto.getTerm());
         final Double saved = pricing.getSavedPerOneHundred() * applicationDto.getAmt() / 100;
@@ -51,7 +52,7 @@ public class ApplicationLoanController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String applyLoan(@RequestBody ApplicationDto applicationDto) {
+    public String applyLoan(@RequestBody LoanRequestDto applicationDto) {
         Application application = new Application();
         application.setAmt(applicationDto.getAmt());
         application.setRepayType(RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST);
@@ -64,5 +65,19 @@ public class ApplicationLoanController {
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
         return application.getApplicationNo();
+    }
+
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
+    @ResponseBody
+    public LoanDto getApplication(@PathVariable Long memberId) {
+        Application application = applicationService.getApplicationBy(memberId);
+        LoanDto loanDto = new LoanDto();
+        loanDto.setAppNo(application.getApplicationNo());
+        loanDto.setAmt(application.getAmt());
+        loanDto.setTerm(application.getTerm());
+        SavedCostDto sc = getSavedCost(new LoanRequestDto(memberId, application.getAmt(),  application.getTerm()));
+        loanDto.setRepayPerTerm(sc.getPayBackEachTerm());
+        loanDto.setSaveCost(sc.getSavedCost());
+        return loanDto;
     }
 }

@@ -1,5 +1,6 @@
 package com.huayuan.repository.applicationloan;
 
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import org.springframework.data.repository.CrudRepository;
 

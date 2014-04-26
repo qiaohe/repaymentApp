@@ -13,6 +13,8 @@ import java.util.List;
 public interface ApplicationService {
     public Application getApplication(String appNo);
 
+    public Application getApplicationBy(Long memberId);
+
     public Application applyLoan(Application application);
 
     public void approve(Approval approval);

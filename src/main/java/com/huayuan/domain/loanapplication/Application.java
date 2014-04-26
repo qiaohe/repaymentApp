@@ -203,4 +203,12 @@ public class Application {
     public void setApproval(Approval approval) {
         this.approval = approval;
     }
+
+    public String getPreRating() {
+        return preRating;
+    }
+
+    public void setPreRating(String preRating) {
+        this.preRating = preRating;
+    }
 }
