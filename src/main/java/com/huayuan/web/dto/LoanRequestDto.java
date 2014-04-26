@@ -3,12 +3,18 @@ package com.huayuan.web.dto;
 /**
  * Created by Johnson on 4/7/14.
  */
-public class ApplicationDto {
+public class LoanRequestDto {
     private Long memberId;
     private double amt;
     private int term;
 
-    public ApplicationDto() {
+    public LoanRequestDto() {
+    }
+
+    public LoanRequestDto(Long memberId, double amt, int term) {
+        this.memberId = memberId;
+        this.amt = amt;
+        this.term = term;
     }
 
     public Long getMemberId() {
