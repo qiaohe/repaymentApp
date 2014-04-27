@@ -70,6 +70,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application bindCreditCard(Application application, String creditCArdNo) {
         CreditCard creditCard = creditCardRepository.findByCardNo(creditCArdNo).get(0);
         application.setCreditCard(creditCard);
+        application.setStatus(7);
         return applicationRepository.save(application);
     }
 }
