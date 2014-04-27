@@ -173,7 +173,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Integer getCrl(Long id) {
         Account account = accountRepository.findByMemberId(id);
-        if (account != null) return account.getCrl();
+        if (account != null) return account.getCrlAvl();
         Member member = find(id);
         return member.getPreCrl();
     }

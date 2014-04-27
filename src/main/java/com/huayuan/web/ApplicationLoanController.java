@@ -33,10 +33,8 @@ public class ApplicationLoanController {
     private ApplicationService applicationService;
     @Inject
     private MemberService memberService;
-
     @Inject
     private PricingRepository pricingRepository;
-
 
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
