@@ -1,11 +1,10 @@
 package com.huayuan.service;
 
-        import com.huayuan.domain.accounting.Account;
-        import com.huayuan.domain.accounting.Loan;
-        import com.huayuan.domain.accounting.RepayPlan;
-        import com.huayuan.domain.member.Member;
+import com.huayuan.domain.accounting.Account;
+import com.huayuan.domain.accounting.Loan;
+import com.huayuan.domain.accounting.RepayPlan;
 
-        import java.util.List;
+import java.util.List;
 
 /**
  * Created by dell on 14-4-8.
@@ -25,8 +24,7 @@ public interface AccountService {
 
     public List<Loan> getLoans();
 
-    public List<Loan> getLoansBy(Member member);
+    public List<Loan> getLoansBy(Long memberId);
 
-    public void setOff(Account account, Double amount);
-
+    public void rePay(Long memberId, Double amount);
 }

@@ -2,13 +2,9 @@ package com.huayuan.service;
 
 import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.accounting.Loan;
+import com.huayuan.domain.accounting.Repay;
 import com.huayuan.domain.accounting.RepayPlan;
-import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.member.Member;
-import com.huayuan.repository.account.AccountRepository;
-import com.huayuan.repository.account.LoanRepository;
-import com.huayuan.repository.account.RepayPlanRepository;
-import com.huayuan.repository.account.TransferRepository;
+import com.huayuan.repository.account.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -31,7 +27,9 @@ public class AccountServiceImpl implements AccountService {
     @Inject
     private LoanRepository loanRepository;
     @Inject
-    private TransferRepository transferRepository;
+    private PayRepository payRepository;
+    @Inject
+    private RePayRepository rePayRepository;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -62,22 +60,34 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<RepayPlan> getRepayPlan(Long accountId) {
-        return null;
+    public List<RepayPlan> getRepayPlan(Long loanId) {
+        return repayPlanRepository.findByLoanId(loanId);
     }
 
     @Override
     public List<Loan> getLoans() {
-        return null;
+        return loanRepository.findAll();
     }
 
     @Override
-    public List<Loan> getLoansBy(Member member) {
-        return null;
+    public List<Loan> getLoansBy(Long memberId) {
+        return loanRepository.findByMemberId(memberId);
     }
 
     @Override
-    public void setOff(Account account, Double amount) {
+    public void rePay(Long memberId, Double amount) {
+        Repay repay = new Repay();
+        repay.setAmt(amount);
+        repay.setSource(1);
+        repay.setRepayDate(new Date());
+        repay.setRefNo("");
+        rePayRepository.save(repay);
+        Account account = accountRepository.findByMemberId(memberId);
+        account.setDebit_amt(account.getDebit_amt() + amount);
+
+
+
+
 
     }
 
