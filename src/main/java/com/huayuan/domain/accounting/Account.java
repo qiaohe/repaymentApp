@@ -25,6 +25,12 @@ public class Account {
     private Integer crlUsed;
     @Column(name = "DEBIT_AMT")
     private Double debit_amt;
+    public Account() {
+        debit_amt = 0d;
+        crl =0;
+        crlUsed = 0;
+        crlAvl = 0;
+    }
 
     public Member getMember() {
         return member;

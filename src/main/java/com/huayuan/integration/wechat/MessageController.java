@@ -1,6 +1,7 @@
 package com.huayuan.integration.wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
 import com.huayuan.domain.member.SexEnum;
@@ -14,9 +15,12 @@ import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationListener;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
@@ -43,11 +47,12 @@ import java.util.List;
  * Created by Johnson on 4/14/14.
  */
 @Controller(value = "messageController")
-public class MessageController {
+public class MessageController implements ApplicationListener<MemberStatusChangeEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
     private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
-    private static final String SEND_MESSAGE_PATTERN = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={accessToken}";
+    private static final String SEND_MESSAGE_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={accessToken}";
+    final String CUSTOM_MESSAGE_TEMPLATE = "'{'\"touser\":\"{0}\",\"msgtype\":\"text\",\"text\":'{'\"content\":\"{1}\"'}}'";
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     @Inject
@@ -114,9 +119,10 @@ public class MessageController {
         String status = memberStatusEvaluator.evaluate(memberId);
         MessageTemplate tp = getTemplates(message.getEventKey(), status);
         status += "&&random=" + RandomStringUtils.randomNumeric(15);
-        if (tp.isCreditLimit()) return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status, memberService.getCrl(memberId));
+        if (tp.isCreditLimit())
+            return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status, memberService.getCrl(memberId));
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
-        return MessageFormat.format(tp.getTemplate(),getBaseUrl(), memberId, status);
+        return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status);
     }
 
     private String getReplyMessage(EventMessage eventMessage) {
@@ -174,5 +180,14 @@ public class MessageController {
         }
         final String checkedSignature = DigestUtils.shaHex(content.toString());
         return StringUtils.isNotEmpty(checkedSignature) && checkedSignature.equals(signature.toUpperCase());
+    }
+
+    @Override
+    public void onApplicationEvent(MemberStatusChangeEvent event) {
+        final String message = MessageFormat.format(CUSTOM_MESSAGE_TEMPLATE, event.getOpenId(), event.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(message, headers);
+        restTemplate.postForEntity(SEND_MESSAGE_URL_PATTERN, entity, String.class, getAccessToken());
     }
 }

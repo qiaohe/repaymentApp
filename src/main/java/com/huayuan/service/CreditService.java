@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
 
@@ -14,5 +15,7 @@ public interface CreditService {
     public Iterable<Staff> getStaffs();
 
     public void registerStaff(Staff staff);
+
+    public void approve(Application application);
 
 }
