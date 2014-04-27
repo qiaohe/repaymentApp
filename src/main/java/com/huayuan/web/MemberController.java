@@ -9,6 +9,7 @@ import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
+import com.huayuan.web.dto.MemberResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,12 @@ public class MemberController {
     MemberService memberService;
     @Inject
     CreditLimitRanges creditLimitRanges;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public MemberResponseDto getMember(@PathVariable Long id) {
+        return MemberResponseDto.valueOf(memberService.find(id));
+    }
 
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public

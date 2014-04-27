@@ -44,21 +44,23 @@ public class MemberStatusEvaluator {
         } else {
             Application application = applications.get(0);
             if (new IntRange(0, 4).containsInteger(application.getStatus())) return "4";
-            if (application.getStatus() == 5 && application.getApproval().getDecision().equals("A")) return "5";
+            if (application.getStatus() == 5 && (!member.getStatus().equals(MemberStatusEnum.REJECTED)) && (StringUtils.containsAny(application.getApproval().getDecision(), new char[]{'A', 'D'})))
+                return "5";
             if (application.getStatus() == 6) return "6";
             if (application.getStatus() == 7) return "7";
         }
-        if (StringUtils.containsAny(member.getBlockCode(), new char[]{' ', 'B', 'C'})) return "8";
+        if (StringUtils.containsAny(member.getBlockCode(), new char[]{'\u0000', 'B', 'C'})) return "8";
         CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if (member.getStatus().equals(MemberStatusEnum.REJECTED)) {
             if (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'})) return "11";
-        } else if (member.getBlockCode().equals("X") || ((creditResult != null) && (creditResult.getLastReason1().contains("D100")
-                || creditResult.getLastReason2().contains("D100") || creditResult.getLastReason3().contains("D100"))) ||
-                ((creditResult != null) && (creditResult.getLastReason1().contains("D102")
-                        || creditResult.getLastReason2().contains("D102") || creditResult.getLastReason3().contains("D102"))) ||
-                ((creditResult != null) && (creditResult.getLastReason1().contains("D108")
-                        || creditResult.getLastReason2().contains("D108") || creditResult.getLastReason3().contains("D108")))
-                ) return "12";
+            if (member.getBlockCode().equals("X") || ((creditResult != null) && (creditResult.getLastReason1().contains("D100")
+                    || creditResult.getLastReason2().contains("D100") || creditResult.getLastReason3().contains("D100"))) ||
+                    ((creditResult != null) && (creditResult.getLastReason1().contains("D102")
+                            || creditResult.getLastReason2().contains("D102") || creditResult.getLastReason3().contains("D102"))) ||
+                    ((creditResult != null) && (creditResult.getLastReason1().contains("D108")
+                            || creditResult.getLastReason2().contains("D108") || creditResult.getLastReason3().contains("D108")))
+                    ) return "12";
+        }
         if (accountRepository.findByMemberId(memberId).getCrlAvl() < 1000) return "9";
         return null;
     }
