@@ -10,6 +10,7 @@ import com.huayuan.domain.member.*;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
@@ -47,9 +48,10 @@ public class MemberServiceImpl implements MemberService {
     private AccountRepository accountRepository;
     @Inject
     private CreditResultRepository creditResultRepository;
-
     @Inject
     private DictionaryRepository dictionaryRepository;
+    @Inject
+    private ApplicationRepository applicationRepository;
 
 
     @PostConstruct

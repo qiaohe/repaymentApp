@@ -84,7 +84,6 @@ public class AccountServiceImpl implements AccountService {
         rePayRepository.save(repay);
         Account account = accountRepository.findByMemberId(memberId);
         account.setDebit_amt(account.getDebit_amt() + amount);
-        
 
     }
 
