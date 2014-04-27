@@ -1,14 +1,13 @@
 package com.huayuan.domain.dictionary;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by dell on 14-4-27.
  */
+@Entity
+@Table(name = "VALUE_MOBILE_AREA")
 public class ValueMobileArea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

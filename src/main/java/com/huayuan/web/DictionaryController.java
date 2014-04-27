@@ -42,7 +42,7 @@ public class DictionaryController {
         return dictionaryRepository.findByType(StringUtils.upperCase(type));
     }
 
-    @RequestMapping(value = "/{mobilePhone}", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobileArea/{mobilePhone}", method = RequestMethod.GET)
     @ResponseBody
     public String getCityByMobilePhone(@PathVariable String mobilePhone) {
         final String sevenOfMobilePhone = StringUtils.substring(mobilePhone,0, 7);
