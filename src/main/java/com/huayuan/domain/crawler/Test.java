@@ -15,6 +15,8 @@ import java.util.Properties;
  */
 public class Test {
     public static void main(String[] args) {
+
+
         Session session = Session.getDefaultInstance(System.getProperties(), null);
         try {
 //            Store store = session.getStore("pop3");

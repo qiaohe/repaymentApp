@@ -44,8 +44,10 @@ public class MemberStatusEvaluator {
         } else {
             Application application = applications.get(0);
             if (new IntRange(0, 4).containsInteger(application.getStatus())) return "4";
-            if (application.getStatus() == 5 && (!member.getStatus().equals(MemberStatusEnum.REJECTED)) && (StringUtils.containsAny(application.getApproval().getDecision(), new char[]{'A', 'D'})))
-                return "5";
+            if (application.getStatus() == 5 && !member.getStatus().equals(MemberStatusEnum.REJECTED)) {
+                if (application.getApproval().getDecision().equals("A")) return "5.1";
+                if (application.getApproval().getDecision().equals("D")) return "5.2";
+            }
             if (application.getStatus() == 6) return "6";
             if (application.getStatus() == 7) return "7";
         }
