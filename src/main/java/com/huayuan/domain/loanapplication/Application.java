@@ -41,7 +41,7 @@ public class Application {
     private CreditCard creditCard;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "billId")
+    @JoinColumn(name = "BILL_ID")
     private CreditCardBill creditCardBill;
 
 
