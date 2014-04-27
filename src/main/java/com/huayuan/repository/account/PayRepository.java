@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by dell on 14-4-24.
  */
-public interface TransferRepository  extends JpaRepository<Pay, Long> {
+public interface PayRepository extends JpaRepository<Pay, Long> {
 }
