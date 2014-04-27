@@ -10,7 +10,6 @@ import com.huayuan.domain.member.*;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
-import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
@@ -50,9 +49,6 @@ public class MemberServiceImpl implements MemberService {
     private CreditResultRepository creditResultRepository;
     @Inject
     private DictionaryRepository dictionaryRepository;
-    @Inject
-    private ApplicationRepository applicationRepository;
-
 
     @PostConstruct
     private void init() {
@@ -181,11 +177,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean repayImmediatelyIfNeeded(Member member, CreditResult creditResult) {
-       return (StringUtils.containsAny(member.getBlockCode(), new char[]{'D','E', 'F', 'G', 'I'}) ||
-               creditResult.getLastReason1().equalsIgnoreCase("D101") ||
-               creditResult.getLastReason2().equalsIgnoreCase("D101")||
-               creditResult.getLastReason2().equalsIgnoreCase("D101"));
+        return (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'}) ||
+                creditResult.getLastReason1().equalsIgnoreCase("D101") ||
+                creditResult.getLastReason2().equalsIgnoreCase("D101") ||
+                creditResult.getLastReason2().equalsIgnoreCase("D101"));
     }
+
     @Override
     public Integer getStatus(Long id) {
         CreditResult creditResult = creditResultRepository.findByMemberId(id);
