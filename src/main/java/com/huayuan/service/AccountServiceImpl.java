@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Loan createLoan(Loan loan) {
         Loan newLoan = loanRepository.save(loan);
-        transferRepository.save(newLoan.createTransfer());
+        payRepository.save(newLoan.createTransfer());
         repayPlanRepository.save(newLoan.createRepayPlan());
         return newLoan;
     }
