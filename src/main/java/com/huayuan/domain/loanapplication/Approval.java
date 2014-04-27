@@ -32,6 +32,9 @@ public class Approval {
     @Column(name = "TERM")
     private Integer term;
 
+    @Column(name = "SUG_CRL")
+    private Double sugCrl;
+
 
     @Column(name = "REPAY_TYPE")
     @Enumerated
@@ -203,4 +206,11 @@ public class Approval {
         this.createTime = createTime;
     }
 
+    public Double getSugCrl() {
+        return sugCrl;
+    }
+
+    public void setSugCrl(Double sugCrl) {
+        this.sugCrl = sugCrl;
+    }
 }
