@@ -1,6 +1,9 @@
 package com.huayuan.domain.loanapplication;
 
 
+import com.huayuan.domain.member.CreditCard;
+import com.huayuan.domain.member.CreditCardBill;
+import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
@@ -29,17 +32,17 @@ public class Application {
     @Column(name = "EXISTING_FLAG")
     private Integer existingFlag = 0;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ID_ID")
+    private IdCard idCard;
 
-    @Column(name = "ID_ID")
-    private Long idId;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "CC_ID")
+    private CreditCard creditCard;
 
-
-    @Column(name = "CC_ID")
-    private Long ccId;
-
-
-    @Column(name = "BILL_ID")
-    private Long billId;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "billId")
+    private CreditCardBill creditCardBill;
 
 
     @Column(name = "AMT")
@@ -98,30 +101,6 @@ public class Application {
 
     public void setExistingFlag(Integer existingFlag) {
         this.existingFlag = existingFlag;
-    }
-
-    public Long getIdId() {
-        return idId;
-    }
-
-    public void setIdId(Long idId) {
-        this.idId = idId;
-    }
-
-    public Long getCcId() {
-        return ccId;
-    }
-
-    public void setCcId(Long ccId) {
-        this.ccId = ccId;
-    }
-
-    public Long getBillId() {
-        return billId;
-    }
-
-    public void setBillId(Long billId) {
-        this.billId = billId;
     }
 
     public Double getAmt() {
@@ -210,5 +189,29 @@ public class Application {
 
     public void setPreRating(String preRating) {
         this.preRating = preRating;
+    }
+
+    public IdCard getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(IdCard idCard) {
+        this.idCard = idCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    public CreditCardBill getCreditCardBill() {
+        return creditCardBill;
+    }
+
+    public void setCreditCardBill(CreditCardBill creditCardBill) {
+        this.creditCardBill = creditCardBill;
     }
 }

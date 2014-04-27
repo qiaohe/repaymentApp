@@ -58,7 +58,7 @@ public class ApplicationLoanController {
         application.setApplicationNo(idSequenceGenerator.getApplicationNo());
         Member member = memberService.find(applicationDto.getMemberId());
         application.setMember(member);
-        application.setIdId(member.getIdCard().getId());
+        application.setIdCard(member.getIdCard());
         application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
@@ -73,9 +73,17 @@ public class ApplicationLoanController {
         loanDto.setAppNo(application.getApplicationNo());
         loanDto.setAmt(application.getAmt());
         loanDto.setTerm(application.getTerm());
-        SavedCostDto sc = getSavedCost(new LoanRequestDto(memberId, application.getAmt(),  application.getTerm()));
+        SavedCostDto sc = getSavedCost(new LoanRequestDto(memberId, application.getAmt(), application.getTerm()));
         loanDto.setRepayPerTerm(sc.getPayBackEachTerm());
         loanDto.setSaveCost(sc.getSavedCost());
         return loanDto;
+    }
+
+    @RequestMapping(value = "/members/{memberId}/creditCard/{creditCardNo}", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean bindCreditCard(@PathVariable Long memberId, @PathVariable String creditCardNo) {
+        Application application = applicationService.getApplicationBy(memberId);
+        applicationService.bindCreditCard(application, creditCardNo);
+        return true;
     }
 }

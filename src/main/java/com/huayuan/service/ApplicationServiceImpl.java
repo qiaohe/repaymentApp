@@ -4,10 +4,12 @@ import com.huayuan.domain.loanapplication.AScore;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.loanapplication.TelephoneVerification;
+import com.huayuan.domain.member.CreditCard;
 import com.huayuan.repository.applicationloan.AScoreRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TvRepository;
+import com.huayuan.repository.member.CreditCardRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     private ApprovalRepository approvalRepository;
     @Inject
     private TvRepository tvRepository;
+
+    @Inject
+    private CreditCardRepository creditCardRepository;
 
     @Override
     public Application getApplication(String appNo) {
@@ -59,5 +64,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void aStore(AScore aScore) {
         aScoreRepository.save(aScore);
+    }
+
+    @Override
+    public Application bindCreditCard(Application application, String creditCArdNo) {
+        CreditCard creditCard = creditCardRepository.findByCardNo(creditCArdNo).get(0);
+        application.setCreditCard(creditCard);
+        return applicationRepository.save(application);
     }
 }
