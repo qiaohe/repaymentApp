@@ -13,6 +13,8 @@ import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.LoanDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -85,5 +87,14 @@ public class ApplicationLoanController {
         Application application = applicationService.getApplicationBy(memberId);
         applicationService.bindCreditCard(application, creditCardNo);
         return true;
+    }
+
+    @RequestMapping(value = "/members/{memberId}/progress", method = RequestMethod.GET)
+    @ResponseBody
+    public double getProgressOfApplication(@PathVariable Long memberId) {
+        Application application = applicationService.getApplicationBy(memberId);
+        DateTime t1 = new DateTime(application.getCreateTime());
+        DateTime t2 = new DateTime();
+        return Hours.hoursBetween(t1, t2).getHours() / 48;
     }
 }
