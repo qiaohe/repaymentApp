@@ -82,4 +82,12 @@ public class Repay {
     public void setSuccess(boolean isSuccess) {
         this.isSuccess = isSuccess;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
