@@ -12,5 +12,5 @@ import java.util.List;
 public interface RepayPlanRepository extends JpaRepository<RepayPlan, Long> {
     public List<RepayPlan> findByLoanId(Long loanId);
 
-    public List<RepayPlan> findByMemberIdAndDueDate(Long memberId, Date date);
+    public List<RepayPlan> findByMemberId(Long memberId);
 }
