@@ -181,29 +181,23 @@ GO
 
 
 
-
-
-/****** Object:  StoredProcedure PROC_BORROW_OLD    Script Date: 04/18/2014 15:17:41 ******/
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
 CREATE PROCEDURE PROC_BORROW_OLD @APPLNO VARCHAR(16)
 
 AS
 BEGIN
 
-/*UPDATE APPL
+/*
+UPDATE APPL
 SET  EXISTING_FLAG=CASE WHEN LAST_APPL_NO!='' AND LAST_DECISION='D' THEN 1
-                       WHEN LAST_APPL_NO!='' AND LAST_DECISION='A' THEN 2
+                        WHEN LAST_APPL_NO!='' AND LAST_DECISION='A' THEN 2
                   ELSE 0
                   END , --新旧户标识
-     REPAY_TYPE='0'--等额还款
-FROM  APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
+     REPAY_TYPE='0'--等额还款              
+FROM  APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID 
 			 JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
 WHERE A.STATUS='0'
-AND APPL_NO=@APPLNO*/
+AND APPL_NO=@APPLNO
+*/
 --------------------------------新旧户打标------------------------------------------------
 INSERT INTO A_SCORE
 (APPL_NO,
@@ -221,13 +215,14 @@ SELECT
 	   '',
 	   '',
 	   ''
-FROM APPL
-WHERE STATUS='0'
+FROM APPL 
+WHERE STATUS='0' 
 AND APPL_NO=@APPLNO
 -------------------------------插入人行评级表-------------------------------------------
-INSERT INTO APPROVAL
+INSERT INTO APPROVAL 
 (APPL_NO,
 AMT,
+SUG_CRL,
 APR,
 CLASS,
 CREATE_TIME,
@@ -240,8 +235,9 @@ REASON_2,
 REASON_3,
 REPAY_TYPE,
 TERM)
-SELECT
+SELECT 
         APPL_NO,
+        AMT,
         '',
         '',
         'A',
@@ -255,8 +251,8 @@ SELECT
         '',
         '0',
         TERM
-FROM APPL
-WHERE STATUS='0'
+FROM APPL 
+WHERE STATUS='0' 
 AND APPL_NO=@APPLNO
 ----------------------------------------------------------------------------------------
 INSERT INTO APPL_TV
@@ -268,7 +264,7 @@ TV_MEM_ANS_2,
 TV_QUES_1,
 TV_QUES_2,
 TYPE)
-SELECT
+SELECT 
        APPL_NO,
        GETDATE(),
         '',
@@ -276,8 +272,8 @@ SELECT
         '',
         '',
         '',
-        '0'
-FROM APPL
+        '0'     
+FROM APPL 
 WHERE STATUS='0'
 AND APPL_NO=@APPLNO
 -----------------------------------------------------------------------------------------
@@ -292,7 +288,7 @@ LAST_REASON_3,
 LAST_SCORE,
 LAST_APPL_NO,
 MEMBER_ID)
-SELECT
+SELECT 
         GETDATE(),
         '',
         '',
@@ -302,49 +298,30 @@ SELECT
         '',
         '',
         '',
-        MEMBER_ID
-FROM APPL
+        MEMBER_ID     
+FROM APPL 
 WHERE STATUS='0'
-AND MEMBER_ID NOT IN (SELECT ID FROM MEMBER)
+AND MEMBER_ID NOT IN (SELECT MEMBER_ID FROM LAST_CREDIT)
 AND APPL_NO=@APPLNO
 
 
 UPDATE A_SCORE
-SET
+SET 
        PBOC_BACK_TIME=LAST_PBOC_BACK_TIME,
        SCORE=LAST_SCORE,
 	   RATING=LAST_RATING,
 	   RISK_REMIND='00000000000000000000000000000000000000000000000000',--旧户没有风险提示
 	   PBOC_TIME=GETDATE()
-FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
+FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID 
             JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
             JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
+WHERE 
 	   A.EXISTING_FLAG='2'
-	   AND M.BLOCK_CODE IN ('A','B')--正常还款和一次逾期
-	   AND A.AMT<=CRL_AVL
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期	
+	   AND A.AMT<=CRL_AVL 
        AND A.STATUS='0'
        AND A.APPL_NO=@APPLNO
---------------------------------------旧户正常还款自动过件---------------------------------
-UPDATE A_SCORE
-SET
-       PBOC_BACK_TIME=LAST_PBOC_BACK_TIME,
-       SCORE=LAST_SCORE,
-	   RATING=LAST_RATING,
-	   RISK_REMIND='00000000000000000000000000000000000000000000000000',--旧户没有风险提示
-	   PBOC_TIME=GETDATE()
-FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
-            JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
-            JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
-	   A.EXISTING_FLAG='1'
-	   AND M.BLOCK_CODE IN ('','A','B')--正常还款和一次逾期
-	   AND (L.LAST_REASON_1 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_2 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_3 IN ('D500','D501','D600','D601','D602'))
-	   AND DATEDIFF(DAY,L.LAST_PBOC_BACK_TIME,GETDATE())<=180
-	   AND A.AMT<=CRL_AVL
-       AND A.STATUS='0'
-       AND A.APPL_NO=@APPLNO
---------------------------前次信用卡还款失败和未确认或者拒绝客户信用评分----------------------
+--------------------------------------旧户正常还款自动过件---------------------------------        
 UPDATE  APPROVAL
    SET DECISION='A',
        AMT=A.AMT,
@@ -360,96 +337,72 @@ UPDATE  APPROVAL
 FROM APPL A JOIN APPROVAL P ON A.APPL_NO=P.APPL_NO
             JOIN MEMBER M ON A.MEMBER_ID=M.ID
             JOIN PRICING R ON RATING=R.RATING AND A.TERM=R.TERM
-            JOIN A_SCORE S ON A.APPL_NO=S.APPL_NO
+            JOIN A_SCORE S ON A.APPL_NO=S.APPL_NO 
             JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
+WHERE 
 	   A.EXISTING_FLAG='2'
-	   AND M.BLOCK_CODE IN ('A','B')--正常还款和一次逾期
-	   AND A.AMT<=CRL_AVL
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期
+	   AND A.AMT<=CRL_AVL 
        AND A.STATUS='0'
        AND A.APPL_NO=@APPLNO
 ---------------------------------正常还款旧户直接过件-----------------------------------
-UPDATE  APPROVAL
-   SET DECISION='A',
-       AMT=A.AMT,
-       APR=R.APR,
-       TERM=A.TERM,
-       REPAY_TYPE=A.REPAY_TYPE,
-       PROFILE='旧户审核',
-       REASON_1='A001',
-       OPINION='前次信用卡还款失败、未确认、拒绝接受客户自动过件',
-       CREDITOR='C00000',
-       CLASS='S',
-	   CREATE_TIME=GETDATE()
-FROM APPL A JOIN APPROVAL P ON A.APPL_NO=P.APPL_NO
-            JOIN MEMBER M ON A.MEMBER_ID=M.ID
-            JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
-            JOIN PRICING R ON RATING=R.RATING AND A.TERM=R.TERM
-            JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
-	   A.EXISTING_FLAG='1'
-	   AND M.BLOCK_CODE IN ('','A','B')--正常还款和一次逾期
-	   AND (L.LAST_REASON_1 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_2 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_3 IN ('D500','D501','D600','D601','D602'))
-	   AND DATEDIFF(DAY,L.LAST_PBOC_BACK_TIME,GETDATE())<=180
-	   AND A.AMT<=CRL_AVL
-       AND A.STATUS='0'
-       AND A.APPL_NO=@APPLNO
--------------------------前次信用卡还款失败和未确认或者拒绝客户直接过件---------------------
 UPDATE APPL_TV
    SET TYPE='3',
        DECISION='2',
        CREATE_TIME=GETDATE()
 FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
-            JOIN APPL_TV T ON A.APPL_NO=T.APPL_NO
+            JOIN APPL_TV T ON A.APPL_NO=T.APPL_NO 
             JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
+WHERE  	   
 		   A.EXISTING_FLAG='2'
-	   AND M.BLOCK_CODE IN ('A','B')--正常还款和一次逾期
-	   AND A.AMT<=CRL_AVL
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期
+	   AND A.AMT<=CRL_AVL 
        AND A.STATUS='0'
        AND A.APPL_NO=@APPLNO
 -------------------------旧户正常用卡不需要照会---------------------------------------------
-UPDATE APPL_TV
-   SET TYPE='3',
-       DECISION='2',
-       CREATE_TIME=GETDATE()
-FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
-            JOIN APPL_TV T ON A.APPL_NO=T.APPL_NO
-            JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
+UPDATE ACCOUNT 
+SET  CRL_USED=CRL_USED+P.AMT,
+	 CRL_AVL=CRL-(CRL_USED+P.AMT)
+FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID 
             JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
-	   A.EXISTING_FLAG='1'
-	   AND M.BLOCK_CODE IN ('','A','B')--正常还款和一次逾期
-	   AND (L.LAST_REASON_1 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_2 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_3 IN ('D500','D501','D600','D601','D602'))
-	   AND DATEDIFF(DAY,L.LAST_PBOC_BACK_TIME,GETDATE())<=180
-	   AND A.AMT<=CRL_AVL
+            JOIN APPROVAL P ON A.APPL_NO=P.APPL_NO
+WHERE  A.EXISTING_FLAG='2'
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期
+	   AND A.AMT<=CRL_AVL 
        AND A.STATUS='0'
        AND A.APPL_NO=@APPLNO
--------------------------前次信用卡还款失败和未确认或者拒绝客户不需要照会--------------------
+------------------------------------正常还款旧户借款账户更新--------------------------
+UPDATE LAST_CREDIT 
+SET LAST_APPL_NO=A.APPL_NO,
+    LAST_DECISION=P.DECISION,
+    LAST_PBOC_BACK_TIME=S.PBOC_BACK_TIME,
+    LAST_RATING=S.RATING,
+    LAST_REASON_1=P.REASON_1,
+    LAST_REASON_2=P.REASON_1,
+    LAST_REASON_3=P.REASON_1,
+    LAST_SCORE=S.SCORE
+FROM LAST_CREDIT L JOIN APPL A ON L.MEMBER_ID=A.MEMBER_ID
+                   JOIN APPROVAL P ON A.APPL_NO=P.APPL_NO
+                   JOIN A_SCORE S ON A.APPL_NO=S.APPL_NO
+                   JOIN MEMBER M ON A.MEMBER_ID=M.ID 
+                   JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
+WHERE  A.EXISTING_FLAG='2'
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期
+	   AND A.AMT<=CRL_AVL 
+       AND A.STATUS='0'
+       AND A.APPL_NO=@APPLNO
+------------------------------------前次处理结果更新-----------------------------------
 UPDATE APPL
-SET  STATUS='5'
-FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
+SET  STATUS='7' 
+FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID 
             JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
 WHERE  A.EXISTING_FLAG='2'
-	   AND M.BLOCK_CODE IN ('A','B')--正常还款和一次逾期
-	   AND A.AMT<=CRL_AVL
+	   AND M.BLOCK_CODE IN ('','B','C')--正常还款和一次逾期
+	   AND A.AMT<=CRL_AVL 
        AND A.STATUS='0'
        AND A.APPL_NO=@APPLNO
-------------------------------------正常还款旧户借款处理完成状态更新--------------------------
-UPDATE APPL
-SET  STATUS='5'
-FROM APPL A JOIN MEMBER M ON A.MEMBER_ID=M.ID
-			JOIN LAST_CREDIT L ON A.MEMBER_ID=L.MEMBER_ID
-            JOIN ACCOUNT C ON A.MEMBER_ID=C.MEMBER_ID
-WHERE
-	   A.EXISTING_FLAG='1'
-	   AND M.BLOCK_CODE IN ('','A','B')--正常还款和一次逾期
-	   AND (L.LAST_REASON_1 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_2 IN ('D500','D501','D600','D601','D602') OR L.LAST_REASON_3 IN ('D500','D501','D600','D601','D602'))
-	   AND DATEDIFF(DAY,L.LAST_PBOC_BACK_TIME,GETDATE())<=180
-	   AND A.AMT<=CRL_AVL
-       AND A.STATUS='0'
-       AND A.APPL_NO=@APPLNO
------------------------------前次信用卡还款失败和未确认或者拒绝客户状态更新--------------------
+------------------------------------正常还款旧户借款处理完成状态更新------------------------
+
 
 END
 

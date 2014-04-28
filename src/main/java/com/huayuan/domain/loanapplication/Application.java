@@ -75,8 +75,13 @@ public class Application {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "APPLY_TIME")
+    private Date applyTime;
+
     public Application() {
         this.createTime = new Date();
+        this.applyTime = new Date();
     }
 
     public String getApplicationNo() {
@@ -213,5 +218,13 @@ public class Application {
 
     public void setCreditCardBill(CreditCardBill creditCardBill) {
         this.creditCardBill = creditCardBill;
+    }
+
+    public Date getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(Date applyTime) {
+        this.applyTime = applyTime;
     }
 }
