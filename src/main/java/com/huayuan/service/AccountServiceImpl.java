@@ -84,9 +84,13 @@ public class AccountServiceImpl implements AccountService {
         rePayRepository.save(repay);
         Account account = accountRepository.findByMemberId(memberId);
         account.setDebit_amt(account.getDebit_amt() + amount);
-         repayPlanRepository.findByMemberIdAndDueDate(memberId, new Date());
-
-
+        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
+        for (RepayPlan plan : plans) {
+            if (plan.getDueAmt() + plan.getOverDueAmt() > account.getDebit_amt()) return;
+            plan.setPaidPrincipal(plan.getDuePrincipal());
+            plan.setPaidInterest(plan.getDueInterest());
+            account.setDebit_amt(account.getDebit_amt() - plan.getPaidInterest() - plan.getPaidPrincipal() - plan.getOverDue_Interest());
+        }
     }
 
     @Override
