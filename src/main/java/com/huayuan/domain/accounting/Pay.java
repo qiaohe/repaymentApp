@@ -21,7 +21,7 @@ public class Pay implements Serializable {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
     private Loan loan;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "APP_NO")
     private Application application;
     @Column(name = "PAY_AMT")
