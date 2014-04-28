@@ -68,11 +68,11 @@ public class MemberController {
         };
     }
 
-    @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/creditCards/{creditCardNo}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public
     @ResponseBody
-    String addCreditCard(@PathVariable Long id, @RequestParam("creditCardNo") String creditCardNo) {
+    String addCreditCard(@PathVariable Long id, @PathVariable String creditCardNo) {
         Member member = memberService.find(id);
         memberService.addCreditCard(member, creditCardNo);
         return creditCardNo;
