@@ -49,8 +49,16 @@ public class Loan {
     private Integer maxDelq;
     @Column(name = "STATUS")
     private Integer status;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
+    private Pay pay;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
+
+    public Loan() {
+        status = 0;
+        paidInterest = 0d;
+        paidPrincipal = 0d;
+    }
 
     public Long getId() {
         return id;
@@ -120,8 +128,8 @@ public class Loan {
         return interest;
     }
 
-    public void setInterest(Double Integererest) {
-        this.interest = Integererest;
+    public void setInterest(Double interest) {
+        this.interest = interest;
     }
 
     public Double getPaidPrincipal() {
@@ -172,6 +180,14 @@ public class Loan {
         this.repayPlans = repayPlans;
     }
 
+    public Pay getPay() {
+        return pay;
+    }
+
+    public void setPay(Pay pay) {
+        this.pay = pay;
+    }
+
     public Pay createTransfer() {
         Pay transfer = new Pay();
         transfer.setApplication(application);
@@ -180,12 +196,12 @@ public class Loan {
     }
 
     public LoanRequest getLoanRequest() {
-        return new LoanRequest(this.amt, apr, term, startDate);
+        return new LoanRequest(this.amt, apr, term, pay.getConfirmDate());
     }
 
     public List<RepayPlan> createRepayPlan() {
         List<RepayPlan> result = new ArrayList<>();
-        List<RepayItem> items =  new RepayListCalculator(getLoanRequest()).calculate();
+        List<RepayItem> items = new RepayListCalculator(getLoanRequest()).calculate();
         for (RepayItem repayItem : items) {
             RepayPlan rp = new RepayPlan();
             rp.setLoan(this);

@@ -45,7 +45,6 @@ public class AccountServiceImpl implements AccountService {
     public Loan createLoan(Loan loan) {
         Loan newLoan = loanRepository.save(loan);
         payRepository.save(newLoan.createTransfer());
-        repayPlanRepository.save(newLoan.createRepayPlan());
         return newLoan;
     }
 
@@ -81,10 +80,34 @@ public class AccountServiceImpl implements AccountService {
         repay.setSource(1);
         repay.setRepayDate(new Date());
         repay.setRefNo("");
+        repay.setMemberId(memberId);
         rePayRepository.save(repay);
         Account account = accountRepository.findByMemberId(memberId);
         account.setDebit_amt(account.getDebit_amt() + amount);
+         repayPlanRepository.findByMemberIdAndDueDate(memberId, new Date());
 
+
+    }
+
+    @Override
+    public boolean review(Long loadId) {
+        Loan loan = loanRepository.findOne(loadId);
+        loan.getPay().setConfirmDate(new Date());
+        loan.getPay().setTransferTime(new Date());
+        loan.getPay().setConfirm(1);
+        loan.getPay().setCode("T1000001");
+        loan.setStartDate(loan.getPay().getConfirmDate());
+        loan.setAmt(loan.getPay().getPayAmt());
+        loan.setPrincipal(loan.getPay().getPayAmt());
+        List<RepayPlan> plans = loan.createRepayPlan();
+        Double sumInterest = 0d;
+        for (RepayPlan plan : plans) {
+            sumInterest += plan.getDueInterest();
+        }
+        loan.setInterest(sumInterest);
+        loanRepository.save(loan);
+        repayPlanRepository.save(plans);
+        return true;
     }
 
 
@@ -94,13 +117,13 @@ public class AccountServiceImpl implements AccountService {
         AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
         MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
         ApplicationService applicationService = applicationContext.getBean("applicationService", ApplicationService.class);
-        Loan loan = new Loan();
-        loan.setMember(memberService.find(1l));
-        loan.setApplication(applicationService.getApplication("2014042110000000"));
-        loan.setTerm(3);
-        loan.setApr(0.15d);
-        loan.setAmt(102d);
-        loan.setStartDate(new Date());
-        System.out.println(accountService.createLoan(loan));
+//        Loan loan = new Loan();
+//        loan.setMember(memberService.find(1l));
+//        loan.setApplication(applicationService.getApplication("2014042110000000"));
+//        loan.setTerm(3);
+//        loan.setApr(0.15d);
+//        loan.setAmt(102d);
+//        loan.setStartDate(new Date());
+        System.out.println(accountService.review(1l));
     }
 }

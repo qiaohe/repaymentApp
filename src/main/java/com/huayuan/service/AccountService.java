@@ -27,4 +27,6 @@ public interface AccountService {
     public List<Loan> getLoansBy(Long memberId);
 
     public void rePay(Long memberId, Double amount);
+
+    public boolean review(Long loanId);
 }
