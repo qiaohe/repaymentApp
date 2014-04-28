@@ -15,7 +15,7 @@
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4,5)</query>
     </named-query>
-    <named-query name="RepayPlan.findByMemberIdAndDueDate">
-        <query>SELECT rp FROM RepayPlan rp WHERE rp.dueAmt >?1  and rp.paidPrincipal =0 and rp.member.id=?2 order by rp.dueDate</query>
+    <named-query name="RepayPlan.findByMemberId">
+        <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and rp.member.id=?2 order by rp.dueDate</query>
     </named-query>
 </entity-mappings>
