@@ -38,11 +38,8 @@ public class PreCredit implements Serializable {
     @Column(name = "CRL")
     private Integer crl;
 
-
     @Column(name = "CREATE_TIME")
-    private Date createTime;
-
-
+    private Date createTime = new Date();
 
     public Member getMember() {
         return member;

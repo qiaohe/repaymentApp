@@ -99,7 +99,7 @@ public class MemberController {
     @ResponseStatus(value = HttpStatus.OK)
     public CreditLimitDto testCreditLimit(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         memberDto.setMemberId(id);
-        Integer creditLimit = memberService.testCreditLimit(memberDto);
+        Double creditLimit = (double) memberService.testCreditLimit(memberDto);
         String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }
@@ -107,7 +107,7 @@ public class MemberController {
     @RequestMapping(value = "/{id}/crl", method = RequestMethod.GET)
     @ResponseBody
     public CreditLimitDto getCrl(@PathVariable Long id) {
-        Integer creditLimit = memberService.getCrl(id);
+        Double creditLimit = memberService.getCrl(id);
         String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }

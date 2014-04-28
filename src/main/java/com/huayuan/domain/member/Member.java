@@ -2,6 +2,7 @@ package com.huayuan.domain.member;
 
 
 import com.huayuan.domain.loanapplication.CreditResult;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -107,6 +108,7 @@ public class Member implements Serializable {
         createTime = new Date();
         this.status = MemberStatusEnum.NORMAL;
         this.createTime = new Date();
+        this.blockCode = StringUtils.EMPTY;
     }
 
     public Member(String wcNo) {

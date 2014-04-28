@@ -18,18 +18,18 @@ public class Account {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @Column(name = "CRL")
-    private Integer crl;
+    private Double crl;
     @Column(name = "CRL_AVL")
-    private Integer crlAvl;
+    private Double crlAvl;
     @Column(name = "CRL_USED")
-    private Integer crlUsed;
+    private Double crlUsed;
     @Column(name = "DEBIT_AMT")
     private Double debit_amt;
     public Account() {
         debit_amt = 0d;
-        crl =0;
-        crlUsed = 0;
-        crlAvl = 0;
+        crl =0d;
+        crlUsed = 0d;
+        crlAvl = 0d;
     }
 
     public Member getMember() {
@@ -40,27 +40,27 @@ public class Account {
         this.member = member;
     }
 
-    public Integer getCrl() {
+    public Double getCrl() {
         return crl;
     }
 
-    public void setCrl(Integer crl) {
+    public void setCrl(Double crl) {
         this.crl = crl;
     }
 
-    public Integer getCrlAvl() {
+    public Double getCrlAvl() {
         return crlAvl;
     }
 
-    public void setCrlAvl(Integer crl_Avl) {
+    public void setCrlAvl(Double crl_Avl) {
         this.crlAvl = crl_Avl;
     }
 
-    public Integer getCrlUsed() {
+    public Double getCrlUsed() {
         return crlUsed;
     }
 
-    public void setCrlUsed(Integer crl_Used) {
+    public void setCrlUsed(Double crl_Used) {
         this.crlUsed = crl_Used;
     }
 

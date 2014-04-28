@@ -169,11 +169,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Integer getCrl(Long id) {
+    public Double getCrl(Long id) {
+        Member member = find(id);
+        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) return 0d;
+        Account account = accountRepository.findByMemberId(id);
+        if (account != null) return account.getCrl();
+        return (double) member.getPreCrl();
+    }
+
+    @Override
+    public Double getAvlCrl(Long id) {
+        Member member = find(id);
+        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) return 0d;
         Account account = accountRepository.findByMemberId(id);
         if (account != null) return account.getCrlAvl();
-        Member member = find(id);
-        return member.getPreCrl();
+        return (double) member.getPreCrl();
     }
 
     private boolean repayImmediatelyIfNeeded(Member member, CreditResult creditResult) {

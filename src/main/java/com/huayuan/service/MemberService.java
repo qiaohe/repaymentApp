@@ -41,7 +41,9 @@ public interface MemberService {
 
     public List<CreditCard> getCreditCards(Long memberId);
 
-    public Integer getCrl(Long id);
+    public Double getCrl(Long id);
+
+    public Double getAvlCrl(Long id);
 
     public Integer getStatus(Long memberId);
 

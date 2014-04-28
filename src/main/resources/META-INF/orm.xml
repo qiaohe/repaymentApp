@@ -5,17 +5,26 @@
                  version="2.0">
 
     <!--<persistence-unit-metadata>-->
-        <!--<persistence-unit-defaults>-->
-            <!--<entity-listeners>-->
-                <!--<entity-listener class="org.springframework.data.jpa.domain.support.AuditingEntityListener"/>-->
-            <!--</entity-listeners>-->
-        <!--</persistence-unit-defaults>-->
+    <!--<persistence-unit-defaults>-->
+    <!--<entity-listeners>-->
+    <!--<entity-listener class="org.springframework.data.jpa.domain.support.AuditingEntityListener"/>-->
+    <!--</entity-listeners>-->
+    <!--</persistence-unit-defaults>-->
     <!--</persistence-unit-metadata>-->
 
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4,5)</query>
     </named-query>
     <named-query name="RepayPlan.findByMemberId">
-        <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and rp.member.id=?2 order by rp.dueDate, rp.dueAmt</query>
+        <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and
+            rp.member.id=?2 order by rp.dueDate, rp.dueAmt
+        </query>
     </named-query>
+
+    <!--<named-native-query name="Pboc.findByStatusWithSummary">-->
+        <!--<query>SELECT pb.id, pb.certNo, pb.name,pb.createTime,-->
+            <!--pb.keyiner, pb.status FROM Pboc pb WHERE pb.status in(1,2,3) and pb.flag = 1 and-->
+            <!--pb.risk = 0-->
+        <!--</query>-->
+    <!--</named-native-query>-->
 </entity-mappings>
