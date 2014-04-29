@@ -1,11 +1,14 @@
 package com.huayuan.domain.credit;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by dell on 14-4-28.
  */
-public class PbocSummary {
+public class PbocSummary implements Serializable {
+
+    private static final long serialVersionUID = -4853842661334645726L;
     private Long id;
     private String certNo;
     private String name;

@@ -21,10 +21,17 @@
         </query>
     </named-query>
 
-    <!--<named-native-query name="Pboc.findByStatusWithSummary">-->
-        <!--<query>SELECT pb.id, pb.certNo, pb.name,pb.createTime,-->
-            <!--pb.keyiner, pb.status FROM Pboc pb WHERE pb.status in(1,2,3) and pb.flag = 1 and-->
-            <!--pb.risk = 0-->
-        <!--</query>-->
-    <!--</named-native-query>-->
+    <named-native-query name="Pboc.findByStatusWithSummary" result-set-mapping="pbocSummary">
+        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
+            pb.keyiner as keyiner, pb.status as status FROM Pboc pb
+        </query>
+    </named-native-query>
+    <sql-result-set-mapping name="pbocSummary">
+        <column-result name="id"/>
+        <column-result name="certNo"/>
+        <column-result name="name"/>
+        <column-result name="createTime"/>
+        <column-result name="keyiner"/>
+        <column-result name="status"/>
+    </sql-result-set-mapping>
 </entity-mappings>

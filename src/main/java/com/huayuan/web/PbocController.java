@@ -4,10 +4,7 @@ import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.repository.credit.PbocRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -29,13 +26,13 @@ public class PbocController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Pboc getPbocBy(Long id) {
+    public Pboc getPbocBy(@PathVariable Long id) {
         return pbocRepository.findOne(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Pboc updatePbocBy(@RequestBody Pboc pboc) {
+    public Pboc updatePbocBy(@PathVariable Long id, @RequestBody Pboc pboc) {
         return pbocRepository.save(pboc);
     }
 }

@@ -14,11 +14,8 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
     private EntityManager em;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<PbocSummary> findByStatus() {
-//        return em.createNativeQuery("SELECT pb.id, pb.certNo, pb.name,pb.createTime,\n" +
-//                "            pb.keyiner, pb.status FROM Pboc pb WHERE pb.status in(1,2,3) and pb.flag = 1 and\n" +
-//                "            pb.risk = 0", PbocSummary.class).getResultList();
-
-        return null;
+        return em.createNamedQuery("Pboc.findByStatusWithSummary").getResultList();
     }
 }

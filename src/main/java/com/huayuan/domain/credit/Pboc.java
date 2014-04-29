@@ -1,28 +1,16 @@
 package com.huayuan.domain.credit;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by dell on 14-4-28.
  */
-//@SqlResultSetMappings({
-//        @SqlResultSetMapping(
-//                name = "pbocSummary",
-//                entities = {},
-//                columns = {
-//                        @ColumnResult(name = "id"),
-//                        @ColumnResult(name = "certNo"),
-//                        @ColumnResult(name = "name"),
-//                        @ColumnResult(name = "createTime"),
-//                        @ColumnResult(name = "keyiner"),
-//                        @ColumnResult(name = "status")
-//                }
-//        )
-//})
 @Entity
 @Table(name = "PBOC")
-public class Pboc {
+public class Pboc implements Serializable {
+    private static final long serialVersionUID = -8746160739489972542L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -302,7 +290,7 @@ public class Pboc {
     private String keyiner;
 
     @Column(name = "CREATE_TIME")
-    private Date createTime = new Date();
+    private Date createTime;
 
     @Column(name = "RH_CRL")
     private Integer rh_crl;
@@ -315,6 +303,10 @@ public class Pboc {
 
     @Column(name = "STATUS")
     private Integer status;
+
+    public Pboc() {
+        createTime = new Date();
+    }
 
     public Long getId() {
         return id;
@@ -1080,8 +1072,8 @@ public class Pboc {
         return createTime;
     }
 
-    public void setCreateTime(Date create_time) {
-        this.createTime = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Integer getRh_crl() {
