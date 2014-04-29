@@ -3,7 +3,6 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 8195479836500869759L;
-
     private Integer subscribe;
     private String openid;
     private String nickname;
