@@ -1,5 +1,6 @@
 package com.huayuan.repository.credit;
 
+import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 
 import java.util.List;
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface PbocRepositoryCustom {
    public List<PbocSummary> findByStatus();
+
+    public List<Pboc> search(String query);
 }
