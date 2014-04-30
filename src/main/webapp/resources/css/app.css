@@ -2,234 +2,186 @@ body{
 	font-size: 62.5%;
 }
 
-a, input, h2, p{
-	text-shadow: none !important;
-}
-
-/* #limit */
-#front-cover, #front-cover2, #congratulation-cover{
-	position: relative;
-	background-color: rgb(170, 207, 93);
-	text-align: center;
-}
-
-#front-cover:before, #front-cover2:before, #billmail-cover:before, #loan-cover:before, #congratulation-cover:before{
-	content: '';
-	position: absolute;
-	top: 100%;
-	left: 48%;
-	border-color: rgb(170, 207, 93) transparent transparent transparent;
-	border-style: solid;
-	border-width: 10px;
-	width: 0;
-	height: 0;
-}
-
-#front-cover *, #front-cover2 *{
-	position: relative;
-}
-
-#front-cover img, #front-cover2 img{
-	padding-top: 8%;
-	min-width: 40%;
-	min-height:40%;
-	max-width: 50%;
-	max-height: 50%;
-}
-
-#front-cover h2, #front-cover2 h2{
+a{
+	text-decoration: none;
 	color: white;
-	font-weight: normal !important;
-	/* font-family: Microsoft YaHei; */
 }
 
-#limit li, #limit-step2 li{
+li{
 	list-style: none;
-}
-
-#id-card-front-upload::-webkit-file-upload-button {
-  visibility: hidden;
-}
-
-#container-credit{
-	padding-top: 1%;
-}
-
-#email-text{
-	font-size: 1.6em;
-}
-
-#next-step, #step2-submit, #billmail a{
-	width: 80%;
-	margin: auto;
-	background-color: rgb(60, 160, 230);
-	color: white;
-	font-weight: normal !important;
-	border-radius: 5px;
-}
-
-/* limit-step2 */
-#limit-step2 h2{
-	color: white;
-	tont-weight: normal !important;
-}
-
-#limit-step2 p{
-	font-size: 1.4em;
-	color: rgb(230, 126, 34);
-	margin: 0;
-}
-
-/* billmail */
-#billmail-cover{
-	position: relative;
-	background-color: rgb(170, 207, 93);
-}
-
-#billmail-cover img{
-	min-width: 28%;
-	max-width: 33%;
-	min-height: 60%;
-	max-height: 80%;
-	position: relative;
-	top: 10%;
-	left: 5%;
-	float: left;
-}
-
-#billmail li{
-	margin: 0;
-	padding: 0;
 	border: none;
 }
 
-#billmail-tip{
-	height: 100%;
-	position: relative;
-	top: 10%;
+input{
+	height: 30px;
 }
 
-#billmail-tip p , #billmail-tip h2{
-	position: relative;
-	left: 8%;
-	top: 5%;
-	/* font-family: Microsoft YaHei; */
-	color: white;
-	font-size: 1.8em;
-}
+/* limit */
+	.cover{
+		position: relative;
+		top: 0;
+		text-align: center;
+		background-color: #aacf5d;
+		height: 175px;
+	}
 
-#billmail-tip h2{
-	font-size: 2em;
-}
-
-#mail-password{
-	font-size: 1.4em;
-}
-
-#limit-result{
-	position: relative;
-}
-
-#result-img{
-	float: left;
-	width: 200px;
-	height: 200px;
-	float: left;
-	background-color: gray;
-	border-radius: 50%;
-	font-size: 3em;
-	text-align: center;
-	color: white;
-}
-
-#result-amount{
-	font-size: 5em;
-	position: absolute;
-	left: 40%;
-	top: 8%;
-}
-
-#result-discription{
-	font-size: 1.8em;
-	position: absolute;
-	left: 40%;
-	top: 25%;
-}
-
-.btn-group{
-	width: 65%;
-	position: relative;
-	left: 35%;
-	top: 60%;
-}
-
-/* waiting-for-limit */
-#waiting-img{
-	margin: 5% auto;
-	width: 180px;
-	height: 120px;
-	border-radius: 60px;
-	background-color: gray;
-}
-
-#waiting-discription{
-	position: relative;
-	top: 40%;
-}
+	.cover:before{
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 47%;
+		border-color: #aacf5d transparent transparent transparent;
+		border-style: solid;
+		border-width: 10px;
+		width: 0;
+		height: 0;
+	}
+	
+	.cover-img{
+		max-height: 62.3%;
+		max-width: 42.9%;
+	}
+	
+	.custom-li{
+		position: relative;
+		top: 0;
+		width: 100%;
+		height: 60px;
+		margin: auto;
+	}
+	
+	.before-input{
+		float: left;
+		height: 30px;
+		width: 45px;
+		/* max-width: 14%;
+		max-height: 5.5%; */
+		margin-top: 0.8%;
+		margin-left: 3.2%;
+	}
+	
+	.id-card-container{
+		position: relative;
+		width: 75%;
+		top: 0;
+		float: left;
+		margin-left: 6%;
+	}
+	
+	.textinput{
+		border: 1px solid #c0c0c0;
+		border-radius: 3px;
+		width: 100%;
+		height: 30px;
+	}
+	
+	.placeholder{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		font-size: 1.4em;
+		color: #c0c0c0;
+		margin: 6px auto auto 10px;
+	}
+	
+	.placeholder-left{
+		border: none;
+		text-align: left;
+		padding: 2.5% 0 0 2%;
+	}
+	
+	.placeholder-right{
+		border: none;
+		text-align: right;
+		padding-top: 3%;
+	}
+	
+	.small-icon{
+		max-height: 4.5%;
+		max-width: 10.5%;
+	}
+	
+	.custom-btn{
+		position: relative;
+		top: 0;
+		text-decoration: none;
+		background-color: #3ca0e6;
+		text-align: center;
+		border-radius: 3px;
+		color: white;
+		font-weight: bold;
+		font-size: 1.6em;
+	}
+	
+	.single-btn{
+		width: 60%;
+		text-align: center;
+		font-size: 1.8em;
+		margin: 20% auto 0 auto;
+	}
+	
+/* basic-info */
+	#basic-info p, #loan p{
+		font-size: 1.4em;
+		color: #e7883c;
+		margin: -1% auto -3% 5%;
+	}
+	
+	.pop-up{
+		position: absolute;
+		top: 10%;
+		left: 5%;
+		display: none;
+		background-color: white;
+		z-index: 5;
+	}
+	
+	.bkg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.7);		
+	}
+	
+/* suspension */
+	#suspension li{
+		list-style-type:square;
+		margin: auto 6%;
+	}
+	
+	#suspension li span{
+		color: #404040;
+		font-size: 1.4em;
+	}
 
 /* loan */
-#loan{
-	position: relative;
-}
-
-#loan-cover{
-	position: relative;
-	background-color: rgb(170, 207, 93);
-	text-align: center;
-}
-
-#loan-cover h1{
-	font-size: 5em;
-	position: relative;
-	top: 35%;
-}
-
-#loan-cover h3{
-	position: absolute;
-	left: 10%;
-	top: 8%;
-	font-size: 1.6em;
-}
-
 #loan p{
-	font-size: 1.4em;
+	margin: 6% auto -3% 5%;
 }
 
-#loan input{
-	font-size: 1.8em;
+#about li{
+	font-size: 1.6em;
+	border: 1px solid silver;
+	height: 20%;
+	color: #c0c0c0;
 }
 
-#saved-amount{
+.grid23{
+	float: left;
+	width: 33.3%;
+	height: 22.5%;
+	text-align: center;
+	color: white;
 	font-size: 1.4em;
-	color: red;
 }
 
 .card-container{
-	height: 100px;
-	width: 100%;
-	border: 1px solid gray;
-}
-
-.card-container input{
-	float: left;
-}
-
-#validate-code{
-	float: left;
-	width: 75%;
-}
-
-#get-validate-code{
-	position: relative;
-	left: 2%;
+	padding-left:25px;
+	line-height:45px;
+	font-size:1.5em;
+	width:240px;
+	height:45px;
+	background-color:white;
 }
