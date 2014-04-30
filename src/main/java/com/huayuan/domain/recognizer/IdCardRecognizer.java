@@ -45,12 +45,8 @@ public class IdCardRecognizer {
         return source;
     }
 
-    private String getFileName() {
-        return RandomStringUtils.randomAlphanumeric(FILENAME_LENGTH);
-    }
-
-    private String getAbsoluteFileName() {
-        return String.format(FILENAME_PATTERN, App.getInstance().getIdCardImageBase(), getFileName());
+    private String getAbsoluteFileName(String fileName) {
+        return String.format(FILENAME_PATTERN, App.getInstance().getIdCardImageBase(), fileName);
     }
 
     private void saveFile(final String fileName) {
@@ -64,15 +60,16 @@ public class IdCardRecognizer {
     }
 
     public IdCard recognize(boolean isFront) {
-        String fileName = getAbsoluteFileName();
+        String randomFileName = RandomStringUtils.randomAlphanumeric(FILENAME_LENGTH);
+        String fileName = getAbsoluteFileName(randomFileName);
         saveFile(fileName);
         IDCard card = IdCardScan.ocr(fileName);
         if (!isFront) {
             String[] vs = StringUtils.split(card.ValidPeriod, VALID_DATE_DELIMITER);
             return new IdCard(card.IssueAuthority, VALID_DATE_FORMATTER.parseDateTime(vs[0]).toDate(),
-                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate());
+                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate(), randomFileName + ".jpg");
         }
         Date birthday = BIRTHDAY_DATE_FORMATTER.parseDateTime(card.Birthday).toDate();
-        return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address);
+        return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address, randomFileName + ".jpg");
     }
 }

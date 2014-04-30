@@ -5,6 +5,7 @@ import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.dictionary.Dictionary;
+import com.huayuan.domain.dictionary.ValueBin;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
 import com.huayuan.repository.DictionaryRepository;
@@ -49,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
     private CreditResultRepository creditResultRepository;
     @Inject
     private DictionaryRepository dictionaryRepository;
+
 
     @PostConstruct
     private void init() {
@@ -141,7 +143,9 @@ public class MemberServiceImpl implements MemberService {
             return cards.get(0);
         CreditCard creditCard = new CreditCard();
         creditCard.setCardNo(creditCardNo);
-        creditCard.setBank(valueBinRepository.findByBinNo(creditCard.getBinCode()).getBankNo());
+        ValueBin valueBin = valueBinRepository.findByBinNo(creditCard.getBinCode());
+        creditCard.setBank(valueBin.getBankNo());
+        creditCard.setType(valueBin.getCardLevel());
         creditCard.setMember(member);
         return creditCardRepository.save(creditCard);
     }

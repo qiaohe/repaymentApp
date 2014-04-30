@@ -73,14 +73,15 @@ public class IdCard implements Serializable {
         this.createTime = new Date();
     }
 
-    public IdCard(String issueAuthority, Date validFrom, Date validThru) {
+    public IdCard(String issueAuthority, Date validFrom, Date validThru, String imageBack) {
         this();
         this.issuer = issueAuthority;
         this.validFrom = validFrom;
         this.validThru = validThru;
+        this.imageBack = imageBack;
     }
 
-    public IdCard(String cardNo, String name, SexEnum sexEnum, Date birthday, String folk, String address) {
+    public IdCard(String cardNo, String name, SexEnum sexEnum, Date birthday, String folk, String address, String imageFront) {
         this();
         this.idNo = cardNo;
         this.name = name;
@@ -88,6 +89,7 @@ public class IdCard implements Serializable {
         this.birthday = birthday;
         this.nationality = folk;
         this.address = address;
+        this.imageFront = imageFront;
     }
 
     public Member getMember() {

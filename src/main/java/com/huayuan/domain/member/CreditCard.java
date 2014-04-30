@@ -70,6 +70,11 @@ public class CreditCard implements Serializable {
     @JsonIgnore
     private Member member;
 
+    public CreditCard() {
+        createTime = new Date();
+        isValid = true;
+        status = 0;
+    }
 
     public Member getMember() {
         return member;
