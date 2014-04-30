@@ -3,15 +3,6 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
                  version="2.0">
-
-    <!--<persistence-unit-metadata>-->
-    <!--<persistence-unit-defaults>-->
-    <!--<entity-listeners>-->
-    <!--<entity-listener class="org.springframework.data.jpa.domain.support.AuditingEntityListener"/>-->
-    <!--</entity-listeners>-->
-    <!--</persistence-unit-defaults>-->
-    <!--</persistence-unit-metadata>-->
-
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4,5)</query>
     </named-query>
@@ -24,11 +15,6 @@
     <named-native-query name="Pboc.findByStatusWithSummary" result-set-mapping="pbocSummary">
         <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
             pb.keyiner as keyiner, pb.status as status FROM Pboc pb
-        </query>
-    </named-native-query>
-    <named-native-query name="Pboc.searchPbocSummary" result-set-mapping="pbocSummary">
-        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
-            pb.keyiner as keyiner, pb.status as status FROM Pboc pb where :query
         </query>
     </named-native-query>
     <sql-result-set-mapping name="pbocSummary">
