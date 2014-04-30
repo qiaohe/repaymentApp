@@ -55,7 +55,7 @@ public class MessageTemplate implements Serializable {
     }
 
     public boolean isCreditLimit() {
-        return getStatuses().equalsIgnoreCase("3.1,3.2,4,13") || getStatuses().equalsIgnoreCase("5,6,7,8,9,10,11,12");
+        return getStatuses().equalsIgnoreCase("3.1,3.2,4,13") || getStatuses().equalsIgnoreCase("5.1,5.2,6,7,8,9,10,11,12");
     }
 
     public boolean isUsedCrl() {
@@ -67,6 +67,6 @@ public class MessageTemplate implements Serializable {
     }
 
     public boolean isUrlNotNeeded() {
-        return getStatuses().equalsIgnoreCase("1,2,3,4,5,6,7,12,13") || getStatuses().equalsIgnoreCase("12,13") ;
+        return getStatuses().equalsIgnoreCase("1,2,3,4,5.1,5.2,6,7,12,13") || getStatuses().equalsIgnoreCase("12,13") ;
     }
 }

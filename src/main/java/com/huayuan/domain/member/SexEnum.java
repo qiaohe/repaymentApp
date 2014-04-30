@@ -1,5 +1,7 @@
 package com.huayuan.domain.member;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Created by Administrator on 14-3-27.
  */
@@ -15,7 +17,7 @@ public enum SexEnum {
 
     public static SexEnum fromName(final String name) {
         for (SexEnum se : values()) {
-            if (name.equalsIgnoreCase(se.name)) {
+            if (name.equalsIgnoreCase(StringUtils.trim(se.name))) {
                 return se;
             }
         }

@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = find(memberDto.getMemberId());
         member.setEducation(memberDto.getEducation());
         member.setIndustry(memberDto.getIndustry());
-        member.setEmail(member.getEmail());
+        member.setEmail(memberDto.getEmail());
         member = update(member);
         CreditCard creditCard = addCreditCard(member, memberDto.getCreditCarNo());
         PreCredit pc = new PreCredit();

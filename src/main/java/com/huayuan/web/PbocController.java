@@ -30,9 +30,15 @@ public class PbocController {
         return pbocRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Pboc updatePbocBy(@PathVariable Long id, @RequestBody Pboc pboc) {
         return pbocRepository.save(pboc);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Pboc> search(@RequestParam("q") String query) {
+        return pbocRepository.search(query);
     }
 }
