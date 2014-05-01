@@ -1,5 +1,7 @@
 package com.huayuan.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,45 +16,57 @@ public class IdCard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "ID_NO")
     private String idNo;
 
     @Column(name = "NAME")
+    @JsonIgnore
     private String name;
 
     @Column(name = "SEX")
     private SexEnum sex;
 
     @Column(name = "BIRTHDAY")
+    @JsonIgnore
     private Date birthday;
 
     @Column(name = "NATIONALITY")
+    @JsonIgnore
     private String nationality;
 
     @Column(name = "ADDRESS")
+    @JsonIgnore
     private String address;
 
     @Column(name = "ISSUER")
+    @JsonIgnore
     private String issuer;
 
     @Column(name = "VALID_FROM")
+    @JsonIgnore
     private Date validFrom;
 
     @Column(name = "VALID_THRU")
+    @JsonIgnore
     private Date validThru;
 
     @Column(name = "PROVINCE")
+    @JsonIgnore
     private String province;
 
     @Column(name = "CITY")
+    @JsonIgnore
     private String city;
 
     @Column(name = "XIAN")
+    @JsonIgnore
     private String xian;
 
     @Column(name = "NAME_ENG")
+    @JsonIgnore
     private String nameEng;
 
     @Column(name = "IMAGE_FRONT")
@@ -63,10 +77,12 @@ public class IdCard implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_TIME")
+    @JsonIgnore
     private Date createTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
     public IdCard() {

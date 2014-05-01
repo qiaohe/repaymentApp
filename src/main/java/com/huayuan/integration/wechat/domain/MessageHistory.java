@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "WECHAT_MESSAGE")
 public class MessageHistory implements Serializable {
+    private static final long serialVersionUID = -3626919354698433538L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -26,6 +27,11 @@ public class MessageHistory implements Serializable {
     private Date date;
     @Column(name = "STATUS")
     private int status;
+
+    public MessageHistory() {
+        this.status = 0;
+        this.date = new Date();
+    }
 
     public Long getId() {
         return id;

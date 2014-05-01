@@ -40,15 +40,15 @@ public class MemberController {
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public
     @ResponseBody
-    Callable<String> uploadIdCardFront(@PathVariable final Long id, @RequestParam("idCardFrontFile") final MultipartFile idCardFrontFile) throws IOException {
+    Callable<IdCard> uploadIdCardFront(@PathVariable final Long id, @RequestParam("idCardFrontFile") final MultipartFile idCardFrontFile) throws IOException {
         if (idCardFrontFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
-        return new Callable<String>() {
-            public String call() throws Exception {
+        return new Callable<IdCard>() {
+            public IdCard call() throws Exception {
                 IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
                 IdCard idCard = recognizer.recognize(true);
                 idCard = memberService.addIdCard(memberService.find(id), idCard);
-                return idCard.getIdNo();
+                return idCard;
             }
         };
     }
