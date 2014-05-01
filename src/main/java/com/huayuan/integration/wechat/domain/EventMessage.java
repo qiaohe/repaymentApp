@@ -104,4 +104,8 @@ public class EventMessage {
     public boolean isCustomMenuEvent() {
         return StringUtils.isNotEmpty(event) && (event.equals("VIEW") || event.equals("CLICK"));
     }
+
+    public boolean isTvMessage() {
+        return StringUtils.isNotEmpty(content) && content.contains("#");
+    }
 }

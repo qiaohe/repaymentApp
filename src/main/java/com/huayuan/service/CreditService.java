@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.domain.credit.TvExecution;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
@@ -19,5 +20,9 @@ public interface CreditService {
     public void approve(Application application);
 
     public void telephoneVerification();
+
+    public TvExecution getTvExecution(final String appNo);
+
+    public void replyTv(Long memberId, String replyAnswer);
 
 }

@@ -11,7 +11,8 @@ public class TvRepositoryImpl implements TvRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
+    @SuppressWarnings("unchecked")
     public List<String> findRandomAddress(String city) {
-        return em.createNamedQuery("TvQuestionList.Random", String.class).getResultList();
+        return em.createNamedQuery("TvQuestionList.Random", String.class).setParameter(1, city) .getResultList();
     }
 }

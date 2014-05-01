@@ -11,5 +11,5 @@ import java.util.List;
 public interface PbocRepositoryCustom {
    public List<PbocSummary> findByStatus();
 
-    public List<Pboc> search(String query);
+    public List<PbocSummary> search(String query);
 }

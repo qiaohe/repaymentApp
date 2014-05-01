@@ -11,6 +11,7 @@ import com.huayuan.integration.wechat.domain.MessageTemplate;
 import com.huayuan.integration.wechat.domain.User;
 import com.huayuan.repository.integration.MenuRepository;
 import com.huayuan.service.AccountService;
+import com.huayuan.service.CreditService;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -69,6 +70,8 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     private MenuRepository menuRepository;
     @Inject
     private AccountService accountService;
+    @Inject
+    private CreditService creditService;
     private List<Menu> menus;
 
     @PostConstruct
@@ -109,6 +112,9 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             if (member == null) {
                 addMember(getUser(eventMessage.getFromUserName()));
             }
+        } else if(eventMessage.isTvMessage()) {
+            creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(), eventMessage.getContent());
+            return;
         }
         final String rm = getReplyMessage(eventMessage);
         response.getWriter().println(rm);

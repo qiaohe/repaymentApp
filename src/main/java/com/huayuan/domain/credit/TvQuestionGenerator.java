@@ -43,7 +43,8 @@ public class TvQuestionGenerator {
     public String generate(TelephoneVerification tv) {
         List<String> questions = new ArrayList<>();
         questions.add(tv.getTvMemAns1());
-        questions.add(tv.getTvMemAns2());
+        if (!tv.getTvMemAns1().equals(tv.getTvMemAns2()))
+            questions.add(tv.getTvMemAns2());
         for (String question : tvRepository.findRandomAddress(getCity(tv))) {
             questions.add(question);
         }

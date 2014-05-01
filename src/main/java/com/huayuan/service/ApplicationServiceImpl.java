@@ -1,14 +1,11 @@
 package com.huayuan.service;
 
-import com.huayuan.domain.loanapplication.AScore;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
-import com.huayuan.domain.loanapplication.TelephoneVerification;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.repository.applicationloan.AScoreRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
-import com.huayuan.repository.applicationloan.TvRepository;
 import com.huayuan.repository.member.CreditCardRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -29,8 +26,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private AScoreRepository aScoreRepository;
     @Inject
     private ApprovalRepository approvalRepository;
-    @Inject
-    private TvRepository tvRepository;
 
     @Inject
     private CreditCardRepository creditCardRepository;
@@ -54,16 +49,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void approve(Approval approval) {
         approvalRepository.save(approval);
-    }
-
-    @Override
-    public void telephoneVerification(TelephoneVerification tv) {
-        tvRepository.save(tv);
-    }
-
-    @Override
-    public void aStore(AScore aScore) {
-        aScoreRepository.save(aScore);
     }
 
     @Override

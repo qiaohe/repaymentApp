@@ -38,7 +38,7 @@ public class PbocController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<Pboc> search(@RequestParam("q") String query) {
+    public List<PbocSummary> search(@RequestParam("q") String query) {
         return pbocRepository.search(query);
     }
 }
