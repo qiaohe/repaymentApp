@@ -17,6 +17,10 @@
             pb.keyiner as keyiner, pb.status as status FROM Pboc pb
         </query>
     </named-native-query>
+    <named-native-query name="TvQuestionList.Random">
+        <query>  select home.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 2 and CITY = ?1 order by newid()) home
+                 union select company.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 1 and CITY = ?1 order by newid()) company</query>
+    </named-native-query>
     <sql-result-set-mapping name="pbocSummary">
         <column-result name="id"/>
         <column-result name="certNo"/>
