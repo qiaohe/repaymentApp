@@ -43,7 +43,7 @@ public class AScore implements Serializable {
 
 
     @Column(name = "CREATE_TIME")
-    private Date createTime;
+    private Date createTime = new Date();
 
 
     public Long getId() {

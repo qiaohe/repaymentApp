@@ -18,4 +18,6 @@ public interface CreditService {
 
     public void approve(Application application);
 
+    public void telephoneVerification();
+
 }

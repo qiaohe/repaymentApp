@@ -64,6 +64,12 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     }
 
     @Override
+    public void telephoneVerification() {
+
+
+    }
+
+    @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }

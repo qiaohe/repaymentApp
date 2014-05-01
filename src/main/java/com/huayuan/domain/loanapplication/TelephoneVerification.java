@@ -45,7 +45,7 @@ public class TelephoneVerification {
 
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.DATE)
-    private Date createTime;
+    private Date createTime = new Date();
 
     public Long getId() {
         return id;
