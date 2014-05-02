@@ -32,7 +32,7 @@ public class PbocController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public Pboc updatePbocBy(@PathVariable Long id, @RequestBody Pboc pboc) {
+    public Pboc updatePbocBy(@RequestBody Pboc pboc) {
         return pbocRepository.save(pboc);
     }
 
