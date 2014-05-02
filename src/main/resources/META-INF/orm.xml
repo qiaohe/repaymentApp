@@ -4,7 +4,7 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
                  version="2.0">
     <named-query name="Application.findByMemberId">
-        <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4,5)</query>
+        <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4)</query>
     </named-query>
     <named-query name="RepayPlan.findByMemberId">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and
