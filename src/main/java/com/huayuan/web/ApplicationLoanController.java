@@ -97,4 +97,11 @@ public class ApplicationLoanController {
         DateTime t2 = new DateTime();
         return Hours.hoursBetween(t1, t2).getHours() / 48;
     }
+
+    @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean hasApplicationInProgress(@PathVariable Long memberId) {
+        Application application = applicationService.getApplicationBy(memberId);
+        return application != null;
+    }
 }

@@ -111,4 +111,10 @@ public class MemberController {
         String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }
+
+    @RequestMapping(value = "/{id}/avlCrl", method = RequestMethod.GET)
+    @ResponseBody
+    public Double getAvailableCreditLimit(@PathVariable Long id) {
+        return memberService.getAvlCrl(id);
+    }
 }
