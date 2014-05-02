@@ -111,10 +111,4 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }
-
-    public static void main(String[] args) {
-        String s = "#12";
-        System.out.println(s.substring(2, 3));
-    }
-
 }
