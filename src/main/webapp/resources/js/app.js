@@ -2,27 +2,20 @@
 var config = {};
 config.api_path = "http://192.168.0.185:8080/repayment/api/"
 
- var id_pattern = /(?:memberId=)\d+/;
- config.member_id = id_pattern.exec(window.location).toString();
- config.member_id = config.member_id.slice(9, MEMBER_ID.length);
+// var id_pattern = /(?:memberId=)\d+/;
+// config.member_id = id_pattern.exec(window.location).toString();
+// config.member_id = config.member_id.slice(9, MEMBER_ID.length);
 
- var status_pattern = /(?:status=)\d+/;
- config.status = status_pattern.exec(window.location).toString();
- config.status = config.status.slice(7, status.length);
+// var status_pattern = /(?:status=)\d+/;
+// config.status = status_pattern.exec(window.location).toString();
+// config.status = config.status.slice(7, status.length);
 
-//config.member_id = '1';
-//config.status = '4';
+config.member_id = '1';
+config.status = '4';
 
-config.debug = false;
+config.debug = true;
 
 var member = {};
-member.limit = 0;
-member.rank = 0;
-member.crl = 0;
-member.avlcrl = 0;
-member.email = '';
-member.billemail = '';
-member.password = '';
 var app = {};
 var dict = {};
 
@@ -79,7 +72,7 @@ function validateCardNo(num){
 }
 
 function testLimit(obj){
-	return $.ajax({
+	$.ajax({
 		url: config.api_path + "members/" + member.id,
 		type: "POST",
 		contentType: "application/json",
@@ -92,7 +85,8 @@ function testLimit(obj){
 			billPassword: obj.password
 		}),
 		dataType: "json",
-		success: function(){
+		async: false,
+		success: function(json){
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
 		},
@@ -528,6 +522,6 @@ $('a').on({
 	}		
 });
 
- $('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
-	 WeixinJSBridge.call('closeWindow');
- });
+// $('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
+	// WeixinJSBridge.call('closeWindow');
+// });
