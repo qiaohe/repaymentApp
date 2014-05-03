@@ -2,16 +2,16 @@
 var config = {};
 config.api_path = "http://180.168.35.37/repaymentApp/api/"
 
-// var id_pattern = /(?:memberId=)\d+/;
-// config.member_id = id_pattern.exec(window.location).toString();
-// config.member_id = config.member_id.slice(9, config.member_id.length);
+var id_pattern = /(?:memberId=)\d+/;
+config.member_id = id_pattern.exec(window.location).toString();
+config.member_id = config.member_id.slice(9, config.member_id.length);
 
-// var status_pattern = /(?:status=)\d+/;
-// config.status = status_pattern.exec(window.location).toString();
-// config.status = config.status.slice(7, status.length);
+var status_pattern = /(?:status=)\d+/;
+config.status = status_pattern.exec(window.location).toString();
+config.status = config.status.slice(7, status.length);
 
-config.member_id = '2';
-config.status = '4';
+//config.member_id = '2';
+//config.status = '4';
 
 config.debug = true;
 
