@@ -1,6 +1,7 @@
 package com.huayuan.repository.member;
 
 import com.huayuan.domain.member.PreCredit;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,7 @@ public class PreCreditRepositoryImpl implements PreCreditRepositoryCustom {
     private EntityManager em;
 
     @Override
+    @Transactional
     public Integer execute(PreCredit preCredit) {
         Query query = em.createNativeQuery("{call PRECREDIT_CRL_BILL(?)}")
                 .setParameter(1, preCredit.getId());

@@ -6,8 +6,8 @@ import org.apache.commons.lang.StringUtils;
  * Created by Administrator on 14-3-27.
  */
 public enum SexEnum {
-    FEMALE("男"),
-    MALE("女");
+    MALE("男"),
+    FEMALE("女");
 
     private final String name;
 
@@ -28,3 +28,5 @@ public enum SexEnum {
         return name;
     }
 }
+
+
