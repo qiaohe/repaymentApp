@@ -100,7 +100,7 @@ public class MemberController {
     public CreditLimitDto testCreditLimit(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         memberDto.setMemberId(id);
         Double creditLimit = (double) memberService.testCreditLimit(memberDto);
-        String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
+        String rankOfLimit = creditLimitRanges.getScaleBy(creditLimit.longValue()).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }
 
