@@ -61,10 +61,6 @@ public class IdCard implements Serializable {
     @JsonIgnore
     private String city;
 
-    @Column(name = "XIAN")
-    @JsonIgnore
-    private String xian;
-
     @Column(name = "NAME_ENG")
     @JsonIgnore
     private String nameEng;
@@ -223,16 +219,6 @@ public class IdCard implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
-
-
-    public String getXian() {
-        return xian;
-    }
-
-    public void setXian(String xian) {
-        this.xian = xian;
-    }
-
 
     public String getNameEng() {
         return nameEng;
