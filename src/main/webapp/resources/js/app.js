@@ -2,20 +2,27 @@
 var config = {};
 config.api_path = "http://192.168.0.185:8080/repayment/api/"
 
-var id_pattern = /(?:memberId=)\d+/;
-config.member_id = id_pattern.exec(window.location).toString();
-config.member_id = config.member_id.slice(9, MEMBER_ID.length);
+ var id_pattern = /(?:memberId=)\d+/;
+ config.member_id = id_pattern.exec(window.location).toString();
+ config.member_id = config.member_id.slice(9, MEMBER_ID.length);
 
-var status_pattern = /(?:status=)\d+/;
-config.status = status_pattern.exec(window.location).toString();
-config.status = config.status.slice(7, status.length);
+ var status_pattern = /(?:status=)\d+/;
+ config.status = status_pattern.exec(window.location).toString();
+ config.status = config.status.slice(7, status.length);
 
 //config.member_id = '1';
 //config.status = '4';
 
-config.debug = true;
+config.debug = false;
 
 var member = {};
+member.limit = 0;
+member.rank = 0;
+member.crl = 0;
+member.avlcrl = 0;
+member.email = '';
+member.billemail = '';
+member.password = '';
 var app = {};
 var dict = {};
 
@@ -46,11 +53,29 @@ function recongizeIdCard(form_data, url_path, type){
 		url: url_path,
 		type: "POST",
 		data: form_data,
-		cache: false,
+		// cache: false,
 		processData: false,
 		contentType: false,
 		dataType: type
 	});
+}
+
+function validateCardNo(num){
+	var sum = 0, l = num.length;
+	if(l > 15){
+		for(var i = 0; i < l; i++){
+			var tmp = parseInt(num[i]);
+			if(!(i % 2)){
+				(2 * tmp > 9) ? (sum += (2 * tmp - 9)) : (sum += tmp);
+			}
+			else{
+				sum += tmp;
+			}
+		}
+		return !(sum % 10) ;
+	}
+	else
+		return false;
 }
 
 function testLimit(obj){
@@ -67,7 +92,7 @@ function testLimit(obj){
 			billPassword: obj.password
 		}),
 		dataType: "json",
-		success: function(json){
+		success: function(){
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
 		},
@@ -215,7 +240,7 @@ $(document).on('pagecreate', '#limit', function(){
 		else
 			$('#credit-num').show();
 		
-		if(num.length > 15){
+		if(validateCardNo(num)){
 			$('#next-step').attr('href', '#basic-info');
 		}
 	});
@@ -296,7 +321,7 @@ $(document).on('pagecreate', '#result', function(){
 	});
 	
 	$('#option-3').click(function(){
-		if($('#credit-card').val().length > 15){
+		if(validateCardNo($('#credit-card').val())){
 			$('#next-step').attr('href', '#result').click(function(){
 				var obj = {};
 				obj.card_num = $('#credit-card').val();
@@ -503,6 +528,6 @@ $('a').on({
 	}		
 });
 
-// $('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
-	// WeixinJSBridge.call('closeWindow');
-// });
+ $('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
+	 WeixinJSBridge.call('closeWindow');
+ });
