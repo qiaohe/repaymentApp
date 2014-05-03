@@ -1,0 +1,4 @@
+set JAVA_HOME=C:\Program Files\Java\jdk1.6.0_18
+set CATALINA_HOME=d:\Tomcat
+set CATALINA_OPTS=-Xms128m -Xmx1024m -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+rem -javaagent:D:\Lisa2.0\LisaServer\lib\spring-agent.jar
