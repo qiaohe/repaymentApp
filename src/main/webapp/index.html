@@ -6,10 +6,10 @@
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">   
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
-<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css?223">
-<link rel="stylesheet" href="resources/css/app.css?123">
-<script src="resources/js/jquery-1.11.0.min.js?333"></script>
-<script src="resources/js/jquery.mobile-1.4.2.min.js?10"></script>
+<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
+<link rel="stylesheet" href="resources/css/app.css">
+<script src="resources/js/jquery-1.11.0.min.js"></script>
+<script src="resources/js/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
 	<!-- limit -->
@@ -50,7 +50,7 @@
 		</div><br>
 		
 		<div style="width:88%; position:relative; top:-5px; margin:auto">
-			<a href="#basic-info" class="ui-btn custom-btn" id="next-step" style="height:100%">下一步</a>
+			<a href="#" class="ui-btn custom-btn" id="next-step" style="height:100%">下一步</a>
 			<span style="position:absolute; right:5px; top:28px; color:white">1/2</span>
 		</div>
 	</div> 
@@ -90,7 +90,7 @@
 		</div><br>
 		
 		<div style="width:88%; position:relative; top:0; margin:auto">
-			<a href="#billmail" data-rel="popup" class="ui-btn custom-btn" style="height:100%">提交</a>
+			<a href="#" class="ui-btn custom-btn" id="hand-in" style="height:100%">提交</a>
 			<span style="position:absolute; right:5px; top:28px; color:white">2/2</span>
 		</div>
 		
@@ -108,16 +108,11 @@
 				<input type="radio" name="billmail" id="radio-new" style="float:left; margin-top: 10px; width: 10%">
 				<label for="mail-new" class="textinput" style="float:right; position:absolute; top:5px; left:17%; height:30px; border: 1px solid #c0c0c0; width:60%; margin:5px 22% auto auto"></label>
 				<input data-role="none" type="email" id="mail-new" style="border:none; float:right; width:60%; height:30px; margin:5px 22% auto auto">
-				<script>
-					$('#mail-new').click(function(){
-						$('#radio-new').trigger('click');
-					});
-				</script>
 			</div>
 			
 			<div class="id-card-container">
 				<input type="radio" name="billmail" id="radio-same" style="float:left; margin-top: 10px; width: 10%">
-				<label for="radio-same" id="mail-same" style="float:right; position:absolute; top:-5px; height:30px; margin:5px 22% auto auto">xxx</label>
+				<label for="radio-same" id="mail-same" style="float:right; position:absolute; top:-5px; height:30px; margin:5px 22% auto auto"></label>
 			</div>
 			
 			<p style="margin:100px auto auto 5%">上述E-mail密码</p>
@@ -145,9 +140,9 @@
 	<div data-role="page" id="result" data-title="信用评估">
 		<img src="resources/img/4-1/battery.png" style="width:70px; height:130px; float: left; margin: 10% 0 0 10%">
 		<h1 style="margin: 15% 0 0 38%; font-size: 2.4em">&yen <span id="amt-shown" style="font-family: Arial; font-size: 2.3em; color: #404040"></span></h1>
-		<h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown" style="font-size: 1.8em; color: #e67e22"></span>的用户<span id="rank-cmt">官人还有努力空间。</span></h4>
+		<h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown" style="font-size: 1.8em; color: #e67e22"></span>的用户<span id="rank-cmt">，官人还有努力空间。</span></h4>
 		<div data-role="listview" style="float: right; width: 65%; margin:10% 5% 0 0 ">
-			<div style="width:100%"><a href="#loan" class="ui-btn custom-btn" id="option-1" style="margin: 10% 0">苍蝇也是肉，现在就去申请借款</a></div>
+			<div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-1" style="margin: 10% 0">苍蝇也是肉，现在就去申请借款</a></div>
 			<div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-2" style="margin: 10% 0">去跟小伙伴哭一下穷</a></div>
 			<div style="width:100%"><a href="#limit" class="ui-btn custom-btn" id="option-3" style="margin: 10% 0">不信邪，换张信用卡再试试</a></div>
 		</div>
@@ -247,7 +242,7 @@
 			</div>
 			
 			<div style="width:80%; position:relative; top:0; margin:auto">
-				<a href="#suspension" class="ui-btn custom-btn" id="request">提交申请</a>
+				<a href="#" class="ui-btn custom-btn" id="request">提交申请</a>
 			</div>
 		</div>
 	</div>
@@ -398,6 +393,6 @@
 	
 	
 
-<script src="resources/js/app.js?1"></script>
+<script src="resources/js/app.js"></script>
 </body>
 </html>
