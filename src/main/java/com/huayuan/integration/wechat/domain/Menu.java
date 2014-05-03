@@ -16,7 +16,7 @@ public class Menu implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "MNEU_KEY")
+    @Column(name = "MENU_KEY")
     private String menu_key;
     @Column(name = "NAME")
     private String name;
