@@ -1,16 +1,16 @@
 ﻿// Configuration
 var config = {};
-config.api_path = "http://192.168.0.185:8080/repayment/api/"
+config.api_path = "http://180.168.35.37/repaymentApp/api/"
 
 // var id_pattern = /(?:memberId=)\d+/;
 // config.member_id = id_pattern.exec(window.location).toString();
-// config.member_id = config.member_id.slice(9, MEMBER_ID.length);
+// config.member_id = config.member_id.slice(9, config.member_id.length);
 
 // var status_pattern = /(?:status=)\d+/;
 // config.status = status_pattern.exec(window.location).toString();
 // config.status = config.status.slice(7, status.length);
 
-config.member_id = '1';
+config.member_id = '2';
 config.status = '4';
 
 config.debug = true;
@@ -22,18 +22,43 @@ var dict = {};
 member.id = config.member_id;
 member.status = config.status;
 
-$.get(config.api_path + "members/" + member.id, function(json){
-	member.id_card = json.idCardNo;
-	member.valid_thru = json.validThru;
-	member.industry = json.industry;
-	member.education = json.education;
-	member.email = json.email;
-}, "json");
+$.ajax({
+	url: config.api_path + "members/" + member.id,
+	type: "GET",
+	dataType: "json",
+	async: false,
+	success: function(json){
+		member.id_card = json.idCardNo;
+		member.valid_thru = json.validThru;
+		member.industry = json.industry;
+		member.education = json.education;
+		member.email = json.email;
+	},
+	error: stdError
+});
 
-$.get(config.api_path + "members/" + member.id + "/crl", function(json){
-	member.limit = json.creditLimit;
-	member.rank = json.rankOfLimit;
-}, "json");
+$.ajax({
+	url: config.api_path + "members/" + member.id + "/crl",
+	type: "GET",
+	dataType: "json",
+	async: false,
+	success: function(json){
+		member.limit = json.creditLimit;
+		member.rank = json.rankOfLimit;
+	},
+	error: stdError
+});
+
+$.ajax({
+	url: config.api_path + 'members/' + member.id + '/avlCrl',
+	type: "GET",
+	dataType: "text",
+	async: false,
+	success: function(text){
+		member.avlcrl = text;
+	},
+	error: stdError
+});
 
 // Actions
 function stdError(jqXHR, textStatus, errorThrown){
@@ -59,7 +84,7 @@ function validateCardNo(num){
 		for(var i = 0; i < l; i++){
 			var tmp = parseInt(num[i]);
 			if(!(i % 2)){
-				(2 * tmp > 9) ? (sum += (2 * tmp - 9)) : (sum += tmp);
+				(2 * tmp > 9) ? (sum += (2 * tmp - 9)) : (sum += 2 * tmp);
 			}
 			else{
 				sum += tmp;
@@ -113,9 +138,10 @@ function sendVarificationCode(phone_num){
 }
 
 function matchVarificationCode(vcode, phone_num){
-	$.ajax({
+	return $.ajax({
 		url: config.api_path + 'sms/' + phone_num + '/' + vcode,
 		type: "POST",
+		async: false,
 		data: JSON.stringify({
 			mobilePhone: phone_num,
 			code: vcode
@@ -126,7 +152,7 @@ function matchVarificationCode(vcode, phone_num){
 }
 
 function countPayback(obj){
-	return $.ajax({
+	$.ajax({
 		url: config.api_path + "app/saveCost",
 		type: "POST",
 		contentType: "application/json",
@@ -340,15 +366,16 @@ $(document).on('pagebeforeshow', '#result', function(){
 		$('#option-3').html('换张信用卡再试试');
 	}
 	
-	if(!member.avlcrl){
-		$.get(config.api_path + 'members/' + member.id + '/avlCrl', function(text){
-			member.avlcrl = text;
-		});
-	}
-	
-	if(typeof member.loanable == 'undefined'){
-		$.get(config.api_path + 'app/members/' + member.id, function(text){
-			member.loanable = ('false' == text);
+	if(!member.loanable){
+		$.ajax({
+			url: config.api_path + 'app/members/' + member.id,
+			type: "GET",
+			dataType: "text",
+			async: false,
+			success: function(text){
+				member.loanable = ('false' == text);
+			},
+			error: stdError
 		});
 	}
 	
@@ -360,17 +387,11 @@ $(document).on('pagebeforeshow', '#result', function(){
 	}
 });
 
-$(document).on('pagecreate', '#loan', function(){
-	if(!member.avlcrl){
-		$.get(config.api_path + 'members/' + member.id + '/avlCrl', function(text){
-			member.avlcrl = text;
-		});
-	}
-	
-	$('#loan-limit').html(member.avlcrl);
+$(document).on('pagebeforeshow', '#loan', function(){
+	$('#loan-limit').html(Math.round(member.avlcrl));
 	
 	$('#amount').keyup(function(){
-		var tmp = $(this).val();
+		var tmp = parseInt($(this).val());
 		if(tmp.length > 0)
 			$('#amount-txt').hide();
 		else
@@ -388,15 +409,15 @@ $(document).on('pagecreate', '#loan', function(){
 		$('#term-6').css('background-color', '#c0c0c0');
 		app.term = '3';
 		app.amount = $('#amount').val();
-		countPayback(obj);
+		countPayback(app);
 	});
 	
 	$('#term-6').click(function(){
 		$('#term-6').css('background-color', '#3ca0e6');
 		$('#term-3').css('background-color', '#c0c0c0');
-		app.term = '3';
+		app.term = '6';
 		app.amount = $('#amount').val();
-		countPayback(obj);
+		countPayback(app);
 	});
 	
 	$('#acquire-code').click(function(){
@@ -415,14 +436,21 @@ $(document).on('pagecreate', '#loan', function(){
 		}
 	});
 	
+	$('#phone').keyup(function(){
+		if($(this).val())
+			$('#phone-txt').hide();
+		else
+			$('#phone-txt').show();
+	});
+	
 	$('#code').keyup(function(){
 		var vcode = $(this).val();
-		if(vcode.length > 0)
+		if(vcode)
 			$('#code-txt').hide();
 		else
 			$('#code-txt').show();
 			
-		if(vcode.length == 6 && phone_num.length == 11){
+		if(vcode.length == 6 && member.phone.length == 11){
 			matchVarificationCode(vcode, member.phone).success(function(text){
 				if("true" == text){
 					alert("您已输入有效的验证码!");
@@ -522,6 +550,9 @@ $('a').on({
 	}		
 });
 
-// $('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
-	// WeixinJSBridge.call('closeWindow');
-// });
+$('#got-it, #got-it-x, #got-it-y, #got-it-z').click(function(){
+	WeixinJSBridge.call('closeWindow');
+});
+
+if(member.status == '5.2')
+	$.mobile.navigate('#congratylation');
