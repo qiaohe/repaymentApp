@@ -108,7 +108,7 @@ public class MemberController {
     @ResponseBody
     public CreditLimitDto getCrl(@PathVariable Long id) {
         Double creditLimit = memberService.getCrl(id);
-        String rankOfLimit = creditLimitRanges.getScaleBy(Long.valueOf(creditLimit.toString())).toString();
+        String rankOfLimit = creditLimitRanges.getScaleBy(creditLimit.longValue()).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }
 
