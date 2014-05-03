@@ -60,13 +60,6 @@ public class Application {
     @Column(name = "TITLE")
     private String title;
 
-
-    @Column(name = "PRE_SCORE")
-    private Double preScore;
-
-    @Column(name = "PRE_RATING")
-    private String preRating;
-
     @Column(name = "STATUS")
     private Integer status = 0;
 
@@ -140,14 +133,6 @@ public class Application {
         this.title = title;
     }
 
-    public Double getPreScore() {
-        return preScore;
-    }
-
-    public void setPreScore(Double preScore) {
-        this.preScore = preScore;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -186,14 +171,6 @@ public class Application {
 
     public void setApproval(Approval approval) {
         this.approval = approval;
-    }
-
-    public String getPreRating() {
-        return preRating;
-    }
-
-    public void setPreRating(String preRating) {
-        this.preRating = preRating;
     }
 
     public IdCard getIdCard() {
