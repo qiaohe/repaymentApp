@@ -42,13 +42,18 @@ public class TvQuestionGenerator {
 
     public String generate(TelephoneVerification tv) {
         List<String> questions = new ArrayList<>();
-        questions.add(tv.getTvMemAns1());
-        if (!tv.getTvMemAns1().equals(tv.getTvMemAns2()))
+        if (StringUtils.isNotEmpty(tv.getTvQues1()))
+            questions.add(tv.getTvMemAns1());
+        if (StringUtils.isNotEmpty(tv.getTvQues2()))
             questions.add(tv.getTvMemAns2());
         for (String question : tvRepository.findRandomAddress(getCity(tv))) {
             questions.add(question);
         }
         Collections.shuffle(questions);
         return MessageFormat.format(messageTemplate, tv.getTvQues1(), tv.getTvQues2(), getQuestion(questions));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(MessageFormat.format("请回答如下问题\nA:{0}\nB:{1}\n{2}", null, "你的公司地址在哪里？", "1."));
     }
 }

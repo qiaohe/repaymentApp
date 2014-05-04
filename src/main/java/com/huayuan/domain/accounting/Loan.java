@@ -21,10 +21,10 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BID")
     private Long id;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "APP_NO")
     private Application application;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @Column(name = "AMT")
@@ -214,6 +214,23 @@ public class Loan {
             rp.setDueAmt(repayItem.getAmt());
             rp.setMember(this.getMember());
             result.add(rp);
+        }
+        return result;
+    }
+
+    public boolean isOverDue() {
+        for (RepayPlan plan : repayPlans) {
+            if (plan.getOverDue_Interest() > 0) return true;
+        }
+        return false;
+    }
+
+    public Double currentBalance(Date date) {
+        Double result = 0d;
+        for (RepayPlan plan : repayPlans) {
+            if (plan.getDueDate().before(date) && (plan.getPaidPrincipal() == null || plan.getOverDue_Interest() > 0)) {
+                result += plan.getDueAmt();
+            }
         }
         return result;
     }

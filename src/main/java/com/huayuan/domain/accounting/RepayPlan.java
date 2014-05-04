@@ -26,7 +26,7 @@ public class RepayPlan {
     @Column(name = "TERM_NO")
     private Integer termNo;
     @Column(name = "DUE_DATE")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dueDate;
     @Column(name = "DUE_AMT")
     private Double dueAmt;

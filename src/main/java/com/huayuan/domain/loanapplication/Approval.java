@@ -70,7 +70,7 @@ public class Approval {
 
 
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
 

@@ -16,8 +16,10 @@ import com.huayuan.repository.credit.StaffRepository;
 import com.huayuan.repository.credit.TvExecutionRepository;
 import com.huayuan.repository.credit.TvRepository;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,8 +81,9 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 
     @Override
     @Scheduled(cron = "0 31 9,19,21 * * ?")
+    @Transactional
     public void telephoneVerification() {
-        for (TelephoneVerification tv : tvRepository.findByTypeAndDecision(1, 0)) {
+        for (TelephoneVerification tv : tvRepository.findByTypeAndDecision(0, StringUtils.EMPTY)) {
             final String q = tvQuestionGenerator.generate(tv);
             TvExecution te = new TvExecution();
             te.setApplication(tv.getApplication());
@@ -101,7 +104,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         List<Application> apps = applicationRepository.findByMemberId(memberId);
         TvExecution tvExecution = getTvExecution(apps.get(0).getApplicationNo());
         tvExecution.setAnswer1(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(1, 2) + ":", "\n"));
-        tvExecution.setAnswer1(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(2, 3) + ":", "\n"));
+        tvExecution.setAnswer2(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(2, 3) + ":", "\n"));
         tvExecution.setReplyDate(new Date());
         tvExecution.setStatus(1);
         tvExecutionRepository.save(tvExecution);
@@ -110,5 +113,13 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
+
+        creditService.telephoneVerification();
+
     }
 }

@@ -41,7 +41,7 @@ public class Dictionary implements Serializable {
     @JsonIgnore
     private Double crlIndex;
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date createDate;
 

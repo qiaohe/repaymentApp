@@ -40,11 +40,11 @@ public class TelephoneVerification {
 
 
     @Column(name = "DECISION")
-    private Integer decision;
+    private String decision;
 
 
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
     public Long getId() {
@@ -108,11 +108,11 @@ public class TelephoneVerification {
     }
 
 
-    public Integer getDecision() {
+    public String getDecision() {
         return decision;
     }
 
-    public void setDecision(Integer decision) {
+    public void setDecision(String decision) {
         this.decision = decision;
     }
 

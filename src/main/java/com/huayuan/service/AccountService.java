@@ -2,6 +2,7 @@ package com.huayuan.service;
 
 import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.accounting.Loan;
+import com.huayuan.domain.accounting.LoanSummary;
 import com.huayuan.domain.accounting.RepayPlan;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface AccountService {
     public void rePay(Long memberId, Double amount);
 
     public boolean review(Long loanId);
+
+    public LoanSummary getLoansSummary(Long memberId);
+
 }

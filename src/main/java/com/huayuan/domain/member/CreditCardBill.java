@@ -29,7 +29,7 @@ public class CreditCardBill implements Serializable {
     private Long crl;
 
     @Column(name = "PAY_DUE")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date payDue;
 
     @Column(name = "AMT_RMB")
