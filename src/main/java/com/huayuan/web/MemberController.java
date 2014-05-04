@@ -6,6 +6,7 @@ import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
+import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
@@ -27,9 +28,12 @@ import java.util.concurrent.Callable;
 @RequestMapping("/members")
 public class MemberController {
     @Inject
-    MemberService memberService;
+    private MemberService memberService;
     @Inject
-    CreditLimitRanges creditLimitRanges;
+    private CreditLimitRanges creditLimitRanges;
+    @Inject
+    private PreCreditRepository preCreditRepository;
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -99,7 +103,7 @@ public class MemberController {
     @ResponseStatus(value = HttpStatus.OK)
     public CreditLimitDto testCreditLimit(@PathVariable Long id, @RequestBody MemberDto memberDto) {
         memberDto.setMemberId(id);
-        Double creditLimit = (double) memberService.testCreditLimit(memberDto);
+        Double creditLimit = (double) preCreditRepository.execute(memberService.testCreditLimit(memberDto));
         String rankOfLimit = creditLimitRanges.getScaleBy(creditLimit.longValue()).toString();
         return new CreditLimitDto(creditLimit, rankOfLimit);
     }

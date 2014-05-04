@@ -22,12 +22,12 @@ public class Staff implements Serializable {
 
 
     @Column(name = "ENROLL_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date enrollTime;
 
 
     @Column(name = "QUIT_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date quitTime;
 
 
@@ -40,7 +40,7 @@ public class Staff implements Serializable {
 
 
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
     public Staff() {

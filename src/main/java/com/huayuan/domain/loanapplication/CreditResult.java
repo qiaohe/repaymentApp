@@ -53,12 +53,12 @@ public class CreditResult implements Serializable {
 
 
     @Column(name = "LAST_PBOC_BACK_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastPbocBackTime;
 
 
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
     public CreditResult() {

@@ -78,7 +78,7 @@ public class ValueBin implements Serializable {
 
 
     @Column(name = "CREATE_TIME")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date createTime;
 

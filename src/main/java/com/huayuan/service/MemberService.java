@@ -2,10 +2,7 @@ package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillEmail;
-import com.huayuan.domain.member.CreditCard;
-import com.huayuan.domain.member.CreditCardBill;
-import com.huayuan.domain.member.IdCard;
-import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.*;
 import com.huayuan.web.dto.MemberDto;
 
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.List;
  */
 public interface MemberService {
 
-    public Integer testCreditLimit(MemberDto memberDto);
+    public PreCredit testCreditLimit(MemberDto memberDto);
 
     public Member update(Member member);
 

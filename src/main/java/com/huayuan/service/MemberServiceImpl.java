@@ -61,8 +61,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Integer testCreditLimit(MemberDto memberDto) {
+    public PreCredit testCreditLimit(MemberDto memberDto) {
         Member member = find(memberDto.getMemberId());
         member.setEducation(memberDto.getEducation());
         member.setIndustry(memberDto.getIndustry());
@@ -78,8 +77,7 @@ public class MemberServiceImpl implements MemberService {
             CreditCardBill bill = addBill(member, billEmail);
             pc.setCreditCardBill(bill);
         }
-        pc = preCreditRepository.save(pc);
-        return preCreditRepository.execute(pc);
+        return preCreditRepository.save(pc);
     }
 
     @Override

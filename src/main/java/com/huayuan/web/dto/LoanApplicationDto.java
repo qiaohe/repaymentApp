@@ -3,14 +3,14 @@ package com.huayuan.web.dto;
 /**
  * Created by Johnson on 4/26/14.
  */
-public class LoanDto {
+public class LoanApplicationDto {
     private int term;
     private Double repayPerTerm;
     private Double amt;
     private String appNo;
     private Double saveCost;
 
-    public LoanDto() {
+    public LoanApplicationDto() {
 
     }
 
