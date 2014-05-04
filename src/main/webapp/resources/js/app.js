@@ -10,10 +10,10 @@ var status_pattern = /(?:status=)\d+/;
 config.status = status_pattern.exec(window.location).toString();
 config.status = config.status.slice(7, status.length);
 
-//config.member_id = '2';
-//config.status = '4';
+// config.member_id = '2';
+// config.status = '4';
 
-config.debug = true;
+config.debug = false;
 
 var member = {};
 var app = {};
@@ -66,15 +66,15 @@ function stdError(jqXHR, textStatus, errorThrown){
 		alert(textStatus + ' ' + errorThrown);
 }
 
-function recongizeIdCard(form_data, url_path, type){
+function recongizeIdCard(form_data, url_path, datatype){
 	return $.ajax({
 		url: url_path,
 		type: "POST",
 		data: form_data,
-		// cache: false,
+		cache: false,
 		processData: false,
 		contentType: false,
-		dataType: type
+		dataType: datatype
 	});
 }
 
@@ -246,8 +246,10 @@ $(document).on('pagecreate', '#limit', function(){
 			$('#tip-back').attr('src', 'resources/img/public/wrong.png');
 		});
 	});
+});
 
-	$('#credit-card').keyup(function(){
+$(document).on('pagebeforeshow', '#limit', function(){
+	$('#credit-card').unbind().keyup(function(){
 		if(!dict.bincode){
 			$.getJSON(config.api_path + "dict/binCode", function(json){
 				dict.bincode = json;
@@ -261,8 +263,24 @@ $(document).on('pagecreate', '#limit', function(){
 			$('#credit-num').show();
 		
 		if(validateCardNo(num)){
-			$('#next-step').attr('href', '#basic-info');
+			if(!member.anothertest){
+				$('#next-step').attr('href', '#basic-info');
+			}
+			else{
+				$('#next-step').attr('href', '#result').click(function(){
+					var obj = {};
+					obj.card_num = $('#credit-card').val();
+					obj.industry = member.industry;
+					obj.education = member.education;
+					obj.email = member.email;
+					obj.bill_email = member.billemail;
+					obj.password = member.password;
+					testLimit(obj);
+				});
+			}
 		}
+		else
+			$('#next-step').attr('href', '#');
 	});
 });
 
@@ -341,18 +359,8 @@ $(document).on('pagecreate', '#result', function(){
 	});
 	
 	$('#option-3').click(function(){
-		if(validateCardNo($('#credit-card').val())){
-			$('#next-step').attr('href', '#result').click(function(){
-				var obj = {};
-				obj.card_num = $('#credit-card').val();
-				obj.industry = member.industry;
-				obj.education = member.education;
-				obj.email = member.email;
-				obj.bill_email = member.billemail;
-				obj.password = member.password;
-				testLimit(obj);
-			});
-		}
+		$('#next-step').attr('href', '#');
+		member.anothertest = true;
 	});
 });
 
@@ -391,12 +399,12 @@ $(document).on('pagebeforeshow', '#loan', function(){
 	$('#loan-limit').html(Math.round(member.avlcrl));
 	
 	$('#amount').keyup(function(){
-		var tmp = parseInt($(this).val());
 		if(tmp.length > 0)
 			$('#amount-txt').hide();
 		else
 			$('#amount-txt').show();
 			
+		var tmp = parseInt($(this).val());
 		if(tmp % 100 && tmp.length > 3)
 			$(this).val(tmp -= (tmp % 100));
 			
@@ -465,7 +473,9 @@ $(document).on('pagebeforeshow', '#loan', function(){
 	$('#agree').click(function(){
 		if($(this).is(':checked') && member.validate && app.term && app.amount){
 			$('#request').attr('href', '#suspension').click(function(){
-				applyLoan(app).success(function(){});
+				applyLoan(app).success(function(){
+					$('#request').off('click');
+				});
 			});
 		}
 	});
