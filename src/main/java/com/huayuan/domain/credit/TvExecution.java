@@ -1,6 +1,7 @@
 package com.huayuan.domain.credit;
 
 import com.huayuan.domain.loanapplication.Application;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class TvExecution {
     @Column(name = "STATUS")
     private int status;
     @Column(name = "CREATETIME")
-    private Date createTime;
+    private Date createTime = new Date();
     @Column(name = "REPLYDATE")
     private Date replyDate;
 
@@ -93,5 +94,9 @@ public class TvExecution {
 
     public void setReplyDate(Date replyDate) {
         this.replyDate = replyDate;
+    }
+
+    public boolean ignoreReplyIfNeeded() {
+        return StringUtils.isNotEmpty(getAnswer1()) || StringUtils.isNotEmpty(getAnswer2());
     }
 }
