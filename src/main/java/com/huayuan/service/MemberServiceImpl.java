@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
         member = update(member);
         CreditCard creditCard = addCreditCard(member, memberDto.getCreditCarNo());
         PreCredit pc = new PreCredit();
-        pc.setMember(creditCard.getMember());
+        pc.setMember(member);
         pc.setIdCard(member.getIdCard());
         pc.setCreditCard(creditCard);
         if (memberDto.crawlBillIfNeeded()) {
