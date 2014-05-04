@@ -22,6 +22,6 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public List<PbocSummary> search(String query) {
-        return em.createNamedQuery("Pboc.searchWithSummary").setParameter("q", query).getResultList();
+        return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.status as status FROM Pboc pb where " + query).getResultList();
     }
 }
