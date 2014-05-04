@@ -1,9 +1,6 @@
 package com.huayuan.service;
 
-import com.huayuan.domain.accounting.Account;
-import com.huayuan.domain.accounting.Loan;
-import com.huayuan.domain.accounting.Repay;
-import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.domain.accounting.*;
 import com.huayuan.repository.account.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -30,6 +27,8 @@ public class AccountServiceImpl implements AccountService {
     private PayRepository payRepository;
     @Inject
     private RePayRepository rePayRepository;
+    @Inject
+    private LoanSummaryBuilder loanSummaryBuilder;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -70,6 +69,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Loan> getLoansBy(Long memberId) {
+        List<Loan> loans = loanRepository.findByMemberId(memberId);
+        for (Loan loan : loans) {
+            System.out.println(loan.getApplication().getApplicationNo());
+        }
         return loanRepository.findByMemberId(memberId);
     }
 
@@ -112,6 +115,11 @@ public class AccountServiceImpl implements AccountService {
         loanRepository.save(loan);
         repayPlanRepository.save(plans);
         return true;
+    }
+
+    @Override
+    public LoanSummary getLoansSummary(Long memberId) {
+        return loanSummaryBuilder.build(memberId, getLoansBy(memberId));
     }
 
 

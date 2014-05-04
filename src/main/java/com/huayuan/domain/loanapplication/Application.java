@@ -64,11 +64,11 @@ public class Application {
     private Integer status = 0;
 
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "APPLY_TIME")
     private Date applyTime;
 
