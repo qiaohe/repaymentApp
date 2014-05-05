@@ -84,8 +84,7 @@ public class ApplicationLoanController {
     @RequestMapping(value = "/members/{memberId}/creditCard/{creditCardNo}", method = RequestMethod.POST)
     @ResponseBody
     public boolean bindCreditCard(@PathVariable Long memberId, @PathVariable String creditCardNo) {
-        Application application = applicationService.getApplicationBy(memberId);
-        applicationService.bindCreditCard(application, creditCardNo);
+        applicationService.bindCreditCard(memberId, creditCardNo);
         return true;
     }
 

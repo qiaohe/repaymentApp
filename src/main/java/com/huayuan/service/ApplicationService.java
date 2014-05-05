@@ -15,6 +15,6 @@ public interface ApplicationService {
 
     public void approve(Approval approval);
 
-    public Application bindCreditCard(Application application, String creditCArdNo);
+    public Application bindCreditCard(Long memberId, String creditCArdNo);
 
 }

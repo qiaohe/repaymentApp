@@ -52,7 +52,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application bindCreditCard(Application application, String creditCArdNo) {
+    public Application bindCreditCard(Long memberId, String creditCArdNo) {
+        Application application = applicationRepository.findByMemberIdAndStatusAndApproval_Decision(memberId, 5, "A");
+        if (application == null)
+            throw new IllegalStateException("member id:" + memberId + "'s application is in illegal status");
         CreditCard creditCard = creditCardRepository.findByCardNo(creditCArdNo).get(0);
         application.setCreditCard(creditCard);
         application.setStatus(7);

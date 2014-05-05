@@ -32,7 +32,6 @@ import java.util.List;
 @Service(value = "creditService")
 @Transactional
 public class CreditServiceImpl implements CreditService, ApplicationEventPublisherAware {
-    private static final String REPLY_ANSWER_PATTERN = "#[1-6]{1,2}";
     @Inject
     private CreditResultRepository creditResultRepository;
     @Inject
@@ -98,12 +97,9 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return tvExecutionRepository.findByApplication_ApplicationNo(appNo);
     }
 
-    private boolean isValidAnswer(String replyAnswer) {
-        return StringUtils.isNotEmpty(replyAnswer) && replyAnswer.matches(REPLY_ANSWER_PATTERN);
-    }
     @Override
     public void replyTv(Long memberId, String replyAnswer) {
-        if (!isValidAnswer(replyAnswer)) return;
+//        if (!isValidAnswer(replyAnswer)) return;
         List<Application> apps = applicationRepository.findByMemberId(memberId);
         TvExecution tvExecution = getTvExecution(apps.get(0).getApplicationNo());
         if (tvExecution.ignoreReplyIfNeeded()) return;
@@ -125,6 +121,25 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 //
 //        creditService.telephoneVerification();
         System.out.println("#66".matches("#[1-6]{1,2}"));
+
+    }
+
+    public static class ReplyAnswer {
+        private static final String REPLY_ANSWER_PATTERN = "#[1-6]{1,2}";
+        private String answer;
+
+        private boolean isValidAnswer(String replyAnswer) {
+            return StringUtils.isNotEmpty(replyAnswer) && replyAnswer.matches(REPLY_ANSWER_PATTERN);
+        }
+
+        public ReplyAnswer(final String answer) {
+            this.answer = answer;
+        }
+
+        public String getAnswer() {
+            return answer;
+        }
+
 
     }
 
