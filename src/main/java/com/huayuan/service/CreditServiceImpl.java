@@ -9,6 +9,7 @@ import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
 import com.huayuan.domain.loanapplication.TelephoneVerification;
+import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
@@ -16,8 +17,10 @@ import com.huayuan.repository.credit.StaffRepository;
 import com.huayuan.repository.credit.TvExecutionRepository;
 import com.huayuan.repository.credit.TvRepository;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,12 +102,13 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 
     @Override
     public void replyTv(Long memberId, String replyAnswer) {
-//        if (!isValidAnswer(replyAnswer)) return;
+        ReplyAnswer rn = new ReplyAnswer(replyAnswer);
+        if (!rn.isValidAnswer()) return;
         List<Application> apps = applicationRepository.findByMemberId(memberId);
         TvExecution tvExecution = getTvExecution(apps.get(0).getApplicationNo());
         if (tvExecution.ignoreReplyIfNeeded()) return;
-        tvExecution.setAnswer1(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(1, 2) + ":", "\n"));
-        tvExecution.setAnswer2(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(2, 3) + ":", "\n"));
+        tvExecution.setAnswer1(rn.getRealAnswer1(tvExecution.getQuestion()));
+        tvExecution.setAnswer2(rn.getRealAnswer2(tvExecution.getQuestion()));
         tvExecution.setReplyDate(new Date());
         tvExecution.setStatus(1);
         tvExecutionRepository.save(tvExecution);
@@ -116,31 +120,9 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     }
 
     public static void main(String[] args) {
-//        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-//        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
-//
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
 //        creditService.telephoneVerification();
-        System.out.println("#66".matches("#[1-6]{1,2}"));
-
+        creditService.replyTv(1l, "#A");
     }
-
-    public static class ReplyAnswer {
-        private static final String REPLY_ANSWER_PATTERN = "#[1-6]{1,2}";
-        private String answer;
-
-        private boolean isValidAnswer(String replyAnswer) {
-            return StringUtils.isNotEmpty(replyAnswer) && replyAnswer.matches(REPLY_ANSWER_PATTERN);
-        }
-
-        public ReplyAnswer(final String answer) {
-            this.answer = answer;
-        }
-
-        public String getAnswer() {
-            return answer;
-        }
-
-
-    }
-
 }

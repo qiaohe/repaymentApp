@@ -23,14 +23,20 @@ public class TvQuestionGenerator {
     @Inject
     private TvRepository tvRepository;
 
-    @Value("${weChat.tvMessageTemplate}")
-    private String messageTemplate;
+    @Value("${weChat.tvMessageTemplateAll}")
+    private String messageTemplateAll;
+
+    @Value("${weChat.tvMessageTemplateCompanyOnly}")
+    private String messageTemplateCompanyOnly;
+
+    @Value("${weChat.tvMessageTemplateHomeOnly}")
+    private String messageTemplateHomeOnly;
 
 
     public String getQuestion(List<String> questions) {
         List<String> qs = new ArrayList<>();
         for (int i = 1; i <= questions.size(); i++) {
-            qs.add(String.format("%d:%s", i, questions.get(i - 1)));
+            qs.add(String.format("%s:%s", Character.toChars(64 + i)[0], questions.get(i - 1)));
         }
         return StringUtils.join(qs, "\n");
     }
@@ -38,6 +44,16 @@ public class TvQuestionGenerator {
     private String getCity(TelephoneVerification tv) {
         final String mobilePhone = tv.getApplication().getMember().getMobile();
         return valueMobileAreaRepository.findBySevenPrefix(StringUtils.substring(mobilePhone, 0, 7)).getCity();
+    }
+
+    public String getTemplate(TelephoneVerification tv) {
+        if (StringUtils.isNotEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
+            return messageTemplateAll;
+        if (StringUtils.isNotEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
+            return messageTemplateCompanyOnly;
+        if (StringUtils.isEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
+            return messageTemplateHomeOnly;
+        return null;
     }
 
     public String generate(TelephoneVerification tv) {
@@ -50,10 +66,12 @@ public class TvQuestionGenerator {
             questions.add(question);
         }
         Collections.shuffle(questions);
-        return MessageFormat.format(messageTemplate, tv.getTvQues1(), tv.getTvQues2(), getQuestion(questions));
+        return MessageFormat.format(getTemplate(tv), getQuestion(questions));
     }
 
     public static void main(String[] args) {
-        System.out.println(MessageFormat.format("请回答如下问题\nA:{0}\nB:{1}\n{2}", null, "你的公司地址在哪里？", "1."));
+
+        System.out.println(String.format("%S:%s", Character.toChars(65)[0], "Johnson He"));
+//        System.out.println(MessageFormat.format("请回答如下问题\nA:{0}\nB:{1}\n{2}", null, "你的公司地址在哪里？", "1."));
     }
 }
