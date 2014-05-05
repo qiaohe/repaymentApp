@@ -83,6 +83,11 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return Configuration.baseUrl();
     }
 
+    private String getWelcomeTemplate() {
+        return Configuration.welcomeTemplate();
+    }
+
+
     public MessageTemplate getTemplates(final String menu_Key, String status) {
         for (Menu menu : menus) {
             if (menu.getMenu_key().equalsIgnoreCase(menu_Key)) {
@@ -107,16 +112,18 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
+        String content = StringUtils.EMPTY;
         if (eventMessage.isSubscribeEvent()) {
             Member member = memberService.findMemberBy(eventMessage.getFromUserName());
             if (member == null) {
                 addMember(getUser(eventMessage.getFromUserName()));
             }
-        } else if(eventMessage.isTvMessage()) {
+            content = MessageFormat.format(getWelcomeTemplate(), getBaseUrl(), member.getId(), memberStatusEvaluator.evaluate(member.getId()) + "&&random=" + RandomStringUtils.randomNumeric(15));
+        } else if (eventMessage.isTvMessage()) {
             creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(), eventMessage.getContent());
-            return;
+            content = Configuration.tvReplyTemplate();
         }
-        final String rm = getReplyMessage(eventMessage);
+        final String rm = getReplyMessage(eventMessage, content);
         response.getWriter().println(rm);
     }
 
@@ -131,14 +138,14 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status);
     }
 
-    private String getReplyMessage(EventMessage eventMessage) {
+    private String getReplyMessage(EventMessage eventMessage, String content) {
         EventMessage rm = new EventMessage();
         rm.setFromUserName(eventMessage.getToUserName());
         rm.setToUserName(eventMessage.getFromUserName());
         rm.setMsgType("text");
         rm.setCreateTime(new Date().getTime());
         rm.setFuncFlag("0");
-        rm.setContent(getContent(eventMessage));
+        rm.setContent(content);
         StringWriter sw = new StringWriter();
         try {
             marshaller.marshal(rm, new StreamResult(sw));

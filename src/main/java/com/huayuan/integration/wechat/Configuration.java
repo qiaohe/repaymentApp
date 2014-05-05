@@ -35,4 +35,12 @@ public class Configuration {
     public static String baseUrl() {
         return CONFIG.getString("weChat.baseUrl");
     }
+
+    public static String welcomeTemplate() {
+        return CONFIG.getString("weChat.welcomeTemplate");
+    }
+
+    public static String tvReplyTemplate() {
+        return CONFIG.getString("weChat.tvReplyTemplate");
+    }
 }
