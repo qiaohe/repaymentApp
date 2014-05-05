@@ -234,5 +234,9 @@ public class Loan {
         }
         return result;
     }
+
+    public String getRating() {
+        return application.getaScore().getRating();
+    }
 }
 

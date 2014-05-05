@@ -16,10 +16,8 @@ import com.huayuan.repository.credit.StaffRepository;
 import com.huayuan.repository.credit.TvExecutionRepository;
 import com.huayuan.repository.credit.TvRepository;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +32,7 @@ import java.util.List;
 @Service(value = "creditService")
 @Transactional
 public class CreditServiceImpl implements CreditService, ApplicationEventPublisherAware {
+    private static final String REPLY_ANSWER_PATTERN = "#[1-6]{1,2}";
     @Inject
     private CreditResultRepository creditResultRepository;
     @Inject
@@ -99,10 +98,15 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return tvExecutionRepository.findByApplication_ApplicationNo(appNo);
     }
 
+    private boolean isValidAnswer(String replyAnswer) {
+        return StringUtils.isNotEmpty(replyAnswer) && replyAnswer.matches(REPLY_ANSWER_PATTERN);
+    }
     @Override
     public void replyTv(Long memberId, String replyAnswer) {
+        if (!isValidAnswer(replyAnswer)) return;
         List<Application> apps = applicationRepository.findByMemberId(memberId);
         TvExecution tvExecution = getTvExecution(apps.get(0).getApplicationNo());
+        if (tvExecution.ignoreReplyIfNeeded()) return;
         tvExecution.setAnswer1(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(1, 2) + ":", "\n"));
         tvExecution.setAnswer2(StringUtils.substringBetween(tvExecution.getQuestion(), replyAnswer.substring(2, 3) + ":", "\n"));
         tvExecution.setReplyDate(new Date());
@@ -116,10 +120,12 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     }
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
-
-        creditService.telephoneVerification();
+//        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+//        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
+//
+//        creditService.telephoneVerification();
+        System.out.println("#66".matches("#[1-6]{1,2}"));
 
     }
+
 }
