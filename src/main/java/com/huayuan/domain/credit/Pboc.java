@@ -1,7 +1,5 @@
 package com.huayuan.domain.credit;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;

@@ -24,6 +24,12 @@ public class PbocController {
         return pbocRepository.findByStatus();
     }
 
+    @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
+    @ResponseBody
+    public String getIdCardImage(@PathVariable Long id) {
+        return pbocRepository.getIdCardImage(id);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Pboc getPbocBy(@PathVariable Long id) {

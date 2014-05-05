@@ -12,4 +12,6 @@ public interface PbocRepositoryCustom {
    public List<PbocSummary> findByStatus();
 
     public List<PbocSummary> search(String query);
+
+    public String getIdCardImage(Long id);
 }

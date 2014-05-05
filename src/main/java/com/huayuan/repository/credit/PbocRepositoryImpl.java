@@ -24,4 +24,8 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
     public List<PbocSummary> search(String query) {
         return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.status as status FROM Pboc pb where " + query).getResultList();
     }
+
+    public String getIdCardImage(Long id) {
+        return em.createNativeQuery("select IMAGE_FRONT from ID_CARD a , Pboc pb where a.ID_NO = pb.certNo and pb.id=?").setParameter(1, id).getSingleResult().toString();
+    }
 }
