@@ -132,6 +132,7 @@ public class MemberController {
         if (verified) {
             Member member = memberService.find(memberId);
             member.setMobile(mobilePhone);
+            memberService.update(member);
         }
         return verified;
     }
