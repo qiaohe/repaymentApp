@@ -81,10 +81,11 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     }
 
     @Override
-    @Scheduled(cron = "0 31 9,19,21 * * ?")
+    @Scheduled(cron = "0 31 8,12,18 * * ?")
     @Transactional
     public void telephoneVerification() {
         for (TelephoneVerification tv : tvRepository.findByTypeAndDecision(0, StringUtils.EMPTY)) {
+            if (getTvExecution(tv.getApplication().getApplicationNo()) != null) continue;
             final String q = tvQuestionGenerator.generate(tv);
             TvExecution te = new TvExecution();
             te.setApplication(tv.getApplication());
@@ -123,6 +124,6 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
 //        creditService.telephoneVerification();
-        creditService.replyTv(1l, "#A");
+        creditService.replyTv(10l, "#A");
     }
 }
