@@ -1,0 +1,86 @@
+body{
+	font-size: 62.5%;
+}
+
+select{
+	margin-left:5px;
+	width: 155px;
+}
+
+#content{
+	width: 1400px;
+	margin: auto;
+	font-family: Microsoft YaHei;
+}
+
+h1{
+	border: 1px solid black;
+	border-radius: 3px;
+	font-size: 2.6em;
+}
+
+.itembox{
+	float: left;
+	text-align: center;
+	border: 1px solid black;
+	width: 5%;
+	font-size: 1.6em;
+	font-weight: bold;
+	margin-left: 20px;
+	border-radius: 3px;
+}
+
+input{
+	margin-left: 5px;
+	float: left;
+}
+
+.check{
+	margin-left:30px;
+}
+
+.grid{
+	width:16%;
+	float: left;
+	height: 25px;
+	border: 1px solid black;
+	line-height: 25px;
+	font-size: 1.5em;
+}
+
+.grid-2{
+	width:35%;
+	clear: right;
+	float: left;
+	height: 30px;
+	line-height: 30px;
+	font-size: 1.5em;
+}
+
+.block{
+	clear: both;
+	margin: 5px auto;
+	padding:10px;
+	border: 1px solid black;
+	height: 200px;
+}
+
+.h1-info{
+	clear: both;
+	margin:50px auto 25px auto;
+	width:10%;
+	background-color:#ccffcc;
+	border:none;
+}
+
+.h2-info{
+	width: 10%;
+	clear: left;
+	margin:20px auto 10px auto;
+}
+
+.submit{
+	width: 20%;
+	height: 50px;
+	margin-bottom: 500px;
+}
