@@ -18,6 +18,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -74,19 +75,23 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     private CreditService creditService;
     private List<Menu> menus;
 
+    @Value("${weChat.baseUrl}")
+    private String baseUrl;
+    @Value("${weChat.welcomeTemplate}")
+    private String welcomeTemplate;
+    @Value("${weChat.tvReplyTemplate}")
+    private String tvReplyTemplate;
+    @Value("${weChat.appId}")
+    private String appId;
+    @Value("${weChat.appSecret}")
+    private String appSecret;
+    @Value("${weChat.token}")
+    private String appToken;
+
     @PostConstruct
     public void init() {
         menus = menuRepository.findAll();
     }
-
-    private String getBaseUrl() {
-        return Configuration.baseUrl();
-    }
-
-    private String getWelcomeTemplate() {
-        return Configuration.welcomeTemplate();
-    }
-
 
     public MessageTemplate getTemplates(final String menu_Key, String status) {
         for (Menu menu : menus) {
@@ -118,10 +123,12 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             if (member == null) {
                 addMember(getUser(eventMessage.getFromUserName()));
             }
-            content = MessageFormat.format(getWelcomeTemplate(), getBaseUrl(), member.getId(), memberStatusEvaluator.evaluate(member.getId()) + "&&random=" + RandomStringUtils.randomNumeric(15));
+            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member.getId()) + "&&random=" + RandomStringUtils.randomNumeric(15));
         } else if (eventMessage.isTvMessage()) {
             creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(), eventMessage.getContent());
-            content = Configuration.tvReplyTemplate();
+            content = tvReplyTemplate;
+        } else {
+            content = getContent(eventMessage);
         }
         final String rm = getReplyMessage(eventMessage, content);
         response.getWriter().println(rm);
@@ -133,9 +140,9 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         MessageTemplate tp = getTemplates(message.getEventKey(), status);
         status += "&&random=" + RandomStringUtils.randomNumeric(15);
         if (tp.isCreditLimit())
-            return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status, memberService.getCrl(memberId));
+            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId));
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
-        return MessageFormat.format(tp.getTemplate(), getBaseUrl(), memberId, status);
+        return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status);
     }
 
     private String getReplyMessage(EventMessage eventMessage, String content) {
@@ -167,8 +174,7 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     }
 
     public String getAccessToken() {
-        String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN,
-                String.class, Configuration.appId(), Configuration.appSecret());
+        String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
         System.out.println(StringUtils.mid(token, 17, token.length() - 37));
         return StringUtils.mid(token, 17, token.length() - 37);
     }
@@ -184,8 +190,8 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     }
 
 
-    private static boolean checkSignaturePass(String signature, String timestamp, String nonce) {
-        String[] arr = new String[]{Configuration.token(), timestamp, nonce};
+    private boolean checkSignaturePass(String signature, String timestamp, String nonce) {
+        String[] arr = new String[]{appToken, timestamp, nonce};
         Arrays.sort(arr);
         StringBuilder content = new StringBuilder();
         for (String s : arr) {
