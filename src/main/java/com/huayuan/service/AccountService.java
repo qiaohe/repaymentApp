@@ -4,6 +4,7 @@ import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.LoanSummary;
 import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.domain.loanapplication.Application;
 
 import java.util.List;
 
@@ -33,4 +34,5 @@ public interface AccountService {
 
     public LoanSummary getLoansSummary(Long memberId);
 
+    public Loan createLoanBy(Application application);
 }

@@ -2,6 +2,7 @@ package com.huayuan.web.dto;
 
 import com.huayuan.common.Day;
 import com.huayuan.domain.member.Member;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ public class MemberResponseDto implements Serializable {
     private int industry;
     private int education;
     private String email;
+    private boolean hasMobilePhone;
 
     public MemberResponseDto() {
     }
@@ -77,6 +79,14 @@ public class MemberResponseDto implements Serializable {
         this.email = email;
     }
 
+    public boolean isHasMobilePhone() {
+        return hasMobilePhone;
+    }
+
+    public void setHasMobilePhone(boolean hasMobilePhone) {
+        this.hasMobilePhone = hasMobilePhone;
+    }
+
     public static MemberResponseDto valueOf(Member member) {
         MemberResponseDto result = new MemberResponseDto();
         result.setMemberId(member.getId());
@@ -86,6 +96,7 @@ public class MemberResponseDto implements Serializable {
         result.setEmail(member.getEmail());
         result.setEducation(member.getEducation());
         result.setIndustry(member.getIndustry());
+        result.setHasMobilePhone(StringUtils.isNotEmpty(member.getMobile()));
         return result;
     }
 }

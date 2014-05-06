@@ -8,6 +8,7 @@ import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
+import com.huayuan.service.SmsVerificationCodeService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
 import com.huayuan.web.dto.MemberResponseDto;
@@ -33,6 +34,8 @@ public class MemberController {
     private CreditLimitRanges creditLimitRanges;
     @Inject
     private PreCreditRepository preCreditRepository;
+    @Inject
+    private SmsVerificationCodeService smsVerificationCodeService;
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -120,5 +123,16 @@ public class MemberController {
     @ResponseBody
     public Double getAvailableCreditLimit(@PathVariable Long id) {
         return memberService.getAvlCrl(id);
+    }
+
+    @RequestMapping(value = "/{id}/{mobilePhone}/{code}", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean verifyCode(@PathVariable Long memberId, @PathVariable String mobilePhone, @PathVariable String code) {
+        boolean verified = smsVerificationCodeService.verifyCode(mobilePhone, code);
+        if (verified) {
+            Member member = memberService.find(memberId);
+            member.setMobile(mobilePhone);
+        }
+        return verified;
     }
 }

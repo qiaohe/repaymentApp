@@ -8,6 +8,7 @@ import com.huayuan.domain.loanapplication.RepaymentModeEnum;
 import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
+import com.huayuan.service.AccountService;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.LoanApplicationDto;
@@ -37,6 +38,8 @@ public class ApplicationLoanController {
     private MemberService memberService;
     @Inject
     private PricingRepository pricingRepository;
+    @Inject
+    private AccountService accountService;
 
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
@@ -84,7 +87,8 @@ public class ApplicationLoanController {
     @RequestMapping(value = "/members/{memberId}/creditCard/{creditCardNo}", method = RequestMethod.POST)
     @ResponseBody
     public boolean bindCreditCard(@PathVariable Long memberId, @PathVariable String creditCardNo) {
-        applicationService.bindCreditCard(memberId, creditCardNo);
+        Application application = applicationService.bindCreditCard(memberId, creditCardNo);
+        accountService.createLoanBy(application);
         return true;
     }
 

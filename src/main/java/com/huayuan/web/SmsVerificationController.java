@@ -19,16 +19,14 @@ public class SmsVerificationController {
     private SmsVerificationCodeService smsVerificationCodeService;
 
     @RequestMapping(value = "/{mobilePhone}", method = RequestMethod.GET)
-    public
     @ResponseBody
-    boolean sendVerificationCode(@PathVariable String mobilePhone) {
+    public boolean sendVerificationCode(@PathVariable String mobilePhone) {
         return smsVerificationCodeService.sendVerificationCode(mobilePhone);
     }
 
     @RequestMapping(value = "/{mobilePhone}/{code}", method = RequestMethod.POST)
-    public
     @ResponseBody
-    boolean verifyCode(@PathVariable String mobilePhone, @PathVariable String code) {
+    public boolean verifyCode(@PathVariable String mobilePhone, @PathVariable String code) {
         return smsVerificationCodeService.verifyCode(mobilePhone, code);
     }
 }

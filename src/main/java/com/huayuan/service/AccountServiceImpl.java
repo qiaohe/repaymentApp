@@ -1,6 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.domain.accounting.*;
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.repository.account.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -120,6 +121,18 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public LoanSummary getLoansSummary(Long memberId) {
         return loanSummaryBuilder.build(memberId, getLoansBy(memberId));
+    }
+
+    @Override
+    public Loan createLoanBy(Application application) {
+        Loan loan = new Loan();
+        loan.setMember(application.getMember());
+        loan.setApplication(application);
+        loan.setTerm(application.getApproval().getTerm());
+        loan.setApr( application.getApproval().getApr());
+        loan.setAmt(application.getApproval().getAmt());
+        loan.setStartDate(application.getApproval().getCreateTime());
+        return createLoan(loan);
     }
 
 

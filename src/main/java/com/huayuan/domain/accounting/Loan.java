@@ -55,7 +55,7 @@ public class Loan {
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
     public Loan() {
-        status = 0;
+        status = 8;
         paidInterest = 0d;
         paidPrincipal = 0d;
     }
