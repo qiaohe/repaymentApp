@@ -45,7 +45,10 @@ public class Pboc implements Serializable {
     
     @Column(name = "OFFICETELEPHONENO")
     private String officeTelephoneNo;
-    
+
+    @Column(name = "HOMETELEPHONENO")
+    private String homeTelephoneNo;
+
     @Column(name = "EDUDEGREE")
     private String eduDegree;
     
