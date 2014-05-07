@@ -33,7 +33,7 @@ public class Approval {
     private Integer term;
 
     @Column(name = "SUG_CRL")
-    private Integer sugCrl;
+    private Double sugCrl;
 
 
     @Column(name = "REPAY_TYPE")
@@ -206,11 +206,11 @@ public class Approval {
         this.createTime = createTime;
     }
 
-    public Integer getSugCrl() {
+    public Double getSugCrl() {
         return sugCrl;
     }
 
-    public void setSugCrl(Integer sugCrl) {
+    public void setSugCrl(Double sugCrl) {
         this.sugCrl = sugCrl;
     }
 }

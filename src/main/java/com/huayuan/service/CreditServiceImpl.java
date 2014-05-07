@@ -72,12 +72,17 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 
     @Override
     public void approve(Application application) {
-        Account account = new Account();
-        account.setMember(application.getMember());
-        account.setCrlUsed(Double.valueOf(application.getApproval().getSugCrl().toString()));
+        Account account = accountRepository.findByMemberId(application.getMember().getId());
+        if (account == null && application.isDeclined()) return;
+        if (account == null) {
+            account = new Account();
+            account.setMember(application.getMember());
+        }
+        account.setCrl(application.getApproval().getSugCrl());
+        if (application.isApproved()) account.setCrlUsed(account.getCrlUsed() + application.getApproval().getAmt());
+        accountRepository.save(account);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), "");
         publisher.publishEvent(event);
-        accountRepository.save(account);
     }
 
     @Override

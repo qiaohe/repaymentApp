@@ -204,4 +204,13 @@ public class Application {
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
     }
+
+    public boolean isApproved() {
+        return getApproval().getDecision().equals("A");
+    }
+
+    public boolean isDeclined() {
+        return getApproval().getDecision().equals("D");
+    }
+
 }
