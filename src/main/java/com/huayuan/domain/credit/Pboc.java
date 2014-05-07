@@ -1,5 +1,8 @@
 package com.huayuan.domain.credit;
 
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.LocalDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -599,7 +602,9 @@ public class Pboc implements Serializable {
     }
 
     public String getIndustryYear() {
-        return industryYear;
+        if (StringUtils.isEmpty(hisGetting)) return StringUtils.EMPTY;
+        final Integer ht = Integer.valueOf(StringUtils.substring(hisGetting, 0, 4));
+        return String.valueOf(new LocalDate(new Date()).getYear() - ht);
     }
 
     public void setIndustryYear(String industryYear) {
@@ -887,7 +892,8 @@ public class Pboc implements Serializable {
     }
 
     public Double getCardAvgCreditLimit() {
-        return cardAvgCreditLimit;
+        if (cardOrg == null || cardOrg < 0) return null;
+        return cardCreditLimit / (double) cardOrg;
     }
 
     public void setCardAvgCreditLimit(Double cardAvgCreditLimit) {
@@ -943,7 +949,8 @@ public class Pboc implements Serializable {
     }
 
     public Double getSemiCardAvgCreditlimit() {
-        return semiCardAvgCreditlimit;
+        if (semiCardOrg == null || semiCardOrg < 0) return null;
+        return semicardCreditLimit / (double) semiCardOrg;
     }
 
     public void setSemiCardAvgCreditlimit(Double semiCardAvgCreditlimit) {
