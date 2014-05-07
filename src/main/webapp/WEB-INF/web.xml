@@ -39,5 +39,6 @@
         <url-pattern>/api/*</url-pattern>
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.pdf</url-pattern>
+        <url-pattern>/pboc/*</url-pattern>
     </servlet-mapping>
 </web-app>

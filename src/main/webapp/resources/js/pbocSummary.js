@@ -1,6 +1,6 @@
 ﻿$(function(){
 // START   
-var path = "http://192.168.0.186:8080/repaymentApp/api/";
+var path = "pboc/";
 
 function getNshow(path){
 	$('#table').html('<div class="grid"></div><div class="grid">姓名</div><div class="grid">身份证号</div><div class="grid">时间</div><div class="grid">员工编号</div><div class="grid">无此人(y)</div>');

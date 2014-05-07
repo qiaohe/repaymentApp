@@ -1,7 +1,7 @@
 ﻿ $(function(){
 // START
 var info = {};
-info.path = "http://192.168.0.186:8080/repaymentApp/api/";
+info.path = "pboc/";
 var id_pattern = /(?:id=)\d+/;
 info.id = id_pattern.exec(window.location).toString();
 info.id = info.id.slice(3, info.id.length);

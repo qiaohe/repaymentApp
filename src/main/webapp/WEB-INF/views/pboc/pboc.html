@@ -1,0 +1,369 @@
+﻿<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="resources/css/pboc.css">
+    <script src="resources/js/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<div id="content">
+
+<div style="float:left; width:50%; background-color:#ccffcc">
+    <iframe id="pdf" style="width:45%; height:100%; position:fixed; top:10px ; left:10px"></iframe>
+</div>
+
+<div style="float:right; width:50%">
+<div>
+    <a href="#name"><input type="button" class="check" id="system" value="系统信息"></a>
+    <a href="#marriage"><input type="button" class="check" id="basics" value="基础资料"></a>
+    <a href="#work-at"><input type="button" class="check" id="profession-0" value="工作资料"></a>
+    <a href="#earlist-credit"><input type="button" class="check" id="bank-info" value="银行资料"></a>
+    <a href="#g-1"><input type="button" class="check" id="public" value="公共信息"></a>
+</div>
+
+<div class="itembox h1-info">系统信息</div>
+<input type="button" id="show-idimg" style="margin:50px auto 25px 50px" value="身份证照片(正面)">
+<img src="test.png" id="img" style="position:absolute; top:50px; left:40%; display:none">
+
+<div style="clear:both; margin: 5px auto; padding:10px; border: 1px solid black; height: 175px">
+    <div class="grid-2">姓名</div>
+    <div class="grid-2"><input type="text" id="name"></div>
+    <div class="grid-2">证件号码</div>
+    <div class="grid-2"><input type="text" id="id"></div>
+    <div class="grid-2">修改后姓名</div>
+    <div class="grid-2"><input type="text" id="modified-name"></div>
+    <div class="grid-2">修改后证件号码</div>
+    <div class="grid-2"><input type="text" id="modified-id"></div>
+    <div class="grid-2">修改后报告时间</div>
+    <div class="grid-2"><input type="text" id="modified-report-time"></div>
+    <div class="grid-2">建档员</div>
+    <div class="grid-2"><input type="text" id="operator"></div>
+</div>
+
+<div class="itembox h1-info">基础资料</div>
+<div class="itembox h2-info">1.基础信息</div>
+
+<div class="block">
+    <div class="grid-2">婚姻状况</div>
+    <div class="grid-2"><select id="marriage">
+        <option>1.已婚</option>
+        <option>2.未婚</option>
+        <option>3.离异</option>
+        <option>4.未知</option>
+    </select></div>
+    <div class="grid-2">手机号码</div>
+    <div class="grid-2"><input type="text" id="mobile"></div>
+    <div class="grid-2">手机号码归属地</div>
+    <div class="grid-2"><input type="text" id="num-district"></div>
+    <div class="grid-2">单位电话</div>
+    <div class="grid-2"><input type="text" id="phone-at-work"></div>
+    <div class="grid-2">住宅电话</div>
+    <div class="grid-2"><input type="text" id="phone-home"></div>
+    <div class="grid-2">学位</div>
+    <div class="grid-2"><select id="education">
+        <option>1.初中及以下</option>
+        <option>2.高中, 中专</option>
+        <option>3.大专</option>
+        <option>4.本科</option>
+        <option>5.硕士</option>
+        <option>6.博士</option>
+    </select></div>
+    <div class="grid-2">户籍地址比对不一致</div>
+    <div class="grid-2"><input type="checkbox" id="address-conflict"></div>
+</div>
+
+<div class="itembox h2-info">2.居住信息</div>
+
+<div class="block" style="height:130px">
+    <div class="grid-2">居住城市</div>
+    <div class="grid-2"><select id="livein">
+        <option>北京</option>
+        <option>上海</option>
+        <option>深圳</option>
+        <option>广州</option>
+        <option>其他</option>
+    </select></div>
+    <div class="grid-2">居住地址</div>
+    <div class="grid-2"><input type="text" id="address"></div>
+    <div class="grid-2">居住状况</div>
+    <div class="grid-2"><select id="living-state">
+        <option>1.自置</option>
+        <option>2.租住</option>
+        <option>3.未知</option>
+    </select></div>
+    <div class="grid-2">信息更新日期</div>
+    <div class="grid-2"><input type="text" id="update-date"></div>
+</div>
+
+<div class="itembox h2-info">3.配偶信息</div>
+
+<div class="block" style="height:90px">
+    <div class="grid-2">配偶姓名</div>
+    <div class="grid-2"><input type="text" id="spouse-name"></div>
+    <div class="grid-2">配偶证件号码</div>
+    <div class="grid-2"><input type="text" id="spouse-id"></div>
+    <div class="grid-2">配偶联系电话</div>
+    <div class="grid-2"><input type="tel" id="spouse-phone"></div>
+</div>
+
+<div class="itembox h1-info">工作资料</div>
+<div class="itembox h2-info">1.工作信息</div>
+
+<div class="block" style="height:360px">
+    <div class="grid-2">工作单位</div>
+    <div class="grid-2"><input type="text" id="work-at"></div>
+    <div class="grid-2">工作城市</div>
+    <div class="grid-2"><select id="work-in">
+        <option>北京</option>
+        <option>上海</option>
+        <option>深圳</option>
+        <option>广州</option>
+        <option>其他</option>
+    </select></div>
+    <div class="grid-2">工作地址</div>
+    <div class="grid-2"><input type="text" id="work-address"></div>
+    <div class="grid-2">职业</div>
+    <div class="grid-2"><input type="text" id="profession"></div>
+    <div class="grid-2">行业</div>
+    <div class="grid-2"><input type="text" id="industry"></div>
+    <div class="grid-2">行业评估</div>
+    <div class="grid-2"><select id="industry-catography">
+        <option>1.政府机关, 社会团体</option>
+        <option>2.军事、公检法</option>
+        <option>3.学校、医院</option>
+        <option>4.专业事务所</option>
+        <option>5.信息通信、IT互联网</option>
+        <option>6.金融业</option>
+        <option>7.交通运输</option>
+        <option>8.公共事业</option>
+        <option>9.能源矿产</option>
+        <option>10.商业零售、内外贸易</option>
+        <option>11.房地产、建筑业</option>
+        <option>12.加工、制造业</option>
+        <option>13.餐饮、酒店、旅游</option>
+        <option>14.服务、咨询</option>
+        <option>15.媒体、体育、娱乐</option>
+        <option>16.农林牧渔</option>
+        <option>17.网店店主</option>
+        <option>18.学生</option>
+        <option>19.自由职业者</option>
+        <option>20.其他</option>
+    </select></div>
+    <div class="grid-2">职务</div>
+    <div class="grid-2"><select id="position">
+        <option>1.高级领导</option>
+        <option>2.中级领导</option>
+        <option>3.一般员工</option>
+        <option>4.其他</option>
+    </select></div>
+    <div class="grid-2">职称</div>
+    <div class="grid-2"><select id="level">
+        <option>1.高级职称</option>
+        <option>2.中级职称</option>
+        <option>3.初级职称</option>
+    </select></div>
+    <div class="grid-2">进入本单位年份</div>
+    <div class="grid-2"><input type="text" id="since"></div>
+    <div class="grid-2">工龄</div>
+    <div class="grid-2"><input type="text" id="working-age"></div>
+    <div class="grid-2">信息更新日期</div>
+    <div class="grid-2"><input type="text" id="update-date-1"></div>
+    <div class="grid-2">最早工作时间</div>
+    <div class="grid-2"><input type="text" id="works-since"></div>
+</div>
+
+<div class="itembox h2-info">2.养老金缴纳记录</div>
+
+<div class="block" style="height:240px">
+    <div class="grid-2">参保日期</div>
+    <div class="grid-2"><input type="text" id="pension-date"></div>
+    <div class="grid-2">参加工作月份</div>
+    <div class="grid-2"><input type="text" id="month-in-work"></div>
+    <div class="grid-2">个人缴费基数</div>
+    <div class="grid-2"><input type="text" id="base"></div>
+    <div class="grid-2">缴费状态</div>
+    <div class="grid-2"><select id="pension-state">
+        <option>1.当月正常</option>
+        <option>2.历史正常</option>
+        <option>3.停缴</option>
+        <option>4.其他</option>
+    </select></div>
+    <div class="grid-2">本月缴费金额</div>
+    <div class="grid-2"><input type="text" id="amount-each-2"></div>
+    <div class="grid-2">缴费单位与工作单位比对不一致</div>
+    <div class="grid-2"><input type="checkbox" id="corp-conflict-2"></div>
+    <div class="grid-2">中断或终止缴费原因</div>
+    <div class="grid-2"><input type="text" id="reason-suspension"></div>
+    <div class="grid-2">信息更新日期</div>
+    <div class="grid-2"><input type="text" id="update-date-2"></div>
+</div>
+
+<div class="itembox h2-info">3.公积金缴纳记录</div>
+
+<div class="block" style="height:210px">
+    <div class="grid-2">参缴日期</div>
+    <div class="grid-2"><input type="text" id="fund-date"></div>
+    <div class="grid-2">初缴月份</div>
+    <div class="grid-2"><input type="text" id="fund-since"></div>
+    <div class="grid-2">缴至月份</div>
+    <div class="grid-2"><input type="text" id="fund-to"></div>
+    <div class="grid-2">缴费状态</div>
+    <div class="grid-2"><select id="fund-state">
+        <option>1.当月正常</option>
+        <option>2.历史正常</option>
+        <option>3.停缴</option>
+        <option>4.其他</option>
+    </select></div>
+    <div class="grid-2">月缴存额</div>
+    <div class="grid-2"><input type="text" id="amount-each-3"></div>
+    <div class="grid-2">缴费单位与工作单位比对不一致</div>
+    <div class="grid-2"><input type="checkbox" id="corp-conflict-3"></div>
+    <div class="grid-2">信息更新日期</div>
+    <div class="grid-2"><input type="text" id="update-date-3"></div>
+</div>
+
+<div class="itembox h1-info">银行资料</div>
+<div class="itembox h2-info">1.银行往来</div>
+<div class="itembox h2-info" style="width:40%; text-align:left; padding:5px 0"><span>最早信贷记录时间</span><input
+        type="text" id="earlist-credit" style="margin:0 20px; float:right"></div>
+<div class="itembox h2-info">2.逾期信息</div>
+
+<div class="itembox h2-info">2.1 贷款</div>
+
+<div class="block" style="height:90px">
+    <div class="grid-2">笔数</div>
+    <div class="grid-2"><input type="text" id="num-delayed"></div>
+    <div class="grid-2">单月最高逾期总额</div>
+    <div class="grid-2"><input type="text" id="amount-delayed"></div>
+    <div class="grid-2">最长逾期月数</div>
+    <div class="grid-2"><input type="text" id="time-delayed"></div>
+</div>
+
+<div class="itembox h2-info">2.2 信用卡</div>
+
+<div class="block" style="height:150px">
+    <div class="grid-2">账户数</div>
+    <div class="grid-2"><input type="text" id="account-num"></div>
+    <div class="grid-2">单月最高逾期总额</div>
+    <div class="grid-2"><input type="text" id="amount-delayed-2"></div>
+    <div class="grid-2">最长逾期月数</div>
+    <div class="grid-2"><input type="text" id="time-delayed-2"></div>
+    <div class="grid-2">当前信用卡逾期金额</div>
+    <div class="grid-2"><input type="text" id="delayed-current"></div>
+    <div class="grid-2">近一年最高逾期期数</div>
+    <div class="grid-2"><input type="text" id="time-delayed-2"></div>
+</div>
+
+<div class="itembox h2-info">2.3 准贷记卡</div>
+
+<div class="block" style="height:90px">
+    <div class="grid-2">账户数</div>
+    <div class="grid-2"><input type="text" id="account-num-3"></div>
+    <div class="grid-2">单月最高透支总额</div>
+    <div class="grid-2"><input type="text" id="overdraft-amount"></div>
+    <div class="grid-2">最长透支月数</div>
+    <div class="grid-2"><input type="text" id="overdraft-time"></div>
+</div>
+
+<div class="itembox h2-info">3.信息汇总</div>
+
+<div class="itembox h2-info">3.1 贷款信息汇总</div>
+<div class="block" style="height:120px">
+    <div class="grid-2">笔数</div>
+    <div class="grid-2"><input type="text" id="num-loan"></div>
+    <div class="grid-2">合同金额</div>
+    <div class="grid-2"><input type="text" id="amount-loan"></div>
+    <div class="grid-2">余额</div>
+    <div class="grid-2"><input type="text" id="amount-remaining"></div>
+    <div class="grid-2">最近6个月平均应还款</div>
+    <div class="grid-2"><input type="text" id="payback-average"></div>
+</div>
+
+<div class="itembox h2-info">3.2 信用卡信息汇总</div>
+<div class="block" style="height:240px">
+    <div class="grid-2">机构数</div>
+    <div class="grid-2"><input type="text" id="num-corp"></div>
+    <div class="grid-2">账户数</div>
+    <div class="grid-2"><input type="text" id="num-accounts"></div>
+    <div class="grid-2">授信金额</div>
+    <div class="grid-2"><input type="text" id="amount-credit"></div>
+    <div class="grid-2">账户平均额度</div>
+    <div class="grid-2"><input type="text" id="credit-average"></div>
+    <div class="grid-2">单家行最高授信额度</div>
+    <div class="grid-2"><input type="text" id="credit-max"></div>
+    <div class="grid-2">单家行最低授信额度</div>
+    <div class="grid-2"><input type="text" id="credit-min"></div>
+    <div class="grid-2">已用额度</div>
+    <div class="grid-2"><input type="text" id="credit-used"></div>
+    <div class="grid-2">最近6个月平均使用额度</div>
+    <div class="grid-2"><input type="text" id="used-average"></div>
+</div>
+
+<div class="itembox h2-info">3.3 准贷记卡信息汇总</div>
+<div class="block" style="height:240px">
+    <div class="grid-2">机构数</div>
+    <div class="grid-2"><input type="text" id="num-corp-3"></div>
+    <div class="grid-2">账户数</div>
+    <div class="grid-2"><input type="text" id="num-accounts-3"></div>
+    <div class="grid-2">授信金额</div>
+    <div class="grid-2"><input type="text" id="amount-credit-3"></div>
+    <div class="grid-2">账户平均额度</div>
+    <div class="grid-2"><input type="text" id="credit-average-3"></div>
+    <div class="grid-2">单家行最高授信额度</div>
+    <div class="grid-2"><input type="text" id="credit-max-3"></div>
+    <div class="grid-2">单家行最低授信额度</div>
+    <div class="grid-2"><input type="text" id="credit-min-3"></div>
+    <div class="grid-2">透支余额</div>
+    <div class="grid-2"><input type="text" id="overdraft-remaining"></div>
+    <div class="grid-2">最近6个月平均透支额度</div>
+    <div class="grid-2"><input type="text" id="overdraft-average"></div>
+</div>
+
+<div class="itembox h2-info">4.人行查询次数</div>
+<div class="itembox h2-info" style="width:50%; text-align:left; padding:5px 0"><span>近6个月信用卡审核查询次数</span><input
+        type="text" id="search-time" style="margin:0 20px; float:right"></div>
+
+<div class="itembox h1-info">公共信息</div>
+<div class="block" style="height:420px">
+    <div class="grid-2">呆账信息</div>
+    <div class="grid-2"><input type="checkbox" id="g-1"></div>
+    <div class="grid-2">资产处置信息</div>
+    <div class="grid-2"><input type="checkbox" id="g-2"></div>
+    <div class="grid-2">保证人代偿信息</div>
+    <div class="grid-2"><input type="checkbox" id="g-3"></div>
+    <div class="grid-2">欠税记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-4"></div>
+    <div class="grid-2">民事判决记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-5"></div>
+    <div class="grid-2">强制执行记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-6"></div>
+    <div class="grid-2">行政处罚记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-7"></div>
+    <div class="grid-2">养老保险金发放记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-8"></div>
+    <div class="grid-2">低保救助记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-9"></div>
+    <div class="grid-2">执业资格记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-10"></div>
+    <div class="grid-2">行政奖励记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-11"></div>
+    <div class="grid-2">车辆交易和抵押记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-12"></div>
+    <div class="grid-2">电信缴费记录</div>
+    <div class="grid-2"><input type="checkbox" id="g-13"></div>
+    <div class="grid-2">声明内容</div>
+    <div class="grid-2"><input type="checkbox" id="g-14"></div>
+</div>
+
+<div style="width:100%; clear:both; padding-top:50px">
+    <input type="button" class="check submit" id="save" value="暂存">
+    <input type="button" class="check submit" id="finish" value="建档完成">
+    <input type="button" class="check submit" id="no-record" value="无此人">
+    <input type="button" class="check submit" id="id-modify" value="修改ID">
+</div>
+
+</div>
+
+</div>
+<script src="resources/js/pboc.js"></script>
+</body>
+</html>
