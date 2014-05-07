@@ -19,7 +19,7 @@
     </named-native-query>
 
     <named-native-query name="Pboc.searchWithSummary" result-set-mapping="pbocSummary">
-        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.status as status FROM Pboc pb where :q
+        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk FROM Pboc pb where :q
         </query>
     </named-native-query>
 

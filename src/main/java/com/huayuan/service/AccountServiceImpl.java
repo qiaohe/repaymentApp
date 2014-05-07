@@ -70,11 +70,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Loan> getLoansBy(Long memberId) {
-        List<Loan> loans = loanRepository.findByMemberId(memberId);
-        for (Loan loan : loans) {
-            System.out.println(loan.getApplication().getApplicationNo());
-        }
-        return loanRepository.findByMemberId(memberId);
+        return loanRepository.findByMember_Id(memberId);
     }
 
     @Override

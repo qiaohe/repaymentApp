@@ -20,7 +20,7 @@ public class PbocController {
 
     @RequestMapping(value = "/summary", method = RequestMethod.GET)
     @ResponseBody
-    public List<PbocSummary> getMember() {
+    public List<PbocSummary> getSummary() {
         return pbocRepository.findByStatus();
     }
 

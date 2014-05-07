@@ -9,5 +9,5 @@ import java.util.List;
  * Created by dell on 14-4-8.
  */
 public interface LoanRepository extends JpaRepository<Loan, Long> {
-    public List<Loan> findByMemberId(Long memberId);
+    public List<Loan> findByMember_Id(Long memberId);
 }

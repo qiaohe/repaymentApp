@@ -14,19 +14,19 @@ public class PbocSummary implements Serializable {
     private String name;
     private Date createTime;
     private String keyiner;
-    private Integer status;
+    private Integer risk;
 
     public PbocSummary() {
     }
 
-    public PbocSummary(Long id, String certNo, String name, Date createTime, String keyiner, Integer status) {
+    public PbocSummary(Long id, String certNo, String name, Date createTime, String keyiner, Integer risk) {
         this();
         this.id = id;
         this.certNo = certNo;
         this.name = name;
         this.createTime = createTime;
         this.keyiner = keyiner;
-        this.status = status;
+        this.risk = risk;
     }
 
     public Long getId() {
@@ -69,11 +69,11 @@ public class PbocSummary implements Serializable {
         this.keyiner = keyiner;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getRisk() {
+        return risk;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setRisk(Integer risk) {
+        this.risk = risk;
     }
 }
