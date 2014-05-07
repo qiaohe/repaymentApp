@@ -32,6 +32,7 @@ public class PbocController {
     public String home() {
         return "pbocSummary";
     }
+
     @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
     @ResponseBody
     public String getIdCardImage(@PathVariable Long id) {
@@ -47,7 +48,7 @@ public class PbocController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Pboc updatePbocBy(@RequestBody Pboc pboc) {
-        if (pboc.getStatus() == Pboc.CHANGE_ID) {
+        if (pboc.getStatus().equals(Pboc.CHANGE_ID)) {
             IdCard idCard = idCardRepository.findByIdNo(pboc.getCertNo());
             idCard.setIdNo(pboc.getNewCertNo());
             idCard.setName(pboc.getNewName());
