@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -42,10 +43,10 @@ public class DictionaryController {
         return dictionaryRepository.findByType(StringUtils.upperCase(type));
     }
 
-    @RequestMapping(value = "/mobileArea/{mobilePhone}", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobileArea/{mobilePhone}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String getCityByMobilePhone(@PathVariable String mobilePhone) {
-        final String sevenOfMobilePhone = StringUtils.substring(mobilePhone,0, 7);
+        final String sevenOfMobilePhone = StringUtils.substring(mobilePhone, 0, 7);
         return valueMobileAreaRepository.findBySevenPrefix(sevenOfMobilePhone).getCity();
     }
 }
