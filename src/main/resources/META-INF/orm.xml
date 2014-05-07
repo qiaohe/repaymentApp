@@ -14,7 +14,7 @@
 
     <named-native-query name="Pboc.findByStatusWithSummary" result-set-mapping="pbocSummary">
         <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
-            pb.keyiner as keyiner, pb.status as status FROM Pboc pb
+            pb.keyiner as keyiner, pb.status as status FROM Pboc pb where pb.status in (2,3)
         </query>
     </named-native-query>
 
