@@ -257,49 +257,49 @@ public class Pboc implements Serializable {
     private Double semiCardLatest6MonthUsedAvgAmount;
 
     @Column(name = "RH_1")
-    private Integer rh_1;
+    private Integer rh_1 = 0;
 
     @Column(name = "RH_2")
-    private Integer rh_2;
+    private Integer rh_2 = 0;
 
     @Column(name = "RH_3")
-    private Integer rh_3;
+    private Integer rh_3 = 0;
 
     @Column(name = "RH_4")
-    private Integer rh_4;
+    private Integer rh_4 = 0;
 
     @Column(name = "RH_5")
-    private Integer RH_5;
+    private Integer RH_5 = 0;
 
     @Column(name = "RH_6")
-    private Integer RH_6;
+    private Integer RH_6 = 0;
 
     @Column(name = "RH_7")
-    private Integer RH_7;
+    private Integer RH_7 = 0;
 
     @Column(name = "RH_8")
-    private Integer RH_8;
+    private Integer RH_8 = 0;
 
     @Column(name = "RH_9")
-    private Integer RH_9;
+    private Integer RH_9 = 0;
 
     @Column(name = "RH_10")
-    private Integer RH_10;
+    private Integer RH_10 = 0;
 
     @Column(name = "RH_11")
-    private Integer RH_11;
+    private Integer RH_11 = 0;
 
 
     @Column(name = "RH_12")
-    private Integer RH_12;
+    private Integer RH_12 = 0;
 
 
     @Column(name = "RH_13")
-    private Integer RH_13;
+    private Integer RH_13 = 0;
 
 
     @Column(name = "RH_14")
-    private Integer RH_14;
+    private Integer RH_14 = 0;
 
 
     @Column(name = "CARD_QUERYLATEST6MONTH")
