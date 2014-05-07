@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "PBOC")
 public class Pboc implements Serializable {
+    public static final int CHANGE_ID = 5;
     private static final long serialVersionUID = -8746160739489972542L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

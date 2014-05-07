@@ -14,12 +14,12 @@
 
     <named-native-query name="Pboc.findByStatusWithSummary" result-set-mapping="pbocSummary">
         <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
-            pb.keyiner as keyiner, pb.status as status FROM Pboc pb where pb.status in (2,3)
+            pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where pb.status in (2,3)
         </query>
     </named-native-query>
 
     <named-native-query name="Pboc.searchWithSummary" result-set-mapping="pbocSummary">
-        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk FROM Pboc pb where :q
+        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where :q
         </query>
     </named-native-query>
 
@@ -35,9 +35,10 @@
         <column-result name="name"/>
         <column-result name="createTime"/>
         <column-result name="keyiner"/>
+        <column-result name="risk"/>
         <column-result name="status"/>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="tvQuestionListMapping">
-        <column-result name="address" />
+        <column-result name="address"/>
     </sql-result-set-mapping>
 </entity-mappings>

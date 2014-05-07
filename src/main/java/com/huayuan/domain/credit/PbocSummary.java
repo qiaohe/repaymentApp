@@ -15,6 +15,7 @@ public class PbocSummary implements Serializable {
     private Date createTime;
     private String keyiner;
     private Integer risk;
+    private Integer status;
 
     public PbocSummary() {
     }
@@ -75,5 +76,13 @@ public class PbocSummary implements Serializable {
 
     public void setRisk(Integer risk) {
         this.risk = risk;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
