@@ -68,6 +68,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#fund-to').val(json.toMonth);
 	$('#fund-state').val(json.yState);
 	$('#amount-each-3').val(json.pay);
+    $('#delayed-current').val(json.cardOverDueNum);
 	
 	if(json.organName)
 		$('#corp-conflict-3').prop('checked', true);
@@ -79,6 +80,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#num-delayed').val(json.loanCount);
 	$('#amount-delayed').val(json.loanHighestOverdueAmountPerMon);
 	$('#time-delayed').val(json.loanMaxDuration);
+    $('#time-delayed-2').val(json.cardOverDuePerYear);
 	$('#account-num').val(json.cardCount);
 	$('#amount-delayed-2').val(json.cardHighestOverdueAmountPerMon);
 	$('#time-delayed-2').val(json.cardMaxDuration);
@@ -91,6 +93,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#amount-remaining').val(json.loanBalance);
 	$('#payback-average').val(json.loanLatest6MonthUsedAvgAmount);
 	$('#num-corp').val(json.cardOrg);
+    $('#credit-min').val(json.semicardMinCreditLimitPerOrg);
 	$('#num-accounts').val(json.cardAccountCount);
 	$('#amount-credit').val(json.cardCreditLimit);
 	$('#credit-average').val(json.cardAvgCreditLimit);
@@ -98,6 +101,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#credit-used').val(json.cardUsedCreditLimit);
 	$('#used-average').val(json.cardLatest6MonthUsedAvgAmount);
 	$('#num-corp-3').val(json.semiCardOrg);
+    $('#search-time').val(json.cardQueryLatest6Month);
 	$('#num-accounts-3').val(json.semiCardAccountCount);
 	$('#amount-credit-3').val(json.semicardCreditLimit);
 	$('#credit-average-3').val(json.semiCardAvgCreditlimit);
@@ -194,6 +198,8 @@ function update(){
 			loanHighestOverdueAmountPerMon: $('#amount-delayed').val(),
 			loanMaxDuration: $('#time-delayed').val(),
 			cardCount: $('#account-num').val(),
+            cardOverDueNum: $('#delayed-current').val(),
+            cardOverDuePerYear: $('#time-delayed-2').val(),
 			cardHighestOverdueAmountPerMon: $('#amount-delayed-2').val(),
 			cardMaxDuration: $('#time-delayed-2').val(),
 			cardOverDuePerYear: $('#time-delayed-2').val(),
@@ -205,6 +211,7 @@ function update(){
 			loanBalance: $('#amount-remaining').val(),
 			loanLatest6MonthUsedAvgAmount: $('#payback-average').val(),
 			cardOrg: $('#num-corp').val(),
+            cardQueryLatest6Month: $('#search-time').val(),
 			cardAccountCount: $('#num-accounts').val(),
 			cardCreditLimit: $('#amount-credit').val(),
 			cardAvgCreditLimit: $('#credit-average').val(),
@@ -293,9 +300,8 @@ $('#no-record').click(function(){
 	update();
 });
 
-$('#ind-modify').click(function(){
+$('#id-modify').click(function(){
 	info.status = 5;
-	info.risk = 1;
 	checkboxes();
 	update();
 });
