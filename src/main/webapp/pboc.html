@@ -21,7 +21,7 @@
         <input type="text" id="typein">
 
         <div class="itembox">查无此人</div>
-        <input type="text" id="none">
+        <input type="checkbox" id="none">
     </div>
 
     <div style="clear:both; padding-top:30px">
@@ -33,31 +33,27 @@
         <input type="number" id="to" maxlength="8">
     </div>
 
-    <div style="clear:both; padding-top:30px">
+    <div id="chooseboxes" style="clear:both; padding-top:30px">
         <div class="itembox" style="margin-left:0">状态</div>
         <input type="button" class="check" value="全部" id="for-all" style="margin-left:50px">
-        <label for="all"></label><input type="checkbox" id="all">
-        <label for="finished">
-            <input type="button" class="check" value="完成"></label>
+
         <input type="checkbox" id="finished">
-        <label for="temporary">
-            <input type="button" class="check" value="暂存"></label>
-        <input type="checkbox"
-               id="temporary">
-        <label for="documenting">
-            <input type="button" class="check" value="建档中"></label>
-        <input type="checkbox"
-               id="documenting">
-        <label for="undocumented">
-            <input type="button" class="check" value="待建档"></label>
-        <input type="checkbox"
-               id="undocumented">
-        <label for="modify-id">
-            <input type="button" class="check" value="修改id"></label>
+        <label for="finished"><input type="button" class="check" value="完成"></label>
+
+        <input type="checkbox" id="temporary">
+        <label for="temporary"><input type="button" class="check" value="暂存"></label>
+
+        <input type="checkbox" id="documenting">
+        <label for="documenting"><input type="button" class="check" value="建档中"></label>
+
+        <input type="checkbox" id="undocumented">
+        <label for="undocumented"><input type="button" class="check" value="待建档"></label>
+
         <input type="checkbox" id="modify-id">
+        <label for="modify-id"><input type="button" class="check" value="修改id"></label>
     </div>
 
-    <div style="width:30%; height:50px; margin:50px auto">
+    <div style="width:15%; height:30px; margin:50px -6px">
         <input type="button" value="Search" id="search"
                style="width:100%; height:100%"></div>
 
@@ -65,7 +61,7 @@
         <h1>人行录入汇总页</h1>
     </div>
 
-    <div id="table" style="width:80%; margin:auto">
+    <div id="table" style="width:90%; margin:auto">
         <div class="grid"></div>
         <div class="grid">姓名</div>
         <div class="grid">身份证号</div>
