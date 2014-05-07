@@ -16,33 +16,33 @@ public class Pboc implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Column(name = "NAME")
-    
+
     private String name;
-    
+
     @Column(name = "CERTNO")
     private String certNo;
-    
+
     @Column(name = "REPORTCREATETIME")
     private String reportCreateTime;
-    
+
     @Column(name = "NEW_NAME")
     private String newName;
-    
+
     @Column(name = "NEW_CERTNO")
     private String newCertNo;
-    
+
     @Column(name = "NEW_REPORTCREATETIME")
     private String newReportCreateTime;
-    
+
     @Column(name = "MARITALSTATE")
     private String maritalState;
-    
+
     @Column(name = "MOBILE")
     private String mobile;
-    
+
     @Column(name = "MOBILE_CITY")
     private String mobileCity;
-    
+
     @Column(name = "OFFICETELEPHONENO")
     private String officeTelephoneNo;
 
@@ -51,274 +51,280 @@ public class Pboc implements Serializable {
 
     @Column(name = "EDUDEGREE")
     private String eduDegree;
-    
+
     @Column(name = "ID_IMAGE")
     private String idImage;
-    
+
     @Column(name = "REGISTEREDADDRESS")
     private String registeredAddress;
-    
+
     @Column(name = "PARTNER_NAME")
     private String partnerName;
-    
+
     @Column(name = "PARTNER_CERTNO")
     private String partnerCertNo;
-    
+
     @Column(name = "PARTNER_TELEPHONENO")
     private String partnerTelephoneNo;
-    
+
     @Column(name = "HOME_CITY")
     private String homeCity;
-    
+
     @Column(name = "HOME_ADDRESS")
     private String homeAddress;
-    
+
     @Column(name = "HOME_RESIDENCETYPE")
     private String homeResidenceType;
-    
+
     @Column(name = "ADDRESS_GETTIME")
     private String addressGetTime;
-    
+
     @Column(name = "EMPLOYER")
     private String employer;
-    
+
     @Column(name = "EMPLOYERCITY")
     private String employerCity;
-    
+
     @Column(name = "EMPLOYERADDRESS")
     private String employerAddress;
-    
+
     @Column(name = "OCCUPATION")
     private String occupation;
-    
+
     @Column(name = "INDUSTRY")
     private String industry;
-    
+
     @Column(name = "INDUSTRY_ASSESS")
     private String industryAddress;
-    
+
     @Column(name = "DUTY")
     private String duty;
-    
+
     @Column(name = "TITLE")
     private String title;
-    
+
     @Column(name = "STARTYEAR")
     private String startYear;
-    
+
     @Column(name = "INDUSTRY_YEAR")
     private String industryYear;
-    
+
     @Column(name = "EMPLOYER_GETTIME")
     private String employerGetTime;
-    
+
     @Column(name = "HISGETTING")
     private String hisGetting;
-    
+
     @Column(name = "Y_REGISTERDATE")
     private String yRegisterDate;
-    
+
     @Column(name = "Y_WORKDATE")
     private String yWorkDate;
-    
+
     @Column(name = "Y_OWNBASICMONEY")
     private Double yOwnBasicMoney;
-    
+
     @Column(name = "Y_STATE")
     private String yState;
-    
+
     @Column(name = "Y_MONEY")
     private Double yMoney;
-    
+
     @Column(name = "Y_ORGANNAME")
     private Integer yOrganName;
-    
+
     @Column(name = "PAUSEREASON")
     private String pauseReason;
-    
+
     @Column(name = "Y_GETTIME")
     private String yGetTime;
-    
+
     @Column(name = "REGISTERDATE")
     private String registerDate;
-    
+
     @Column(name = "FIRSTMONTH")
     private String firstMonth;
-    
+
     @Column(name = "TOMONTH")
     private String toMonth;
-    
+
     @Column(name = "STATE")
     private String state;
-    
+
     @Column(name = "PAY")
     private Double pay;
-    
+
     @Column(name = "ORGANNAME")
     private Integer organName;
-    
+
     @Column(name = "GETTIME")
     private String getTime;
-    
+
     @Column(name = "FIRSTLOANMONTH")
     private String firstLoanMonth;
-    
+
     @Column(name = "LOAN_COUNT")
     private Integer loanCount;
-    
+
     @Column(name = "LOANHIGHESTOVERDUEAMOUNTPERMON")
     private Double loanHighestOverdueAmountPerMon;
-    
+
     @Column(name = "LOAN_MAXDURATION")
     private Integer loanMaxDuration;
-    
+
     @Column(name = "CARD_COUNT")
     private Integer cardCount;
-    
+
     @Column(name = "CARD_HIGHESTOVERDUEAMOUNTPERMON")
     private Integer cardHighestOverdueAmountPerMon;
-    
+
     @Column(name = "CARD_MAXDURATION")
     private Integer cardMaxDuration;
-    
+
     @Column(name = "CARD_OVERDUEPERYEAR")
     private Integer cardOverDuePerYear;
-    
+
+    @Column(name = "CARD_OVERDUENUM")
+    private Integer cardOverDueNum;
+
     @Column(name = "SEMICARD_COUNT")
     private Integer semiCardCount;
-    
+
     @Column(name = "SEMICARD_HIGHESTOVERDUEAMOUNTPERMON")
     private Double semiCardHighestOverdueAmountPerMon;
-    
+
     @Column(name = "SEMICARD_MAXDURATION")
     private Double semiCardMaxDuration;
-    
+
     @Column(name = "LOAN_ACCOUNTCOUNT")
     private Double loanAccountCount;
-    
+
     @Column(name = "LOAN_CREDITLIMIT")
     private Double loanCreditLimit;
-    
+
     @Column(name = "LOAN_BALANCE")
     private Double loanBalance;
-    
+
     @Column(name = "LOAN_LATEST6MONTHUSEDAVGAMOUNT")
     private Double loanLatest6MonthUsedAvgAmount;
-    
+
     @Column(name = "CARD_ORG")
     private Integer cardOrg;
-    
+
     @Column(name = "CARD_ACCOUNTCOUNT")
     private Integer cardAccountCount;
-    
+
     @Column(name = "CARD_CREDITLIMIT")
     private Integer cardCreditLimit;
-    
+
     @Column(name = "CARD_AVG_CREDITLIMIT")
     private Double cardAvgCreditLimit;
-    
+
     @Column(name = "CARD_MAXCREDITLIMITPERORG")
     private Double cardMaxCreditLimitPerOrg;
-    
+
     @Column(name = "CARD_USEDCREDITLIMIT")
     private Double cardUsedCreditLimit;
-    
+
     @Column(name = "CARD_LATEST6MONTHUSEDAVGAMOUNT")
     private Double cardLatest6MonthUsedAvgAmount;
-    
+
     @Column(name = "SEMICARD_ORG")
     private Double semiCardOrg;
-    
+
     @Column(name = "SEMICARD_ACCOUNTCOUNT")
     private Double semiCardAccountCount;
-    
+
     @Column(name = "SEMICARD_CREDITLIMIT")
     private Double semicardCreditLimit;
-    
+
     @Column(name = "SEMICARD_AVG_CREDITLIMIT")
     private Double semiCardAvgCreditlimit;
-    
+
     @Column(name = "SEMICARD_MAXCREDITLIMITPERORG")
     private Double semiCardMaxCreditLimitPerOrg;
-    
+
     @Column(name = "SEMICARD_MINCREDITLIMITPERORG")
     private Double semicardMinCreditLimitPerOrg;
-    
+
+    @Column(name = "CARD_MINCREDITLIMITPERORG")
+    private Double cardMinCreditLimitPerOrg;
+
     @Column(name = "SEMICARD_USEDCREDITLIMIT")
     private Double semiCardUsedCreditLimit;
-    
+
     @Column(name = "SEMICARD_LATEST6MONTHUSEDAVGAMOUNT")
     private Double semiCardLatest6MonthUsedAvgAmount;
-    
+
     @Column(name = "RH_1")
     private Integer rh_1;
-    
+
     @Column(name = "RH_2")
     private Integer rh_2;
-    
+
     @Column(name = "RH_3")
     private Integer rh_3;
-    
+
     @Column(name = "RH_4")
     private Integer rh_4;
-    
+
     @Column(name = "RH_5")
     private Integer RH_5;
-    
+
     @Column(name = "RH_6")
     private Integer RH_6;
-    
+
     @Column(name = "RH_7")
     private Integer RH_7;
-    
+
     @Column(name = "RH_8")
     private Integer RH_8;
-    
+
     @Column(name = "RH_9")
     private Integer RH_9;
-    
+
     @Column(name = "RH_10")
     private Integer RH_10;
-    
+
     @Column(name = "RH_11")
     private Integer RH_11;
-    
+
 
     @Column(name = "RH_12")
     private Integer RH_12;
-    
+
 
     @Column(name = "RH_13")
     private Integer RH_13;
-    
+
 
     @Column(name = "RH_14")
     private Integer RH_14;
-    
+
 
     @Column(name = "CARD_QUERYLATEST6MONTH")
     private String cardQueryLatest6Month;
-    
+
 
     @Column(name = "KEYINER")
     private String keyiner;
-    
+
 
     @Column(name = "CREATE_TIME")
     private Date createTime;
-    
+
 
     @Column(name = "RH_CRL")
     private Integer rh_crl;
-    
+
 
     @Column(name = "FLAG")
     private Integer flag;
-    
+
 
     @Column(name = "RISK")
     private Integer risk;
-    
+
 
     @Column(name = "STATUS")
     private Integer status;
@@ -441,6 +447,30 @@ public class Pboc implements Serializable {
 
     public String getPartnerName() {
         return partnerName;
+    }
+
+    public String getHomeTelephoneNo() {
+        return homeTelephoneNo;
+    }
+
+    public void setHomeTelephoneNo(String homeTelephoneNo) {
+        this.homeTelephoneNo = homeTelephoneNo;
+    }
+
+    public Integer getCardOverDueNum() {
+        return cardOverDueNum;
+    }
+
+    public void setCardOverDueNum(Integer cardOverDueNum) {
+        this.cardOverDueNum = cardOverDueNum;
+    }
+
+    public Double getCardMinCreditLimitPerOrg() {
+        return cardMinCreditLimitPerOrg;
+    }
+
+    public void setCardMinCreditLimitPerOrg(Double cardMinCreditLimitPerOrg) {
+        this.cardMinCreditLimitPerOrg = cardMinCreditLimitPerOrg;
     }
 
     public void setPartnerName(String partnerName) {
