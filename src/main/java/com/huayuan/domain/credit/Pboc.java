@@ -131,7 +131,7 @@ public class Pboc implements Serializable {
     private Double yMoney;
 
     @Column(name = "Y_ORGANNAME")
-    private Integer yOrganName;
+    private Integer yOrganName = 0;
 
     @Column(name = "PAUSEREASON")
     private String pauseReason;
@@ -155,7 +155,7 @@ public class Pboc implements Serializable {
     private Double pay;
 
     @Column(name = "ORGANNAME")
-    private Integer organName;
+    private Integer organName = 0;
 
     @Column(name = "GETTIME")
     private String getTime;
