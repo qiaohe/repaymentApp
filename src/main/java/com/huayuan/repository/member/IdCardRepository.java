@@ -8,4 +8,6 @@ import org.springframework.data.repository.CrudRepository;
  * Created by Johnson He on 14-3-26.
  */
 public interface IdCardRepository extends CrudRepository<IdCard, Long>, IdCardRepositoryCustom {
+    public IdCard findByIdNo(final String id_No);
+
 }
