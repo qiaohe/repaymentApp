@@ -14,7 +14,7 @@
 
             $('.grid').click(function () {
                 if ($(this).html().length == 18) {
-                    window.location = 'pboc.html?id=' + $(this).prev().html() + '&certNo=' + $(this).html();
+                    window.location = 'credit.html?id=' + $(this).prev().html() + '&certNo=' + $(this).html();
                 }
             });
         }, 'json');
