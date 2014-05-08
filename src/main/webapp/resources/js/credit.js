@@ -27,7 +27,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#education').val(json.eduDegree);
 	$('#show-id').val(json.idImage);
 
-	if(!json.registeredAddress)
+	if(json.registeredAddress)
 		$('#address-conflict').prop('checked', true);
 	else
 		$('#address-conflict').prop('checked', false);
