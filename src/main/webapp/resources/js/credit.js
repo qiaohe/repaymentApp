@@ -15,6 +15,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#name').val(json.name);
 	$('#id').val(json.certNo);
 	$('#modified-name').val(json.newName);
+    $('#report-time').val(json.reportCreateTime);
 	$('#modified-id').val(json.newCertNo);
 	$('#modified-report-time').val(json.newReportCreateTime);
 	$('#marriage').val(json.maritalState);
@@ -122,6 +123,11 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	info.flag = json.flag;
 	info.risk = json.risk;
 	info.status = json.status;
+	
+	if(info.status == '4' || info.status == '5'){
+		$('input').attr('disabled', 'disabled');
+	}
+	
 }, 'json');
 
 $.get(info.path + 'pboc/' + info.id + '/idCard', function(text){
@@ -148,6 +154,8 @@ function update(){
 		data: JSON.stringify({
             id: info.id,
 			name: $('#name').val(),
+            newName: $('#modified-name').val(),
+            reportCreateTime: $('#report-time').val(),
 			certNo: $('#id').val(),
 			newCertNo: $('#modified-id').val(),
 			newReportCreateTime: $('#modified-report-time').val(),
@@ -285,12 +293,14 @@ $('#save').click(function(){
 	info.status = 3;
 	checkboxes();
 	update();
+	window.close();
 });
 
 $('#finish').click(function(){
 	info.status = 4;
 	checkboxes();
 	update();
+    window.close();
 });
 
 $('#no-record').click(function(){
@@ -298,12 +308,14 @@ $('#no-record').click(function(){
 	info.risk = 1;
 	checkboxes();
 	update();
+    window.close();
 });
 
 $('#id-modify').click(function(){
 	info.status = 5;
 	checkboxes();
 	update();
+    window.close();
 });
 
 // END
