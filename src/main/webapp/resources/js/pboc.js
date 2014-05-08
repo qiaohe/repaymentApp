@@ -62,7 +62,7 @@
     $('#search').click(function () {
         var q = [], id = $('#id').val();
         if(id)
-            q.push("pb.id='" + id + "'");
+            q.push("pb.certNo='" + id + "'");
 
         var name = $('#name').val();
         if(name)
