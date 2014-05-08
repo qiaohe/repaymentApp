@@ -62,11 +62,11 @@
     $('#search').click(function () {
         var q = [], id = $('#id').val();
         if(id)
-            q.push("pb.id='" + id + "''");
+            q.push("pb.id='" + id + "'");
 
         var name = $('#name').val();
         if(name)
-            q.push("pb.name='" + name + "''");
+            q.push("pb.name='" + name + "'");
 
         var since = $('#since').val();
         if(since)
