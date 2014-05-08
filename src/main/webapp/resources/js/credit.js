@@ -81,11 +81,10 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#num-delayed').val(json.loanCount);
 	$('#amount-delayed').val(json.loanHighestOverdueAmountPerMon);
 	$('#time-delayed').val(json.loanMaxDuration);
-    $('#time-delayed-2').val(json.cardOverDuePerYear);
 	$('#account-num').val(json.cardCount);
 	$('#amount-delayed-2').val(json.cardHighestOverdueAmountPerMon);
 	$('#time-delayed-2').val(json.cardMaxDuration);
-	$('#time-delayed-2').val(json.cardOverDuePerYear);
+	$('#time-delayed-3').val(json.cardOverDuePerYear);
 	$('#account-num-3').val(json.semiCardCount);
 	$('#overdraft-amount').val(json.semiCardHighestOverdueAmountPerMon);
 	$('#overdraft-time').val(json.semiCardMaxDuration);
@@ -167,7 +166,6 @@ function update(){
             homeTelephoneNo: $('#phone-home').val(),
 			eduDegree: $('#education').val(),
 			idImage: $('#show-id').val(),
-			registeredAddress: info.registeredAddress,
 			partnerName: $('#spouse-name').val(),
 			partnerCertNo: $('#spouse-id').val(),
 			partnerTelephoneNo: $('#spouse-phone').val(),
@@ -190,7 +188,7 @@ function update(){
 			yRegisterDate: $('#pension-date').val(),
 			yWorkDate: $('#month-in-work').val(),
 			yOwnBasicMoney: $('#base').val(),
-			yState: $('#fund-state').val(),
+			yState: $('#pension-state').val(),
 			yMoney: $('#amount-each-2').val(),
 			yOrganName: info.yOrganName,
             registeredAddress: info.registeredAddress,
@@ -211,8 +209,7 @@ function update(){
             cardOverDueNum: $('#delayed-current').val(),
             cardOverDuePerYear: $('#time-delayed-2').val(),
 			cardHighestOverdueAmountPerMon: $('#amount-delayed-2').val(),
-			cardMaxDuration: $('#time-delayed-2').val(),
-			cardOverDuePerYear: $('#time-delayed-2').val(),
+			cardMaxDuration: $('#time-delayed-3').val(),
 			semiCardCount: $('#account-num-3').val(),
 			semiCardHighestOverdueAmountPerMon: $('#overdraft-amount').val(),
 			semiCardMaxDuration: $('#overdraft-time').val(),
