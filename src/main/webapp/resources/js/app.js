@@ -529,6 +529,7 @@ $(document).on('pagebeforeshow', '#loan', function(){
 				}
 				$("#cardlist-2").popup('open');
 				$('#Y-2').click(function(){
+                    applyLoan(app);
 					loanToThisCard(app.card).success(function(){});
 				});
 				
@@ -552,6 +553,8 @@ $(document).on('pagebeforeshow', '#loan', function(){
 						$('#card-add-box-2').hide();
 					});
 				});
+
+                $(this).off('click');
 			}
 		}
 	});
