@@ -265,19 +265,19 @@ function update(){
 
 function checkboxes(){
 	if($('#address-conflict').prop('checked') == 'true')
-		info.registeredAddress = 1;
-	else
 		info.registeredAddress = 0;
+	else
+		info.registeredAddress = 1;
 
 	if($('#corp-conflict-2').prop('checked') == 'true')
-		info.yOrganName = 1;
-	else
 		info.yOrganName = 0;
+	else
+		info.yOrganName = 1;
 
 	if($('#corp-conflict-3').prop('checked') == 'true')
-		info.organName = 1;
-	else
 		info.organName = 0;
+	else
+		info.organName = 1;
 
 	for(var i = 0; i<15; i++){
 		if($('#g-' + i).prop('checked') == 'true')
