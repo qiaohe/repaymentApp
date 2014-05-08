@@ -193,6 +193,7 @@ function update(){
 			yState: $('#fund-state').val(),
 			yMoney: $('#amount-each-2').val(),
 			yOrganName: info.yOrganName,
+            registeredAddress: info.registeredAddress,
 			pauseReason: $('#reason-suspension').val(),
 			yGetTime: $('#update-date-2').val(),
 			registerDate: $('#fund-date').val(),
