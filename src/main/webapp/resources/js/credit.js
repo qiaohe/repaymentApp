@@ -268,9 +268,9 @@ function update(){
 
 function checkboxes(){
 	if($('#address-conflict').prop('checked') == 'true')
-		info.registeredAddress = 0;
-	else
 		info.registeredAddress = 1;
+	else
+		info.registeredAddress = 0;
 
 	if($('#corp-conflict-2').prop('checked') == 'true')
 		info.yOrganName = 1;
