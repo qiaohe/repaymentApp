@@ -150,6 +150,7 @@ function update(){
 	$.ajax({
 		url: info.path + 'pboc/' + info.id,
 		type: "POST",
+        async: false,
 		contentType: "application/json",
 		data: JSON.stringify({
             id: info.id,
