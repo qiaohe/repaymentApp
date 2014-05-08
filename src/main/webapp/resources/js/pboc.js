@@ -38,7 +38,8 @@
 
             $('.grid').click(function () {
                 if ($(this).html().length == 18) {
-                    window.location = 'credit.html?id=' + $(this).prev().html() + '&certNo=' + $(this).html();
+                    // window.location = 'credit.html?id=' + $(this).prev().html() + '&certNo=' + $(this).html();
+					window.open('credit.html?id=' + $(this).prev().html() + '&certNo=' + $(this).html(), '_blank');
                 }
             });
         }, 'json');
