@@ -12,8 +12,7 @@ public class LoanSummary {
     private Double totalAmount = DEFAULT_DOUBLE;
     private Double totalPrincipal = DEFAULT_DOUBLE;
     private Double totalSavedCost = DEFAULT_DOUBLE;
-    private Double currentBalance;
-    private boolean isOverDue = false;
+    private Double totalDueAmt = DEFAULT_DOUBLE;
     private List<LoanItem> loans = new ArrayList<>();
 
     public LoanSummary() {
@@ -55,24 +54,20 @@ public class LoanSummary {
         this.loans = loans;
     }
 
-    public Double getCurrentBalance() {
-        return currentBalance;
+    public void setTotalDueAmt(Double totalDueAmt) {
+        this.totalDueAmt = totalDueAmt;
     }
 
-    public void setCurrentBalance(Double currentBalance) {
-        this.currentBalance = currentBalance;
-    }
-
-    public boolean isOverDue() {
-        return isOverDue;
-    }
-
-    public void setOverDue(boolean isOverDue) {
-        this.isOverDue = isOverDue;
+    public Double getTotalDueAmt() {
+        return totalDueAmt;
     }
 
     public void addLoan(LoanItem loanItem) {
         if (!loans.contains(loanItem)) {
+            totalAmount += loanItem.getAmount();
+            totalPrincipal += loanItem.getPrincipal();
+            totalSavedCost += loanItem.getSavedCost();
+            totalDueAmt += loanItem.getDueAmt();
             loans.add(loanItem);
         }
     }
@@ -90,14 +85,16 @@ public class LoanSummary {
         private Integer term;
         private Date startDate;
         private Double principal;
+        private Double dueAmt;
         private Double restPrincipal;
         private Integer paidTerm;
         private Double savedCost;
+        private boolean isOverDue;
 
         public LoanItem() {
         }
 
-        public LoanItem(Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost) {
+        public LoanItem(Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost, Double dueAmt, boolean isOverDue) {
             this.applyDate = applyDate;
             this.creditCardNo = creditCardNo;
             this.amount = amount;
@@ -107,6 +104,8 @@ public class LoanSummary {
             this.restPrincipal = restPrincipal;
             this.paidTerm = paidTerm;
             this.savedCost = savedCost;
+            this.dueAmt = dueAmt;
+            this.isOverDue = isOverDue;
         }
 
         public Date getApplyDate() {
@@ -179,6 +178,22 @@ public class LoanSummary {
 
         public void setSavedCost(Double savedCost) {
             this.savedCost = savedCost;
+        }
+
+        public Double getDueAmt() {
+            return dueAmt;
+        }
+
+        public void setDueAmt(Double dueAmt) {
+            this.dueAmt = dueAmt;
+        }
+
+        public boolean isOverDue() {
+            return isOverDue;
+        }
+
+        public void setOverDue(boolean isOverDue) {
+            this.isOverDue = isOverDue;
         }
     }
 }

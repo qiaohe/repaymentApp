@@ -116,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public LoanSummary getLoansSummary(Long memberId) {
-        return loanSummaryBuilder.build(memberId, getLoansBy(memberId));
+        return loanSummaryBuilder.build(getLoansBy(memberId));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
         loan.setMember(application.getMember());
         loan.setApplication(application);
         loan.setTerm(application.getApproval().getTerm());
-        loan.setApr( application.getApproval().getApr());
+        loan.setApr(application.getApproval().getApr());
         loan.setAmt(application.getApproval().getAmt());
         loan.setStartDate(application.getApproval().getCreateTime());
         return createLoan(loan);

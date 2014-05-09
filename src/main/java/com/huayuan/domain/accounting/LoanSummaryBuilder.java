@@ -4,7 +4,6 @@ import com.huayuan.repository.account.PricingRepository;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,30 +20,22 @@ public class LoanSummaryBuilder {
     }
 
 
-    public LoanSummary build(Long memberId, List<Loan> loans) {
+    public LoanSummary build(List<Loan> loans) {
         LoanSummary summary = new LoanSummary();
         for (Loan loan : loans) {
-            createSummary(summary, loan);
+            final Double savedCost = getSavedCost(loan);
+            summary.addLoan(new LoanSummary.LoanItem(loan.getStartDate(),
+                    loan.getApplication().getCreditCard().getCardNo(),
+                    loan.getAmt(),
+                    loan.getTerm(),
+                    loan.getStartDate(),
+                    loan.getPrincipal(),
+                    loan.getPrincipal() - loan.getPaidPrincipal(),
+                    loan.getPaidTerm(),
+                    savedCost,
+                    loan.getAmt() + loan.getInterest(),
+                    loan.isOverDue()));
         }
         return summary;
-    }
-
-    private void createSummary(LoanSummary summary, Loan loan) {
-        summary.setTotalAmount(summary.getTotalAmount() + loan.getAmt());
-        summary.setTotalPrincipal(summary.getTotalPrincipal() + loan.getAmt());
-        summary.setTotalSavedCost(summary.getTotalSavedCost() + getSavedCost(loan));
-        summary.setCurrentBalance(loan.currentBalance(new Date()));
-        summary.setOverDue(loan.isOverDue());
-        final Double savedCost = getSavedCost(loan);
-        summary.setTotalSavedCost(summary.getTotalSavedCost() + savedCost);
-        summary.addLoan(new LoanSummary.LoanItem(loan.getStartDate(),
-                loan.getApplication().getCreditCard().getCardNo(),
-                loan.getAmt(),
-                loan.getTerm(),
-                loan.getStartDate(),
-                loan.getPrincipal(),
-                loan.getPrincipal() - loan.getPaidPrincipal(),
-                loan.getPaidTerm(),
-                savedCost));
     }
 }

@@ -219,10 +219,7 @@ public class Loan {
     }
 
     public boolean isOverDue() {
-        for (RepayPlan plan : repayPlans) {
-            if (plan.getOverDue_Interest() > 0) return true;
-        }
-        return false;
+        return curDelq > 0;
     }
 
     public Double currentBalance(Date date) {
@@ -237,10 +234,10 @@ public class Loan {
 
     public int getPaidTerm() {
         int result = 0;
-        for (RepayPlan  plan: repayPlans) {
+        for (RepayPlan plan : repayPlans) {
             if (plan.getPaidPrincipal() > 0) result++;
         }
-        return  result;
+        return result;
     }
 
     public String getRating() {
