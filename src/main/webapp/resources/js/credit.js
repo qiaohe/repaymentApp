@@ -283,9 +283,9 @@ function checkboxes(){
 
 	for(var i = 1; i<15; i++){
 		if($('#g-' + i).is(':checked'))
-			info['rh_1' + i] = '1';
+			info['rh_' + i] = '1';
 		else
-			info['rh_1' + i] = '0';
+			info['rh_' + i] = '0';
 	}
 }
 
