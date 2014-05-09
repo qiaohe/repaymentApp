@@ -9,8 +9,6 @@ import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
 import com.huayuan.domain.loanapplication.TelephoneVerification;
-import com.huayuan.domain.member.MemberStatusEvaluator;
-import com.huayuan.integration.wechat.domain.MessageTemplate;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
@@ -99,7 +97,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         publisher.publishEvent(event);
     }
 
-    @Scheduled(cron = "0 0 8,12,18 * * ?")
+    @Scheduled(cron = "0 30 8,12,18 * * ?")
     @Transactional
     @Override
     public void telephoneVerification() {
