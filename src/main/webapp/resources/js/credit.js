@@ -27,7 +27,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#education').val(json.eduDegree);
 	$('#show-id').val(json.idImage);
 
-	if(!json.registeredAddress)
+	if(json.registeredAddress == '1')
 		$('#address-conflict').prop('checked', true);
 	else
 		$('#address-conflict').prop('checked', false);
@@ -57,7 +57,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#pension-state').val(json.yState);
 	$('#amount-each-2').val(json.yMoney);
 
-	if(json.yOrganName)
+	if(json.yOrganName == '1')
 		$('#corp-conflict-2').prop('checked', true);
 	else
 		$('#corp-conflict-2').prop('checked', false);
@@ -71,7 +71,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#amount-each-3').val(json.pay);
     $('#delayed-current').val(json.cardOverDueNum);
 	
-	if(json.organName)
+	if(json.organName == '1')
 		$('#corp-conflict-3').prop('checked', true);
 	else
 		$('#corp-conflict-3').prop('checked', false);
@@ -81,11 +81,11 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#num-delayed').val(json.loanCount);
 	$('#amount-delayed').val(json.loanHighestOverdueAmountPerMon);
 	$('#time-delayed').val(json.loanMaxDuration);
-    $('#time-delayed-2').val(json.cardOverDuePerYear);
 	$('#account-num').val(json.cardCount);
 	$('#amount-delayed-2').val(json.cardHighestOverdueAmountPerMon);
-	$('#time-delayed-2').val(json.cardMaxDuration);
+	$('#time-delayed-3').val(json.cardMaxDuration);
 	$('#time-delayed-2').val(json.cardOverDuePerYear);
+    $('#overdraft-remaining').val(json.semiCardUsedCreditLimit);
 	$('#account-num-3').val(json.semiCardCount);
 	$('#overdraft-amount').val(json.semiCardHighestOverdueAmountPerMon);
 	$('#overdraft-time').val(json.semiCardMaxDuration);
@@ -111,7 +111,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
 
 	for(var i = 0; i<15; i++){
-		if(json['rh_1' + i])
+		if(json['rh_' + i] == '1')
 			$('#g-' + i).prop('checked', true);
 		else
 			$('#g-' + i).prop('checked', false);
@@ -167,7 +167,6 @@ function update(){
             homeTelephoneNo: $('#phone-home').val(),
 			eduDegree: $('#education').val(),
 			idImage: $('#show-id').val(),
-			registeredAddress: info.registeredAddress,
 			partnerName: $('#spouse-name').val(),
 			partnerCertNo: $('#spouse-id').val(),
 			partnerTelephoneNo: $('#spouse-phone').val(),
@@ -190,9 +189,10 @@ function update(){
 			yRegisterDate: $('#pension-date').val(),
 			yWorkDate: $('#month-in-work').val(),
 			yOwnBasicMoney: $('#base').val(),
-			yState: $('#fund-state').val(),
+			yState: $('#pension-state').val(),
 			yMoney: $('#amount-each-2').val(),
 			yOrganName: info.yOrganName,
+            registeredAddress: info.registeredAddress,
 			pauseReason: $('#reason-suspension').val(),
 			yGetTime: $('#update-date-2').val(),
 			registerDate: $('#fund-date').val(),
@@ -210,8 +210,7 @@ function update(){
             cardOverDueNum: $('#delayed-current').val(),
             cardOverDuePerYear: $('#time-delayed-2').val(),
 			cardHighestOverdueAmountPerMon: $('#amount-delayed-2').val(),
-			cardMaxDuration: $('#time-delayed-2').val(),
-			cardOverDuePerYear: $('#time-delayed-2').val(),
+			cardMaxDuration: $('#time-delayed-3').val(),
 			semiCardCount: $('#account-num-3').val(),
 			semiCardHighestOverdueAmountPerMon: $('#overdraft-amount').val(),
 			semiCardMaxDuration: $('#overdraft-time').val(),
@@ -234,6 +233,7 @@ function update(){
 			semiCardMaxCreditLimitPerOrg: $('#credit-max-3').val(),
 			semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
 			semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
+            semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
 			rh_1: info.rh_1,
 			rh_2: info.rh_2,
 			rh_3: info.rh_3,
@@ -266,26 +266,26 @@ function update(){
 }
 
 function checkboxes(){
-	if($('#address-conflict').prop('checked') == 'true')
-		info.registeredAddress = 0;
+	if($('#address-conflict').is(':checked'))
+		info.registeredAddress = '1';
 	else
-		info.registeredAddress = 1;
+		info.registeredAddress = '0';
 
-	if($('#corp-conflict-2').prop('checked') == 'true')
-		info.yOrganName = 1;
+	if($('#corp-conflict-2').is(':checked'))
+		info.yOrganName = '1';
 	else
-		info.yOrganName = 0;
+		info.yOrganName = '0';
 
-	if($('#corp-conflict-3').prop('checked') == 'true')
-		info.organName = 1;
+	if($('#corp-conflict-3').is(':checked'))
+		info.organName = '1';
 	else
-		info.organName = 0;
+		info.organName = '0';
 
-	for(var i = 0; i<15; i++){
-		if($('#g-' + i).prop('checked') == 'true')
-			info['rh_1' + i] = 1;
+	for(var i = 1; i<15; i++){
+		if($('#g-' + i).is(':checked'))
+			info['rh_' + i] = '1';
 		else
-			info['rh_1' + i] = 0;
+			info['rh_' + i] = '0';
 	}
 }
 
@@ -318,6 +318,7 @@ $('#id-modify').click(function(){
 	update();
     window.close();
 });
+
 
 // END
 });
