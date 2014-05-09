@@ -27,7 +27,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#education').val(json.eduDegree);
 	$('#show-id').val(json.idImage);
 
-	if(json.registeredAddress)
+	if(json.registeredAddress == '1')
 		$('#address-conflict').prop('checked', true);
 	else
 		$('#address-conflict').prop('checked', false);
@@ -57,7 +57,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#pension-state').val(json.yState);
 	$('#amount-each-2').val(json.yMoney);
 
-	if(json.yOrganName)
+	if(json.yOrganName == '1')
 		$('#corp-conflict-2').prop('checked', true);
 	else
 		$('#corp-conflict-2').prop('checked', false);
@@ -71,7 +71,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#amount-each-3').val(json.pay);
     $('#delayed-current').val(json.cardOverDueNum);
 	
-	if(json.organName)
+	if(json.organName == '1')
 		$('#corp-conflict-3').prop('checked', true);
 	else
 		$('#corp-conflict-3').prop('checked', false);
@@ -110,7 +110,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
 
 	for(var i = 0; i<15; i++){
-		if(json['rh_1' + i])
+		if(json['rh_1' + i] == '1')
 			$('#g-' + i).prop('checked', true);
 		else
 			$('#g-' + i).prop('checked', false);
@@ -265,25 +265,25 @@ function update(){
 
 function checkboxes(){
 	if($('#address-conflict').prop('checked') == 'true')
-		info.registeredAddress = 1;
+		info.registeredAddress = '1';
 	else
-		info.registeredAddress = 0;
+		info.registeredAddress = '0';
 
 	if($('#corp-conflict-2').prop('checked') == 'true')
-		info.yOrganName = 1;
+		info.yOrganName = '1';
 	else
-		info.yOrganName = 0;
+		info.yOrganName = '0';
 
 	if($('#corp-conflict-3').prop('checked') == 'true')
-		info.organName = 1;
+		info.organName = '1';
 	else
-		info.organName = 0;
+		info.organName = '0';
 
 	for(var i = 0; i<15; i++){
 		if($('#g-' + i).prop('checked') == 'true')
-			info['rh_1' + i] = 1;
+			info['rh_1' + i] = '1';
 		else
-			info['rh_1' + i] = 0;
+			info['rh_1' + i] = '0';
 	}
 }
 
