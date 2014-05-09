@@ -281,7 +281,7 @@ function checkboxes(){
 	else
 		info.organName = '0';
 
-	for(var i = 0; i<15; i++){
+	for(var i = 1; i<15; i++){
 		if($('#g-' + i).is(':checked'))
 			info['rh_1' + i] = '1';
 		else
