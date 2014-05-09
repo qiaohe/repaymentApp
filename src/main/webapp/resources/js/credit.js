@@ -110,6 +110,10 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#credit-min-3').val(json.semicardMinCreditLimitPerOrg);
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
 
+    $.get(info.path + 'dict/mobileArea/' + json.mobile, function(text){
+        $('#num-district').val(text);
+    }, 'text');
+
 	for(var i = 0; i<15; i++){
 		if(json['rh_' + i] == '1')
 			$('#g-' + i).prop('checked', true);
