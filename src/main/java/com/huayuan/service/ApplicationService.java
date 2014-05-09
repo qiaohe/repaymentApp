@@ -3,6 +3,8 @@ package com.huayuan.service;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 
+import java.util.List;
+
 /**
  * Created by dell on 14-3-25.
  */
@@ -16,5 +18,9 @@ public interface ApplicationService {
     public void approve(Approval approval);
 
     public Application bindCreditCard(Long memberId, String creditCArdNo);
+
+    public List<Object> getApplications();
+
+    public Object getApplicationBy(String appNo);
 
 }

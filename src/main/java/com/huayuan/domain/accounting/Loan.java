@@ -235,6 +235,14 @@ public class Loan {
         return result;
     }
 
+    public int getPaidTerm() {
+        int result = 0;
+        for (RepayPlan  plan: repayPlans) {
+            if (plan.getPaidPrincipal() > 0) result++;
+        }
+        return  result;
+    }
+
     public String getRating() {
         return application.getaScore().getRating();
     }

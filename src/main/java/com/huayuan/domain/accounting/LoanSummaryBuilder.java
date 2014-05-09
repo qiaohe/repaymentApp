@@ -35,12 +35,16 @@ public class LoanSummaryBuilder {
         summary.setTotalSavedCost(summary.getTotalSavedCost() + getSavedCost(loan));
         summary.setCurrentBalance(loan.currentBalance(new Date()));
         summary.setOverDue(loan.isOverDue());
+        final Double savedCost = getSavedCost(loan);
+        summary.setTotalSavedCost(summary.getTotalSavedCost() + savedCost);
         summary.addLoan(new LoanSummary.LoanItem(loan.getStartDate(),
                 loan.getApplication().getCreditCard().getCardNo(),
                 loan.getAmt(),
                 loan.getTerm(),
                 loan.getStartDate(),
                 loan.getPrincipal(),
-                loan.getPrincipal() - loan.getPaidPrincipal()));
+                loan.getPrincipal() - loan.getPaidPrincipal(),
+                loan.getPaidTerm(),
+                savedCost));
     }
 }

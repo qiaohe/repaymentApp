@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.member.CreditCard;
@@ -7,7 +8,11 @@ import com.huayuan.repository.applicationloan.AScoreRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.member.CreditCardRepository;
+import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +24,23 @@ import java.util.List;
  */
 @Service(value = "applicationService")
 @Transactional
-public class ApplicationServiceImpl implements ApplicationService {
+public class ApplicationServiceImpl implements ApplicationService, ApplicationEventPublisherAware {
     @Inject
     private ApplicationRepository applicationRepository;
     @Inject
     private AScoreRepository aScoreRepository;
     @Inject
     private ApprovalRepository approvalRepository;
-
     @Inject
     private CreditCardRepository creditCardRepository;
+
+    @Inject
+    private MemberRepository memberRepository;
+    @Value("${weChat.bindCreditCardSuccess}")
+    private String bindCreditCardSuccess;
+    @Value("${weChat.bindCreditCardFail}")
+    private String bindCreditCardFail;
+    private ApplicationEventPublisher publisher;
 
     @Override
     public Application getApplication(String appNo) {
@@ -54,11 +66,31 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application bindCreditCard(Long memberId, String creditCArdNo) {
         Application application = applicationRepository.findByMemberIdAndStatusAndApproval_Decision(memberId, 5, "A");
-        if (application == null)
+        if (application == null) {
+            MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, memberRepository.findOne(memberId).getWcNo(), bindCreditCardFail);
+            publisher.publishEvent(event);
             throw new IllegalStateException("member id:" + memberId + "'s application is in illegal status");
+        }
         CreditCard creditCard = creditCardRepository.findByCardNo(creditCArdNo).get(0);
         application.setCreditCard(creditCard);
         application.setStatus(7);
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, memberRepository.findOne(memberId).getWcNo(), bindCreditCardSuccess);
+        publisher.publishEvent(event);
         return applicationRepository.save(application);
+    }
+
+    @Override
+    public List<Object> getApplications() {
+        return applicationRepository.findAllApplications();
+    }
+
+    @Override
+    public Object getApplicationBy(String appNo) {
+        return applicationRepository.findApplicationBy(appNo);
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
     }
 }

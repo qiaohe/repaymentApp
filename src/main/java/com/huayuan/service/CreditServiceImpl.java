@@ -9,6 +9,8 @@ import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
 import com.huayuan.domain.loanapplication.TelephoneVerification;
+import com.huayuan.domain.member.MemberStatusEvaluator;
+import com.huayuan.integration.wechat.domain.MessageTemplate;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
@@ -16,7 +18,9 @@ import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.credit.StaffRepository;
 import com.huayuan.repository.credit.TvExecutionRepository;
 import com.huayuan.repository.credit.TvRepository;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +56,12 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private TvExecutionRepository tvExecutionRepository;
     @Inject
     private ApplicationRepository applicationRepository;
-
+    @Value("${weChat.tvApproveResult}")
+    private String tvApproveResultTemplate;
+    @Value("${weChat.baseUrl}")
+    private String baseUrl;
     private ApplicationEventPublisher publisher;
+
 
     @Override
     public void addCreditResult(CreditResult creditResult) {
@@ -70,6 +79,11 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         staffRepository.save(staff);
     }
 
+    private String getApproveResultMessage(Application application) {
+        String status = application.isApproved() ? "5.1" : "5.2" + "&&random=" + RandomStringUtils.randomNumeric(15);
+        return MessageFormat.format(tvApproveResultTemplate, baseUrl, application.getMember().getId(), status);
+    }
+
     @Override
     public void approve(Application application) {
         Account account = accountRepository.findByMemberId(application.getMember().getId());
@@ -81,13 +95,13 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         account.setCrl(application.getApproval().getSugCrl());
         if (application.isApproved()) account.setCrlUsed(account.getCrlUsed() + application.getApproval().getAmt());
         accountRepository.save(account);
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), "");
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(application));
         publisher.publishEvent(event);
     }
 
-    @Override
-    @Scheduled(cron = "0 31 8,12,18 * * ?")
+    @Scheduled(cron = "0 0 8,12,18 * * ?")
     @Transactional
+    @Override
     public void telephoneVerification() {
         for (TelephoneVerification tv : tvRepository.findByTypeAndDecision(0, StringUtils.EMPTY)) {
             if (getTvExecution(tv.getApplication().getApplicationNo()) != null) continue;
@@ -128,7 +142,11 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     public static void main(String[] args) {
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
-//        creditService.telephoneVerification();
-        creditService.replyTv(10l, "#A");
+        creditService.telephoneVerification();
+//        creditService.replyTv(10l, "#A");
+        ApplicationRepository applicationRepository = applicationContext.getBean("applicationRepository", ApplicationRepository.class);
+        applicationRepository.findAllApplications();
+
+
     }
 }

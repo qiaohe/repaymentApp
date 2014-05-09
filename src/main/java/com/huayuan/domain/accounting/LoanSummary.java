@@ -91,11 +91,13 @@ public class LoanSummary {
         private Date startDate;
         private Double principal;
         private Double restPrincipal;
+        private Integer paidTerm;
+        private Double savedCost;
 
         public LoanItem() {
         }
 
-        public LoanItem(Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal) {
+        public LoanItem(Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost) {
             this.applyDate = applyDate;
             this.creditCardNo = creditCardNo;
             this.amount = amount;
@@ -103,6 +105,8 @@ public class LoanSummary {
             this.startDate = startDate;
             this.principal = principal;
             this.restPrincipal = restPrincipal;
+            this.paidTerm = paidTerm;
+            this.savedCost = savedCost;
         }
 
         public Date getApplyDate() {
@@ -159,6 +163,22 @@ public class LoanSummary {
 
         public void setRestPrincipal(Double restPrincipal) {
             this.restPrincipal = restPrincipal;
+        }
+
+        public Integer getPaidTerm() {
+            return paidTerm;
+        }
+
+        public void setPaidTerm(Integer paidTerm) {
+            this.paidTerm = paidTerm;
+        }
+
+        public Double getSavedCost() {
+            return savedCost;
+        }
+
+        public void setSavedCost(Double savedCost) {
+            this.savedCost = savedCost;
         }
     }
 }

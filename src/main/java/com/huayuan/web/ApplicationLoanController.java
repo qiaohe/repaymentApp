@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by Johnson on 4/7/14.
@@ -106,5 +107,17 @@ public class ApplicationLoanController {
     public boolean hasApplicationInProgress(@PathVariable Long memberId) {
         Application application = applicationService.getApplicationBy(memberId);
         return application != null;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public List<Object> getApps() {
+        return applicationService.getApplications();
+    }
+
+    @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getApplicationBy(@PathVariable String appNo) {
+        return applicationService.getApplicationBy(appNo);
     }
 }
