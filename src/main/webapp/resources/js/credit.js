@@ -264,23 +264,23 @@ function update(){
 }
 
 function checkboxes(){
-	if($('#address-conflict').is(':checked') == 'true')
+	if($('#address-conflict').is(':checked'))
 		info.registeredAddress = '1';
 	else
 		info.registeredAddress = '0';
 
-	if($('#corp-conflict-2').is(':checked') == 'true')
+	if($('#corp-conflict-2').is(':checked'))
 		info.yOrganName = '1';
 	else
 		info.yOrganName = '0';
 
-	if($('#corp-conflict-3').is(':checked') == 'true')
+	if($('#corp-conflict-3').is(':checked'))
 		info.organName = '1';
 	else
 		info.organName = '0';
 
 	for(var i = 0; i<15; i++){
-		if($('#g-' + i).is(':checked') == 'true')
+		if($('#g-' + i).is(':checked'))
 			info['rh_1' + i] = '1';
 		else
 			info['rh_1' + i] = '0';
