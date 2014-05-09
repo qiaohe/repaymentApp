@@ -23,9 +23,18 @@
         </query>
     </named-native-query>
 
+
     <named-native-query name="TvQuestionList.Random" result-set-mapping="tvQuestionListMapping">
         <query>  select home.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 2 and CITY = ?1 order by newid()) home
                  union select company.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 1 and CITY = ?1 order by newid()) company</query>
+    </named-native-query>
+
+    <named-native-query name="Application.findApplicationSummaries" result-set-mapping="applicationSummary">
+        <query>
+            select appl.APPL_NO as appNo, idcard.NAME, idcard.ID_NO as idCardNo, appl.EXISTING_FLAG as existingFlag, appl.APPLY_TIME as applyDate,
+ma.CITY as mobileCity, appl.STATUS as status, appl.CREATE_TIME as createDate from APPL appl , MEMBER member, ID_CARD idcard, VALUE_MOBILE_AREA ma where appl.MEMBER_ID = member.ID and member.ID = idcard.MEMBER_ID
+ and ma.N1_7 = substring(member.MOBILE, 0 , 8)
+        </query>
     </named-native-query>
 
     <sql-result-set-mapping name="pbocSummary">
@@ -39,5 +48,16 @@
     </sql-result-set-mapping>
     <sql-result-set-mapping name="tvQuestionListMapping">
         <column-result name="address"/>
+    </sql-result-set-mapping>
+
+    <sql-result-set-mapping name="applicationSummary">
+        <column-result name="appNo"/>
+        <column-result name="name"/>
+        <column-result name="idCardNo"/>
+        <column-result name="existingFlag"/>
+        <column-result name="applyDate"/>
+        <column-result name="mobileCity"/>
+        <column-result name="status"/>
+        <column-result name="createDate"/>
     </sql-result-set-mapping>
 </entity-mappings>

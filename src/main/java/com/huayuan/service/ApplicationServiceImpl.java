@@ -1,6 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.common.MemberStatusChangeEvent;
+import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.member.CreditCard;
@@ -80,14 +81,14 @@ public class ApplicationServiceImpl implements ApplicationService, ApplicationEv
     }
 
     @Override
-    public List<Object> getApplications() {
-        return applicationRepository.findAllApplications();
+    public List<ApplicationSummary> getApplicationSummaries() {
+        return applicationRepository.findApplicationSummaries();
     }
 
-    @Override
-    public Object getApplicationBy(String appNo) {
-        return applicationRepository.findApplicationBy(appNo);
-    }
+//    @Override
+//    public Object getApplicationBy(String appNo) {
+//        return applicationRepository.findApplicationBy(appNo);
+//    }
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {

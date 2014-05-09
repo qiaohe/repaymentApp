@@ -1,5 +1,6 @@
 package com.huayuan.repository.applicationloan;
 
+import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ApplicationRepositoryCustom {
     public void execute(Application application);
 
-    public List<Object> findAllApplications();
+    public List<ApplicationSummary> findApplicationSummaries();
 
     public Object findApplicationBy(final String appNo);
 

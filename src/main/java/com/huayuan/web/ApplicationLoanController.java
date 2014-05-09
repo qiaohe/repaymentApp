@@ -11,6 +11,7 @@ import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.service.AccountService;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
+import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.web.dto.LoanApplicationDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
@@ -111,13 +112,14 @@ public class ApplicationLoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Object> getApps() {
-        return applicationService.getApplications();
+    public List<ApplicationSummary> getApps() {
+        return applicationService.getApplicationSummaries();
     }
 
     @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
     @ResponseBody
     public Object getApplicationBy(@PathVariable String appNo) {
-        return applicationService.getApplicationBy(appNo);
+        return null;
+//        return applicationService.getApplicationBy(appNo);
     }
 }

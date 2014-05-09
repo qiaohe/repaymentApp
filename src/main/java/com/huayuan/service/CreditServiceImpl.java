@@ -143,7 +143,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         creditService.telephoneVerification();
 //        creditService.replyTv(10l, "#A");
         ApplicationRepository applicationRepository = applicationContext.getBean("applicationRepository", ApplicationRepository.class);
-        applicationRepository.findAllApplications();
+//        applicationRepository.findAllApplications();
 
 
     }

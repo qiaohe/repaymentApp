@@ -1,5 +1,6 @@
 package com.huayuan.repository.applicationloan;
 
+import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +26,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Object> findAllApplications() {
-        final String query = "select appl.APPL_NO, appl.APPLY_TIME, appl.CREATE_TIME, appl.EXISTING_FLAG, appl.STATUS, idcard.NAME, idcard.ID_NO, idcard.CITY, aval.CREDITOR from APPL appl, APPL_TV tv, APPROVAL aval, A_SCORE score, MEMBER member, ID_CARD idcard \n" +
-                " where appl.APPL_NO = tv.APPL_NO and appl.APPL_NO = aval.APPL_NO and appl.APPL_NO = score.APPL_NO and appl.MEMBER_ID = member.ID and member.ID = idcard.MEMBER_ID";
-        return em.createNativeQuery(query).getResultList();
+    public List<ApplicationSummary> findApplicationSummaries() {
+        return em.createNamedQuery("Application.findApplicationSummaries").getResultList();
     }
 
     public Object findApplicationBy(final String appNo) {

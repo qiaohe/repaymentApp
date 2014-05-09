@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 
@@ -19,8 +20,5 @@ public interface ApplicationService {
 
     public Application bindCreditCard(Long memberId, String creditCArdNo);
 
-    public List<Object> getApplications();
-
-    public Object getApplicationBy(String appNo);
-
+    public List<ApplicationSummary> getApplicationSummaries();
 }
