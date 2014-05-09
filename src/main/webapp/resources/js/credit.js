@@ -83,8 +83,8 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#time-delayed').val(json.loanMaxDuration);
 	$('#account-num').val(json.cardCount);
 	$('#amount-delayed-2').val(json.cardHighestOverdueAmountPerMon);
-	$('#time-delayed-2').val(json.cardMaxDuration);
-	$('#time-delayed-3').val(json.cardOverDuePerYear);
+	$('#time-delayed-3').val(json.cardMaxDuration);
+	$('#time-delayed-2').val(json.cardOverDuePerYear);
 	$('#account-num-3').val(json.semiCardCount);
 	$('#overdraft-amount').val(json.semiCardHighestOverdueAmountPerMon);
 	$('#overdraft-time').val(json.semiCardMaxDuration);
