@@ -85,6 +85,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#amount-delayed-2').val(json.cardHighestOverdueAmountPerMon);
 	$('#time-delayed-3').val(json.cardMaxDuration);
 	$('#time-delayed-2').val(json.cardOverDuePerYear);
+    $('#overdraft-remaining').val(json.semiCardUsedCreditLimit);
 	$('#account-num-3').val(json.semiCardCount);
 	$('#overdraft-amount').val(json.semiCardHighestOverdueAmountPerMon);
 	$('#overdraft-time').val(json.semiCardMaxDuration);
@@ -232,6 +233,7 @@ function update(){
 			semiCardMaxCreditLimitPerOrg: $('#credit-max-3').val(),
 			semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
 			semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
+            semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
 			rh_1: info.rh_1,
 			rh_2: info.rh_2,
 			rh_3: info.rh_3,
