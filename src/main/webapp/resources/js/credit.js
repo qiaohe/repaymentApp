@@ -111,7 +111,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
 
 	for(var i = 0; i<15; i++){
-		if(json['rh_1' + i] == '1')
+		if(json['rh_' + i] == '1')
 			$('#g-' + i).prop('checked', true);
 		else
 			$('#g-' + i).prop('checked', false);
