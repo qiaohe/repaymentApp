@@ -1,7 +1,7 @@
 ﻿// Configuration
 var config = {};
 config.api_path = "http://180.168.35.37/repaymentApp/api/";
-
+ 
 var id_pattern = /(?:memberId=)\d+/;
 config.member_id = id_pattern.exec(window.location).toString();
 config.member_id = config.member_id.slice(9, config.member_id.length);
