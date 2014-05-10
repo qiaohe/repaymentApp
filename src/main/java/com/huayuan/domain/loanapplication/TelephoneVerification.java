@@ -1,5 +1,7 @@
 package com.huayuan.domain.loanapplication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,6 +18,7 @@ public class TelephoneVerification {
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
+    @JsonIgnore
     private Application application;
 
 

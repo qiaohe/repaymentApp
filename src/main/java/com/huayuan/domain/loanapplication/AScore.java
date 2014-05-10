@@ -1,5 +1,7 @@
 package com.huayuan.domain.loanapplication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class AScore implements Serializable {
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
+    @JsonIgnore
     private Application application;
 
 

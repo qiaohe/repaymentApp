@@ -1,13 +1,16 @@
 package com.huayuan.domain.loanapplication;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.CreditCardBill;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 14-4-3.
@@ -21,6 +24,7 @@ public class Application {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private TelephoneVerification telephoneVerification;
@@ -28,6 +32,8 @@ public class Application {
     private AScore aScore;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")
     private Approval approval;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "application")
+    private List<TelephoneTV> telephoneTVs = new ArrayList<>();
 
     @Column(name = "EXISTING_FLAG")
     private Integer existingFlag = 0;
@@ -203,6 +209,14 @@ public class Application {
 
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+
+    public List<TelephoneTV> getTelephoneTVs() {
+        return telephoneTVs;
+    }
+
+    public void setTelephoneTVs(List<TelephoneTV> telephoneTVs) {
+        this.telephoneTVs = telephoneTVs;
     }
 
     public boolean isApproved() {

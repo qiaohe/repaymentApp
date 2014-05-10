@@ -1,5 +1,6 @@
 package com.huayuan.domain.loanapplication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class CreditResult implements Serializable {
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "LAST_APPL_NO")
+    @JsonIgnore
     private Application lastApplicationNo;
 
 

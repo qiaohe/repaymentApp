@@ -1,14 +1,20 @@
 package com.huayuan.web;
 
+import com.huayuan.domain.credit.ApplicationSummary;
+import com.huayuan.domain.credit.Pboc;
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.loanapplication.TelephoneTV;
+import com.huayuan.domain.member.Member;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
+import com.huayuan.repository.credit.PbocRepository;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.CreditService;
+import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.ApplicationApproveDto;
+import com.huayuan.web.dto.ApplicationCreditInfo;
 import com.huayuan.web.dto.TelephoneTvDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -24,9 +30,10 @@ public class CreditController {
     private CreditService creditService;
     @Inject
     private ApplicationService applicationService;
-
     @Inject
-    private ApprovalRepository approvalRepository;
+    private PbocRepository pbocRepository;
+    @Inject
+    private MemberService memberService;
 
     @RequestMapping(value = "/telephoneTV", method = RequestMethod.POST)
     @ResponseBody
@@ -45,7 +52,6 @@ public class CreditController {
 
     @RequestMapping(value = "approve/{appNo}", method = RequestMethod.POST)
     @ResponseBody
-    @Transactional
     public Approval approve(@PathVariable String appNo, @RequestBody ApplicationApproveDto applicationApproveDto) {
         Approval approval = applicationService.getApplication(appNo).getApproval();
         if (approval == null)
@@ -61,5 +67,27 @@ public class CreditController {
         approval.setProfile(applicationApproveDto.getProfile());
         approval.setCreditor(applicationApproveDto.getCreditor());
         return creditService.approve(approval);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public List<ApplicationSummary> getApps() {
+        return applicationService.getApplicationSummaries();
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ApplicationSummary> searchApps(@RequestParam("q") String query) {
+        return applicationService.getApplicationSummaries(query);
+    }
+
+
+    @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApplicationCreditInfo getApplicationBy(@PathVariable String appNo) {
+        Application application = applicationService.getApplication(appNo);
+        Pboc pboc = pbocRepository.findByCertNo(application.getMember().getIdCard().getIdNo());
+        Member member = memberService.find(application.getMember().getId());
+        return new ApplicationCreditInfo.Builder().application(application).pboc(pboc).member(member).build();
     }
 }

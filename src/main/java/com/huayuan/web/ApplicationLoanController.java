@@ -110,25 +110,4 @@ public class ApplicationLoanController {
         Application application = applicationService.getApplicationBy(memberId);
         return application != null;
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<ApplicationSummary> getApps() {
-        return applicationService.getApplicationSummaries();
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ApplicationSummary> searchApps(@RequestParam("q") String query) {
-        return applicationService.getApplicationSummaries(query);
-    }
-
-
-    @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
-    @ResponseBody
-    public Object getApplicationBy(@PathVariable String appNo) {
-        return null;
-//        return applicationService.getApplicationBy(appNo);
-    }
-
 }
