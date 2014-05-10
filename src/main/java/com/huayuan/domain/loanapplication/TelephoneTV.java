@@ -16,7 +16,7 @@ public class TelephoneTV {
     @Column(name = "ID")
     @JsonIgnore
     private Long id;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "APPL_NO")
     @JsonIgnore
     private Application application;
