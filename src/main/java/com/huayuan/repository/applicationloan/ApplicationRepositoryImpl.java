@@ -34,9 +34,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     @SuppressWarnings("unchecked")
     public List<ApplicationSummary> findApplicationSummaries(final String q) {
         return em.createQuery("select NEW com.huayuan.domain.credit.ApplicationSummary(appl.applicationNo, idcard.name, idcard.idNo,\n" +
-                "appl.existingFlag, appl.applyTime, ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,\n" +
+                "appl.existingFlag, appl.applyTime, ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv, TelephoneTV ttv, TelephoneVerification tv\n" +
                 "IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id\n " +
-                "and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
+                "appl.applicationNo = ttv.applicationNo and  appl.applicationNo = tv.applicationNo and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
     }
 
 
