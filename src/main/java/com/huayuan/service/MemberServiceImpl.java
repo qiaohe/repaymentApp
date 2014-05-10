@@ -17,7 +17,6 @@ import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -221,5 +220,10 @@ public class MemberServiceImpl implements MemberService {
         CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if (creditResult != null) return creditResult.getLastRating();
         return find(memberId).getPreRating();
+    }
+
+    @Override
+    public String getPhone(String idCardNo) {
+        return memberRepository.findByIdCard_IdNo(idCardNo).getMobile();
     }
 }

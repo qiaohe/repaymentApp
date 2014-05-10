@@ -47,4 +47,6 @@ public interface MemberService {
     public Integer getApplicationStatus(Long memberId);
 
     public String getRating(Long memberId);
+
+    public String getPhone(String idCardNo);
 }

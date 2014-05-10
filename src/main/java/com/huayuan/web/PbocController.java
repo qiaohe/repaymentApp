@@ -5,6 +5,7 @@ import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.repository.credit.PbocRepository;
 import com.huayuan.repository.member.IdCardRepository;
+import com.huayuan.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,9 @@ public class PbocController {
     private PbocRepository pbocRepository;
     @Inject
     private IdCardRepository idCardRepository;
+
+    @Inject
+    private MemberService memberService;
 
     @RequestMapping(value = "/summary", method = RequestMethod.GET)
     @ResponseBody
@@ -63,5 +67,17 @@ public class PbocController {
     @ResponseBody
     public List<PbocSummary> search(@RequestParam("q") String query) {
         return pbocRepository.search(query);
+    }
+
+    @RequestMapping(value = "/{idCardNo}/phone/{type}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getMobilePhone(@PathVariable String idCardNo, @PathVariable Integer type) {
+        if (type == 5) return memberService.getPhone(idCardNo);
+        Pboc pboc = pbocRepository.findByCertNo(idCardNo);
+        if (type == 1) return pboc.getMobile();
+        if (type == 2) return pboc.getOfficeTelephoneNo();
+        if (type == 3) return pboc.getHomeTelephoneNo();
+        if (type == 4) return pboc.getPartnerTelephoneNo();
+        return null;
     }
 }

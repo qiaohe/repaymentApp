@@ -9,4 +9,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface MemberRepository extends JpaRepository<Member, Long> {
     public Member findByWcNo(String weChatNo);
+
+    public Member findByIdCard_IdNo(String idCardNo);
+
 }
