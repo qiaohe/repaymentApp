@@ -85,6 +85,11 @@ public class ApplicationServiceImpl implements ApplicationService, ApplicationEv
         return applicationRepository.findApplicationSummaries();
     }
 
+    @Override
+    public List<ApplicationSummary> getApplicationSummaries(String query) {
+        return applicationRepository.findApplicationSummaries(query);
+    }
+
 //    @Override
 //    public Object getApplicationBy(String appNo) {
 //        return applicationRepository.findApplicationBy(appNo);

@@ -116,6 +116,13 @@ public class ApplicationLoanController {
         return applicationService.getApplicationSummaries();
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ApplicationSummary> searchApps(@RequestParam("q") String query) {
+        return applicationService.getApplicationSummaries(query);
+    }
+
+
     @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
     @ResponseBody
     public Object getApplicationBy(@PathVariable String appNo) {

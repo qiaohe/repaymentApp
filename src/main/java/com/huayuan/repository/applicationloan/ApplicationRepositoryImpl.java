@@ -7,8 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,19 +16,6 @@ import java.util.List;
 public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
-
-    public static <T> T map(Class<T> type, Object[] tuple) {
-        List<Class<?>> tupleTypes = new ArrayList<>();
-        for (Object field : tuple) {
-            tupleTypes.add(field.getClass());
-        }
-        try {
-            Constructor<T> ctor = type.getConstructor(tupleTypes.toArray(new Class<?>[tuple.length]));
-            return ctor.newInstance(tuple);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void execute(Application application) {
@@ -42,12 +27,18 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public List<ApplicationSummary> findApplicationSummaries() {
-        List<ApplicationSummary> result = new ArrayList<>();
-        for (Object item : em.createNamedQuery("Application.findApplicationSummaries").getResultList()) {
-            result.add(map(ApplicationSummary.class, (Object[]) item));
-        }
-        return result;
+        return em.createNamedQuery("Application.findApplicationSummaries").getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<ApplicationSummary> findApplicationSummaries(final String q) {
+        return em.createQuery("select NEW com.huayuan.domain.credit.ApplicationSummary(appl.applicationNo, idcard.name, idcard.idNo,\n" +
+                "appl.existingFlag, appl.applyTime, ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,\n" +
+                "IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id\n " +
+                "and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
+    }
+
 
     public Object findApplicationBy(final String appNo) {
         return null;
