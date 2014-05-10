@@ -4,6 +4,7 @@ import com.huayuan.domain.credit.TvExecution;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.loanapplication.Staff;
+import com.huayuan.domain.loanapplication.TelephoneTV;
 
 import java.util.List;
 
@@ -25,4 +26,7 @@ public interface CreditService {
 
     public void replyTv(Long memberId, String replyAnswer);
 
+    public TelephoneTV makeTelephoneTv(TelephoneTV telephoneTV);
+
+    public List<TelephoneTV> getTelephoneTVs(String appNo);
 }

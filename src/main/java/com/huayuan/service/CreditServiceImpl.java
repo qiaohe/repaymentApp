@@ -5,13 +5,11 @@ import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.credit.TvExecution;
 import com.huayuan.domain.credit.TvQuestionGenerator;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
-import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.loanapplication.CreditResult;
-import com.huayuan.domain.loanapplication.Staff;
-import com.huayuan.domain.loanapplication.TelephoneVerification;
+import com.huayuan.domain.loanapplication.*;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
+import com.huayuan.repository.applicationloan.TelephoneTVRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.credit.StaffRepository;
 import com.huayuan.repository.credit.TvExecutionRepository;
@@ -54,6 +52,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private TvExecutionRepository tvExecutionRepository;
     @Inject
     private ApplicationRepository applicationRepository;
+    @Inject
+    private TelephoneTVRepository telephoneTVRepository;
     @Value("${weChat.tvApproveResult}")
     private String tvApproveResultTemplate;
     @Value("${weChat.baseUrl}")
@@ -130,6 +130,16 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         tvExecution.setReplyDate(new Date());
         tvExecution.setStatus(1);
         tvExecutionRepository.save(tvExecution);
+    }
+
+    @Override
+    public TelephoneTV makeTelephoneTv(TelephoneTV telephoneTV) {
+        return telephoneTVRepository.save(telephoneTV);
+    }
+
+    @Override
+    public List<TelephoneTV> getTelephoneTVs(String appNo) {
+        return  telephoneTVRepository.findByApplication_ApplicationNo(appNo);
     }
 
     @Override
