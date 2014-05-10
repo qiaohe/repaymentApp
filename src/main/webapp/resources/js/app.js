@@ -1,6 +1,6 @@
 ﻿// Configuration
 var config = {};
-config.api_path = "http://180.168.35.37/repaymentApp/api/"
+config.api_path = "http://180.168.35.37/repaymentApp/api/";
 
 var id_pattern = /(?:memberId=)\d+/;
 config.member_id = id_pattern.exec(window.location).toString();
@@ -10,8 +10,8 @@ var status_pattern = /(?:status=)\d+/;
 config.status = status_pattern.exec(window.location).toString();
 config.status = config.status.slice(7, config.status.length);
 
-// config.member_id = '2';
-// config.status = '4';
+ // config.member_id = '1';
+ // config.status = '8';
 
 config.debug = false;
 
@@ -119,18 +119,6 @@ function testLimit(obj){
 		success: function(json){
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
-			
-			$.ajax({
-				url: config.api_path + 'members/' + member.id + '/avlCrl',
-				type: "GET",
-				dataType: "text",
-				async: false,
-				success: function(text){
-					member.avlcrl = text;
-				},
-				error: stdError
-			});
-			
 		},
 		error: stdError
 	});
@@ -529,7 +517,6 @@ $(document).on('pagebeforeshow', '#loan', function(){
 				}
 				$("#cardlist-2").popup('open');
 				$('#Y-2').click(function(){
-                    applyLoan(app);
 					loanToThisCard(app.card).success(function(){});
 				});
 				
@@ -553,8 +540,6 @@ $(document).on('pagebeforeshow', '#loan', function(){
 						$('#card-add-box-2').hide();
 					});
 				});
-
-                $(this).off('click');
 			}
 		}
 	});
@@ -609,13 +594,134 @@ $(document).on('pagecreate', '#congratulation', function(){
 	});
 });
 
+$(document).on('pagecreate', '#repayment-0', function(){
+	$.ajax({
+		url: config.api_path + 'account/members/' + member.id,
+		type: "GET",
+		async: false,
+		dataType:'json',
+		success: function(json){ 
+			member.loan = json;
+		},
+		error: stdError
+	});
+
+	generateSumPage(member.loan);
+	generateRepaymentPages(member.loan);
+	registerEvents(member.loan);
+	
+	function generateSumPage(obj){
+		$('#total-amount').html(obj.totalAmount);
+		$('#total-times').html(obj.loanCount);
+		$('#total-payback').html(obj.totalDueAmt);
+		$('#total-saved').html(Math.round(obj.totalSavedCost + 100) / 100);
+
+		for(var i = 0; i < obj.loanCount; i++){
+			var tmp = '<li><div class="sl" id="' + ('sl-' + (i + 1)) + '"></div><div class="sr" id="' + ('sr-' + (i + 1)) + '"></div></li>';
+			$('#total-specific').append(tmp);
+			$('#sl-' + (i + 1)).html(i + 1);
+			var readable_date = getReadableDate(obj.loans[i].startDate);
+			$('#sr-' + (i + 1)).append('借款日期: ' + readable_date + '<br>借款金额: &yen' + obj.loans[i].amount + '<br>注入卡片: 尾号' + obj.loans[i].creditCardNo.slice(obj.loans[i].creditCardNo.length - 4, obj.loans[i].creditCardNo.length) + '<br>总计应还: &yen' + obj.loans[i].dueAmt + '<br>较信用卡最低还款额，约省&yen' + Math.round(obj.loans[i].savedCost * 100) / 100);
+		}
+	}
+	
+	function generateRepaymentPages(obj){
+		var loans = obj.loans;
+		for(var i = 0; i < loans.length; i++){
+			var id = "repayment-" + i;
+			if(i){
+				var tmp = $('<div data-role="page" id="' + id + '">' + $('#repayment-0').html() + '</div>');
+				tmp.appendTo($('body'));
+				//window.location.hash = id; 
+    			$.mobile.initializePage();
+			}
+			$('#' + id + ' .r-time').html(getReadableDate(loans[i].startDate));
+			$('#' + id + ' .r-amt').html(loans[i].amount);
+			$('#' + id + ' .r-tail').html(loans[i].creditCardNo.slice(loans[i].creditCardNo.length - 4, loans[i].creditCardNo.length));
+			$('#' + id + ' .r-next').html(loans[i].dueAmt);
+			var date = new Date(loans[i].startDate);
+			var month = date.getMonth()+1;
+			var duemonth = month + loans[i].paidTerm + 1;
+			var day = date.getDate();
+			if(duemonth > 12)
+				duemonth -= 12;
+			$('#' + id + ' .r-deadline').html(duemonth + '月' + day + '日');
+
+			$('#' + id + ' li:nth-child(1) .li-r').html(getReadableDate(loans[i].startDate));
+			$('#' + id + ' li:nth-child(2) .li-r').html('尾号' + loans[i].creditCardNo.slice(loans[i].creditCardNo.length - 4, loans[i].creditCardNo.length));
+			$('#' + id + ' li:nth-child(3) .li-r').html(loans[i].amount);
+			$('#' + id + ' li:nth-child(4) .li-r').html(obj.loanCount + '期(已还' + loans[i].paidTerm + '期)');
+			$('#' + id + ' li:nth-child(5) .li-r').html('每月' + day + '日');
+			$('#' + id + ' li:nth-child(6) .li-r').html(loans[i].principal);
+			$('#' + id + ' li:nth-child(7) .li-r').html(loans[i].restPrincipal);
+			
+			for(var j = 0; j < loans[i].paidTerm; j++){
+				if(j == 0)
+					$('#' + id + ' ul:last-child').after('<li></li>');
+				else
+					$('#' + id + ' ul:last-child').before('<li></li>');
+			}
+		}
+	}
+
+	function registerEvents(obj){
+		if(obj.loans.length > 1){
+			$('#repayment-0').on('swipeleft', function(){
+				$.mobile.changePage('#repayment-1', {transition: 'slide'});
+			});
+			
+			for(var i = 1; i < obj.loans.length - 1; i++){
+				$('#repayment-' + i).registerSlides(i);
+			}
+
+			$('#repayment-' + (obj.loans.length - 1)).on('swiperight', function(){
+				$.mobile.changePage('#repayment-' + (obj.loans.length - 2), {transition: 'slide', reverse: true});
+			});
+		}
+
+		for(var i = 0; i < obj.loans.length; i++){
+			popLoanSpecific(i)
+		}
+	}
+
+	function registerSlides(i){
+		$('#repayment-' + i).on('swipeleft', function(){
+			$.mobile.changePage('#repayment-' + (i + 1), {transition: 'slide'});
+		});
+
+		$('#repayment-' + i).on('swiperight', function(){
+			$.mobile.changePage('#repayment-' + (i - 1), {transition: 'slide', reverse: true});
+		});
+	}
+
+	function popLoanSpecific(i){
+		$('#repayment-' + i + ' ul li:nth-child(2)').click(function(){
+			//
+			$('#repayment-' + i + ' .r-popup').popup('open');
+		});
+	}
+
+	function getReadableDate(million_seconds){
+		var date = new Date(million_seconds);
+		var month = date.getMonth()+1;
+		var day = date.getDate();
+		var year = date.getFullYear();
+		return year + '-' + month + '-' + day;
+	}
+	
+	
 
 
 
+	
+	
+});
 
-
-
-
+$(document).on('pagecreate', '#sum-loan', function(){
+	$('#sum-loan a').click(function(){
+		$.mobile.back();
+	});
+});
 
 
 
