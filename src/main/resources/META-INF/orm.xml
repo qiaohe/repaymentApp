@@ -3,6 +3,18 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
                  version="2.0">
+    <named-query name="Application.findApplicationSummaries">
+        <query>
+            select NEW com.huayuan.domain.credit.ApplicationSummary(appl.applicationNo, idcard.name, idcard.idNo,
+            appl.existingFlag, appl.applyTime,
+            ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,
+            IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and
+            appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id
+            and ma.sevenPrefix = substring(mem.mobile, 0 , 8)
+        </query>
+    </named-query>
+
+
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4)</query>
     </named-query>
@@ -12,53 +24,20 @@
         </query>
     </named-query>
 
-    <named-native-query name="Pboc.findByStatusWithSummary" result-set-mapping="pbocSummary">
-        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,
-            pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where pb.status in (2,3)
-        </query>
-    </named-native-query>
 
-    <named-native-query name="Pboc.searchWithSummary" result-set-mapping="pbocSummary">
-        <query>SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where :q
-        </query>
-    </named-native-query>
 
+    <named-query name="Pboc.findByStatusWithSummary">
+        <query>SELECT NEW com.huayuan.domain.credit.PbocSummary(pb.id, pb.certNo, pb.name, pb.createTime,
+            pb.keyiner, pb.risk, pb.status) FROM Pboc pb where pb.status in (2,3)
+        </query>
+    </named-query>
 
     <named-native-query name="TvQuestionList.Random" result-set-mapping="tvQuestionListMapping">
         <query>  select home.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 2 and CITY = ?1 order by newid()) home
                  union select company.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 1 and CITY = ?1 order by newid()) company</query>
     </named-native-query>
 
-    <named-native-query name="Application.findApplicationSummaries" result-set-mapping="applicationSummary">
-        <query>
-select appl.APPL_NO as appNo, idcard.NAME, idcard.ID_NO as idCardNo, appl.EXISTING_FLAG as existingFlag, appl.APPLY_TIME as applyDate,
-                ma.CITY as mobileCity, appl.STATUS as status, appl.CREATE_TIME as createDate,apv.CREDITOR  as creditor from APPL appl , APPROVAL apv, MEMBER member, ID_CARD idcard, VALUE_MOBILE_AREA ma where appl.MEMBER_ID = member.ID and appl.APPL_NO = apv.APPL_NO and member.ID = idcard.MEMBER_ID
-                and ma.N1_7 = substring(member.MOBILE, 0 , 8)
-        </query>
-    </named-native-query>
-
-    <sql-result-set-mapping name="pbocSummary">
-        <column-result name="id"/>
-        <column-result name="certNo"/>
-        <column-result name="name"/>
-        <column-result name="createTime"/>
-        <column-result name="keyiner"/>
-        <column-result name="risk"/>
-        <column-result name="status"/>
-    </sql-result-set-mapping>
     <sql-result-set-mapping name="tvQuestionListMapping">
         <column-result name="address"/>
-    </sql-result-set-mapping>
-
-    <sql-result-set-mapping name="applicationSummary">
-        <column-result name="appNo"/>
-        <column-result name="name"/>
-        <column-result name="idCardNo"/>
-        <column-result name="existingFlag"/>
-        <column-result name="applyDate"/>
-        <column-result name="mobileCity"/>
-        <column-result name="status"/>
-        <column-result name="createDate"/>
-        <column-result name="creditor"/>
     </sql-result-set-mapping>
 </entity-mappings>

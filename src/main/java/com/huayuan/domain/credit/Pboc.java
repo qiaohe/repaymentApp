@@ -315,6 +315,7 @@ public class Pboc implements Serializable {
 
 
     @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
 

@@ -1,25 +1,27 @@
 package com.huayuan.domain.credit;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by dell on 14-5-9.
  */
-public class ApplicationSummary {
+public class ApplicationSummary implements Serializable {
+    private static final long serialVersionUID = -6927928023361861233L;
     private String appNo;
     private String name;
     private String idCardNo;
     private Integer existingFlag;
-    private String applyDate;
+    private Date applyDate;
     private String mobileCity;
     private Integer status;
-    private String createDate;
+    private Date createDate;
     private String creditor;
 
     public ApplicationSummary() {
     }
 
-    public ApplicationSummary(String appNo, String name, String idCardNo, Integer existingFlag, String applyDate, String mobileCity, Integer status, String createDate, String creditor) {
+    public ApplicationSummary(String appNo, String name, String idCardNo, Integer existingFlag, Date applyDate, String mobileCity, Integer status, Date createDate, String creditor) {
         this.applyDate = applyDate;
         this.appNo = appNo;
         this.status = status;
@@ -64,11 +66,11 @@ public class ApplicationSummary {
         this.existingFlag = existingFlag;
     }
 
-    public String getApplyDate() {
+    public Date getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(String applyDate) {
+    public void setApplyDate(Date applyDate) {
         this.applyDate = applyDate;
     }
 
@@ -88,11 +90,11 @@ public class ApplicationSummary {
         this.status = status;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

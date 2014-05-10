@@ -13,6 +13,8 @@ public interface ApplicationRepositoryCustom {
 
     public List<ApplicationSummary> findApplicationSummaries();
 
+    public List<ApplicationSummary> findApplicationSummaries(String q);
+
     public Object findApplicationBy(final String appNo);
 
 }

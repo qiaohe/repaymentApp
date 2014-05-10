@@ -20,7 +20,7 @@ public class PbocSummary implements Serializable {
     public PbocSummary() {
     }
 
-    public PbocSummary(Long id, String certNo, String name, Date createTime, String keyiner, Integer risk) {
+    public PbocSummary(Long id, String certNo, String name, Date createTime, String keyiner, Integer risk, Integer status) {
         this();
         this.id = id;
         this.certNo = certNo;
@@ -28,6 +28,7 @@ public class PbocSummary implements Serializable {
         this.createTime = createTime;
         this.keyiner = keyiner;
         this.risk = risk;
+        this.status = status;
     }
 
     public Long getId() {

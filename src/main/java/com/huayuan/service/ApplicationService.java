@@ -21,4 +21,6 @@ public interface ApplicationService {
     public Application bindCreditCard(Long memberId, String creditCArdNo);
 
     public List<ApplicationSummary> getApplicationSummaries();
+
+    public List<ApplicationSummary> getApplicationSummaries(String query);
 }
