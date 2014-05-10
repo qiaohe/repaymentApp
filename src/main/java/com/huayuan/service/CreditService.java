@@ -1,10 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.domain.credit.TvExecution;
-import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.loanapplication.CreditResult;
-import com.huayuan.domain.loanapplication.Staff;
-import com.huayuan.domain.loanapplication.TelephoneTV;
+import com.huayuan.domain.loanapplication.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public interface CreditService {
 
     public void registerStaff(Staff staff);
 
-    public void approve(Application application);
+    public Approval approve(Approval approval);
 
     public void telephoneVerification();
 

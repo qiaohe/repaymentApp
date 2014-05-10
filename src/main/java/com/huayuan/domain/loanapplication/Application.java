@@ -19,7 +19,7 @@ public class Application {
     @Column(name = "APPL_NO")
     private String applicationNo;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "application")

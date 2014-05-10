@@ -9,6 +9,7 @@ import com.huayuan.domain.loanapplication.*;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
+import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TelephoneTVRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.credit.StaffRepository;
@@ -54,6 +55,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private ApplicationRepository applicationRepository;
     @Inject
     private TelephoneTVRepository telephoneTVRepository;
+    @Inject
+    private ApprovalRepository approvalRepository;
     @Value("${weChat.tvApproveResult}")
     private String tvApproveResultTemplate;
     @Value("${weChat.baseUrl}")
@@ -77,24 +80,27 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         staffRepository.save(staff);
     }
 
-    private String getApproveResultMessage(Application application) {
-        String status = application.isApproved() ? "5.1" : "5.2" + "&&random=" + RandomStringUtils.randomNumeric(15);
-        return MessageFormat.format(tvApproveResultTemplate, baseUrl, application.getMember().getId(), status);
+    private String getApproveResultMessage(Approval approval) {
+        String status = approval.isApproved() ? "5.1" : "5.2" + "&&random=" + RandomStringUtils.randomNumeric(15);
+        return MessageFormat.format(tvApproveResultTemplate, baseUrl, approval.getApplication().getMember().getId(), status);
     }
 
     @Override
-    public void approve(Application application) {
+    public Approval approve(Approval approval) {
+        final Application application = approval.getApplication();
         Account account = accountRepository.findByMemberId(application.getMember().getId());
-        if (account == null && application.isDeclined()) return;
+        if (account == null && approval.isDeclined()) return null;
         if (account == null) {
             account = new Account();
             account.setMember(application.getMember());
         }
-        account.setCrl(application.getApproval().getSugCrl());
-        if (application.isApproved()) account.setCrlUsed(account.getCrlUsed() + application.getApproval().getAmt());
+        account.setCrl(approval.getSugCrl());
+        if (approval.isApproved()) account.setCrlUsed(account.getCrlUsed() + approval.getAmt());
         accountRepository.save(account);
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(application));
+        Approval result = approvalRepository.save(approval);
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
+        return result;
     }
 
     @Scheduled(cron = "0 30 8,12,18 * * ?")
@@ -139,7 +145,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 
     @Override
     public List<TelephoneTV> getTelephoneTVs(String appNo) {
-        return  telephoneTVRepository.findByApplication_ApplicationNo(appNo);
+        return telephoneTVRepository.findByApplication_ApplicationNo(appNo);
     }
 
     @Override

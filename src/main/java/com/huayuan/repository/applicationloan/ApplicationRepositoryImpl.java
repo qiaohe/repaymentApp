@@ -39,7 +39,6 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 "appl.applicationNo = ttv.applicationNo and  appl.applicationNo = tv.applicationNo and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
     }
 
-
     public Object findApplicationBy(final String appNo) {
         return null;
     }

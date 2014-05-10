@@ -4,6 +4,7 @@ import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
 import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
@@ -129,4 +130,5 @@ public class ApplicationLoanController {
         return null;
 //        return applicationService.getApplicationBy(appNo);
     }
+
 }

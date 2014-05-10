@@ -73,6 +73,12 @@ public class Approval {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
+    public Approval() {
+        createTime = new Date();
+        repayType = RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST;
+        clazz = "A";
+    }
+
 
     public Long getId() {
         return id;
@@ -213,4 +219,13 @@ public class Approval {
     public void setSugCrl(Double sugCrl) {
         this.sugCrl = sugCrl;
     }
+
+    public boolean isDeclined() {
+        return "D".equalsIgnoreCase(decision);
+    }
+
+    public boolean isApproved() {
+        return "A".equalsIgnoreCase(decision);
+    }
+
 }
