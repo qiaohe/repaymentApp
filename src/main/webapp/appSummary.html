@@ -1,0 +1,99 @@
+﻿<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="resources/css/appSummary.css">
+    <script src="resources/js/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<div id="content">
+    <div>
+        <div style="width:10%; text-align: center">
+            <h1>查询页面</h1>
+        </div>
+        <div class="itembox" style="margin-left:0">姓名</div>
+        <input type="text" id="name">
+
+        <div class="itembox">身份证号</div>
+        <input type="text" id="idcard" style="width:240px;">
+
+        <div class="itembox">手机号码</div>
+        <input type="text" id="mobile">
+
+        <div class="itembox">会员编号</div>
+        <input type="text" id="memberNo">
+    </div>
+
+    <div style="clear:both; padding-top:30px">
+        <div class="itembox" style="margin-left:0;">申请编号</div>
+        <input type="text" id="applyNo">
+
+        <div class="itembox" style="width:7%">申请时间</div>
+        <div class="itembox" style="width:3%">起</div>
+        <input type="text" id="applyFrom" maxlength="10" style="width: 8%;" placeholder="2014-01-01">
+
+        <div class="itembox" style="width:3%">止</div>
+        <input type="text" id="applyTo" maxlength="10" style="width: 8%;" placeholder="2014-01-01">
+
+        <div class="itembox" style="width:7%">处理时间</div>
+        <div class="itembox" style="width:3%">起</div>
+        <input type="text" id="procFrom" maxlength="10" style="width: 8%;" placeholder="2014-01-01">
+
+        <div class="itembox" style="width:3%">止</div>
+        <input type="text" id="procTo" maxlength="10" style="width: 8%;" placeholder="2014-01-01">
+    </div>
+
+    <div style="clear:both; padding-top:30px">
+        <div class="itembox" style="margin-left:0;">征信员</div>
+        <input type="text" id="creditor">
+
+        <div class="itembox">原因码</div>
+        <input type="text" id="reasonCode">
+
+        <div class="itembox">用户类型</div>
+        <select id="userType">
+            <option value="0">新用户</option>
+            <option value="1">老用户-前次退件</option>
+            <option value="2">老用户-前次过件</option>
+        </select>
+    </div>
+
+    <div style="clear:both; padding-top:30px">
+        <div class="itembox"  style="margin-left:0;">系统处理</div>
+        <input type="checkbox" id="systemFlag">
+        <div class="itembox">电话照会</div>
+        <input type="checkbox" id="tvFlag">
+        <div class="itembox">状态</div>
+        <select id="status">
+            <option value="0">0客户提交申请</option>
+            <option value="1">1提交查询人行</option>
+            <option value="2">2人行报告返回</option>
+            <option value="3">3内部批次完成</option>
+            <option value="4">4A级征信审核完成</option>
+            <option value="5">5B级征信审核完成</option>
+            <option value="6">6客户放弃</option>
+            <option value="7">7客户接受，发放借款</option>
+            <option value="99">99暂存</option>
+        </select>
+    </div>
+
+    <div style="width:15%; height:40px; margin:50px 0 50px 450px;border-radius:3px;" >
+        <input type="button" value="Search" id="search" style="width:100%; height:100%;font-weight:bold;font-size: 20px;border-radius: 3px;">
+    </div>
+    <div style="text-align:center;width: 100%;height: 60px;">
+        <div style="width: 10%;float: left;border: 1px solid black;font-size: 28px;font-weight: bold;border-radius: 3px;">汇总页面</div>
+    </div>
+
+    <div id="table-wrap" style="width:100%;">
+        <table id="data-table">
+            <tr><td style="width: 4%;"></td><td>申请编号</td><td>姓名</td><td style="width:12%;">身份证号码</td><td>新旧用户标识</td><td>申请时间</td><td>手机城市</td><td>状态</td><td>征信员</td><td>处理时间</td></tr>
+        </table>
+    </div>
+    <div class="operation">
+        <div id="prev" style="cursor: pointer;">上一页</div>
+        <div id="next" style="cursor: pointer;">下一页</div>
+    </div>
+</div>
+<script type="text/javascript" src="resources/js/base.js"></script>
+<script type="text/javascript" src="resources/js/appSummary.js"></script>
+</body>
+</html>
