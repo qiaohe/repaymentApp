@@ -1,5 +1,6 @@
 package com.huayuan.domain.accounting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
@@ -17,9 +18,11 @@ public class RepayPlan {
     private Long id;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
+    @JsonIgnore
     private Loan loan;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
     @Column(name = "TERM")
     private Integer term;

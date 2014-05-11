@@ -1,9 +1,11 @@
 package com.huayuan.domain.credit;
 
+import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by dell on 14-5-10.
@@ -13,6 +15,7 @@ public class ApplicationCreditInfo implements Serializable {
     private Application application;
     private Member member;
     private Pboc pboc;
+    private List<Loan> loans;
 
     private ApplicationCreditInfo() {
     }
@@ -41,10 +44,19 @@ public class ApplicationCreditInfo implements Serializable {
         this.pboc = pboc;
     }
 
-    private ApplicationCreditInfo(Application application, Member member, Pboc pboc) {
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    private ApplicationCreditInfo(Application application, Member member, Pboc pboc, List<Loan> loans) {
         this.application = application;
         this.member = member;
         this.pboc = pboc;
+        this.loans = loans;
     }
 
     public static class Builder {
@@ -68,8 +80,14 @@ public class ApplicationCreditInfo implements Serializable {
             this.dto.setPboc(pboc);
             return this;
         }
+
+        public Builder loans(List<Loan> loans) {
+            this.dto.setLoans(loans);
+            return this;
+        }
         public ApplicationCreditInfo build() {
             return dto;
         }
+
     }
 }

@@ -40,6 +40,7 @@ public class Application {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ID_ID")
+    @JsonIgnore
     private IdCard idCard;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)

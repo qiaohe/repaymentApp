@@ -2,6 +2,7 @@ package com.huayuan.service;
 
 import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.accounting.Account;
+import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.credit.ApplicationCreditInfo;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.TvExecution;
@@ -11,6 +12,7 @@ import com.huayuan.domain.loanapplication.*;
 import com.huayuan.domain.member.Member;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.account.LoanRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TelephoneTVRepository;
@@ -62,6 +64,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private MemberRepository memberRepository;
     @Inject
     private ApprovalRepository approvalRepository;
+    @Inject
+    private LoanRepository loanRepository;
     @Value("${weChat.tvApproveResult}")
     private String tvApproveResultTemplate;
     @Value("${weChat.baseUrl}")
@@ -161,10 +165,12 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         Member member = memberRepository.findOne(application.getMember().getId());
         member.getCreditCardBills().size();
         member.getCreditCards().size();
+        List<Loan> loans = loanRepository.findByMember_Id(application.getMember().getId());
         return new ApplicationCreditInfo.Builder()
                 .application(application)
                 .pboc(pboc)
                 .member(member)
+                .loans(loans)
                 .build();
     }
 

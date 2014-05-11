@@ -1,5 +1,6 @@
 package com.huayuan.domain.accounting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.accounting.core.RepayItem;
 import com.huayuan.domain.accounting.core.RepayListCalculator;
@@ -23,9 +24,11 @@ public class Loan {
     private Long id;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "APP_NO")
+    @JsonIgnore
     private Application application;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
     @Column(name = "AMT")
     private Double amt;
@@ -44,13 +47,15 @@ public class Loan {
     @Column(name = "PAID_INTEREST")
     private Double paidInterest;
     @Column(name = "CUR_DELQ")
-    private Integer curDelq;
+    private Integer curDelq = 0;
     @Column(name = "MAX_DELQ")
-    private Integer maxDelq;
+    private Integer maxDelq = 0;
     @Column(name = "STATUS")
     private Integer status;
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
     private Pay pay;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
@@ -195,6 +200,7 @@ public class Loan {
         return transfer;
     }
 
+    @JsonIgnore
     public LoanRequest getLoanRequest() {
         return new LoanRequest(this.amt, apr, term, pay.getConfirmDate());
     }
@@ -218,6 +224,7 @@ public class Loan {
         return result;
     }
 
+    @JsonIgnore
     public boolean isOverDue() {
         return curDelq > 0;
     }
@@ -232,6 +239,7 @@ public class Loan {
         return result;
     }
 
+    @JsonIgnore
     public int getPaidTerm() {
         int result = 0;
         for (RepayPlan plan : repayPlans) {
@@ -240,8 +248,13 @@ public class Loan {
         return result;
     }
 
+    @JsonIgnore
     public String getRating() {
         return application.getaScore().getRating();
+    }
+
+    public String getApplicationNo() {
+        return this.getApplication().getApplicationNo();
     }
 }
 
