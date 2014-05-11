@@ -22,6 +22,7 @@ public class CreditResult implements Serializable {
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)

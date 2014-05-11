@@ -2,19 +2,20 @@ package com.huayuan.service;
 
 import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.accounting.Account;
+import com.huayuan.domain.credit.ApplicationCreditInfo;
+import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.TvExecution;
 import com.huayuan.domain.credit.TvQuestionGenerator;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.*;
+import com.huayuan.domain.member.Member;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TelephoneTVRepository;
-import com.huayuan.repository.credit.CreditResultRepository;
-import com.huayuan.repository.credit.StaffRepository;
-import com.huayuan.repository.credit.TvExecutionRepository;
-import com.huayuan.repository.credit.TvRepository;
+import com.huayuan.repository.credit.*;
+import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +56,10 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private ApplicationRepository applicationRepository;
     @Inject
     private TelephoneTVRepository telephoneTVRepository;
+    @Inject
+    private PbocRepository pbocRepository;
+    @Inject
+    private MemberRepository memberRepository;
     @Inject
     private ApprovalRepository approvalRepository;
     @Value("${weChat.tvApproveResult}")
@@ -146,6 +151,21 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Override
     public List<TelephoneTV> getTelephoneTVs(String appNo) {
         return telephoneTVRepository.findByApplication_ApplicationNo(appNo);
+    }
+
+    @Override
+    public ApplicationCreditInfo buildCreditInfo(String appNo) {
+        Application application = applicationRepository.findOne(appNo);
+        application.getTelephoneTVs().size();
+        Pboc pboc = pbocRepository.findByCertNo(application.getMember().getIdCard().getIdNo());
+        Member member = memberRepository.findOne(application.getMember().getId());
+        member.getCreditCardBills().size();
+        member.getCreditCards().size();
+        return new ApplicationCreditInfo.Builder()
+                .application(application)
+                .pboc(pboc)
+                .member(member)
+                .build();
     }
 
     @Override

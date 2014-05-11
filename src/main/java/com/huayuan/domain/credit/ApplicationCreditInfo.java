@@ -1,6 +1,5 @@
-package com.huayuan.web.dto;
+package com.huayuan.domain.credit;
 
-import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
 
@@ -15,7 +14,7 @@ public class ApplicationCreditInfo implements Serializable {
     private Member member;
     private Pboc pboc;
 
-    public ApplicationCreditInfo() {
+    private ApplicationCreditInfo() {
     }
 
     public Application getApplication() {
@@ -42,7 +41,7 @@ public class ApplicationCreditInfo implements Serializable {
         this.pboc = pboc;
     }
 
-    public ApplicationCreditInfo(Application application, Member member, Pboc pboc) {
+    private ApplicationCreditInfo(Application application, Member member, Pboc pboc) {
         this.application = application;
         this.member = member;
         this.pboc = pboc;

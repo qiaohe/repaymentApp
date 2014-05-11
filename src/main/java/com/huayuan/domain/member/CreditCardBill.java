@@ -1,6 +1,8 @@
 package com.huayuan.domain.member;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -56,6 +58,7 @@ public class CreditCardBill implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
     public Long getId() {

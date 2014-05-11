@@ -1,6 +1,7 @@
 package com.huayuan.domain.member;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.loanapplication.CreditResult;
 import org.apache.commons.lang.StringUtils;
 
@@ -97,6 +98,7 @@ public class Member implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCardBill> creditCardBills = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
+    @JsonIgnore
     private Set<PreCredit> preCredits = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private IdCard idCard;

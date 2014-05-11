@@ -1,5 +1,6 @@
 package com.huayuan.service;
 
+import com.huayuan.domain.credit.ApplicationCreditInfo;
 import com.huayuan.domain.credit.TvExecution;
 import com.huayuan.domain.loanapplication.*;
 
@@ -26,4 +27,8 @@ public interface CreditService {
     public TelephoneTV makeTelephoneTv(TelephoneTV telephoneTV);
 
     public List<TelephoneTV> getTelephoneTVs(String appNo);
+
+    public ApplicationCreditInfo buildCreditInfo(String appNo);
+
+
 }
