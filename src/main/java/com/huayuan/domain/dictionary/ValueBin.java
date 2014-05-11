@@ -26,7 +26,6 @@ public class ValueBin implements Serializable {
 
 
     @Column(name = "BANK_NO")
-    @JsonIgnore
     private int bankNo;
 
 
