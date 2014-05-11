@@ -5,10 +5,8 @@ import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
 import com.huayuan.domain.member.SexEnum;
-import com.huayuan.integration.wechat.domain.EventMessage;
-import com.huayuan.integration.wechat.domain.Menu;
-import com.huayuan.integration.wechat.domain.MessageTemplate;
-import com.huayuan.integration.wechat.domain.User;
+import com.huayuan.integration.wechat.domain.*;
+import com.huayuan.repository.integration.HintMessageRepository;
 import com.huayuan.repository.integration.MenuRepository;
 import com.huayuan.service.AccountService;
 import com.huayuan.service.CreditService;
@@ -26,10 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -73,7 +68,10 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     private AccountService accountService;
     @Inject
     private CreditService creditService;
+    @Inject
+    private HintMessageRepository hintMessageRepository;
     private List<Menu> menus;
+    private List<HintMessage> hintMessages;
 
     @Value("${weChat.baseUrl}")
     private String baseUrl;
@@ -91,6 +89,7 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     @PostConstruct
     public void init() {
         menus = menuRepository.findAll();
+        hintMessages = hintMessageRepository.findAll();
     }
 
     public MessageTemplate getTemplates(final String menu_Key, String status) {
@@ -113,11 +112,20 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return null;
     }
 
+    @RequestMapping(value = "/members/{memberId}/status/{status}", method = RequestMethod.GET)
+    @ResponseBody
+    public void sendHintMessage(@PathVariable Long memberId, @PathVariable Integer status) throws IOException {
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, memberService.find(memberId).getWcNo(),
+                hintMessages.get(status + 1).getTemplate());
+        onApplicationEvent(event);
+    }
+
+
     @RequestMapping(value = "/huayuan158", method = RequestMethod.POST)
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
-        String content = StringUtils.EMPTY;
+        String content;
         if (eventMessage.isSubscribeEvent()) {
             Member member = memberService.findMemberBy(eventMessage.getFromUserName());
             if (member == null) {
