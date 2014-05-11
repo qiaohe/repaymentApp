@@ -65,11 +65,11 @@
                 '<td>'+ele.name+'</td>' +
                 '<td>'+ele.idCardNo+'</td>' +
                 '<td>'+userType[ele.existingFlag]+'</td>' +
-                '<td>'+new Date(ele.applyDate).format("yyyy-MM-dd")+'</td>' +
+                '<td>'+$.formatDate(ele.applyDate)+'</td>' +
                 '<td>'+ele.mobileCity+'</td>' +
                 '<td>'+appStatus[ele.status]+'</td>' +
                 '<td>'+ele.creditor+'</td>' +
-                '<td>'+new Date(ele.createDate).format("yyyy-MM-dd")+'</td>' +
+                '<td>'+$.formatDate(ele.createDate)+'</td>' +
                 '</tr>';
         });
         $("#data-table").html(contentHtml);
@@ -80,8 +80,8 @@
         });
     };
     appSummary.formatDate = function(ms) {
-//        return new Date(ms).format("yyyy-MM-dd hh:mm:ss");
-        return new Date(ms).format("yyyy-MM-dd");
+//        return $.formatDate(ms).format("yyyy-MM-dd hh:mm:ss");
+        return $.formatDate(ms);
     };
     appSummary.generateParam = function() {
         var name = $("#name").val();
