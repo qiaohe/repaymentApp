@@ -2,11 +2,17 @@ package com.huayuan.repository.applicationloan;
 
 import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,10 +39,48 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public List<ApplicationSummary> findApplicationSummaries(final String q) {
-        return em.createQuery("select NEW com.huayuan.domain.credit.ApplicationSummary(appl.applicationNo, idcard.name, idcard.idNo,\n" +
-                "appl.existingFlag, appl.applyTime, ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv, TelephoneTV ttv, TelephoneVerification tv\n" +
-                "IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id\n " +
-                "appl.applicationNo = ttv.applicationNo and  appl.applicationNo = tv.applicationNo and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
+        String sql = "select distinct appl.APPL_NO,idcard.NAME,idcard.ID_NO,appl.EXISTING_FLAG,appl.APPLY_TIME,ma.CITY,appl.STATUS,apv.CREDITOR,appl.CREATE_TIME\n" +
+                " from APPL appl\n" +
+                " inner join APPROVAL apv on apv.APPL_NO = appl.APPL_NO\n" +
+                " inner join MEMBER mem on mem.ID = appl.MEMBER_ID\n" +
+                " inner join ID_CARD idcard on idcard.MEMBER_ID = mem.ID\n" +
+                " inner join VALUE_MOBILE_AREA ma on ma.N1_7 = SUBSTRING(mem.MOBILE,0,8)\n" +
+                " left join APPL_TV appltv on appltv.APPL_NO = appl.APPL_NO\n" +
+                " left join (select appl.APPL_NO,count(teletv.ID) as NUM from APPL appl,tele_tv teletv where appl.APPL_NO = teletv.APPL_NO group by appl.APPL_NO) as t1 on t1.APPL_NO = appl.APPL_NO\n" +
+                " where " + q;
+        List<Object> resultList = em.createNativeQuery(sql).getResultList();
+
+        if (resultList == null || resultList.isEmpty()) {
+            return null;
+        }
+        List<ApplicationSummary> applicationSummaryList = new ArrayList<ApplicationSummary>();
+        ApplicationSummary applicationSummary = null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i = 0; i < resultList.size(); i++) {
+            Object[] objs = (Object[]) resultList.get(i);
+            applicationSummary = new ApplicationSummary();
+            applicationSummary.setAppNo(objs[0].toString());
+            applicationSummary.setName(objs[1].toString());
+            applicationSummary.setIdCardNo(objs[2].toString());
+            applicationSummary.setExistingFlag(Integer.valueOf(objs[3].toString()));
+            applicationSummary.setMobileCity(objs[5].toString());
+            applicationSummary.setStatus(Integer.valueOf(objs[6].toString()));
+            applicationSummary.setCreditor(objs[7].toString());
+            try {
+                Date appDate = simpleDateFormat.parse(objs[4].toString());
+                applicationSummary.setApplyDate(appDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                Date createDate = simpleDateFormat.parse(objs[8].toString());
+                applicationSummary.setCreateDate(createDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            applicationSummaryList.add(applicationSummary);
+        }
+        return applicationSummaryList;
     }
 
     public Object findApplicationBy(final String appNo) {
