@@ -10,6 +10,7 @@ import com.huayuan.domain.credit.TvQuestionGenerator;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.*;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.MemberStatusEnum;
 import com.huayuan.integration.wechat.domain.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.account.LoanRepository;
@@ -94,6 +95,33 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return MessageFormat.format(tvApproveResultTemplate, baseUrl, approval.getApplication().getMember().getId(), status);
     }
 
+    private void updateMemberStatusAsReject(Approval approval) {
+        Member member = approval.getApplication().getMember();
+        if (approval.isRejectNeeded()) {
+            member.setStatus(MemberStatusEnum.REJECTED);
+            if (approval.isBlockXNeeded()) {
+                member.setBlockCode("X");
+                member.setBlockTime(new Date());
+            }
+            member.setCreateTime(new Date());
+        }
+        memberRepository.save(member);
+    }
+
+    private void updateCreditResultByLastApplication(Approval approval) {
+        CreditResult creditResult = approval.getApplication().getMember().getCreditResult();
+        creditResult.setCreateTime(new Date());
+        creditResult.setLastApplicationNo(approval.getApplication());
+        creditResult.setLastDecision(approval.getDecision());
+        creditResult.setLastPbocBackTime(approval.getApplication().getaScore().getPbocBackTime());
+        creditResult.setLastRating(approval.getApplication().getaScore().getRating());
+        creditResult.setLastReason1(approval.getReason1());
+        creditResult.setLastReason2(approval.getReason2());
+        creditResult.setLastReason3(approval.getReason3());
+        creditResult.setLastScore(approval.getApplication().getaScore().getScore());
+        creditResultRepository.save(creditResult);
+    }
+
     @Override
     public Approval approve(Approval approval) {
         final Application application = approval.getApplication();
@@ -106,6 +134,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         account.setCrl(approval.getSugCrl());
         if (approval.isApproved()) account.setCrlUsed(account.getCrlUsed() + approval.getAmt());
         accountRepository.save(account);
+        updateCreditResultByLastApplication(approval);
+        updateMemberStatusAsReject(approval);
         Approval result = approvalRepository.save(approval);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);

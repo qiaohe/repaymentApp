@@ -17,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "MEMBER")
 public class Member implements Serializable {
+    public static final String[] REJECT_BLOCK_CODE_ARRAY = new String[] {"D102","D108","D801","D100","D109","D101","D105"};
 
     private static final long serialVersionUID = 4541559421896160856L;
     @Id

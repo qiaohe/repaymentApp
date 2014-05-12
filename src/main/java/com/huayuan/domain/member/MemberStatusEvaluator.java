@@ -1,7 +1,6 @@
 package com.huayuan.domain.member;
 
 import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
