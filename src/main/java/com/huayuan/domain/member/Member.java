@@ -17,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "MEMBER")
 public class Member implements Serializable {
+    public static final String[] REJECT_BLOCK_CODE_ARRAY = new String[] {"D102","D108","D801","D100","D109","D101","D105"};
 
     private static final long serialVersionUID = 4541559421896160856L;
     @Id
@@ -92,6 +93,11 @@ public class Member implements Serializable {
 
     @Column(name = "PRE_RATING")
     private String preRating;
+
+    @Column(name = "BLOCK_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date blockTime;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
@@ -318,6 +324,14 @@ public class Member implements Serializable {
         this.preRating = preRating;
     }
 
+    public Date getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(Date blockTime) {
+        this.blockTime = blockTime;
+    }
+
     public void addCreditCard(CreditCard creditCard) {
         if (!creditCards.contains(creditCard)) {
             creditCards.add(creditCard);
@@ -379,6 +393,7 @@ public class Member implements Serializable {
         this.creditResult = creditResult;
     }
 
+    @JsonIgnore
     public boolean isDeclined() {
         return "X".equalsIgnoreCase(blockCode) || creditResult.isDeclined();
     }

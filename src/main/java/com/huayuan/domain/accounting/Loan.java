@@ -22,7 +22,7 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BID")
     private Long id;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "APP_NO")
     @JsonIgnore
     private Application application;
@@ -253,7 +253,6 @@ public class Loan {
         return application.getaScore().getRating();
     }
 
-    @Transient
     public String getApplicationNo() {
         return this.getApplication().getApplicationNo();
     }

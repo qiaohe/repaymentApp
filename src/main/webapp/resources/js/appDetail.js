@@ -2,7 +2,8 @@
 // START
     var appDetail = {},
         creditPath = "api/credit",
-        imgPrefix = "",
+        memberPath = "api/members",
+        imgPrefix = "api/resources/idcard/",
         tvResult = {
             "0": "不通过",
             "1": "通过",
@@ -49,6 +50,10 @@
             "0": "新用户",
             "1": "老用户-前次退件",
             "2": "老用户-前次过件"
+        },
+        conflictMap = {
+            "0": "不一致",
+            "1": "一致"
         };
     appDetail.init = function () {
         this.initEvent();
@@ -69,6 +74,24 @@
         appDetail.initTvData();
     };
     appDetail.initEvent = function () {
+        // show idcard image
+        $("#idcardPositive").click(function () {
+            $("#idcardPositiveImg").show();
+            var $idcardPositiveImg = $("#idcardPositiveImg");
+            if ($idcardPositiveImg.is(":visible")) {
+                $idcardPositiveImg.hide();
+            } else {
+                $idcardPositiveImg.show();
+            }
+        });
+        $("#idcardNegative").click(function () {
+            var $idcardNegativeImg = $("#idcardNegativeImg");
+            if ($idcardNegativeImg.is(":visible")) {
+                $idcardNegativeImg.hide();
+            } else {
+                $idcardNegativeImg.show();
+            }
+        });
         // 工作资料
         $("#switch-work-res").find(".switch-res-item:visible").each(function (i, e) {
             $(e).click(function () {
@@ -251,8 +274,14 @@
         $("#validityEnd").val($.formatDate(idCard.validThru));
         $("#idcardCreateTime").val($.formatDate(idCard.createTime));
 
-        $("#idcardPositiveImg").attr("src", imgPrefix + idCard.imageFront);
-        $("#idcardNegativeImg").attr("src", imgPrefix + idCard.imageBack);
+        if (idCard.imageFront) {
+//            $("#idcardPositiveImg").attr("src", imgPrefix + idCard.imageFront);
+            $("#idcardPositiveImg").attr("src", imgPrefix + "test.jpg");
+        }
+        if (idCard.imageBack) {
+//            $("#idcardNegativeImg").attr("src", imgPrefix + idCard.imageBack);
+            $("#idcardPositiveImg").attr("src", imgPrefix + "test.jpg");
+        }
         // 信用卡信息
         appDetail.loadCredits(member.creditCards);
         // 账单信息
@@ -277,9 +306,9 @@
         $("#phone-at-work").val(pboc.officeTelephoneNo);
         $("#phone-home").val(pboc.officeTelephoneNo);
         $("#education").val(pboc.eduDegree);
-        $("#address-conflict").val(pboc.registeredAddress);
+        $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
         $("#live-city").val(pboc.homeCity);
-        $("#live-address").val(pboc.homeAddress);
+        $("#live-address").val(pboc.homeAddress).attr("title", pboc.homeAddress);
         $("#live-status").val(pboc.homeResidenceType);
         $("#update-date").val(pboc.addressGetTime);
         $("#mate-name").val(pboc.partnerName);
@@ -288,12 +317,12 @@
         // 工作资料
         // 工作信息
         $("#work-at").val(pboc.employer);
-        $("#profession").val(pboc.employerCity);
+        $("#profession").val(pboc.occupation);
         $("#industry").val(pboc.industry);
         $("#industry-catography").val(pboc.industryAddress);
-        $("#work-address").val(pboc.employerAddress);
+        $("#work-address").val(pboc.employerAddress).attr("title", pboc.employerAddress);
         $("#work-city").val(pboc.employerCity);
-        $("#position").val(pboc.occupation);
+        $("#position").val(pboc.duty);
         $("#level").val(pboc.title);
         $("#since").val(pboc.startYear);
         $("#working-age").val(pboc.industryYear);
@@ -306,12 +335,12 @@
             $("#base").val(pboc.yOwnBasicMoney);
             $("#pension-state").val(pboc.yState);
             $("#amount-each-2").val(pboc.yMoney);
-            $("#corp-conflict-2").val(pboc.yOrganName);
+            $("#corp-conflict-2").val(conflictMap[pboc.yOrganName]);
             $("#reason-suspension").val(pboc.pauseReason);
-            $("#update-date-2").val($.formatDate(pboc.yGetTime));
+            $("#update-date-2").val(pboc.yGetTime);
         } else {
             $("#pension-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': '18%'});
+            $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 250});
         }
         // 公积金缴纳记录
         if (pboc.getTime) {
@@ -320,11 +349,12 @@
             $("#fund-to").val(pboc.toMonth);
             $("#fund-state").val(pboc.state);
             $("#amount-each-3").val(pboc.pay);
-            $("#corp-conflict-3").val(pboc.organName);
-            $("#update-date-3").val($.formatDate(pboc.getTime));
+            $("#corp-conflict-3").val(conflictMap[pboc.organName]);
+            $("#update-date-3").val(pboc.getTime);
         } else {
             $("#fund-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(2)").hide().prev().css({"border-right": 'none'}).end().end().css({'width': '18%'});
+            $("#switch-work-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-work-res").width() - 150});
+            $("#switch-work-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
         }
 
         // 银行资料
@@ -336,13 +366,25 @@
         $("#delayed-current").val(pboc.cardOverDuePerYear);
         $("#delayed-times").val(pboc.cardOverDueNum);
         // 逾期信息-贷款
-        $("#num-delayed").val(pboc.loanCount);
-        $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
-        $("#time-delayed").val(pboc.loanMaxDuration);
+        if (pboc.loanCount) {
+            $("#num-delayed").val(pboc.loanCount);
+            $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
+            $("#time-delayed").val(pboc.loanMaxDuration);
+        } else {
+            $("#delay-res-1").hide();
+            $("#switch-delay-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 180});
+        }
         // 逾期信息-准贷记卡
-        $("#account-num-3").val(pboc.semiCardCount);
-        $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
-        $("#overdraft-time").val(pboc.semiCardMaxDuration);
+        if (pboc.semiCardCount) {
+            $("#account-num-3").val(pboc.semiCardCount);
+            $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
+            $("#overdraft-time").val(pboc.semiCardMaxDuration);
+        } else {
+            $("#delay-res-2").hide();
+            $("#switch-delay-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-delay-res").width() - 100});
+            $("#switch-delay-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
+        }
+
         // 信用卡信息汇总
         $("#num-corp").val(pboc.cardOrg);
         $("#num-accounts").val(pboc.cardAccountCount);
@@ -353,19 +395,30 @@
         $("#credit-used").val(pboc.cardUsedCreditLimit);
         $("#used-average").val(pboc.cardLatest6MonthUsedAvgAmount);
         // 贷款信息汇总
-        $("#num-loan").val(pboc.loanAccountCount);
-        $("#amount-loan").val(pboc.loanCreditLimit);
-        $("#amount-remaining").val(pboc.loanBalance);
-        $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
+        if (pboc.loanAccountCount) {
+            $("#num-loan").val(pboc.loanAccountCount);
+            $("#amount-loan").val(pboc.loanCreditLimit);
+            $("#amount-remaining").val(pboc.loanBalance);
+            $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
+        } else {
+            $("#delay-res-1").hide();
+            $("#switch-info-summary").find(".switch-res-item:eq(1)").hide().end().css({'width': 320});
+        }
         // 准贷记卡信息汇总
-        $("#num-corp-3").val(pboc.semiCardOrg);
-        $("#num-accounts-3").val(pboc.semiCardAccountCount);
-        $("#amount-credit-3").val(pboc.semicardCreditLimit);
-        $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
-        $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
-        $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
-        $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
-        $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
+        if (pboc.semiCardAccountCount) {
+            $("#num-corp-3").val(pboc.semiCardOrg);
+            $("#num-accounts-3").val(pboc.semiCardAccountCount);
+            $("#amount-credit-3").val(pboc.semicardCreditLimit);
+            $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
+            $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
+            $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
+            $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
+            $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
+        } else {
+            $("#delay-res-2").hide();
+            $("#switch-info-summary").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-info-summary").width() - 170});
+            $("#switch-info-summary").find(".switch-res-item:visible:last").css({"border-right": "none"});
+        }
         // 人行查询次数
         $("#search-time").val(pboc.cardQueryLatest6Month);
 
@@ -409,10 +462,13 @@
         // 微信照会
         var telephoneVerification = application.telephoneVerification;
         $("#tv-type").val(tvType[telephoneVerification.type]);
-        $("#live-address-question").val(telephoneVerification.tvQues1);
-        $("#answer1").val(telephoneVerification.tvMemAns1);
-        $("#work-address-question").val(telephoneVerification.tvQues2);
-        $("#answer2").val(telephoneVerification.tvMemAns2);
+        $("#live-address-question").val(telephoneVerification.tvQues1).attr("title", telephoneVerification.tvQues1);
+        $("#answer1").val(telephoneVerification.tvMemAns1).attr("title", telephoneVerification.tvMemAns1);
+        ;
+        $("#work-address-question").val(telephoneVerification.tvQues2).attr("title", telephoneVerification.tvQues2);
+        ;
+        $("#answer2").val(telephoneVerification.tvMemAns2).attr("title", telephoneVerification.tvMemAns2);
+        ;
         $("#result-table").val(tvDicision[telephoneVerification.decision]);
         $("#wc-create-time").val($.formatDate(telephoneVerification.createTime));
         // 电话照会

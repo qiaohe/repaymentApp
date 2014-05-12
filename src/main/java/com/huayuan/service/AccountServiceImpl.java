@@ -3,8 +3,7 @@ package com.huayuan.service;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.repository.account.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +29,10 @@ public class AccountServiceImpl implements AccountService {
     private RePayRepository rePayRepository;
     @Inject
     private LoanSummaryBuilder loanSummaryBuilder;
+    @Value("${weChat.bindCreditCardSuccess}")
+    private String bindCreditCardSuccess;
+    @Value("${weChat.bindCreditCardFail}")
+    private String bindCreditCardFail;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -129,22 +132,5 @@ public class AccountServiceImpl implements AccountService {
         loan.setAmt(application.getApproval().getAmt());
         loan.setStartDate(application.getApproval().getCreateTime());
         return createLoan(loan);
-    }
-
-
-    public static void main(String[] args) {
-
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
-        ApplicationService applicationService = applicationContext.getBean("applicationService", ApplicationService.class);
-//        Loan loan = new Loan();
-//        loan.setMember(memberService.find(1l));
-//        loan.setApplication(applicationService.getApplication("2014042110000000"));
-//        loan.setTerm(3);
-//        loan.setApr(0.15d);
-//        loan.setAmt(102d);
-//        loan.setStartDate(new Date());
-        System.out.println(accountService.review(1l));
     }
 }

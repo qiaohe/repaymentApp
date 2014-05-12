@@ -23,9 +23,10 @@
             rp.member.id=?2 order by rp.dueDate, rp.dueAmt
         </query>
     </named-query>
-
-
-
+    <named-query name="RepayPlan.findByLoanId">
+        <query>SELECT rp FROM RepayPlan rp WHERE rp.loan.id =?1 order by rp.dueDate asc
+        </query>
+    </named-query>
     <named-query name="Pboc.findByStatusWithSummary">
         <query>SELECT NEW com.huayuan.domain.credit.PbocSummary(pb.id, pb.certNo, pb.name, pb.createTime,
             pb.keyiner, pb.risk, pb.status) FROM Pboc pb where pb.status in (2,3)

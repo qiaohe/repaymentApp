@@ -38,7 +38,6 @@ public class Pay implements Serializable {
     @Column(name = "CONFORMED_DATE")
     private Date confirmDate;
     @Column(name = "ERROR_MESSAGE")
-
     private String errorMessage;
 
     public Pay() {
