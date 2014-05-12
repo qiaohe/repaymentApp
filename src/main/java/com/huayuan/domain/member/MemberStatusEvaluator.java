@@ -52,7 +52,6 @@ public class MemberStatusEvaluator {
             if (application.getStatus() == 7) return "7";
         }
         if (StringUtils.containsAny(member.getBlockCode(), new char[]{'\u0000', 'B', 'C'})) return "8";
-        CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if (member.getStatus().equals(MemberStatusEnum.REJECTED)) {
             if (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'})) return "11";
             if (member.isDeclined()) return "12";
