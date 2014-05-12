@@ -93,6 +93,11 @@ public class Member implements Serializable {
     @Column(name = "PRE_RATING")
     private String preRating;
 
+    @Column(name = "BLOCK_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date blockTime;
+
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
     private Set<CreditCard> creditCards = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "member")
@@ -318,6 +323,14 @@ public class Member implements Serializable {
         this.preRating = preRating;
     }
 
+    public Date getBlockTime() {
+        return blockTime;
+    }
+
+    public void setBlockTime(Date blockTime) {
+        this.blockTime = blockTime;
+    }
+
     public void addCreditCard(CreditCard creditCard) {
         if (!creditCards.contains(creditCard)) {
             creditCards.add(creditCard);
@@ -379,6 +392,7 @@ public class Member implements Serializable {
         this.creditResult = creditResult;
     }
 
+    @JsonIgnore
     public boolean isDeclined() {
         return "X".equalsIgnoreCase(blockCode) || creditResult.isDeclined();
     }

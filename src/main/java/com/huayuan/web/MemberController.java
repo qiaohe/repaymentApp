@@ -94,9 +94,8 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
-    public
     @ResponseBody
-    IdCard getIdCard(@PathVariable Long id) {
+    public IdCard getIdCard(@PathVariable Long id) {
         Member member = memberService.find(id);
         return member.getIdCard();
     }

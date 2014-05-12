@@ -38,9 +38,4 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 "IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id\n " +
                 "appl.applicationNo = ttv.applicationNo and  appl.applicationNo = tv.applicationNo and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and " + q).getResultList();
     }
-
-    public Object findApplicationBy(final String appNo) {
-        return null;
-    }
-
 }
