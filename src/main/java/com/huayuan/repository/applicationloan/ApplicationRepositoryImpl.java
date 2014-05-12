@@ -82,9 +82,4 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
         }
         return applicationSummaryList;
     }
-
-    public Object findApplicationBy(final String appNo) {
-        return null;
-    }
-
 }

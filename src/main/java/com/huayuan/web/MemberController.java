@@ -6,7 +6,6 @@ import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
-import com.huayuan.repository.credit.PbocRepository;
 import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.SmsVerificationCodeService;
@@ -94,9 +93,8 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/{id}/idCard", method = RequestMethod.GET)
-    public
     @ResponseBody
-    IdCard getIdCard(@PathVariable Long id) {
+    public IdCard getIdCard(@PathVariable Long id) {
         Member member = memberService.find(id);
         return member.getIdCard();
     }

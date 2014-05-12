@@ -1,6 +1,8 @@
 package com.huayuan.domain.loanapplication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.domain.member.Member;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -223,12 +225,26 @@ public class Approval {
         this.sugCrl = sugCrl;
     }
 
+    @JsonIgnore
     public boolean isDeclined() {
         return "D".equalsIgnoreCase(decision);
     }
 
+    @JsonIgnore
     public boolean isApproved() {
         return "A".equalsIgnoreCase(decision);
+    }
+
+    @JsonIgnore
+    public boolean isRejectNeeded() {
+        return StringUtils.endsWithAny(reason1, Member.REJECT_BLOCK_CODE_ARRAY)
+                || StringUtils.endsWithAny(reason2, Member.REJECT_BLOCK_CODE_ARRAY)
+                || StringUtils.endsWithAny(reason3, Member.REJECT_BLOCK_CODE_ARRAY);
+    }
+
+    @JsonIgnore
+    public boolean isBlockXNeeded() {
+        return StringUtils.endsWithAny("D105", new String[]{reason1, reason2, reason3});
     }
 
 }
