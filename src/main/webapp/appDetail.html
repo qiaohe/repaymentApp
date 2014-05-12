@@ -43,10 +43,10 @@
 </div>
 
 <div class="itembox h1-info">身份证信息</div>
-<input type="button" id="idcardPositive" style="margin:25px auto 25px 50px" value="身份证正面影像">
-<img src="test.png" id="idcardPositiveImg" style="position:absolute; top:25px; left:40%; display:none">
-<input type="button" id="idcardNegative" style="margin:25px auto 25px 50px" value="身份证反面影像">
-<img src="test.png" id="idcardNegativeImg" style="position:absolute; top:25px; left:40%; display:none">
+<input type="button" id="idcardPositive" style="margin:30px auto 25px 30px;cursor: pointer;" value="身份证正面影像">
+<img src="test.png" id="idcardPositiveImg" style="position:absolute; top:30px; left:40%; display:none">
+<input type="button" id="idcardNegative" style="margin:30px auto 25px 30px;cursor: pointer;" value="身份证反面影像">
+<img src="test.png" id="idcardNegativeImg" style="position:absolute; top:30px; left:40%; display:none">
 
 <div class="itemDiv" style="height: 65px">
     <div class="grid-2">身份证号码</div>
@@ -139,7 +139,7 @@
         <div class="grid-2">申请还款方式</div>
         <div class="grid-2"><input type="text" id="applType" readonly="readonly"></div>
         <div class="grid-2">申请说明</div>
-        <div class="grid-2"><input type="text" id="applNote" readonly="readonly" style="width: 400px;"></div>
+        <div class="grid-2"><input type="text" id="applNote" readonly="readonly" style="width: 600px;"></div>
     </div>
     <div class="single-item">
         <div class="grid-2">创建时间</div>
@@ -150,6 +150,8 @@
 </div>
 
 <div class="itembox h1-info">基础资料</div>
+<input type="button" id="rhBaseInfo" style="margin:30px auto 5px 30px;cursor: pointer;" value="人行信息">
+
 <div class="itembox h2-info" style="margin-top: 0px;">基础信息</div>
 
 <div class="block" style="height:60px">
@@ -193,8 +195,9 @@
 </div>
 
 <div class="itembox h1-info">工作资料</div>
+<input type="button" id="rhWorkInfo" style="margin:30px auto 5px 30px;cursor: pointer;" value="人行信息">
 
-<div class="itembox switch-res" id="switch-work-res" style="width: 28%;margin-left: 0px;clear: both;">
+<div class="itembox switch-res" id="switch-work-res" style="width: 400px;margin-left: 0px;clear: both;">
     <div class="switch-res-item" style="border-right: 1px solid #000000;">工作信息</div>
     <div class="switch-res-item" style="border-right: 1px solid #000000;">养老金缴纳记录</div>
     <div class="switch-res-item">公积金缴纳记录</div>
@@ -213,7 +216,7 @@
     </div>
     <div class="single-item">
         <div class="grid-2">工作地址</div>
-        <div class="grid-2"><input type="text" id="work-address" readonly="readonly" style="width: 280px;"></div>
+        <div class="grid-2"><input type="text" id="work-address" readonly="readonly" style="width: 300px;"></div>
         <div class="grid-2">工作城市</div>
         <div class="grid-2"><input type="tel" id="work-city" readonly="readonly"></div>
         <div class="grid-2">职务</div>
@@ -225,7 +228,7 @@
         <div class="grid-2">进入本单位年份</div>
         <div class="grid-2"><input type="text" id="since" readonly="readonly"></div>
         <div class="grid-2">工龄</div>
-        <div class="grid-2"><input type="text" id="working-age" readonly="readonly"></div>
+        <div class="grid-2"><input type="text" id="working-age" readonly="readonly" style="width: 80px;">年</div>
         <div class="grid-2">最早工作时间</div>
         <div class="grid-2"><input type="text" id="works-since" readonly="readonly"></div>
         <div class="grid-2">信息更新日期</div>
@@ -234,42 +237,54 @@
 </div>
 
 <div id="pension-record" class="block" style="height:105px;display: none;">
-    <div class="grid-2">参保日期</div>
-    <div class="grid-2"><input type="text" id="pension-date" readonly="readonly"></div>
-    <div class="grid-2">参加工作月份</div>
-    <div class="grid-2"><input type="text" id="month-in-work" readonly="readonly"></div>
-    <div class="grid-2">个人缴费基数</div>
-    <div class="grid-2"><input type="text" id="base" readonly="readonly"></div>
-    <div class="grid-2">缴费状态</div>
-    <div class="grid-2"><input type="text" id="pension-state" readonly="readonly"></div>
-    <div class="grid-2">本月缴费金额</div>
-    <div class="grid-2"><input type="text" id="amount-each-2" readonly="readonly">元</div>
-    <div class="grid-2">缴费单位与工作单位比对不一致</div>
-    <div class="grid-2"><input type="text" id="corp-conflict-2" readonly="readonly"></div>
-    <div class="grid-2">中断或终止缴费原因</div>
-    <div class="grid-2"><input type="text" id="reason-suspension" readonly="readonly" style="width: 280px;"></div>
-    <div class="grid-2">信息更新日期</div>
-    <div class="grid-2"><input type="text" id="update-date-2" readonly="readonly"></div>
+    <div class="single-item">
+        <div class="grid-2">参保日期</div>
+        <div class="grid-2"><input type="text" id="pension-date" readonly="readonly"></div>
+        <div class="grid-2">参加工作月份</div>
+        <div class="grid-2"><input type="text" id="month-in-work" readonly="readonly"></div>
+        <div class="grid-2">个人缴费基数</div>
+        <div class="grid-2"><input type="text" id="base" readonly="readonly"></div>
+        <div class="grid-2">缴费状态</div>
+        <div class="grid-2"><input type="text" id="pension-state" readonly="readonly"></div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">本月缴费金额</div>
+        <div class="grid-2"><input type="text" id="amount-each-2" readonly="readonly">元</div>
+        <div class="grid-2">缴费单位与工作单位比对不一致</div>
+        <div class="grid-2"><input type="text" id="corp-conflict-2" readonly="readonly"></div>
+        <div class="grid-2">信息更新日期</div>
+        <div class="grid-2"><input type="text" id="update-date-2" readonly="readonly"></div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">中断或终止缴费原因</div>
+        <div class="grid-2"><input type="text" id="reason-suspension" readonly="readonly" style="width: 600px;"></div>
+    </div>
 </div>
 
 <div id="fund-record" class="block" style="height:105px;display: none;">
-    <div class="grid-2">参缴日期</div>
-    <div class="grid-2"><input type="text" id="fund-date" readonly="readonly"></div>
-    <div class="grid-2">初缴月份</div>
-    <div class="grid-2"><input type="text" id="fund-since" readonly="readonly"></div>
-    <div class="grid-2">缴至月份</div>
-    <div class="grid-2"><input type="text" id="fund-to" readonly="readonly"></div>
-    <div class="grid-2">缴费状态</div>
-    <div class="grid-2"><input type="text" id="fund-state" readonly="readonly"></div>
-    <div class="grid-2">月缴存额</div>
-    <div class="grid-2"><input type="text" id="amount-each-3" readonly="readonly">元</div>
-    <div class="grid-2">缴费单位与工作单位比对不一致</div>
-    <div class="grid-2"><input type="text" id="corp-conflict-3" readonly="readonly"></div>
-    <div class="grid-2">信息更新日期</div>
-    <div class="grid-2"><input type="text" id="update-date-3" readonly="readonly"></div>
+    <div class="single-item">
+        <div class="grid-2">参缴日期</div>
+        <div class="grid-2"><input type="text" id="fund-date" readonly="readonly"></div>
+        <div class="grid-2">初缴月份</div>
+        <div class="grid-2"><input type="text" id="fund-since" readonly="readonly"></div>
+        <div class="grid-2">缴至月份</div>
+        <div class="grid-2"><input type="text" id="fund-to" readonly="readonly"></div>
+        <div class="grid-2">缴费状态</div>
+        <div class="grid-2"><input type="text" id="fund-state" readonly="readonly"></div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">月缴存额</div>
+        <div class="grid-2"><input type="text" id="amount-each-3" readonly="readonly">元</div>
+        <div class="grid-2">缴费单位与工作单位比对不一致</div>
+        <div class="grid-2"><input type="text" id="corp-conflict-3" readonly="readonly"></div>
+        <div class="grid-2">信息更新日期</div>
+        <div class="grid-2"><input type="text" id="update-date-3" readonly="readonly"></div>
+    </div>
 </div>
 
-<div class="itembox h1-info">银行资料</div>
+<div class="itembox h1-info">人行资信信息</div>
+<input type="button" id="rhResInfo" style="margin:30px auto 5px 30px;cursor: pointer;" value="人行资信信息">
+
 <div class="itembox h2-info" style="margin-top: 0px;">银行往来</div>
 <div class="block" style="height: 40px;">
     <div class="grid-2">最早信贷记录时间</div>
@@ -277,7 +292,7 @@
 </div>
 <div class="itembox h2-info">逾期信息</div>
 
-<div class="itembox switch-res" id="switch-delay-res" style="width: 16%;margin-left: 0px;clear: both;">
+<div class="itembox switch-res" id="switch-delay-res" style="width: 230px;margin-left: 0px;clear: both;">
     <div class="switch-res-item" style="border-right: 1px solid #000000;">信用卡</div>
     <div class="switch-res-item" style="border-right: 1px solid #000000;">贷款</div>
     <div class="switch-res-item">准贷记卡</div>
@@ -320,7 +335,7 @@
 
 <div class="itembox h2-info">信息汇总</div>
 
-<div class="itembox switch-res" id="switch-info-summary" style="width: 32%;margin-left: 0px;clear: both;">
+<div class="itembox switch-res" id="switch-info-summary" style="width: 450px;margin-left: 0px;clear: both;">
     <div class="switch-res-item" style="border-right: 1px solid #000000;">信用卡信息汇总</div>
     <div class="switch-res-item" style="border-right: 1px solid #000000;">贷款信息汇总</div>
     <div class="switch-res-item">准贷记卡信息汇总</div>
@@ -383,34 +398,33 @@
 
 <div class="itembox h1-info">账务信息</div>
 <div class="block">
-    <div class="audit-item" style="height: 105px;">
+    <div class="audit-item" style="height: 70px;">
         <div class="single-item">
             <div class="grid-2">贷款笔数</div>
-            <div class="grid-2"><input type="text" id="loan-times" readonly="readonly"></div>
+            <div class="grid-2"><input type="text" id="loan-times" readonly="readonly" style="width: 60px;"></div>
             <div class="grid-2">贷款金额</div>
             <div class="grid-2"><input type="text" id="loan-amount" readonly="readonly">元</div>
             <div class="grid-2">逾期天数</div>
             <div class="grid-2"><input type="text" id="delay-days" readonly="readonly"></div>
             <div class="grid-2">最大逾期天数</div>
             <div class="grid-2"><input type="text" id="max-delay-days" readonly="readonly"></div>
-        </div>
-        <div class="single-item">
             <div class="grid-2">状态</div>
             <div class="grid-2"><input type="text" id="loan-status" readonly="readonly"></div>
-            <div class="grid-2">正常</div>
-            <div class="grid-2"><input type="text" id="normal-times" readonly="readonly"></div>
-            <div class="grid-2">逾期</div>
-            <div class="grid-2"><input type="text" id="delay-times" readonly="readonly"></div>
-            <div class="grid-2">曾经逾期</div>
-            <div class="grid-2"><input type="text" id="before-delay-times" readonly="readonly"></div>
-            <div class="grid-2">结清</div>
-            <div class="grid-2"><input type="text" id="close-times" readonly="readonly"></div>
         </div>
         <div class="single-item">
+            <div class="grid-2">正常</div>
+            <div class="grid-2"><input type="text" id="normal-times" readonly="readonly" style="width: 60px;"></div>
+            <div class="grid-2">逾期</div>
+            <div class="grid-2"><input type="text" id="delay-times" readonly="readonly" style="width: 60px;"></div>
+            <div class="grid-2">曾经逾期</div>
+            <div class="grid-2"><input type="text" id="before-delay-times" readonly="readonly" style="width: 60px;">
+            </div>
+            <div class="grid-2">结清</div>
+            <div class="grid-2"><input type="text" id="close-times" readonly="readonly" style="width: 60px;"></div>
             <div class="grid-2">打呆</div>
-            <div class="grid-2"><input type="text" id="stay-times" readonly="readonly"></div>
+            <div class="grid-2"><input type="text" id="stay-times" readonly="readonly" style="width: 60px;"></div>
             <div class="grid-2">等待放款</div>
-            <div class="grid-2"><input type="text" id="wait-times" readonly="readonly"></div>
+            <div class="grid-2"><input type="text" id="wait-times" readonly="readonly" style="width: 60px;"></div>
         </div>
     </div>
 
@@ -575,10 +589,6 @@
         </select></div>
         <div class="grid-2">电话号码</div>
         <div class="grid-2"><input type="text" id="tv-phone" readonly="readonly" class="grey-input"></div>
-        <div class="grid-2">征信员问题</div>
-        <div class="grid-2"><input type="text" id="creditor-question" style="width: 300px;"></div>
-    </div>
-    <div class="single-item">
         <div class="grid-2">结果</div>
         <div class="grid-2"><select id="tvDecision">
             <option value="0">0不通过</option>
@@ -586,17 +596,21 @@
             <option value="2">2未接通</option>
             <option value="3">3非本人</option>
         </select></div>
-        <div class="grid-2"><input type="button" value="照会完成" id="doTv"></div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">征信员问题</div>
+        <div class="grid-2"><input type="text" id="creditor-question" style="width: 600px;"></div>
+        <div class="grid-2"><input type="button" value="照会完成" id="doTv" style="float: right;"></div>
     </div>
 </div>
 <div class="tv-list">
-    <table id="tv-list-table">
+    <table id="tv-list-table" style="width: 90%;">
         <tr>
-            <td style="width: 16%;">号码类型</td>
-            <td style="width: 20%;">电话号码</td>
-            <td style="width: 40%;">征信员问题</td>
-            <td style="width: 12%;">结果</td>
-            <td style="width: 20%;">创建时间</td>
+            <td style="width: 10%;">号码类型</td>
+            <td style="width: 15%;">电话号码</td>
+            <td style="width: 50%;">征信员问题</td>
+            <td style="width: 10%;">结果</td>
+            <td style="width: 15%;">创建时间</td>
         </tr>
     </table>
 </div>
@@ -622,8 +636,8 @@
             <div class="grid-2"><input type="text" id="borrowing-limit">月</div>
             <div class="grid-2">审核结果</div>
             <div class="grid-2"><select id="applyResult">
-                <option value="A">过件</option>
-                <option value="D">退件</option>
+                <option value="A">通过</option>
+                <option value="D">拒绝</option>
             </select></div>
         </div>
         <div class="single-item">
