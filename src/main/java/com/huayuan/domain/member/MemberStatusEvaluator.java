@@ -45,8 +45,8 @@ public class MemberStatusEvaluator {
             Application application = applications.get(0);
             if (new IntRange(0, 4).containsInteger(application.getStatus())) return "4";
             if (application.getStatus() == 5 && !member.getStatus().equals(MemberStatusEnum.REJECTED)) {
-                if (application.getApproval().getDecision().equals("A")) return "5.1";
-                if (application.getApproval().getDecision().equals("D")) return "5.2";
+                if (application.isApproved()) return "5.1";
+                if (application.isDeclined()) return "5.2";
             }
             if (application.getStatus() == 6) return "6";
             if (application.getStatus() == 7) return "7";
@@ -55,13 +55,7 @@ public class MemberStatusEvaluator {
         CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if (member.getStatus().equals(MemberStatusEnum.REJECTED)) {
             if (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'})) return "11";
-            if (member.getBlockCode().equals("X") || ((creditResult != null) && (creditResult.getLastReason1().contains("D100")
-                    || creditResult.getLastReason2().contains("D100") || creditResult.getLastReason3().contains("D100"))) ||
-                    ((creditResult != null) && (creditResult.getLastReason1().contains("D102")
-                            || creditResult.getLastReason2().contains("D102") || creditResult.getLastReason3().contains("D102"))) ||
-                    ((creditResult != null) && (creditResult.getLastReason1().contains("D108")
-                            || creditResult.getLastReason2().contains("D108") || creditResult.getLastReason3().contains("D108")))
-                    ) return "12";
+            if (member.isDeclined()) return "12";
         }
         if (accountRepository.findByMemberId(memberId).getCrlAvl() < 1000) return "9";
         return null;

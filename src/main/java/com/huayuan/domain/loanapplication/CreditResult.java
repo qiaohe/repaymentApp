@@ -2,6 +2,7 @@ package com.huayuan.domain.loanapplication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.Member;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Entity
 @Table(name = "LAST_CREDIT")
 public class CreditResult implements Serializable {
+    private static final String[] DECLINED_REASON_CODES = new String[]{"D100", "D102", "D108"};
     private static final long serialVersionUID = -3751309910672351082L;
 
     @Id
@@ -159,5 +161,11 @@ public class CreditResult implements Serializable {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public boolean isDeclined() {
+        return StringUtils.endsWithAny(lastReason1, DECLINED_REASON_CODES)
+                || StringUtils.endsWithAny(lastReason2, DECLINED_REASON_CODES)
+                || StringUtils.endsWithAny(lastReason3, DECLINED_REASON_CODES);
     }
 }

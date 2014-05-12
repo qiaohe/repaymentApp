@@ -378,4 +378,8 @@ public class Member implements Serializable {
     public void setCreditResult(CreditResult creditResult) {
         this.creditResult = creditResult;
     }
+
+    public boolean isDeclined() {
+        return "X".equalsIgnoreCase(blockCode) || creditResult.isDeclined();
+    }
 }
