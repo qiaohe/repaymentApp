@@ -210,6 +210,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     }
 
     public static void main(String[] args) {
+
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
         creditService.telephoneVerification();
