@@ -22,7 +22,7 @@ public interface AccountService {
 
     public List<Account> getAccounts();
 
-    public List<RepayPlan> getRepayPlan(Long accountId);
+    public List<RepayPlan> getRepayPlan(Long loanId);
 
     public List<Loan> getLoans();
 

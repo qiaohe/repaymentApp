@@ -55,7 +55,6 @@ public class Loan {
     @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
     private Pay pay;
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
@@ -252,9 +251,9 @@ public class Loan {
     public String getRating() {
         return application.getaScore().getRating();
     }
-
-    public String getApplicationNo() {
-        return this.getApplication().getApplicationNo();
-    }
+//
+//    public String getApplicationNo() {
+//        return this.getApplication().getApplicationNo();
+//    }
 }
 

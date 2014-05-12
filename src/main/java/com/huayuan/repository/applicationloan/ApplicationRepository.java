@@ -14,4 +14,5 @@ public interface ApplicationRepository extends JpaRepository<Application, String
     public List<Application> findByMemberId(Long memberId);
 
     public Application findByMemberIdAndStatusAndApproval_Decision(Long memberId, Integer status, String decision);
+
 }

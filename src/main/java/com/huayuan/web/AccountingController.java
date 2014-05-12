@@ -1,11 +1,9 @@
 package com.huayuan.web;
 
 import com.huayuan.domain.accounting.Loan;
-import com.huayuan.domain.accounting.Pricing;
-import com.huayuan.repository.account.PricingRepository;
-import com.huayuan.service.AccountService;
-import com.huayuan.service.MemberService;
 import com.huayuan.domain.accounting.LoanSummary;
+import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,5 +28,11 @@ public class AccountingController {
     @ResponseBody
     public LoanSummary getLoans(@PathVariable Long memberId) {
         return accountService.getLoansSummary(memberId);
+    }
+
+    @RequestMapping(value = "/loans/{loanId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<RepayPlan> getLoanBy(@PathVariable Long loanId) {
+        return accountService.getRepayPlan(loanId);
     }
 }
