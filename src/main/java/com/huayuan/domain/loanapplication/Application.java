@@ -2,10 +2,9 @@ package com.huayuan.domain.loanapplication;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.huayuan.domain.member.CreditCard;
-import com.huayuan.domain.member.CreditCardBill;
-import com.huayuan.domain.member.IdCard;
-import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.IntRange;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -82,6 +81,7 @@ public class Application {
     public Application() {
         this.createTime = new Date();
         this.applyTime = new Date();
+        status = 0;
     }
 
     public String getApplicationNo() {
@@ -228,4 +228,14 @@ public class Application {
         return getApproval().getDecision().equals("D");
     }
 
+    @Transient
+    @JsonIgnore
+    public String getWeChatStatus() {
+        if (status < 5) return "4";
+        if (status == 5 && !member.getStatus().equals(MemberStatusEnum.REJECTED)) {
+            if (isApproved()) return "5.1";
+            if (isDeclined()) return "5.2";
+        }
+        return String.valueOf(status);
+    }
 }
