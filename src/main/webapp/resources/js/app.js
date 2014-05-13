@@ -4,18 +4,18 @@
 "use strict";
 var config = {};
 config.api_path = "http://180.168.35.37/repaymentApp/api/";
-config.debug = false;
+config.debug = true;
 
 config.id_pattern = /(?:memberId=)\d+/;
-config.member_id = id_pattern.exec(window.location).toString();
+config.member_id = config.id_pattern.exec(window.location).toString();
 config.member_id = config.member_id.slice(9, config.member_id.length);
 
 config.status_pattern = /(?:status=)\d+/;
-config.status = status_pattern.exec(window.location).toString();
+config.status = config.status_pattern.exec(window.location).toString();
 config.status = config.status.slice(7, config.status.length);
 
 // config.member_id = "1";
-// config.status = "4";
+// config.status = "1";
 
 var member = {};
 var app = {};
@@ -27,7 +27,7 @@ member.status = config.status;
 // Actions
 function navigateThruStatus() {
 	if (member.status == "1"){
-		member.isnew = 1;
+		member.isnew = 0;
 	}
 	else if (member.status == "2") {
 		var tmp = localStorage.getItem("idcard_front");
@@ -67,10 +67,14 @@ function navigateThruStatus() {
 	else {
 		getMemberInfo();
 		getCreditLimit();
+		getAvlCrl();
 	}
 
 	if (member.status == "5.1") {
 		$.mobile.navigate("#congratulation");
+	}
+	else if (member.status == "12") {
+		$.mobile.navigate("#fail");
 	}
 }
 
@@ -102,7 +106,10 @@ function getCreditLimit() {
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
 		},
-		error: stdError
+		// error: stdError
+		error: function () {
+			alert(config.api_path + "members/" + member.id + "/crl");
+		}
 	});
 }
 
@@ -115,7 +122,10 @@ function getAvlCrl() {
 		success: function (text) {
 			member.avlcrl = text;
 		},
-		error: stdError
+		// error: stdError
+		error: function () {
+			alert(config.api_path + "members/" + member.id + "/avlCrl");
+		}
 	});
 }
 
@@ -147,7 +157,7 @@ function validateCardNo(num) {
 	if (l > 15) {
 		for (var i = 0; i < l; i++) {
 			var tmp = parseInt(num[i], 10);
-			if ((i % 2) !== 0) {
+			if ((i % 2) === 0) {
 				if (2 * tmp > 9) {
 					sum += (2 * tmp - 9);
 				}
@@ -172,7 +182,7 @@ function testLimit(obj) {
 		async: false,
 		contentType: "application/json",
 		data: JSON.stringify({
-			creditCarNo: obj.card_num,
+			creditCarNo: obj.card_num.replace(/ /g, ""),
 			industry: obj.industry,
 			education: obj.education,
 			email: obj.email,
@@ -183,9 +193,11 @@ function testLimit(obj) {
 		success: function (json) {
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
-			getAvlCrl();
+			member.anothertest = 0;
 		},
-		error: stdError
+		error: function () {
+			alert(config.api_path + "members/" + member.id);
+		}
 	});
 }
 
@@ -194,7 +206,9 @@ function getSIMDistrict(phone_num) {
 		url: config.api_path + "dict/mobileArea/" + phone_num,
 		type: "GET",
 		dataType: "text",
-		error: stdError
+		error: function () {
+			config.api_path + "dict/mobileArea/" + phone_num;
+		}
 	});
 }
 
@@ -203,7 +217,9 @@ function sendVarificationCode(phone_num) {
 		url: config.api_path + "sms/" + phone_num,
 		type: "GET",
 		dataType: "text",
-		error: stdError
+		error: function () {
+			config.api_path + "sms/" + phone_num;
+		}
 	});
 }
 
@@ -217,7 +233,9 @@ function matchVarificationCode(vcode, phone_num) {
 			code: vcode
 		}),
 		dataType: "text",
-		error: stdError
+		error: function () {
+			alert(config.api_path + "sms/" + phone_num + "/" + vcode);
+		}
 	});
 }
 
@@ -236,7 +254,9 @@ function countPayback(obj) {
 			$("#each-term").html(json.payBackEachTerm);
 			$("#saved").html(json.savedCost);
 		},
-		error: stdError
+		error: function () {
+			alert(config.api_path + "app/saveCost");
+		}
 	});
 }
 
@@ -251,7 +271,9 @@ function applyLoan(obj) {
 			memberId: member.id
 		}),
 		dataType: "text",
-		error: stdError
+		error: function () {
+			alert(config.api_path + "app");
+		}
 	});
 }
 
@@ -259,8 +281,11 @@ function addCreditCard(new_card) {
 	return $.ajax({
 		url: config.api_path + "members/" + member.id + "/creditCards/" + new_card,
 		type: "POST",
+		async: false,
 		dataType: "text",
-		error: stdError
+		error: function () {
+			alert(config.api_path + "members/" + member.id + "/creditCards/" + new_card);
+		}
 	});
 }
 
@@ -270,7 +295,9 @@ function loanToThisCard(card_num) {
 		type: "POST",
 		data: card_num,
 		dataType: "text",
-		error: stdError
+		error: function () {
+			alert(config.api_path + "app/members/" + member.id + "/creditCard/" + card_num);
+		}
 	});
 }
 
@@ -286,11 +313,6 @@ function addOptions(element_id, json) {
 navigateThruStatus();
 
 $(document).on("pagecreate", "#limit", function () {
-	if (member.isnew == 1) {
-		$("#limit .r-popup").popup("open");
-		$("#limit .bkg").show();
-	}
-
 	if (member.id_card) {
 		$("#front-num").html(member.id_card).css("color", "#222222");
 		$("#front-upload").attr("disabled", true);
@@ -347,25 +369,21 @@ $(document).on("pagecreate", "#limit", function () {
 		});
 	}
 
-	if (member.card_num) {
-		$("#credit-card").val(member.card_num);
+	if (!dict.bincode) {
+			getBincode();
 	}
 
-	$("#credit-card").keyup(function (e) {
+	$("#credit-card").on("keyup", function (e) {
 		var num = $(this).val();
 		if (num)
 			$("#credit-num").hide(); 
 		else
 			$("#credit-num").show();
 
-		if (!dict.bincode) {
-			getBincode();
-		}
-
 		if (num.length < 2) {
 			$("#tip-credit").attr("src", "resources/img/card_icon/card.png");
 		}
-		else if (num.length == 2) {
+		else if (num.length <= 6) {
 			if (num[0] == "4") {
 				$("#tip-credit").attr("src", "resources/img/card_icon/visa.png");
 			}
@@ -373,9 +391,9 @@ $(document).on("pagecreate", "#limit", function () {
 				$("#tip-credit").attr("src", "resources/img/card_icon/master.png");
 			}
 		}
-		else if (num.length == 7) {
+		else if (num.length > 6) {
 			$.each(dict.bincode, function (i, val) {
-				if (val.binNo.substr(0, 4) + " " + val.binNo.substr(4, val.binNo.length) == num) {
+				if (val.binNo == num.replace(/ /g, "").slice(0, 6)) {
 					switch(dict.bincode[i].bankNo){
 						case 1:
 							$("#tip-credit").attr("src", "resources/img/card_icon/icbc.png");
@@ -429,13 +447,13 @@ $(document).on("pagecreate", "#limit", function () {
 			});
 		}
 		
-		if(validateCardNo(num)) {
+		if(validateCardNo(num.replace(/ /g, ""))) {
 			localStorage.setItem("credit_card", num);
 			if (!member.anothertest) {
 				$("#next-step").attr("href", "#basic-info");
 			}
 			else{
-				$("#next-step").attr("href", "#result").click(function () {
+				$("#next-step").attr("href", "#result").off().click(function () {
 					var obj = {};
 					obj.card_num = num;
 					obj.industry = member.industry;
@@ -447,13 +465,33 @@ $(document).on("pagecreate", "#limit", function () {
 				});
 			}
 		}
-		else
+		else {
 			$("#next-step").attr("href", "#");
+		}
 
-		if (num.length % 5 == 4 && e.keyCode != 8) {
+		if (num.replace(/ /g, "").length % 4 === 0 && e.keyCode != 8) {
 			$(this).val(num + " ");
 		}
 	});
+
+	$("#credit-card").on("paste", function () {
+		$(this).trigger("keyup");
+	});
+
+	if (member.card_num) {
+		$("#credit-card").val(member.card_num).trigger("keyup");
+	}
+});
+
+$(document).on("pageshow", "#limit", function(){
+	if (member.anothertest) {
+		$("#credit-card").focus().val("");
+		$("#tip-credit").attr("src", "resources/img/card_icon/card.png");
+	}
+
+	if (member.isnew) {
+		$("#limit .r-popup").popup("open");
+	}
 });
 
 $(document).on("pagecreate", "#basic-info", function(){
@@ -526,7 +564,7 @@ $(document).on("pagecreate", "#basic-info", function(){
 
 	$("#skip, #continue").click(function(){
 		var obj = {};
-		obj.card_num = $("#credit-card").val();
+		obj.card_num = $("#credit-card").val().replace(/ /g, "");
 		member.cardnum = obj.card_num;
 		obj.industry = $("#industry-select").val();
 		member.industry = obj.industry;
@@ -555,12 +593,20 @@ $(document).on("pagecreate", "#result", function(){
 	});
 	
 	$("#option-3").click(function(){
-		$("#next-step").attr("href", "#");
+		$("#next-step").attr("href", "#?123");
 		member.anothertest = true;
 	});
 });
 
 $(document).on("pagebeforeshow", "#result", function(){
+	if (!member.limit) {
+		getCreditLimit();
+	}
+
+	if (!member.avlcrl) {
+		getAvlCrl();
+	}
+
 	$("#amt-shown").html(member.limit);
 	$("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
 	if(member.limit > 4000){
@@ -578,34 +624,43 @@ $(document).on("pagebeforeshow", "#result", function(){
 			async: false,
 			success: function(text){
 				member.loanable = ("false" == text);
+				if(member.avlcrl > 1000 && member.loanable){
+					$("#option-1").attr("href", "#loan");
+				}
+				else{
+					$("#option-1").attr("href", "#");
+				}
 			},
 			error: stdError
 		});
 	}
 	
-	if(member.avlcrl > 1000 && member.loanable){
-		$("#option-1").attr("href", "#loan");
-	}
-	else{
-		$("#option-1").attr("href", "#");
-	}
 });
 
-$(document).on("pagebeforeshow", "#loan", function(){
+$(document).on("pageshow", "#loan", function(){
+	if (!member.avlcrl) {
+		getAvlCrl();
+	}
+	
 	$("#loan-limit").html(Math.round(member.avlcrl));
 	
-	$("#amount").keyup(function(){
-		var tmp = $(this).val();
+	app.term = "3";
+	$("#term-3").css("background-color", "#3ca0e6");
+	$("#term-6").css("background-color", "#c0c0c0");
+	$("#amount").val("").keyup(function(){
+		var tmp = $("#amount").val();
+		app.amount = tmp;
+		countPayback(app);
 		if(tmp.length > 0)
 			$("#amount-txt").hide();
 		else
 			$("#amount-txt").show();
 			
-		if(parseInt(tmp) % 100 && tmp.length > 3)
-			$(this).val(parseInt(tmp) - (parseInt(tmp) % 100));
+		if(parseInt(tmp, 10) % 100 && tmp.length > 3)
+			$(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
 			
-		if(parseInt(tmp) > parseInt(member.avlcrl))
-			$(this).val(member.avlcrl);
+		if(parseInt(tmp, 10) > parseInt(member.avlcrl, 10))
+			$(this).val(parseInt(member.avlcrl));
 	});
 	
 	$("#term-3").click(function(){
@@ -624,7 +679,7 @@ $(document).on("pagebeforeshow", "#loan", function(){
 		countPayback(app);
 	});
 	
-	if(parseInt(member.status) > 6){
+	if(member.mobile_varified.toString() == "true"){
 		$("#varifying").remove();
 		member.validate = 1;
 	}
@@ -634,13 +689,15 @@ $(document).on("pagebeforeshow", "#loan", function(){
 			if(phone_num.length != 11)
 				alert("请输入正确的手机号码!");
 			else{
-				// $.get(config.api_path + "dict/mobileArea" + phone_num, function(text){
+				// $.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
 					// if(text="北京")
 					// alert(text);
 				// });
 				member.phone = phone_num;
 				sendVarificationCode(member.phone).success(function(){
 					alert("您的验证码已发送!");
+				}).error(function () {
+					alert();
 				});
 			}
 		});
@@ -672,60 +729,64 @@ $(document).on("pagebeforeshow", "#loan", function(){
 		});
 	}
 	
+	if(!member.creditcard){
+		member.creditcard = [];
+		$.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
+			var tmp = [];
+			$.each(data, function(ind, obj){
+				tmp += "<div class='card-container'>" + obj.cardNo +"</div><hr>";
+				member.creditcard.push([obj.cardNo, obj.bank]);
+			});
+			// $("#add-another-2").before($(tmp)).popup("refresh");
+			$("#cardlist-2").prepend($(tmp));
+		});
+	}
+
 	$("#request").click(function(){
 		if($("#agree").is(":checked") && member.validate && app.term && app.amount){
-			if(member.status < 7){
+			applyLoan(app);
+			if(parseInt(member.status, 10) < 8){
 				$.mobile.navigate("#suspension");
-				applyLoan(app);
 				$(this).off("click");
 			}
-			else{
-				if(!member.creditcard){
-					member.creditcard = [];
-					$.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
-						var tmp = [];
-						$.each(data, function(ind, obj){
-							tmp += "<div class='card-container'>" + obj.cardNo +"</div><hr>";
-							member.creditcard.push([obj.cardNo, obj.bank]);
-						});
-						$("#add-another-2").before($(tmp));
-						$(".card-container").click(function(){
-							app.card = $(this).html();
-							$("#num-tail-2").html(app.card.slice(app.card.length - 4, app.card.length));
-							$("#cardlist-2").popup("close");
-							$("#card-confirm-2").show();
-						});
-					});
-				}
+			else {
+				$(this).html("确认, 去选择信用卡");
 				$("#cardlist-2").popup("open");
-				$("#Y-2").click(function(){
-					applyLoan(app);
-					setTimeout(loanToThisCard(app.card).success(function(){}), 1000);
-				});
-				
-				$("#N-2").click(function(){
-					$("#card-confirm-2").hide();
-				});
-				
-				$("#add-another-2").click(function(){
-					$("#card-add-box-2").show();
-				});
-				
-				$("#return-2").click(function(){
-					$("#card-add-box-2").hide();
-				});
-				
-				$("#addcard-2").click(function(){
-					addCreditCard($("#new-cardnum-2").val()).success(function(){
-						$("#add-another-2").before($("<div class='card-container'>" + $("#new-cardnum-2").val() +"</div><hr>"));
-						$("#card-add-box-2").hide();
-					}).error(function(){
-						$("#card-add-box-2").hide();
-					});
-				});
 			}
 		}
 	});
+
+	$("#Y-2").click(function(){
+		loanToThisCard(app.card).success(function(){});
+	});
+	
+	$("#N-2").click(function(){
+		$("#card-confirm-2").hide();
+	});
+	
+	$("#add-another-2").click(function(){
+		$("#card-add-box-2").show();
+	});
+	
+	$("#return-2").click(function(){
+		$("#card-add-box-2").hide();
+	});
+	
+	$("#addcard-2").click(function(){
+		addCreditCard($("#new-cardnum-2").val()).success(function(){
+			$("#add-another-2").before($("<div class='card-container'>" + $("#new-cardnum-2").val() +"</div><hr>"));
+			$("#card-add-box-2").hide();
+		}).error(function(){
+			$("#card-add-box-2").hide();
+		});
+	});
+});
+
+$(document).on("click", ".card-container", function () {
+	app.card = $(this).html();
+	$("#num-tail-2").html(app.card.slice(app.card.length - 4, app.card.length));
+	$("#cardlist-2").popup("close");
+	$("#card-confirm-2").show();
 });
 
 $(document).on("pagecreate", "#congratulation", function(){
@@ -939,11 +1000,11 @@ $(".bkg").click(function () {
 	$(this).hide();
 });
 
-window.onbeforeunload = WindowCloseHanlder;
-function WindowCloseHanlder()
-{
-window.alert("My Window is reloading");
-}
+// window.onbeforeunload = WindowCloseHanlder;
+// function WindowCloseHanlder()
+// {
+// window.alert("My Window is reloading");
+// }
 
 window.onblur = function () {
 	 var print_status = "0";
@@ -964,12 +1025,11 @@ window.onblur = function () {
 	 		print_status = "5";
 	 		break;
 	 	default:
-	 	return 0;
+	 		return 0;
 	 }
-	 returnFootPrint(member.id, print_status);
+	 // returnFootPrint(member.id, print_status);
 };
 
-function returnFootPrint(id, status) {
-	$.get(config.api_path + "members/" + id + "/status/" + status, function () {});
-	alert("wer");
-}
+// function returnFootPrint(id, status) {
+// 	$.get(config.api_path + "members/" + id + "/status/" + status, function () {});
+// }

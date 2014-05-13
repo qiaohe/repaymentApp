@@ -50,7 +50,6 @@ public class CreditCard implements Serializable {
     private String image;
 
     @Column(name = "EMAIL")
-//    @JsonIgnore
     private String email;
 
     @Column(name = "PASSWORD")

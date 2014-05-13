@@ -1,6 +1,7 @@
 package com.huayuan.domain.credit;
 
 import com.huayuan.domain.accounting.Loan;
+import com.huayuan.domain.accounting.Loans;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
 
@@ -15,7 +16,7 @@ public class ApplicationCreditInfo implements Serializable {
     private Application application;
     private Member member;
     private Pboc pboc;
-    private List<Loan> loans;
+    private Loans loans;
 
     private ApplicationCreditInfo() {
     }
@@ -44,15 +45,15 @@ public class ApplicationCreditInfo implements Serializable {
         this.pboc = pboc;
     }
 
-    public List<Loan> getLoans() {
+    public Loans getLoans() {
         return loans;
     }
 
-    public void setLoans(List<Loan> loans) {
+    public void setLoans(Loans loans) {
         this.loans = loans;
     }
 
-    private ApplicationCreditInfo(Application application, Member member, Pboc pboc, List<Loan> loans) {
+    private ApplicationCreditInfo(Application application, Member member, Pboc pboc, Loans loans) {
         this.application = application;
         this.member = member;
         this.pboc = pboc;
@@ -81,7 +82,7 @@ public class ApplicationCreditInfo implements Serializable {
             return this;
         }
 
-        public Builder loans(List<Loan> loans) {
+        public Builder loans(Loans loans) {
             this.dto.setLoans(loans);
             return this;
         }

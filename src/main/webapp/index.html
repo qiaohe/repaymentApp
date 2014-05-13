@@ -56,11 +56,40 @@
 
 		<div class="bkg"></div>
 
-		<div data-role="popup" data-transition="pop" data-position-to="window" class="r-popup">
-			<div class="cover" style="text-align: center">
-				<p>目前化缘仅能服务北上广深的用户。其他地区的用户可以先做信用评估，但暂时无法申请借款。</p>
-				<p>我们会尽快开放到更多地区。感谢您！</p>
+		<div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit" style="width: 100%">
+			<div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em">
+				<p>目前化缘仅能服务北上广深的<br>用户。其他地区的用户可以先做信用评<br>估，但暂时无法申请借款。</p>
+				<p>我们会尽快开放到更多地区。感<br>谢您！</p>
 			</div>
+			
+			<div style="width: 90%; margin: 20px auto auto auto; text-align: center">
+				<img src="resources/img/2-1/beijing.png" style="width: 40px; height: 60px"></img>
+				<img src="resources/img/2-1/shanghai.png" style="width: 40px; height: 60px"></img>
+				<img src="resources/img/2-1/guangzhou.png" style="width: 40px; height: 60px"></img>
+				<img src="resources/img/2-1/shenzhen.png" style="width: 40px; height: 60px"></img>
+			</div>
+
+			<div style="width:25%; float:left"><</div><div style="width:25%; float:left"><</div>
+			<div style="width:25%; float:left"><</div><div style="width:25%; float:left"><</div>
+			
+			<p style="margin:100px auto auto 5%">上述E-mail密码</p>
+			<div class="custom-li">
+				<div class="id-card-container" style="width:88%">
+					<label for="password" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"></label>
+					<input data-role="none" type="password" id="password" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+				</div>
+			</div>
+			
+			<div class="ui-grid-a" style="margin-top:-20px">
+			  <div class="ui-block-a">
+				<a href="#result" class="ui-btn" id="skip" style="background-color:#3ca0e6; border-radius:3px">跳过本步</a><br>
+			  </div>
+
+			  <div class="ui-block-b">
+				<a href="#result" class="ui-btn" id="continue" style="background-color:#3ca0e6; border-radius:3px">提交</a><br>
+			  </div>
+			</div>
+
 		</div>
 	</div> 
 	<!-- limit -->
@@ -187,13 +216,13 @@
 		<div class="custom-li" style="margin-top:13px">
 			<div class="id-card-container" style="width:88%">
 				<label for="amount" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="amount-txt" style="width:50%">请填写</span></label>
-				<input data-role="none" type="number" id="amount" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+				<input data-role="none" type="tel" id="amount" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
 			</div>
 		</div><br>
 		<p style="margin-top:-25px">官人想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
 		<div class="ui-grid-a" style="width:80%; margin:10px auto auto auto">
 		  <div class="ui-block-a">
-			<a href="#" class="ui-btn" id="term-3" style="background-color:#c0c0c0; border-radius:3px">3期</a>
+			<a href="#" class="ui-btn" id="term-3" style="background-color:#3ca0e6; border-radius:3px">3期</a>
 		  </div>
 
 		  <div class="ui-block-b">
@@ -229,7 +258,7 @@
 				<div class="custom-li" style="margin-top:13px">
 					<div class="id-card-container" style="width:88%">
 						<label for="phone" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="phone-txt" style="width:50%">请填写</span></label>
-						<input data-role="none" type="number" id="phone" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+						<input data-role="none" type="tel" id="phone" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
 					</div>
 				</div><br>
 				
@@ -237,7 +266,7 @@
 				<div class="custom-li" style="margin-top:13px">
 					<div class="id-card-container" style="width:60%; float:left">
 						<label for="code" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
-						<input data-role="none" type="number" id="code" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+						<input data-role="none" type="tel" id="code" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
 					</div>
 					<div style="float:right; width:30%">
 						<a href="#" class="ui-btn custom-btn" id="acquire-code" style="font-size:1.2em; margin: 1px 8px auto auto">获取验证码</a>
@@ -275,7 +304,7 @@
 		
 		<div id="card-add-box-2" style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
 			<h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-			<input data-role="none" type="number" class="textinput" id="new-cardnum-2" style="width:80%; margin: 0 15px">
+			<input data-role="none" type="tel" class="textinput" id="new-cardnum-2" style="width:80%; margin: 0 15px">
 			<p>请使用您自己的卡片, 否则缘可能无法化到</p>
 			<div class="ui-grid-a">
 				<div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return-2">返回</a></div>
@@ -360,7 +389,7 @@
 		
 		<div id="card-add-box" style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
 			<h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-			<input data-role="none" type="number" class="textinput" id="new-cardnum" style="width:80%; margin: 0 15px">
+			<input data-role="none" type="tel" class="textinput" id="new-cardnum" style="width:80%; margin: 0 15px">
 			<p>请使用您自己的卡片, 否则缘可能无法化到</p>
 			<div class="ui-grid-a">
 				<div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return">返回</a></div>
@@ -385,7 +414,7 @@
 			<ul data-role="listview">
 				<li><span style="font-size:1.5em">现在就去还款</span></li>
 				<li><span style="font-size:1.5em">查看借款详情</span></li>
-				<li><span style="font-size:1.5em">历史还款记录</span></li>
+				<div data-role="collapsible" id="ss"><h1 style="border: none; font-size:1.5em; color: black !important">历史还款记录</h1><p>记录1</p><p>记录2</p></div>
 			</ul>
 		</div>
 		
@@ -453,6 +482,6 @@
 	
 	
 
-<script src="resources/js/app.js"></script>
+<script src="resources/js/app.js?r=1000"></script>
 </body>
 </html>

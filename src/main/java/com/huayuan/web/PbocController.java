@@ -53,7 +53,7 @@ public class PbocController {
     @ResponseBody
     public Pboc updatePbocBy(@RequestBody Pboc pboc) {
         if (pboc.getStatus().equals(Pboc.CHANGE_ID)) {
-            IdCard idCard = idCardRepository.findByIdNo(pboc.getCertNo());
+            IdCard idCard = idCardRepository.findByIdNo(pboc.getCertNo()).get(0);
             idCard.setIdNo(pboc.getNewCertNo());
             idCard.setName(pboc.getNewName());
             pboc.setName(pboc.getNewName());
