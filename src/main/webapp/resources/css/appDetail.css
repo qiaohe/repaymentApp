@@ -220,3 +220,18 @@ input {
     margin-bottom: 5px;
     height: 30px;
 }
+
+.idcard-img-limit {
+    max-height: 300px;
+    min-width: 500px;
+}
+
+.loans-table-style td {
+    padding: 0px 5px;
+}
+
+.loan-input {
+    width: 40px;
+    text-decoration: underline;
+    cursor: pointer;
+}
