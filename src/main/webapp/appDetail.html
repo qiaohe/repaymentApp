@@ -1,13 +1,14 @@
 ﻿<!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" href="resources/css/appDetail.css">
-    <script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="resources/css/appDetail.css">
+    <link type="text/css" rel="stylesheet" href="resources/plugin/dialog/dialog.css">
+    <title>征信明细</title>
 </head>
 <body>
 <div id="content">
-<div style="">
 
+<div id="infoContent">
 <div id="title">征信审核</div>
 
 <div class="itembox h1-info">会员信息</div>
@@ -44,9 +45,9 @@
 
 <div class="itembox h1-info">身份证信息</div>
 <input type="button" id="idcardPositive" style="margin:30px auto 25px 30px;cursor: pointer;" value="身份证正面影像">
-<img src="test.png" id="idcardPositiveImg" style="position:absolute; top:30px; left:40%; display:none">
+<img id="idcardPositiveImg" class="idcard-img-limit" style="position:absolute; top:5px; left:420px; display:none;">
 <input type="button" id="idcardNegative" style="margin:30px auto 25px 30px;cursor: pointer;" value="身份证反面影像">
-<img src="test.png" id="idcardNegativeImg" style="position:absolute; top:30px; left:40%; display:none">
+<img id="idcardNegativeImg" class="idcard-img-limit" style="position:absolute; top:5px; left:560px; display:none">
 
 <div class="itemDiv" style="height: 65px">
     <div class="grid-2">身份证号码</div>
@@ -397,7 +398,7 @@
 </div>
 
 <div class="itembox h1-info">账务信息</div>
-<div class="block">
+<div class="block" style="height: auto;">
     <div class="audit-item" style="height: 70px;">
         <div class="single-item">
             <div class="grid-2">贷款笔数</div>
@@ -413,58 +414,21 @@
         </div>
         <div class="single-item">
             <div class="grid-2">正常</div>
-            <div class="grid-2"><input type="text" id="normal-times" readonly="readonly" style="width: 60px;"></div>
-            <div class="grid-2">逾期</div>
-            <div class="grid-2"><input type="text" id="delay-times" readonly="readonly" style="width: 60px;"></div>
-            <div class="grid-2">曾经逾期</div>
-            <div class="grid-2"><input type="text" id="before-delay-times" readonly="readonly" style="width: 60px;">
+            <div class="grid-2"><input type="text" id="normal-times" readonly="readonly" value="2" class="loan-input">
             </div>
+            <div class="grid-2">逾期</div>
+            <div class="grid-2"><input type="text" id="delay-times" readonly="readonly" class="loan-input"></div>
+            <div class="grid-2">曾经逾期</div>
+            <div class="grid-2"><input type="text" id="before-delay-times" readonly="readonly" class="loan-input"></div>
             <div class="grid-2">结清</div>
-            <div class="grid-2"><input type="text" id="close-times" readonly="readonly" style="width: 60px;"></div>
+            <div class="grid-2"><input type="text" id="close-times" readonly="readonly" class="loan-input"></div>
             <div class="grid-2">打呆</div>
-            <div class="grid-2"><input type="text" id="stay-times" readonly="readonly" style="width: 60px;"></div>
+            <div class="grid-2"><input type="text" id="stay-times" readonly="readonly" class="loan-input"></div>
             <div class="grid-2">等待放款</div>
-            <div class="grid-2"><input type="text" id="wait-times" readonly="readonly" style="width: 60px;"></div>
+            <div class="grid-2"><input type="text" id="wait-times" readonly="readonly" class="loan-input"></div>
         </div>
     </div>
-
-    <div class="audit-item" style="clear: both;">
-        <table>
-            <tr>
-                <td>贷款编号</td>
-                <td>申请编号</td>
-                <td>贷款金额</td>
-                <td>年利率</td>
-                <td>贷款期数</td>
-                <td>借款起始日期</td>
-                <td>应还本金</td>
-                <td>应还利息</td>
-                <td>已还本金</td>
-                <td>已还利息</td>
-                <td>逾期天数</td>
-                <td>最大逾期天数</td>
-                <td>状态</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="audit-item" style="clear: both;">
-        <table>
-            <tr>
-                <td>逾期天数</td>
-                <td>贷款期数</td>
-                <td>第X期</td>
-                <td>还款日期</td>
-                <td>应还本金及利息</td>
-                <td>应还本金</td>
-                <td>应还利息</td>
-                <td>已还本金</td>
-                <td>已还利息</td>
-                <td>逾期本金</td>
-                <td>逾期罚息</td>
-            </tr>
-        </table>
-    </div>
+    <div class="audit-item" style="clear: both;" id="loans-div"></div>
 </div>
 
 <div class="itembox h1-info">风险提示</div>
@@ -672,8 +636,12 @@
 </div>
 
 </div>
+</div>
 
 </div>
+<script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="resources/plugin/dialog/dialog.js"></script>
 <script type="text/javascript" src="resources/js/base.js"></script>
 <script type="text/javascript" src="resources/js/appDetail.js"></script>
 </body>
