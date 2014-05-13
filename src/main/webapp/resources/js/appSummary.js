@@ -111,7 +111,11 @@
             + (systemFlag ? " and appltv.DECISION ='2'" : "")
             + (tvFlag ? " and t1.NUM>0" : "")
             + (status ? " and appl.STATUS='" + status + "'" : "");
-        return  param.replace("and",'');
+        if (param) {
+            return  param.replace("and", '');
+        } else {
+            return " 1=1";
+        }
     };
     // initialize
     appSummary.init();
