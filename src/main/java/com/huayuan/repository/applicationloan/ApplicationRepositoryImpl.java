@@ -56,8 +56,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
         List<ApplicationSummary> applicationSummaryList = new ArrayList<ApplicationSummary>();
         ApplicationSummary applicationSummary = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (int i = 0; i < resultList.size(); i++) {
-            Object[] objs = (Object[]) resultList.get(i);
+        for (Object aResultList : resultList) {
+            Object[] objs = (Object[]) aResultList;
             applicationSummary = new ApplicationSummary();
             applicationSummary.setAppNo(objs[0].toString());
             applicationSummary.setName(objs[1].toString());

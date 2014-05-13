@@ -3,6 +3,7 @@ package com.huayuan.service;
 import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.accounting.Loan;
+import com.huayuan.domain.accounting.Loans;
 import com.huayuan.domain.credit.ApplicationCreditInfo;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.TvExecution;
@@ -195,7 +196,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         Member member = memberRepository.findOne(application.getMember().getId());
         member.getCreditCardBills().size();
         member.getCreditCards().size();
-        List<Loan> loans = loanRepository.findByMember_Id(application.getMember().getId());
+        Loans loans = new Loans(loanRepository.findByMember_Id(application.getMember().getId()));
         return new ApplicationCreditInfo.Builder()
                 .application(application)
                 .pboc(pboc)

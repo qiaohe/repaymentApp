@@ -40,7 +40,7 @@ public class MemberStatusEvaluator {
         Map<Integer, Integer> maps = new ConcurrentHashMap<>();
         for (Loan loan : loans) {
             if (loan.getStatus() == 1 || loan.getStatus() == 2) return "11";
-            maps.put(loan.getStatus(), maps.get(loan.getStatus()) + 1);
+            maps.put(loan.getStatus(), maps.get(loan.getStatus()) == null ? 0 : maps.get(loan.getStatus()) + 1);
         }
         if (loans.size() == maps.get(8)) return "7";
         if (loans.size() == maps.get(9) || !maps.containsKey(0)) {
@@ -65,7 +65,7 @@ public class MemberStatusEvaluator {
         Application application = getApprovingApplication(memberId);
         if (application != null) {
             final String status = application.getWeChatStatus();
-            if ("7".equals(status)) return getStatusByLoans(memberId);
+            if (application.getExistingFlag() == 2) return getStatusByLoans(memberId);
             return status;
         }
         return member.getPreCrl() > 1000 ? "3.1" : "3.2";
