@@ -106,8 +106,7 @@ public class MemberController {
     @RequestMapping(value = "/{id}/creditCard/{creditCardNo}", method = RequestMethod.GET)
     @ResponseBody
     public boolean isUsedByAnotherOne(@PathVariable Long id, @PathVariable String creditCardNo) {
-        List<CreditCard> cards = creditCardRepository.findByCardNo(creditCardNo);
-        return CollectionUtils.isNotEmpty(cards) && cards.get(0).getMember().getId().equals(id);
+        return memberService.creditCardIsUsedByAnother(id, creditCardNo);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)

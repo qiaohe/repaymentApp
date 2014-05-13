@@ -38,6 +38,8 @@ public interface MemberService {
 
     public List<CreditCard> getCreditCards(Long memberId);
 
+    public boolean creditCardIsUsedByAnother(Long memberId, String creditCardNo);
+
     public Double getCrl(Long id);
 
     public Double getAvlCrl(Long id);
