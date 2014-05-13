@@ -40,7 +40,7 @@ public class MemberStatusEvaluator {
         Map<Integer, Integer> maps = new ConcurrentHashMap<>();
         for (Loan loan : loans) {
             if (loan.getStatus() == 1 || loan.getStatus() == 2) return "11";
-            maps.put(loan.getStatus(), maps.get(loan.getStatus() + 1));
+            maps.put(loan.getStatus(), maps.get(loan.getStatus()) == null ? 0 : maps.get(loan.getStatus()) + 1);
         }
         if (loans.size() == maps.get(8)) return "7";
         if (loans.size() == maps.get(9) || !maps.containsKey(0)) {
@@ -50,22 +50,24 @@ public class MemberStatusEvaluator {
         return "8";
     }
 
+    private Application getApprovingApplication(Long memberId) {
+        List<Application> applications = applicationRepository.findByMemberIdOrderByApplicationNoDesc(memberId);
+        return CollectionUtils.isNotEmpty(applications) ? applications.get(0) : null;
+    }
+
     public String evaluate(final Long memberId) {
         Member member = memberRepository.findOne(memberId);
-        if (member.getStatus().equals(MemberStatusEnum.REJECTED)) {
+        if (MemberStatusEnum.REJECTED.equals(member.getStatus())) {
             if (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'})) return "11";
             return "12";
         }
         if (member.getPreCrl() == null || member.getPreCrl() == 0) return "1";
-        List<Application> applications = applicationRepository.findByMemberIdOrderByApplicationNoDesc(memberId);
-        boolean hasApplication = CollectionUtils.isNotEmpty(applications);
-        if (!hasApplication) {
-            if (member.getPreCrl() > 1000) return "3.1";
-            if (member.getPreCrl() < 1000) return "3.2";
-        } else {
-            Application application = applications.get(0);
-            return application.getWeChatStatus();
+        Application application = getApprovingApplication(memberId);
+        if (application != null) {
+            final String status = application.getWeChatStatus();
+            if (application.getExistingFlag() == 2) return getStatusByLoans(memberId);
+            return status;
         }
-        return getStatusByLoans(memberId);
+        return member.getPreCrl() > 1000 ? "3.1" : "3.2";
     }
 }

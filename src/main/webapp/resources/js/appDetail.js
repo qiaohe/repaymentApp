@@ -2,7 +2,8 @@
 // START
     var appDetail = {},
         creditPath = "api/credit",
-        imgPrefix = "",
+        imgPrefix = "api/resources/idcard/",
+        pdfPrefix = "api/resources/pboc/",
         tvResult = {
             "0": "不通过",
             "1": "通过",
@@ -49,6 +50,18 @@
             "0": "新用户",
             "1": "老用户-前次退件",
             "2": "老用户-前次过件"
+        },
+        conflictMap = {
+            "0": "不一致",
+            "1": "一致"
+        },
+        loanStatus = {
+            "0": "正常",
+            "1": "逾期",
+            "2": "打呆",
+            "8": "等待放款",
+            "9": "结清",
+            "null": ""
         };
     appDetail.init = function () {
         this.initEvent();
@@ -69,6 +82,29 @@
         appDetail.initTvData();
     };
     appDetail.initEvent = function () {
+        // show idcard image
+        $("#idcardPositive").click(function () {
+            var $idcardPositiveImg = $("#idcardPositiveImg");
+            if (!$idcardPositiveImg) {
+                return;
+            }
+            if ($idcardPositiveImg.is(":visible")) {
+                $idcardPositiveImg.hide();
+            } else {
+                $idcardPositiveImg.show();
+            }
+        });
+        $("#idcardNegative").click(function () {
+            var $idcardNegativeImg = $("#idcardNegativeImg");
+            if (!$idcardNegativeImg) {
+                return;
+            }
+            if ($idcardNegativeImg.is(":visible")) {
+                $idcardNegativeImg.hide();
+            } else {
+                $idcardNegativeImg.show();
+            }
+        });
         // 工作资料
         $("#switch-work-res").find(".switch-res-item:visible").each(function (i, e) {
             $(e).click(function () {
@@ -123,6 +159,31 @@
                 }
             });
         });
+        // 人行信息pdf Button
+        $("#rhBaseInfo,#rhWorkInfo,#rhResInfo").click(function () {
+            window.open(pdfPrefix + appDetail.idcard + ".pdf", "_blank");
+        });
+        // 账务信息
+        // 0-正常 1-逾期 2-打呆 8-等待放款 9-结清
+        $("#normal-times").click(function () {
+            appDetail.showLoansByStatus('0');
+        });
+        $("#delay-times").click(function () {
+            appDetail.showLoansByStatus('1');
+        });
+        $("#before-delay-times").click(function () {
+            appDetail.showLoansByStatus('once');
+        });
+        $("#close-times").click(function () {
+            appDetail.showLoansByStatus('9');
+        });
+        $("#stay-times").click(function () {
+            appDetail.showLoansByStatus('2');
+        });
+        $("#wait-times").click(function () {
+            appDetail.showLoansByStatus('8');
+        });
+
         $("#phoneType").on("change", function () {
             var type = $(this).val();
             if (type == 6) {
@@ -141,7 +202,6 @@
                 telephoneNo: $("#tv-phone").val(),
                 question: $("#creditor-question").val(),
                 decision: parseInt($("#tvDecision").val(), 10)
-//                createTime:$("#tv-create-time").val()
             };
             $.ajax({
                 url: creditPath + "/telephoneTV",
@@ -235,7 +295,7 @@
         $("#wechatProvince").val(member.wcProvince);
         $("#wechatCity").val(member.wcProvince);
         $("#blockCode").val(member.blockCode);
-//        $("#blockTime").val($.formatDate(member.blockTime));
+        $("#blockTime").val($.formatDate(member.blockTime));
         $("#memberCreateTime").val(member.blockCode);
 
         var idCard = member.idCard;
@@ -251,8 +311,12 @@
         $("#validityEnd").val($.formatDate(idCard.validThru));
         $("#idcardCreateTime").val($.formatDate(idCard.createTime));
 
-        $("#idcardPositiveImg").attr("src", imgPrefix + idCard.imageFront);
-        $("#idcardNegativeImg").attr("src", imgPrefix + idCard.imageBack);
+        if (idCard.imageFront) {
+            $("#idcardPositiveImg").attr("src", imgPrefix + idCard.imageFront);
+        }
+        if (idCard.imageBack) {
+            $("#idcardNegativeImg").attr("src", imgPrefix + idCard.imageBack);
+        }
         // 信用卡信息
         appDetail.loadCredits(member.creditCards);
         // 账单信息
@@ -277,9 +341,9 @@
         $("#phone-at-work").val(pboc.officeTelephoneNo);
         $("#phone-home").val(pboc.officeTelephoneNo);
         $("#education").val(pboc.eduDegree);
-        $("#address-conflict").val(pboc.registeredAddress);
+        $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
         $("#live-city").val(pboc.homeCity);
-        $("#live-address").val(pboc.homeAddress);
+        $("#live-address").val(pboc.homeAddress).attr("title", pboc.homeAddress);
         $("#live-status").val(pboc.homeResidenceType);
         $("#update-date").val(pboc.addressGetTime);
         $("#mate-name").val(pboc.partnerName);
@@ -288,12 +352,12 @@
         // 工作资料
         // 工作信息
         $("#work-at").val(pboc.employer);
-        $("#profession").val(pboc.employerCity);
+        $("#profession").val(pboc.occupation);
         $("#industry").val(pboc.industry);
         $("#industry-catography").val(pboc.industryAddress);
-        $("#work-address").val(pboc.employerAddress);
+        $("#work-address").val(pboc.employerAddress).attr("title", pboc.employerAddress);
         $("#work-city").val(pboc.employerCity);
-        $("#position").val(pboc.occupation);
+        $("#position").val(pboc.duty);
         $("#level").val(pboc.title);
         $("#since").val(pboc.startYear);
         $("#working-age").val(pboc.industryYear);
@@ -306,12 +370,12 @@
             $("#base").val(pboc.yOwnBasicMoney);
             $("#pension-state").val(pboc.yState);
             $("#amount-each-2").val(pboc.yMoney);
-            $("#corp-conflict-2").val(pboc.yOrganName);
+            $("#corp-conflict-2").val(conflictMap[pboc.yOrganName]);
             $("#reason-suspension").val(pboc.pauseReason);
-            $("#update-date-2").val($.formatDate(pboc.yGetTime));
+            $("#update-date-2").val(pboc.yGetTime);
         } else {
             $("#pension-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': '18%'});
+            $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 250});
         }
         // 公积金缴纳记录
         if (pboc.getTime) {
@@ -320,11 +384,12 @@
             $("#fund-to").val(pboc.toMonth);
             $("#fund-state").val(pboc.state);
             $("#amount-each-3").val(pboc.pay);
-            $("#corp-conflict-3").val(pboc.organName);
-            $("#update-date-3").val($.formatDate(pboc.getTime));
+            $("#corp-conflict-3").val(conflictMap[pboc.organName]);
+            $("#update-date-3").val(pboc.getTime);
         } else {
             $("#fund-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(2)").hide().prev().css({"border-right": 'none'}).end().end().css({'width': '18%'});
+            $("#switch-work-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-work-res").width() - 150});
+            $("#switch-work-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
         }
 
         // 银行资料
@@ -336,13 +401,25 @@
         $("#delayed-current").val(pboc.cardOverDuePerYear);
         $("#delayed-times").val(pboc.cardOverDueNum);
         // 逾期信息-贷款
-        $("#num-delayed").val(pboc.loanCount);
-        $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
-        $("#time-delayed").val(pboc.loanMaxDuration);
+        if (pboc.loanCount) {
+            $("#num-delayed").val(pboc.loanCount);
+            $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
+            $("#time-delayed").val(pboc.loanMaxDuration);
+        } else {
+            $("#delay-res-1").hide();
+            $("#switch-delay-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 180});
+        }
         // 逾期信息-准贷记卡
-        $("#account-num-3").val(pboc.semiCardCount);
-        $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
-        $("#overdraft-time").val(pboc.semiCardMaxDuration);
+        if (pboc.semiCardCount) {
+            $("#account-num-3").val(pboc.semiCardCount);
+            $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
+            $("#overdraft-time").val(pboc.semiCardMaxDuration);
+        } else {
+            $("#delay-res-2").hide();
+            $("#switch-delay-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-delay-res").width() - 100});
+            $("#switch-delay-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
+        }
+
         // 信用卡信息汇总
         $("#num-corp").val(pboc.cardOrg);
         $("#num-accounts").val(pboc.cardAccountCount);
@@ -353,34 +430,37 @@
         $("#credit-used").val(pboc.cardUsedCreditLimit);
         $("#used-average").val(pboc.cardLatest6MonthUsedAvgAmount);
         // 贷款信息汇总
-        $("#num-loan").val(pboc.loanAccountCount);
-        $("#amount-loan").val(pboc.loanCreditLimit);
-        $("#amount-remaining").val(pboc.loanBalance);
-        $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
+        if (pboc.loanAccountCount) {
+            $("#num-loan").val(pboc.loanAccountCount);
+            $("#amount-loan").val(pboc.loanCreditLimit);
+            $("#amount-remaining").val(pboc.loanBalance);
+            $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
+        } else {
+            $("#delay-res-1").hide();
+            $("#switch-info-summary").find(".switch-res-item:eq(1)").hide().end().css({'width': 320});
+        }
         // 准贷记卡信息汇总
-        $("#num-corp-3").val(pboc.semiCardOrg);
-        $("#num-accounts-3").val(pboc.semiCardAccountCount);
-        $("#amount-credit-3").val(pboc.semicardCreditLimit);
-        $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
-        $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
-        $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
-        $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
-        $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
+        if (pboc.semiCardAccountCount) {
+            $("#num-corp-3").val(pboc.semiCardOrg);
+            $("#num-accounts-3").val(pboc.semiCardAccountCount);
+            $("#amount-credit-3").val(pboc.semicardCreditLimit);
+            $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
+            $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
+            $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
+            $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
+            $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
+        } else {
+            $("#delay-res-2").hide();
+            $("#switch-info-summary").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-info-summary").width() - 170});
+            $("#switch-info-summary").find(".switch-res-item:visible:last").css({"border-right": "none"});
+        }
         // 人行查询次数
         $("#search-time").val(pboc.cardQueryLatest6Month);
 
         // 账务信息
-        $("#loan-times").val();
-        $("#loan-amount").val();
-        $("#delay-days").val();
-        $("#max-delay-days").val();
-        $("#loan-status").val();
-        $("#normal-times").val();
-        $("#delay-times").val();
-        $("#before-delay-times").val();
-        $("#close-times").val();
-        $("#stay-times").val();
-        $("#wait-times").val();
+        appDetail.makeLoansMap(json.loans.loans);
+        appDetail.loadLoansSummary(json.loans);
+        appDetail.loadLoans();
 
         // 风险提示
         var aScore = application.aScore;
@@ -409,10 +489,10 @@
         // 微信照会
         var telephoneVerification = application.telephoneVerification;
         $("#tv-type").val(tvType[telephoneVerification.type]);
-        $("#live-address-question").val(telephoneVerification.tvQues1);
-        $("#answer1").val(telephoneVerification.tvMemAns1);
-        $("#work-address-question").val(telephoneVerification.tvQues2);
-        $("#answer2").val(telephoneVerification.tvMemAns2);
+        $("#live-address-question").val(telephoneVerification.tvQues1).attr("title", telephoneVerification.tvQues1);
+        $("#answer1").val(telephoneVerification.tvMemAns1).attr("title", telephoneVerification.tvMemAns1);
+        $("#work-address-question").val(telephoneVerification.tvQues2).attr("title", telephoneVerification.tvQues2);
+        $("#answer2").val(telephoneVerification.tvMemAns2).attr("title", telephoneVerification.tvMemAns2);
         $("#result-table").val(tvDicision[telephoneVerification.decision]);
         $("#wc-create-time").val($.formatDate(telephoneVerification.createTime));
         // 电话照会
@@ -444,7 +524,7 @@
                 '<div class="grid-2">卡类型</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="cardType" readonly="readonly" value="' + creditCard.type + '"></div>\n        ' +
                 '<div class="grid-2">卡片状态</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" value="' + creditCard.status + '"></div>\n    ' +
+                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" value="' + (creditCard.isValid ? '有效' : '失效') + '"></div>\n    ' +
                 '</div>\n    ' +
                 '<div class="single-item">\n        ' +
                 '<div class="grid-2">电子邮箱</div>\n        ' +
@@ -491,6 +571,185 @@
                 '</div>\n</div>';
         });
         $("#billInfoList").after(contentHtml);
+    };
+    appDetail.makeLoansMap = function (loans) {
+        var loansMap = {}, onces = [];
+        $.each(loans, function (i, loan) {
+            // 0-正常 1-逾期 2-打呆 8-等待放款 9-结清
+            if (!loansMap[loan.status]) {
+                loansMap[loan.status] = new Array(loan);
+            } else {
+                loansMap[loan.status].push(loan);
+            }
+            // 当逾期天数为0，最大逾期天数大于0时，表示曾经逾期
+            if (loan.curDelq == 0 && loan.maxDelq > 0) {
+                onces.push(loan);
+            }
+        });
+        loansMap['once'] = onces;
+        appDetail.loansMap = loansMap;
+    };
+    appDetail.loadLoansSummary = function (loans) {
+        var loansMap = appDetail.loansMap;
+        $("#loan-times").val(loans.count);
+        $("#loan-amount").val(loans.amount);
+        $("#delay-days").val(loans.curDelq);
+        $("#max-delay-days").val(loans.maxDelq);
+
+        // 0-正常 1-逾期 2-打呆 8-等待放款 9-结清
+        var loanMap = appDetail.loansMap;
+        var normalLen = getLenByStatus('0'),
+            delayLen = getLenByStatus('1'),
+            beforeLen = getLenByStatus('once'),
+            closeLen = getLenByStatus('9'),
+            stayLen = getLenByStatus('2'),
+            waitLen = getLenByStatus('8');
+        $("#normal-times").val(normalLen);
+        $("#delay-times").val(delayLen);
+        $("#before-delay-times").val(beforeLen);
+        $("#close-times").val(closeLen);
+        $("#stay-times").val(stayLen);
+        $("#wait-times").val(waitLen);
+
+        // 设置状态
+        var statusDisplay = "";
+        if (stayLen != 0) {
+            statusDisplay = loanStatus['2'];
+        } else if (delayLen != 0) {
+            statusDisplay = loanStatus['1'];
+        } else if (normalLen != 0) {
+            statusDisplay = loanStatus['0'];
+        } else if (closeLen != 0) {
+            statusDisplay = loanStatus['9'];
+        } else if (waitLen != 0) {
+            statusDisplay = loanStatus['8'];
+        }
+        $("#loan-status").val(statusDisplay);
+
+        function getLenByStatus(status) {
+            if (loanMap[status] && loanMap[status].length != 0) {
+                return loanMap[status].length;
+            } else {
+                return 0;
+            }
+        }
+    };
+    appDetail.loadLoans = function () {
+        var loansMap = appDetail.loansMap;
+        var initLoans = [];
+        if (loansMap['2']) {
+            initLoans = initLoans.concat(loansMap['2']);
+        }
+        if (loansMap['1']) {
+            initLoans = initLoans.concat(loansMap['1']);
+        }
+        if (loansMap['once'] && loansMap['once'].length != 0) {
+            initLoans = initLoans.concat(loansMap['once']);
+        }
+        if (!initLoans && initLoans.length != 0) {
+            return;
+        }
+        var contentHtml = appDetail.genLoansTableHtml(initLoans);
+        $("#loans-div").html(contentHtml);
+        $("#loans-div").find("tr:gt(0)").find("td:eq(0)").click(function () {
+            var borrowNo = $(this).text();
+            if (borrowNo) {
+                appDetail.showLoanDetail(borrowNo);
+            }
+        });
+        $("#loans-div").find("tr:gt(0)").find("td:eq(1)").click(function () {
+            var applNo = $(this).text();
+            if (applNo) {
+                window.open("appDetail.html?applyNo=" + applNo, "_blank");
+            }
+        });
+    };
+    appDetail.showLoanDetail = function (borrowNo) {
+        $.get("api/account/loans/" + borrowNo, function (json) {
+            var contentHtml = "<table class=\"repay-table-style\"><tr>\n" +
+                "<td>逾期天数</td>\n" +
+                "<td>贷款期数</td>\n" +
+                "<td>第X期</td>\n" +
+                "<td>还款日期</td>\n" +
+                "<td>应还本金及利息(元)</td>\n" +
+                "<td>应还本金(元)</td>\n" +
+                "<td>应还利息(元)</td>\n" +
+                "<td>已还本金(元)</td>\n" +
+                "<td>已还利息(元)</td>\n" +
+                "<td>逾期本金(元)</td>\n" +
+                "<td>逾期罚息(元)</td>\n" +
+                "</tr>";
+            $.each(json, function (i, repayPlan) {
+                contentHtml += '<tr><td>' + repayPlan.overDueDay + '</td>' +
+                    '<td>' + repayPlan.term + '</td>' +
+                    '<td>' + repayPlan.termNo + '</td>' +
+                    '<td>' + $.formatDate(repayPlan.dueDate) + '</td>' +
+                    '<td>' + repayPlan.dueAmt + '</td>' +
+                    '<td>' + repayPlan.duePrincipal + '</td>' +
+                    '<td>' + repayPlan.dueInterest + '</td>' +
+                    '<td>' + repayPlan.paidPrincipal + '</td>' +
+                    '<td>' + repayPlan.paidInterest + '</td>' +
+                    '<td>' + repayPlan.overDueAmt + '</td>' +
+                    '<td>' + repayPlan.overDueDay + '</td></tr>';
+            });
+            new Dialog(contentHtml + "</table>", {title: "贷款明细", modal: false}).show();
+        });
+    };
+    appDetail.showLoansByStatus = function (status) {
+        var contentHtml = appDetail.genLoansTableHtml(appDetail.loansMap[status]);
+        if (contentHtml) {
+            new Dialog(contentHtml, {title: "账务信息", modal: false}).show();
+            $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(0)").click(function () {
+                var borrowNo = $(this).text();
+                if (borrowNo) {
+                    appDetail.showLoanDetail(borrowNo);
+                }
+            });
+            $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(1)").click(function () {
+                var applNo = $(this).text();
+                if (applNo) {
+                    window.open("appDetail.html?applyNo=" + applNo, "_blank");
+                }
+            });
+        }
+    };
+    appDetail.genLoansTableHtml = function (loans) {
+        if (loans && loans.length != 0) {
+            var contentHtml = "<table class=\"loans-table-style\" style=\"width: 100%;\">\n" +
+                "<tr>\n" +
+                "<td>贷款编号</td>\n" +
+                "<td>申请编号</td>\n" +
+                "<td>贷款金额(元)</td>\n" +
+                "<td>年利率(%)</td>\n" +
+                "<td>贷款期数(月)</td>\n" +
+                "<td>借款起始日期</td>\n" +
+                "<td>应还本金(元)</td>\n" +
+                "<td>应还利息(元)</td>\n" +
+                "<td>已还本金(元)</td>\n" +
+                "<td>已还利息(元)</td>\n" +
+                "<td>逾期天数</td>\n" +
+                "<td>最大逾期天数</td>\n" +
+                "<td>状态</td>\n" +
+                "</tr>\n";
+            $.each(loans, function (i, loan) {
+                contentHtml += '<tr><td style="cursor: pointer;text-decoration: underline;">' + loan.id + '</td>' +
+                    '<td style="cursor: pointer;text-decoration: underline;">' + loan.applicationNo + '</td>' +
+                    '<td>' + loan.amt + '</td>' +
+                    '<td>' + parseFloat(loan.apr, 10) * 100 + '</td>' +
+                    '<td>' + loan.term + '</td>' +
+                    '<td>' + $.formatDate(loan.startDate) + '</td>' +
+                    '<td>' + loan.principal + '</td>' +
+                    '<td>' + loan.interest + '</td>' +
+                    '<td>' + loan.paidPrincipal + '</td>' +
+                    '<td>' + loan.paidInterest + '</td>' +
+                    '<td>' + loan.curDelq + '</td>' +
+                    '<td>' + loan.maxDelq + '</td>' +
+                    '<td>' + loanStatus[loan.status] + '</td></tr>';
+            });
+            return contentHtml + "</table>";
+        } else {
+            return "";
+        }
     };
     // initialize
     appDetail.init();

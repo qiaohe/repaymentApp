@@ -179,7 +179,7 @@ input {
 }
 
 .tv-list {
-    width: 60%;
+    width: 100%;
     clear: both;
     margin-top: 20px;
 }
@@ -219,4 +219,19 @@ input {
     clear: both;
     margin-bottom: 5px;
     height: 30px;
+}
+
+.idcard-img-limit {
+    max-height: 300px;
+    min-width: 500px;
+}
+
+.loans-table-style, .repay-table-style td {
+    padding: 0px 5px;
+}
+
+.loan-input {
+    width: 40px;
+    text-decoration: underline;
+    cursor: pointer;
 }

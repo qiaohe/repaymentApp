@@ -232,7 +232,7 @@ public class Application {
     @JsonIgnore
     public String getWeChatStatus() {
         if (status < 5) return "4";
-        if (status == 5 && !member.getStatus().equals(MemberStatusEnum.REJECTED)) {
+        if (status == 5) {
             if (isApproved()) return "5.1";
             if (isDeclined()) return "5.2";
         }

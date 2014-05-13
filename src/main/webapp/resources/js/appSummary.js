@@ -75,13 +75,9 @@
         $("#data-table").html(contentHtml);
         $("#data-table").find(".clickable").each(function(){
             $(this).on("click",function(){
-                window.open("/appDetail.html?applyNo="+$(this).text(),"_blank");
+                window.open("appDetail.html?applyNo=" + $(this).text(), "_blank");
             });
         });
-    };
-    appSummary.formatDate = function(ms) {
-//        return $.formatDate(ms).format("yyyy-MM-dd hh:mm:ss");
-        return $.formatDate(ms);
     };
     appSummary.generateParam = function() {
         var name = $("#name").val();
@@ -100,22 +96,26 @@
         var tvFlag = $("#tvFlag").prop("checked");
         var status = $("#status").val();
 
-        var param = (name ? " and idcard.name='"+name+"'" : "")
-            + (idcard ? " and idcard.idNo='"+idcard+"'" : "")
-            + (moblie ? " and mem.mobile='"+moblie+"'" : "")
-            + (memberNo ? " and mem.id='"+memberNo+"'" : "")
-            + (applyNo ? "and appl.applicationNo='"+applyNo+"'" : "")
-            + (applyFrom ? " and appl.applyTime>='"+applyFrom+"'" : "")
-            + (applyTo ? " and appl.applyTime<='"+applyTo+"'" : "")
-            + (procFrom ? " and appl.createTime>='"+procFrom+"'" : "")
-            + (procTo ? " and appl.createTime<='"+procTo+"'" : "")
-            + (creditor ? " and apv.creditor='"+creditor+"'" : "")
-            + (reasonCode ? " and (apv.reason1 = '"+reasonCode+"' or apv.reason2 = '"+reasonCode+"' or apv.reason3 = '"+reasonCode+"')" : "")
-            + (userType ? " and appl.existingFlag='"+userType+"'" : "")
-            + (systemFlag ? " and appltv.decision ='2'" : "")
-//            + (tvFlag ? " and appltv.applicationNo='"+tvFlag+"'" : "")
-            + (status ? " and appl.status='"+status+"'" : "");
-        return  param.replace("and",'');
+        var param = (name ? " and idcard.NAME='" + name + "'" : "")
+            + (idcard ? " and idcard.ID_NO='" + idcard + "'" : "")
+            + (moblie ? " and mem.MOBILE='" + moblie + "'" : "")
+            + (memberNo ? " and mem.ID='" + memberNo + "'" : "")
+            + (applyNo ? "and appl.APPL_NO='" + applyNo + "'" : "")
+            + (applyFrom ? " and appl.APPLY_TIME>='" + applyFrom + "'" : "")
+            + (applyTo ? " and appl.APPLY_TIME<='" + applyTo + "'" : "")
+            + (procFrom ? " and appl.CREATE_TIME>='" + procFrom + "'" : "")
+            + (procTo ? " and appl.CREATE_TIME<='" + procTo + "'" : "")
+            + (creditor ? " and apv.CREDITOR='" + creditor + "'" : "")
+            + (reasonCode ? " and (apv.REASON_1 = '" + reasonCode + "' or apv.REASON_2 = '" + reasonCode + "' or apv.REASON_3 = '" + reasonCode + "')" : "")
+            + (userType ? " and appl.EXISTING_FLAG='" + userType + "'" : "")
+            + (systemFlag ? " and appltv.DECISION ='2'" : "")
+            + (tvFlag ? " and t1.NUM>0" : "")
+            + (status ? " and appl.STATUS='" + status + "'" : "");
+        if (param) {
+            return  param.replace("and", '');
+        } else {
+            return " 1=1";
+        }
     };
     // initialize
     appSummary.init();

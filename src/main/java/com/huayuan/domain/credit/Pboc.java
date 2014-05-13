@@ -227,6 +227,9 @@ public class Pboc implements Serializable {
     @Column(name = "CARD_MAXCREDITLIMITPERORG")
     private Double cardMaxCreditLimitPerOrg;
 
+    @Column(name = "CARD_MINCREDITLIMITPERORG")
+    private Double cardMinCreditLimitPerOrg;
+
     @Column(name = "CARD_USEDCREDITLIMIT")
     private Double cardUsedCreditLimit;
 
@@ -250,9 +253,6 @@ public class Pboc implements Serializable {
 
     @Column(name = "SEMICARD_MINCREDITLIMITPERORG")
     private Double semicardMinCreditLimitPerOrg;
-
-    @Column(name = "CARD_MINCREDITLIMITPERORG")
-    private Double cardMinCreditLimitPerOrg;
 
     @Column(name = "SEMICARD_USEDCREDITLIMIT")
     private Double semiCardUsedCreditLimit;
