@@ -172,7 +172,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean creditCardIsUsedByAnother(Long memberId, String creditCardNo) {
         List<CreditCard> cards = creditCardRepository.findByCardNo(creditCardNo);
-        return CollectionUtils.isNotEmpty(cards) && cards.get(0).getMember().getId().equals(memberId);
+        return CollectionUtils.isNotEmpty(cards) && !memberId.equals(cards.get(0).getMember().getId());
     }
 
     @Override
