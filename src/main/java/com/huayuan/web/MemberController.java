@@ -6,12 +6,14 @@ import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
+import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.SmsVerificationCodeService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
 import com.huayuan.web.dto.MemberResponseDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -36,6 +39,8 @@ public class MemberController {
     private PreCreditRepository preCreditRepository;
     @Inject
     private SmsVerificationCodeService smsVerificationCodeService;
+    @Inject
+    private CreditCardRepository creditCardRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -86,9 +91,8 @@ public class MemberController {
 
     @RequestMapping(value = "/{id}/creditCard", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public
     @ResponseBody
-    List<CreditCard> getCreditCards(@PathVariable Long id) {
+    public List<CreditCard> getCreditCards(@PathVariable Long id) {
         return memberService.getCreditCards(id);
     }
 
@@ -97,6 +101,13 @@ public class MemberController {
     public IdCard getIdCard(@PathVariable Long id) {
         Member member = memberService.find(id);
         return member.getIdCard();
+    }
+
+    @RequestMapping(value = "/{id}/creditCard/{creditCardNo}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean isUsedByAnotherOne(@PathVariable Long id, @PathVariable String creditCardNo) {
+        List<CreditCard> cards = creditCardRepository.findByCardNo(creditCardNo);
+        return CollectionUtils.isNotEmpty(cards) && cards.get(0).getMember().getId().equals(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
