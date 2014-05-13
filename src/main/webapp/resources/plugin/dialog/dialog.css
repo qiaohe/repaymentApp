@@ -1,17 +1,17 @@
 .dialog-overlay {
     BACKGROUND: gray;
-    FILTER: alpha(opacity:50);
-    opacity: 0.5
+    /*FILTER: alpha(opacity:50);*/
+    /*opacity: 0.5*/
 }
 
 .dialog {
     PADDING-RIGHT: 10px;
     PADDING-LEFT: 10px;
     BACKGROUND: gray;
-    FILTER: alpha(opacity:70);
+    /*FILTER: alpha(opacity:70);*/
     PADDING-BOTTOM: 10px;
     PADDING-TOP: 10px;
-    opacity: 0.9;
+    /*opacity: 0.9;*/
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px
@@ -56,4 +56,17 @@
     MAX-WIDTH: 700px;
     OVERFLOW: auto;
     MAX-HEIGHT: 500px
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+}
+
+table td {
+    padding: 0px 5px;
+    border: 1px solid #000000;
 }

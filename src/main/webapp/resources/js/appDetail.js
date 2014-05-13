@@ -524,7 +524,7 @@
                 '<div class="grid-2">卡类型</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="cardType" readonly="readonly" value="' + creditCard.type + '"></div>\n        ' +
                 '<div class="grid-2">卡片状态</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" value="' + creditCard.status + '"></div>\n    ' +
+                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" value="' + (creditCard.isValid ? '有效' : '失效') + '"></div>\n    ' +
                 '</div>\n    ' +
                 '<div class="single-item">\n        ' +
                 '<div class="grid-2">电子邮箱</div>\n        ' +
@@ -666,7 +666,7 @@
     };
     appDetail.showLoanDetail = function (borrowNo) {
         $.get("api/account/loans/" + borrowNo, function (json) {
-            var contentHtml = "<table class=\"loans-table-style\"><tr>\n" +
+            var contentHtml = "<table class=\"repay-table-style\"><tr>\n" +
                 "<td>逾期天数</td>\n" +
                 "<td>贷款期数</td>\n" +
                 "<td>第X期</td>\n" +
@@ -692,15 +692,25 @@
                     '<td>' + repayPlan.overDueAmt + '</td>' +
                     '<td>' + repayPlan.overDueDay + '</td></tr>';
             });
-            $("#repayPlan-div").html(contentHtml + "</table>");
-            new Dialog(contentHtml + "</table>", {title: "贷款明细"}).show();
+            new Dialog(contentHtml + "</table>", {title: "贷款明细", modal: false}).show();
         });
     };
     appDetail.showLoansByStatus = function (status) {
         var contentHtml = appDetail.genLoansTableHtml(appDetail.loansMap[status]);
         if (contentHtml) {
-            $("#loan-status-div").html(contentHtml);
-            new Dialog(contentHtml, {title: "账务信息"}).show();
+            new Dialog(contentHtml, {title: "账务信息", modal: false}).show();
+            $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(0)").click(function () {
+                var borrowNo = $(this).text();
+                if (borrowNo) {
+                    appDetail.showLoanDetail(borrowNo);
+                }
+            });
+            $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(1)").click(function () {
+                var applNo = $(this).text();
+                if (applNo) {
+                    window.open("appDetail.html?applyNo=" + applNo, "_blank");
+                }
+            });
         }
     };
     appDetail.genLoansTableHtml = function (loans) {
