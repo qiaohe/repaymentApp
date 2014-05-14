@@ -207,7 +207,7 @@ function getSIMDistrict(phone_num) {
 		type: "GET",
 		dataType: "text",
 		error: function () {
-			config.api_path + "dict/mobileArea/" + phone_num;
+			alert(config.api_path + "dict/mobileArea/" + phone_num);
 		}
 	});
 }
@@ -218,7 +218,7 @@ function sendVarificationCode(phone_num) {
 		type: "GET",
 		dataType: "text",
 		error: function () {
-			config.api_path + "sms/" + phone_num;
+			alert(config.api_path + "sms/" + phone_num);
 		}
 	});
 }
@@ -374,6 +374,7 @@ $(document).on("pagecreate", "#limit", function () {
 	}
 
 	$("#credit-card").on("keyup", function (e) {
+		$("#card-tip").hide();
 		var num = $(this).val();
 		if (num)
 			$("#credit-num").hide(); 
@@ -448,22 +449,34 @@ $(document).on("pagecreate", "#limit", function () {
 		}
 		
 		if(validateCardNo(num.replace(/ /g, ""))) {
-			localStorage.setItem("credit_card", num);
-			if (!member.anothertest) {
-				$("#next-step").attr("href", "#basic-info");
-			}
-			else{
-				$("#next-step").attr("href", "#result").off().click(function () {
-					var obj = {};
-					obj.card_num = num;
-					obj.industry = member.industry;
-					obj.education = member.education;
-					obj.email = member.email;
-					obj.bill_email = member.billemail;
-					obj.password = member.password;
-					testLimit(obj);
-				});
-			}
+			$.ajax({
+				url: config.api_path + member.id + "/creditCard/" + num.replace(/ /g, ""),
+				type: "GET",
+				async: false,
+				success: function () {
+					localStorage.setItem("credit_card", num);
+					if (!member.anothertest) {
+						$("#next-step").attr("href", "#basic-info");
+					}
+					else{
+						$("#next-step").attr("href", "#result").off().click(function () {
+							var obj = {};
+							obj.card_num = num;
+							obj.industry = member.industry;
+							obj.education = member.education;
+							obj.email = member.email;
+							obj.bill_email = member.billemail;
+							obj.password = member.password;
+							testLimit(obj);
+						});
+					}
+				},
+				error: function () {
+					// alert(config.api_path + member.id + "/creditCard/" + num.replace(/ /g, ""));
+					$("#tip-credit").attr("src", "resources/img/public/wrong.png");
+					$("#card-tip").show();
+				}
+			});
 		}
 		else {
 			$("#next-step").attr("href", "#");
@@ -564,7 +577,7 @@ $(document).on("pagecreate", "#basic-info", function(){
 
 	$("#skip, #continue").click(function(){
 		var obj = {};
-		obj.card_num = $("#credit-card").val().replace(/ /g, "");
+		obj.card_num = $("#credit-card").val();
 		member.cardnum = obj.card_num;
 		obj.industry = $("#industry-select").val();
 		member.industry = obj.industry;
@@ -647,7 +660,7 @@ $(document).on("pageshow", "#loan", function(){
 	app.term = "3";
 	$("#term-3").css("background-color", "#3ca0e6");
 	$("#term-6").css("background-color", "#c0c0c0");
-	$("#amount").val("").keyup(function(){
+	$("#amount").val("").off().keyup(function(){
 		var tmp = $("#amount").val();
 		app.amount = tmp;
 		countPayback(app);
@@ -663,7 +676,7 @@ $(document).on("pageshow", "#loan", function(){
 			$(this).val(parseInt(member.avlcrl));
 	});
 	
-	$("#term-3").click(function(){
+	$("#term-3").off().click(function(){
 		$("#term-3").css("background-color", "#3ca0e6");
 		$("#term-6").css("background-color", "#c0c0c0");
 		app.term = "3";
@@ -671,7 +684,7 @@ $(document).on("pageshow", "#loan", function(){
 		countPayback(app);
 	});
 	
-	$("#term-6").click(function(){
+	$("#term-6").off().click(function(){
 		$("#term-6").css("background-color", "#3ca0e6");
 		$("#term-3").css("background-color", "#c0c0c0");
 		app.term = "6";
@@ -684,7 +697,7 @@ $(document).on("pageshow", "#loan", function(){
 		member.validate = 1;
 	}
 	else{	
-		$("#acquire-code").click(function(){
+		$("#acquire-code").off().click(function(){
 			var phone_num = $("#phone").val();
 			if(phone_num.length != 11)
 				alert("请输入正确的手机号码!");
@@ -702,14 +715,14 @@ $(document).on("pageshow", "#loan", function(){
 			}
 		});
 		
-		$("#phone").keyup(function(){
+		$("#phone").off().keyup(function(){
 			if($(this).val())
 				$("#phone-txt").hide();
 			else
 				$("#phone-txt").show();
 		});
 		
-		$("#code").keyup(function(){
+		$("#code").off().keyup(function(){
 			var vcode = $(this).val();
 			if(vcode)
 				$("#code-txt").hide();
