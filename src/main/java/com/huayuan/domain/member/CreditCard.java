@@ -61,7 +61,6 @@ public class CreditCard implements Serializable {
 
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonIgnore
     private Date createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -23,46 +23,36 @@ public class IdCard implements Serializable {
     private String idNo;
 
     @Column(name = "NAME")
-    @JsonIgnore
     private String name;
 
     @Column(name = "SEX")
     private SexEnum sex;
 
     @Column(name = "BIRTHDAY")
-    @JsonIgnore
     private Date birthday;
 
     @Column(name = "NATIONALITY")
-    @JsonIgnore
     private String nationality;
 
     @Column(name = "ADDRESS")
-    @JsonIgnore
     private String address;
 
     @Column(name = "ISSUER")
-    @JsonIgnore
     private String issuer;
 
     @Column(name = "VALID_FROM")
-    @JsonIgnore
     private Date validFrom;
 
     @Column(name = "VALID_THRU")
-    @JsonIgnore
     private Date validThru;
 
     @Column(name = "PROVINCE")
-    @JsonIgnore
     private String province;
 
     @Column(name = "CITY")
-    @JsonIgnore
     private String city;
 
     @Column(name = "NAME_ENG")
-    @JsonIgnore
     private String nameEng;
 
     @Column(name = "IMAGE_FRONT")
@@ -73,7 +63,6 @@ public class IdCard implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_TIME")
-    @JsonIgnore
     private Date createTime;
 
     @OneToOne(fetch = FetchType.LAZY)

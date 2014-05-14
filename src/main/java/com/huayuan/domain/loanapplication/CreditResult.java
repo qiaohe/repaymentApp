@@ -34,7 +34,7 @@ public class CreditResult implements Serializable {
 
 
     @Column(name = "LAST_SCORE")
-    private Integer lastScore;
+    private Double lastScore;
 
 
     @Column(name = "LAST_RATING")
@@ -102,11 +102,11 @@ public class CreditResult implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getLastScore() {
+    public Double getLastScore() {
         return lastScore;
     }
 
-    public void setLastScore(Integer lastScore) {
+    public void setLastScore(Double lastScore) {
         this.lastScore = lastScore;
     }
 
