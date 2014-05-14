@@ -45,13 +45,4 @@ public class BillCrawler {
         result.setCycleFrom(new DateTime(2014, 5, 11, 0, 0, 0).toDate());
         return result;
     }
-
-    public static void main(String[] args) {
-        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
-        BillCrawler crawler = context.getBean("billCrawler", BillCrawler.class);
-        long start = System.currentTimeMillis();
-        crawler.crawl(new BillEmail("tusc_heqiao@163.com", "Forest2003", "广发银行"));
-        System.out.println((System.currentTimeMillis() - start) / 1000);
-        System.out.println("ending");
-    }
 }
