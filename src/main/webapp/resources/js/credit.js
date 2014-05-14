@@ -26,6 +26,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#phone-home').val(json.homeTelephoneNo);
 	$('#education').val(json.eduDegree);
 	$('#show-id').val(json.idImage);
+	$('#credit-min').val(json.cardMinCreditLimitPerOrg);
 
 	if(json.registeredAddress == '1')
 		$('#address-conflict').prop('checked', true);
@@ -109,7 +110,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#credit-max-3').val(json.semiCardMaxCreditLimitPerOrg);
 	$('#credit-min-3').val(json.semicardMinCreditLimitPerOrg);
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
-
+    
     $.get(info.path + 'dict/mobileArea/' + json.mobile, function(text){
         $('#num-district').val(text);
     }, 'text');
@@ -142,7 +143,8 @@ $.get(info.path + 'pboc/' + info.id + '/idCard', function(text){
 jQuery.ajaxSetup({async:true});
 
 //photo and pdf
-$('#pdf').attr('src', info.path.slice(0, info.path.length - 4) + 'resources/pboc/' + info.cert + '.pdf');
+//$('#pdf').attr('src', info.path.slice(0, info.path.length - 4) + 'resources/pboc/' + info.cert + '.pdf');
+$('#pdf').attr('src', info.path + 'resources/pboc/' + info.cert + '.pdf');
 $('#show-idimg').click(function(){
 	$('#img').show();
 });
@@ -238,6 +240,7 @@ function update(){
 			semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
 			semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
             semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
+			cardMinCreditLimitPerOrg: $('#credit-min').val(),
 			rh_1: info.rh_1,
 			rh_2: info.rh_2,
 			rh_3: info.rh_3,
