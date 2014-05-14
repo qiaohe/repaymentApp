@@ -4,6 +4,7 @@ import com.huayuan.repository.IdSequenceRepository;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.text.MessageFormat;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Johnson on 4/4/14.
  */
 @Component(value = "idSequenceGenerator")
+@Transactional
 public class IdSequenceGenerator {
     public static final long NOT_FOUND = 0;
     private static final long STEP = 100;
