@@ -19,7 +19,6 @@ public class LoanSummaryBuilder {
         return pricing.getSavedPerOneHundred() * loan.getAmt() / 100;
     }
 
-
     public LoanSummary build(List<Loan> loans) {
         LoanSummary summary = new LoanSummary();
         for (Loan loan : loans) {
