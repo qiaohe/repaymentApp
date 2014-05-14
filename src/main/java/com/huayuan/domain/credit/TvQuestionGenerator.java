@@ -68,10 +68,4 @@ public class TvQuestionGenerator {
         Collections.shuffle(questions);
         return MessageFormat.format(getTemplate(tv), getQuestion(questions));
     }
-
-    public static void main(String[] args) {
-
-        System.out.println(String.format("%S:%s", Character.toChars(65)[0], "Johnson He"));
-//        System.out.println(MessageFormat.format("请回答如下问题\nA:{0}\nB:{1}\n{2}", null, "你的公司地址在哪里？", "1."));
-    }
 }

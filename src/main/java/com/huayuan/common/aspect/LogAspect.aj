@@ -17,6 +17,7 @@ public aspect LogAspect {
 
     @Before("execution(* com.huayuan.web.*Controller*.*(..))")
     public void loggingAdvice(JoinPoint joinPoint) {
+        if (joinPoint.getTarget() == null) return;
         final String clazz = joinPoint.getTarget().getClass().getName();
         final String method = joinPoint.getSignature().getName();
         final String args = Arrays.toString(joinPoint.getArgs());

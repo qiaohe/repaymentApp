@@ -138,6 +138,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         updateCreditResultByLastApplication(approval);
         updateMemberStatusAsReject(approval);
         Approval result = approvalRepository.save(approval);
+        application.setStatus(5);
+        applicationRepository.save(application);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
         return result;
@@ -208,17 +210,5 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
-    }
-
-    public static void main(String[] args) {
-
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        CreditService creditService = applicationContext.getBean("creditService", CreditService.class);
-        creditService.telephoneVerification();
-//        creditService.replyTv(10l, "#A");
-        ApplicationRepository applicationRepository = applicationContext.getBean("applicationRepository", ApplicationRepository.class);
-//        applicationRepository.findAllApplications();
-
-
     }
 }
