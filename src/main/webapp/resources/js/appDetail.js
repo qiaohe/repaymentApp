@@ -62,9 +62,70 @@
             "8": "等待放款",
             "9": "结清",
             "null": ""
-        };
+        },
+        marriageStatus = { // 婚姻状况
+            "1": "已婚",
+            "2": "未婚",
+            "3": "离异",
+            "4": "未知"
+        },
+        homeStatus = { // 居住状况
+            "1": "自置",
+            "2": "租住",
+            "3": "未知"
+        },
+        duty = { // 职务
+            "1": "高级领导",
+            "2": "中级领导",
+            "3": "一般员工",
+            "4": "其他"
+        },
+        dutyTitle = { // 职称
+            "1": "高级职称",
+            "3": "中级职称",
+            "3": "初级职称"
+        }
+    yStatus = {
+        "1": "当月正常",
+        "2": "历史正常",
+        "3": "停缴",
+        "4": "其他"
+    };
     appDetail.init = function () {
         this.initEvent();
+        // initialize dictionary
+        appDetail.educationMap = {};
+        appDetail.industryMap = {};
+        $.ajax({
+            url: "api/dict/EDUCATION",
+            dataType: "json",
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (json) {
+                if (!json) return;
+                var educationMap = {};
+                $.each(json, function (i, education) {
+                    educationMap[education.key] = educationMap[education.value];
+                });
+                appDetail.educationMap = educationMap;
+            }
+        });
+        $.ajax({
+            url: "api/dict/INDUSTRY",
+            dataType: "json",
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (json) {
+                if (!json) return;
+                var industryMap = {};
+                $.each(json, function (i, industry) {
+                    industryMap[industry.key] = industryMap[industry.value];
+                });
+                appDetail.industryMap = industryMap;
+            }
+        });
         // initialize data
         var url = window.location.href, paramPrefix = "?applyNo=";
         var applyNo = appDetail.applyNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
@@ -335,16 +396,16 @@
 
         var pboc = json.pboc;
         // 基础资料
-        $("#marriage").val(pboc.maritalState);
+        $("#marriage").val(marriageStatus[pboc.maritalState]);
         $("#mobile").val(pboc.moblie);
         $("#num-district").val(pboc.pbocmobileCity);
         $("#phone-at-work").val(pboc.officeTelephoneNo);
         $("#phone-home").val(pboc.officeTelephoneNo);
-        $("#education").val(pboc.eduDegree);
+        $("#education").val(appDetail.educationMap[pboc.eduDegree]);
         $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
         $("#live-city").val(pboc.homeCity);
         $("#live-address").val(pboc.homeAddress).attr("title", pboc.homeAddress);
-        $("#live-status").val(pboc.homeResidenceType);
+        $("#live-status").val(homeStatus[pboc.homeResidenceType]);
         $("#update-date").val(pboc.addressGetTime);
         $("#mate-name").val(pboc.partnerName);
         $("#mate-id").val(pboc.partnerCertNo);
@@ -354,11 +415,11 @@
         $("#work-at").val(pboc.employer);
         $("#profession").val(pboc.occupation);
         $("#industry").val(pboc.industry);
-        $("#industry-catography").val(pboc.industryAddress);
+        $("#industry-catography").val(appDetail.industryMap[pboc.industryAddress]);
         $("#work-address").val(pboc.employerAddress).attr("title", pboc.employerAddress);
         $("#work-city").val(pboc.employerCity);
-        $("#position").val(pboc.duty);
-        $("#level").val(pboc.title);
+        $("#position").val(duty[pboc.duty]);
+        $("#level").val(dutyTitle[pboc.title]);
         $("#since").val(pboc.startYear);
         $("#working-age").val(pboc.industryYear);
         $("#works-since").val(pboc.hisGetting);
@@ -368,7 +429,7 @@
             $("#pension-date").val(pboc.yRegisterDate);
             $("#month-in-work").val(pboc.yWorkDate);
             $("#base").val(pboc.yOwnBasicMoney);
-            $("#pension-state").val(pboc.yState);
+            $("#pension-state").val(yStatus[pboc.yState]);
             $("#amount-each-2").val(pboc.yMoney);
             $("#corp-conflict-2").val(conflictMap[pboc.yOrganName]);
             $("#reason-suspension").val(pboc.pauseReason);
@@ -382,7 +443,7 @@
             $("#fund-date").val(pboc.registerDate);
             $("#fund-since").val(pboc.firstMonth);
             $("#fund-to").val(pboc.toMonth);
-            $("#fund-state").val(pboc.state);
+            $("#fund-state").val(yStatus[pboc.state]);
             $("#amount-each-3").val(pboc.pay);
             $("#corp-conflict-3").val(conflictMap[pboc.organName]);
             $("#update-date-3").val(pboc.getTime);
@@ -522,15 +583,15 @@
                 '<div class="grid-2">卡号</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="cardNo" readonly="readonly" style="width: 300px;" value="' + creditCard.cardNo + '"></div>\n        ' +
                 '<div class="grid-2">卡类型</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="cardType" readonly="readonly" value="' + creditCard.type + '"></div>\n        ' +
+                '<div class="grid-2"><input type="text" name="cardType" readonly="readonly" value="' + (creditCard.type ? creditCard.type : "") + '"></div>\n        ' +
                 '<div class="grid-2">卡片状态</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" value="' + (creditCard.isValid ? '有效' : '失效') + '"></div>\n    ' +
                 '</div>\n    ' +
                 '<div class="single-item">\n        ' +
                 '<div class="grid-2">电子邮箱</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" style="width: 300px;" value="' + creditCard.email + '"></div>\n        ' +
+                '<div class="grid-2"><input type="text" name="cardStatus" readonly="readonly" style="width: 300px;" value="' + (creditCard.email ? creditCard.email : "") + '"></div>\n        ' +
                 '<div class="grid-2">账单邮箱状态</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="billEmailStatus" readonly="readonly" value="' + cardEmailStatus[creditCard.status] + '"></div>\n        ' +
+                '<div class="grid-2"><input type="text" name="billEmailStatus" readonly="readonly" value="' + (creditCard.status ? cardEmailStatus[creditCard.status] : "") + '"></div>\n        ' +
                 '<div class="grid-2">创建时间</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="creditCreateTime" readonly="readonly" value="' + $.formatDate(creditCard.createTime) + '"></div>\n    ' +
                 '</div>\n' +
