@@ -84,48 +84,23 @@
             "1": "高级职称",
             "3": "中级职称",
             "3": "初级职称"
-        }
-    yStatus = {
-        "1": "当月正常",
-        "2": "历史正常",
-        "3": "停缴",
-        "4": "其他"
-    };
+        },
+        yStatus = {
+            "1": "当月正常",
+            "2": "历史正常",
+            "3": "停缴",
+            "4": "其他"
+        },
+        gender = {
+            "MALE": "男",
+            "FEMALE": "女"
+        };
     appDetail.init = function () {
         this.initEvent();
         // initialize dictionary
-        appDetail.educationMap = {};
-        appDetail.industryMap = {};
-        $.ajax({
-            url: "api/dict/EDUCATION",
-            dataType: "json",
-            type: "GET",
-            async: false,
-            contentType: "application/json",
-            success: function (json) {
-                if (!json) return;
-                var educationMap = {};
-                $.each(json, function (i, education) {
-                    educationMap[education.key] = educationMap[education.value];
-                });
-                appDetail.educationMap = educationMap;
-            }
-        });
-        $.ajax({
-            url: "api/dict/INDUSTRY",
-            dataType: "json",
-            type: "GET",
-            async: false,
-            contentType: "application/json",
-            success: function (json) {
-                if (!json) return;
-                var industryMap = {};
-                $.each(json, function (i, industry) {
-                    industryMap[industry.key] = industryMap[industry.value];
-                });
-                appDetail.industryMap = industryMap;
-            }
-        });
+        appDetail.educationMap = appDetail.makeDict("EDUCATION");
+        appDetail.industryMap = appDetail.makeDict("INDUSTRY");
+        appDetail.bankMap = appDetail.makeDict("BANK");
         // initialize data
         var url = window.location.href, paramPrefix = "?applyNo=";
         var applyNo = appDetail.applyNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
@@ -141,6 +116,23 @@
             appDetail.reasonMap = reasonMap;
         });
         appDetail.initTvData();
+    };
+    appDetail.makeDict = function (type) {
+        var map = {};
+        $.ajax({
+            url: "api/dict/" + type,
+            dataType: "json",
+            type: "GET",
+            async: false,
+            contentType: "application/json",
+            success: function (json) {
+                if (!json) return;
+                $.each(json, function (i, dict) {
+                    map[dict.key] = dict.value;
+                });
+            }
+        });
+        return map;
     };
     appDetail.initEvent = function () {
         // show idcard image
@@ -364,8 +356,8 @@
         // 身份证信息
         $("#idcard").val(idCard.idNo);
         $("#name").val(idCard.name);
-        $("#gender").val(idCard.sex);
-        $("#birthday").val(idCard.birthday);
+        $("#gender").val(gender[idCard.sex]);
+        $("#birthday").val($.formatDate(idCard.birthday));
         $("#nation").val(idCard.nationality);
         $("#address").val(idCard.address);
         $("#validityStart").val($.formatDate(idCard.validFrom));
@@ -400,7 +392,7 @@
         $("#mobile").val(pboc.moblie);
         $("#num-district").val(pboc.pbocmobileCity);
         $("#phone-at-work").val(pboc.officeTelephoneNo);
-        $("#phone-home").val(pboc.officeTelephoneNo);
+        $("#phone-home").val(pboc.homeTelephoneNo);
         $("#education").val(appDetail.educationMap[pboc.eduDegree]);
         $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
         $("#live-city").val(pboc.homeCity);
@@ -535,17 +527,23 @@
         var creditResult = member.creditResult;
         if (creditResult) {
             $("#last-appl-no").val(creditResult.lastApplicationNo);
-            $("#last-credit-score").val(creditResult.lastScore);
+            if (creditResult.lastScore) {
+                $("#last-credit-score").val(new String(creditResult.lastScore).substring(0, 6));
+            }
             $("#last-credit-level").val(creditResult.lastRating);
             $("#last-credit-result").val(creditResult.lastDecision);
             $("#last-credit-reason1").val(creditResult.lastReason1);
             $("#last-credit-reason2").val(creditResult.lastReason2);
             $("#last-credit-reason3").val(creditResult.lastReason3);
-            $("#last-report-time").val(creditResult.lastPbocBackTime);
+            if (creditResult.lastPbocBackTime > 0) {
+                $("#last-report-time").val();
+            }
             $("#last-create-time").val($.formatDate(creditResult.createTime));
         }
         // 信用评分
-        $("#credit-score").val(aScore.score);
+        if (aScore.score) {
+            $("#credit-score").val(new String(aScore.score).substring(0, 6));
+        }
         $("#credit-level").val(aScore.rating);
         // 微信照会
         var telephoneVerification = application.telephoneVerification;
@@ -579,7 +577,7 @@
             contentHtml += '<div class="itemDiv" style="height: 70px;">\n    ' +
                 '<div class="single-item">\n        ' +
                 '<div class="grid-2">银行</div>\n        ' +
-                '<div class="grid-2"><input type="text" name="bank" readonly="readonly" value="' + creditCard.bank + '"></div>\n        ' +
+                '<div class="grid-2"><input type="text" name="bank" readonly="readonly" value="' + appDetail.bankMap[creditCard.bank] + '"></div>\n        ' +
                 '<div class="grid-2">卡号</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="cardNo" readonly="readonly" style="width: 300px;" value="' + creditCard.cardNo + '"></div>\n        ' +
                 '<div class="grid-2">卡类型</div>\n        ' +
