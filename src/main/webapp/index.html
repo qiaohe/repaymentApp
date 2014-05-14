@@ -1,488 +1,663 @@
 ﻿<!doctype html>
 <html>
 <head>
-<meta chareset="utf-8">
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">   
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
-<link rel="stylesheet" href="resources/css/app.css">
-<script src="resources/js/jquery-1.11.0.min.js"></script>
-<script src="resources/js/jquery.mobile-1.4.2.min.js"></script>
+    <meta chareset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
+    <link rel="stylesheet" href="resources/css/app.css?r=20140514">
+    <script src="resources/js/jquery-1.11.0.min.js"></script>
+    <script src="resources/js/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-	<!-- limit -->
-	<div data-role="page" id="limit" data-title="信用评估">
-		<div class="cover">
-			<img src="resources/img/2-1/mobile.png" class="cover-img" style="margin-top: 30px; width: 140px; height: 70px">
-			<h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0.1px">先来啪啪啪吧~请参照上图横向、填满哦。</h1>
-		</div>
-		
-		<div class="custom-li" style="margin-top:20px">
-			<label><img src="resources/img/2-1/id_front.png" style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
-			<div class="id-card-container" style="float:left; width:70%">
-				<label for="front-upload" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
-				<input data-role="none" type="file" accept="image/jpg, image/jpeg"  id="front-upload" style="opacity: 0" capture="camera">
-				<img src="resources/img/public/blank.png" id="tip-front" style="position:absolute; left:5px; top:5px; width:22px; height:22px">
-			</div>
-			<label for="front-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
-		</div><br>
-		
-		<div class="custom-li" style="margin-top:-15px">
-			<label><img src="resources/img/2-1/id_back.png" style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
-			<div class="id-card-container" style="float:left; width:70%">
-				<label for="back-upload" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
-				<input data-role="none" type="file" accept="image/jpg, image/jpeg"  id="back-upload" style="opacity: 0" capture="camera">
-				<img src="resources/img/public/blank.png" id="tip-back" style="position:absolute; left:5px; top:5px; width:22px; height:22px">
-			</div>
-			<label for="back-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
-		</div><br>
-		
-		<div class="custom-li" style="margin-top:-15px">
-			<label><img src="resources/img/2-1/creditcard.png" style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
-			<div class="id-card-container" style="float:left; width:70%">
-				<label for="credit-card" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="credit-num" style="padding-left:32px; width:50%">请填写</span></label>
-				<input data-role="none" type="tel" id="credit-card" style="border:none; padding-left:42px; font-size:1.4em; width: 84%">
-				<img src="resources/img/card_icon/card.png" id="tip-credit" style="position:absolute; left:5px; top:5px; width:32px; height:22px">
-				<div id="card-tip" style="color:#cc0000; font-size:1.3em; clear:both; display:none">不可用的信用卡号!</div>
-			</div>
-			<label for="credit-card"><img src="resources/img/public/keyboard.png" style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
-		</div><br>
-		
-		<div style="width:88%; position:relative; top:-5px; margin:auto">
-			<a href="#" class="ui-btn custom-btn" id="next-step" style="height:100%">下一步</a>
-			<span style="position:absolute; right:5px; top:28px; color:white">1/2</span>
-		</div>
+<!-- limit -->
+<div data-role="page" id="limit" data-title="信用评估">
+    <div class="cover">
+        <img src="resources/img/2-1/mobile.png" class="cover-img" style="margin-top: 30px; width: 140px; height: 70px">
 
-		<div class="bkg"></div>
+        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0.1px">先来啪啪啪吧~请参照上图横向、填满哦。</h1>
+    </div>
 
-		<div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit" style="width: 100%">
-			<div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em">
-				<p>目前化缘仅能服务北上广深的<br>用户。其他地区的用户可以先做信用评<br>估，但暂时无法申请借款。</p>
-				<p>我们会尽快开放到更多地区。感<br>谢您！</p>
-			</div>
-			
-			<div style="width: 90%; margin: 20px auto auto auto; text-align: center">
-				<img src="resources/img/2-1/beijing.png" style="width: 40px; height: 60px"></img>
-				<img src="resources/img/2-1/shanghai.png" style="width: 40px; height: 60px"></img>
-				<img src="resources/img/2-1/guangzhou.png" style="width: 40px; height: 60px"></img>
-				<img src="resources/img/2-1/shenzhen.png" style="width: 40px; height: 60px"></img>
-			</div>
+    <div class="custom-li" style="margin-top:20px">
+        <label><img src="resources/img/2-1/id_front.png"
+                    style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
 
-			<div style="width:25%; float:left"><</div><div style="width:25%; float:left"><</div>
-			<div style="width:25%; float:left"><</div><div style="width:25%; float:left"><</div>
-			
-			<p style="margin:100px auto auto 5%">上述E-mail密码</p>
-			<div class="custom-li">
-				<div class="id-card-container" style="width:88%">
-					<label for="password" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"></label>
-					<input data-role="none" type="password" id="password" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-				</div>
-			</div>
-			
-			<div class="ui-grid-a" style="margin-top:-20px">
-			  <div class="ui-block-a">
-				<a href="#result" class="ui-btn" id="skip" style="background-color:#3ca0e6; border-radius:3px">跳过本步</a><br>
-			  </div>
+        <div class="id-card-container" style="float:left; width:70%">
+            <label for="front-upload" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" style="opacity: 0"
+                   capture="camera">
+            <img src="resources/img/public/blank.png" id="tip-front"
+                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
+        </div>
+        <label for="front-upload"><img src="resources/img/public/camera.png"
+                                       style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+    </div>
+    <br>
 
-			  <div class="ui-block-b">
-				<a href="#result" class="ui-btn" id="continue" style="background-color:#3ca0e6; border-radius:3px">提交</a><br>
-			  </div>
-			</div>
+    <div class="custom-li" style="margin-top:-15px">
+        <label><img src="resources/img/2-1/id_back.png"
+                    style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
 
-		</div>
-	</div> 
-	<!-- limit -->
-	
-	<!-- basic-info -->
-	<div data-role="page" id="basic-info" data-title="信用评估">
-		<div class="cover">
-			<img src="resources/img/3-1/file.png" class="cover-img" style="margin-top:15px; width:140px; height:110px">
-			<h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0.1px">再来填3个空，填空就完成了哦～</h1>
-		</div>
-		
-		<p style="margin: 10px auto 3px 6%; font-size: 1.3em">官人拿什么金饭碗?</p>
-		<div class="custom-li">
-			<div class="id-card-container" style="width:88%; margin:auto 0 auto 6%">
-				<div class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="industry-txt">请选择</span></div>
-				<div style="position:absolute; top:-10px; width:100%"><select id="industry-select" style="width:100%; opacity:0"><option></option></select></div>
-				<img src="resources/img/public/wrong.png" id="tip-industry" style="position:absolute; right:5px; top:5px; width:22px; height:22px">
-			</div>
-		</div><br>
-		
-		<p style="margin: -25px auto 3px 6%; font-size: 1.3em">官人学富几车?</p>
-		<div class="custom-li">
-			<div class="id-card-container" style="width:88%; margin:auto 0 auto 6%">
-				<div class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="education-txt">请选择</span></div>
-				<div style="position:absolute; top:-10px; width:100%"><select id="education-select" style="width:100%"><option></option></select></div>
-				<img src="resources/img/public/wrong.png" id="tip-education" style="position:absolute; right:5px; top:5px; width:22px; height:22px">
-			</div>
-		</div><br>
-		
-		<p style="margin: -25px auto 3px 6%; font-size: 1.3em">官人平时鸿雁传书用哪个E-mail？</p>
-		<div class="custom-li">
-			<div class="id-card-container" style="width:88%">
-				<label for="email" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="email-txt" style="width:50%">请填写</span></label>
-				<input data-role="none" type="email" id="email" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-			</div>
-		</div><br>
-		
-		<div style="width:88%; position:relative; top:0; margin:auto">
-			<a href="#" class="ui-btn custom-btn" id="hand-in" style="height:100%">提交</a>
-			<span style="position:absolute; right:5px; top:28px; color:white">2/2</span>
-		</div>
-		
-		<div data-role="popup" data-transition="pop" id="billmail" style="width:280px; height: 75%; border: 5px solid gray; border-radius: 10px; background-color:white">
-			<div class="cover" id="cover-billmail" style="text-align:left; height: 120px; border-radius:3px">
-				<img src="resources/img/3-2/bill.png" style="width:70px; position:relative; left:10%; margin-top:5%; height:75px">
-				<div style="float: right; width: 58%; color: white">
-					<h2 style="font-size: 1.4em; margin: 40px 0 0 5%">想获取更高的额度?<br>推荐您填写一</h2>
-					<h2 style="font-size: 1.6em; margin-left: 10%">信用卡账单E-mail</h2>
-				</div>
-			</div><br>
-			
-			<p style="margin-top: 6px">信用卡账单E-mail</p>
-			<div class="id-card-container" style="margin-top: 10px">
-				<input type="radio" name="billmail" id="radio-new" style="float:left; margin-top: 10px; width: 10%">
-				<label for="mail-new" class="textinput" style="float:right; position:absolute; top:5px; left:17%; height:30px; border: 1px solid #c0c0c0; width:60%; margin:5px 22% auto auto"></label>
-				<input data-role="none" type="email" id="mail-new" style="border:none; float:right; width:60%; height:30px; margin:5px 22% auto auto">
-			</div>
-			
-			<div class="id-card-container">
-				<input type="radio" name="billmail" id="radio-same" style="float:left; margin-top: 10px; width: 10%">
-				<label for="radio-same" id="mail-same" style="float:right; position:absolute; top:-5px; height:30px; margin:5px 22% auto auto"></label>
-			</div>
-			
-			<p style="margin:100px auto auto 5%">上述E-mail密码</p>
-			<div class="custom-li">
-				<div class="id-card-container" style="width:88%">
-					<label for="password" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"></label>
-					<input data-role="none" type="password" id="password" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-				</div>
-			</div>
-			
-			<div class="ui-grid-a" style="margin-top:-20px">
-			  <div class="ui-block-a">
-				<a href="#result" class="ui-btn" id="skip" style="background-color:#3ca0e6; border-radius:3px">跳过本步</a><br>
-			  </div>
+        <div class="id-card-container" style="float:left; width:70%">
+            <label for="back-upload" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="back-upload" style="opacity: 0"
+                   capture="camera">
+            <img src="resources/img/public/blank.png" id="tip-back"
+                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
+        </div>
+        <label for="back-upload"><img src="resources/img/public/camera.png"
+                                      style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+    </div>
+    <br>
 
-			  <div class="ui-block-b">
-				<a href="#result" class="ui-btn" id="continue" style="background-color:#3ca0e6; border-radius:3px">提交</a><br>
-			  </div>
-			</div>
-		</div>
-	</div>
-	<!-- basic-info -->
-	
-	<!-- result -->
-	<div data-role="page" id="result" data-title="信用评估">
-		<img src="resources/img/4-1/battery.png" style="width:70px; height:130px; float: left; margin: 10% 0 0 10%">
-		<h1 style="margin: 15% 0 0 38%; font-size: 2.4em">&yen <span id="amt-shown" style="font-family: Arial; font-size: 2.3em; color: #404040"></span></h1>
-		<h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown" style="font-size: 1.8em; color: #e67e22"></span>的用户<span id="rank-cmt">，官人还有努力空间。</span></h4>
-		<div data-role="listview" style="float: right; width: 65%; margin:10% 5% 0 0 ">
-			<div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-1" style="margin: 10% 0">苍蝇也是肉，现在就去申请借款</a></div>
-			<div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-2" style="margin: 10% 0">去跟小伙伴哭一下穷</a></div>
-			<div style="width:100%"><a href="#limit" class="ui-btn custom-btn" id="option-3" style="margin: 10% 0">不信邪，换张信用卡再试试</a></div>
-		</div>
-		
-		<div id="share" style="width: 100%; height: 50%; position: absolute; top: 50%; background-color: rgba(0, 0, 0, 0.5); display: none">
-			<a href="#" class="ui-btn" style="height: 5%; background-color: rgba(0, 0, 0, 0.4); margin-top: 0; color: white">分享到</a>
-			<div class="grid23">微信对话</div>
-			<div class="grid23">朋友圈</div>
-			<div class="grid23">新浪微博</div>
-			<div class="grid23">腾讯微博</div>
-			<div class="grid23">QQ空间</div>
-			<div class="grid23">人人网</div>
-		</div>
-	</div>
-	<!-- result -->
-	
-	<!-- tip-payback -->
-	<div data-role="page" id="tip-payback">
-		<div style="text-align: center; margin-top: 12%"><img src="resources/img/5-2/cashin.png" style="max-width: 70%"></div>
-		<h2 style="text-align: center; font-size: 1.6em; margin-top: 8%; color: gray">您化的缘已用完。
-<br>按时还款，即可恢复部分额度。</h2>
-		<div class="custom-btn single-btn" id="go-payback">去测额度</div>
-	</div>
-	<!-- tip-payback -->
-	
-	<!-- loan -->
-	<div data-role="page" id="loan" data-title="信用评估">
-		<div class="cover" style="height:125px">
-			<div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">我的额度:</div>
-			<div style="font-family:Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:45px">&yen <span id="loan-limit" style="font-size: 2.4em; color: #404040"></span></div>
-		</div>
-		<p>官人本次想动用多少额度?<span style="color:#c0c0c0; font-size:0.9em">(仅支持整百)</span></p>
-		<div class="custom-li" style="margin-top:13px">
-			<div class="id-card-container" style="width:88%">
-				<label for="amount" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="amount-txt" style="width:50%">请填写</span></label>
-				<input data-role="none" type="tel" id="amount" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-			</div>
-		</div><br>
-		<p style="margin-top:-25px">官人想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
-		<div class="ui-grid-a" style="width:80%; margin:10px auto auto auto">
-		  <div class="ui-block-a">
-			<a href="#" class="ui-btn" id="term-3" style="background-color:#3ca0e6; border-radius:3px">3期</a>
-		  </div>
+    <div class="custom-li" style="margin-top:-15px">
+        <label><img src="resources/img/2-1/creditcard.png"
+                    style="float:left; margin: 2.5px auto auto 6%; width:40px; height:28px"></label>
 
-		  <div class="ui-block-b">
-			<a href="#" class="ui-btn" id="term-6" style="background-color:#c0c0c0; border-radius:3px">6期</a>
-		  </div>
-		</div>
-		
-		<div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
-		  <div class="ui-block-a">
-			<p>您每期大概需要还款:</p>
-		  </div>
+        <div class="id-card-container" style="float:left; width:70%">
+            <label for="credit-card" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="credit-num" style="padding-left:32px; width:50%">请填写</span></label>
+            <input data-role="none" type="tel" id="credit-card"
+                   style="border:none; padding-left:42px; font-size:1.4em; width: 84%">
+            <img src="resources/img/card_icon/card.png" id="tip-credit"
+                 style="position:absolute; left:5px; top:5px; width:32px; height:22px">
 
-		  <div class="ui-block-b">
-			<div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">&yen<span id="each-term"></span></div>
-		  </div>
-		</div>
+            <div id="card-tip" style="color:#cc0000; font-size:1.3em; clear:both; display:none">不可用的信用卡号!</div>
+        </div>
+        <label for="credit-card"><img src="resources/img/public/keyboard.png"
+                                      style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+    </div>
+    <br>
 
-		<div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
-		  <div class="ui-block-a">
-			<p style="margin-top:-1px">相比信用卡最高可帮您省:</p>
-		  </div>
+    <div style="width:88%; position:relative; top:-5px; margin:auto">
+        <a href="#" class="ui-btn custom-btn" id="next-step" style="height:100%">下一步</a>
+        <span style="position:absolute; right:5px; top:28px; color:white">1/2</span>
+    </div>
 
-		  <div class="ui-block-b">
-			<div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">&yen<span id="saved" style="color:red"></span></div>
-		  </div>
-		</div>
-		<hr style="border-style:dashed; margin-bottom:20px">
-		
-		
-		<div style="margin:0 auto; width:88%">
-			<div id="varifying">
-				<p>官人请输入手机号, 以便确认您的身份</p>
-				<div class="custom-li" style="margin-top:13px">
-					<div class="id-card-container" style="width:88%">
-						<label for="phone" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="phone-txt" style="width:50%">请填写</span></label>
-						<input data-role="none" type="tel" id="phone" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-					</div>
-				</div><br>
-				
-				<p style="margin-top:-25px">手机验证码</p>
-				<div class="custom-li" style="margin-top:13px">
-					<div class="id-card-container" style="width:60%; float:left">
-						<label for="code" class="textinput" style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
-						<input data-role="none" type="tel" id="code" style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
-					</div>
-					<div style="float:right; width:30%">
-						<a href="#" class="ui-btn custom-btn" id="acquire-code" style="font-size:1.2em; margin: 1px 8px auto auto">获取验证码</a>
-					</div>
-				</div><br>
-			</div>
-		
-			<div style="margin: -15px auto auto 9%; font-size:1.2em">
-				<input data-role="none" type="checkbox" name="agreement" id="agree" style="float:left; width:10%">
-				<label for="agree" style="margin-top:5px; padding-top:6px">我同意<span style="color:blue">《化缘个人借款条款》</span></label>
-			</div>
-			
-			<div style="width:80%; position:relative; top:0; margin:auto">
-				<a href="#" class="ui-btn custom-btn" id="request">提交申请</a>
-			</div>
-		</div>
-		
-		<div data-role="popup" data-position-to="#loan-limit" data-transition="pop" id="cardlist-2" style="background-color:white; border:5px solid gray; border-radius:5px">
-			<a href="#card-add-box-2" class="ui-btn ui-icon-plus ui-btn-icon-left" id="add-another-2" style="background-color:white; margin:0; color:#c0c0c0">添加其他信用卡</a>
-		</div>
-		
-		<div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none" id="card-confirm-2">
-			<h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h4>
-			
-			<div class="ui-grid-a" style="margin:auto">
-				<div class="ui-block-a">
-					<a href="#" class="ui-btn custom-btn" id="N-2" style="border:1px solid black; border-radius:3px; color:black">取消</a>
-				</div>
+    <div class="bkg"></div>
 
-				<div class="ui-block-b">
-					<a href="#full" class="ui-btn custom-btn" id="Y-2" style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
-				</div>
-			</div>	
-		</div>
-		
-		<div id="card-add-box-2" style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
-			<h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-			<input data-role="none" type="tel" class="textinput" id="new-cardnum-2" style="width:80%; margin: 0 15px">
-			<p>请使用您自己的卡片, 否则缘可能无法化到</p>
-			<div class="ui-grid-a">
-				<div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return-2">返回</a></div>
-				<div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard-2">确认</a></div>
-			</div>
-		</div>
-	</div>
-	<!-- loan -->
-	
-	<!-- suspension -->
-	<div data-role="page" id="suspension">
-		<div style="text-align: center; margin-top: 12%"><img src="resources/img/5-2/cashin.png" style="max-width: 70%"></div>
-		<ul style="color: #e67e22">
-			<li><span>银行对于信用卡还款都有3天的宽限期，“化缘”不会让您出滞纳金的[酷]</span></li>
-			<li><span>由于这是您和还款帮的第一次[害羞]，故申请的结果（额度和每期还款金额）可能与上述金额有出入。</span></li>
-			<li><span>申请结果出来后，我们会及时通知您，您可以再来决定是否注资到信用卡。</span></li>
-		</ul>
-		<div style="width:50%; margin: 50px auto"><a href="#" class="ui-btn custom-btn" id="got-it">知道了</a></div>
-	</div>
-	<!-- suspension -->
-	
-	<!-- patience -->
-	<div data-role="page" id="patience" style="text-align: center">
-		<h1>官人莫急!</h1>
-		<h2 style="margin-top: -3%">佛曰：第一次，要有点耐心。<br>要不您先去耍个剑？</h2>
-		<img src="resources/img/8-1/sword.png" style="max-width: 60%"><br>
-		<h4>审核还需<span id="hours"></span>小时</h4>
-		<div style="width: 80%; margin-left: 10%"><a href="#" class="ui-btn custom-btn" id="got-it-x">知道了</a></div>
-	</div>
-	<!-- patience -->
-	
-	<!-- fail -->
-	<div data-role="page" id="fail" style="text-align: center">
-		<h1>官人对不起!</h1>
-		<h2 style="margin-top: -3%">怪我们功力有限，您的缘没有化到，<br>无法为您复活信用卡。</h2>
-		<div style="margin-top: 10%; background-color: #aacf5d">
-			<img src="resources/img/8-2/face.png" style="max-width: 60%; padding: 10% 0"><br>
-		</div>
-		<div style="width:50%; margin:80px auto 0 auto"><a href="#" class="ui-btn custom-btn" id="got-it-y">知道了</a></div>
-	</div>
-	<!-- fail -->
-	
-	<div data-role="page" id="congratulation">
-		<div data-role="main">
-			<p style="text-align: center; font-size: 3.6em" id="for-popup">恭喜官人!</p>
-			<div id="congratulation-cover" style="border-radius: 8px; margin: 0 auto; height:180px; width:80%; background-color:#aacf5d">
-				<div style="font-size: 1.8em; padding-top: 5%;">您本次动用的额度：</div>
-				<p style="font-size: 4em; margin: 10px auto; padding: 0; text-align:center">&yen <span id="amt-x"></span></p>
-				<div style="float: left; font-size: 1.4em; margin: 6% 0 0 12%;">还清期数：</div>
-				<div style="margin: 0;">
-					<div class="ui-btn" style="float: left; text-shadow: none; position: relative; top: -3%;" id="term-3-shown">3期</div>
-					<div class="ui-btn" style="float: left; text-shadow: none" id="term-6-shown">6期</div>
-				</div>
-				<div>
-					<p style="font-size: 1.4em; float: left; margin: 30px auto auto 12%;">每期需还：&yen <span id="each-x"></span></p>
-					<p style="font-size: 1.4em; float: left; position: absolute; top: 320px; left: 12%; color: red;">相比信用卡还款，总计约帮您节省&yen <span id="saved-x"></span></p>
-				</div>
-			</div>
-			<br>
-			<div style="width:50%; margin:60px auto"><a href="#cardlist" data-rel="popup" class="ui-btn custom-btn" id="go-choose-card">确认,去选择信用卡</a></div>
-		</div>
-		
-		<div data-role="popup" data-position-to="#for-popup" data-transition="pop" id="cardlist" style="background-color:white; border:5px solid gray; border-radius:5px">
-			<div>
-				<a href="#card-add-box" class="ui-btn ui-icon-plus ui-btn-icon-left" id="add-another" style="background-color:white; margin:0; color:#c0c0c0">添加其他信用卡</a>
-			</div>
-		</div>
-		
-		<div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none" id="card-confirm">
-			<h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h4>
-			
-			<div class="ui-grid-a" style="margin:auto">
-				<div class="ui-block-a">
-					<a href="#" class="ui-btn custom-btn" id="N" style="border:1px solid black; border-radius:3px; color:black">取消</a>
-				</div>
+    <div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit" style="width: 100%">
+        <div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em">
+            <p>目前化缘仅能服务北上广深的<br>用户。其他地区的用户可以先做信用评<br>估，但暂时无法申请借款。</p>
 
-				<div class="ui-block-b">
-					<a href="#full" class="ui-btn custom-btn" id="Y" style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
-				</div>
-			</div>	
-		</div>
-		
-		<div id="card-add-box" style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
-			<h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-			<input data-role="none" type="tel" class="textinput" id="new-cardnum" style="width:80%; margin: 0 15px">
-			<p>请使用您自己的卡片, 否则缘可能无法化到</p>
-			<div class="ui-grid-a">
-				<div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return">返回</a></div>
-				<div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard">确认</a></div>
-			</div>
-		</div>
-	</div>
+            <p>我们会尽快开放到更多地区。感<br>谢您！</p>
+        </div>
 
-	<!--repayment-->
-	<div data-role="page" id="repayment-0">
-		<div class="r-container">
-			<div style="text-align:center; height:30px; font-size:1.4em; line-height:30px; background-color: silver; border-radius: 5px 5px 0 0; color: white">
-				<span class="r-time"></span>借款&yen<span class="r-amt"></span>入卡片<span class="r-tail"></span>
-			</div> 
- 
-			<div class="r-main" style="height:150px; padding-left:10%; background-color: #aacf5d;">
-				<span style="position:relative; top:15px; left:25px; font-size:1.5em">最近应还金额</span><br>
-				<h1 style="margin-top:25px; font-size:2.4em">&yen<span class="r-next"></span></h1>
-				<p style="position:relative; left:25px; font-size:1.5em"><span class="r-deadline"></span>到期</p>
-			</div>
+        <div style="width: 90%; margin: 20px auto auto auto; text-align: center">
+            <img src="resources/img/2-1/beijing.png" style="width: 40px; height: 60px"></img>
+            <img src="resources/img/2-1/shanghai.png" style="width: 40px; height: 60px"></img>
+            <img src="resources/img/2-1/guangzhou.png" style="width: 40px; height: 60px"></img>
+            <img src="resources/img/2-1/shenzhen.png" style="width: 40px; height: 60px"></img>
+        </div>
 
-			<ul data-role="listview">
-				<li><span style="font-size:1.5em">现在就去还款</span></li>
-				<li><span style="font-size:1.5em">查看借款详情</span></li>
-				<div data-role="collapsible" id="ss"><h1 style="border: none; font-size:1.5em; color: black !important">历史还款记录</h1><p>记录1</p><p>记录2</p></div>
-			</ul>
-		</div>
-		
-		<div data-role="footer" data-position="fixed" data-id="r-footer" class="footer">
-			<div style="width:100%; height:30px; margin:auto; background-color:white; padding-top:10px">
-				<div class="spot" style="margin:auto"></div>
-			</div>
-			<a href="#sum-loan" style="width:87%; margin:auto 2.5%; border-radius: 5px; color:black; border:1px solid black; text-align:left; padding:10px">总计借款</a>
-		</div>
+        <div style="width:25%; float:left"><</div>
+        <div style="width:25%; float:left"><</div>
+        <div style="width:25%; float:left"><</div>
+        <div style="width:25%; float:left"><</div>
 
-		<div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
-			<li><div class="li-l">借款时间</div><div class="li-r"></div></li>
-			<li><div class="li-l">注入卡片</div><div class="li-r"></div></li>
-			<li><div class="li-l">借款金额</div><div class="li-r"></div></li>
-			<li><div class="li-l">还款期数</div><div class="li-r"></div></li>
-			<li><div class="li-l">还款日期</div><div class="li-r"></div></li>
-			<li><div class="li-l">总计应还</div><div class="li-r"></div></li>
-			<li><div class="li-l">剩余应还</div><div class="li-r"></div></li>
-		</div>
-	</div>
+        <p style="margin:100px auto auto 5%">上述E-mail密码</p>
 
-	<div data-role="page" id="sum-loan">
-		<div class="cover">
-			<div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:15px; border:1px solid white">总计借款金额<br>&yen<span id="total-amount"></span></div>
-			<div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:15px; border:1px solid white">总计借款笔数<br><span id="total-times"></span></div>
-			<div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:5px; border:1px solid white">总计应还金额<br>&yen<span id="total-payback"></span></div>
-			<div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:5px; border:1px solid white">相比信用卡, 总计约省<br>&yen<span id="total-saved"></span></div>
-		</div>
+        <div class="custom-li">
+            <div class="id-card-container" style="width:88%">
+                <label for="password" class="textinput"
+                       style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"></label>
+                <input data-role="none" type="password" id="password"
+                       style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+            </div>
+        </div>
 
-		<ul data-role="listview" data-inset="true" id="total-specific" style="width:90%; margin: 15px 5%">
-		</ul>
+        <div class="ui-grid-a" style="margin-top:-20px">
+            <div class="ui-block-a">
+                <a href="#result" class="ui-btn" id="skip"
+                   style="background-color:#3ca0e6; border-radius:3px">跳过本步</a><br>
+            </div>
 
-		<div style="width:90%; margin-left:5%; clear:both"><a href="#" class="ui-btn custom-btn">返回</a></div>
-	</div>
-	<!--repayment-->
+            <div class="ui-block-b">
+                <a href="#result" class="ui-btn" id="continue"
+                   style="background-color:#3ca0e6; border-radius:3px">提交</a><br>
+            </div>
+        </div>
 
-	<div data-role="page" id="full">
-		<h1 style="text-align:center">图暂缺！</h1>
-		<h2 style="text-align:center">您的信用卡将在1个工作日内收到借款！</h2>
-		<div style="margin: 40px auto; width:50%">
-			<a href="#" class="ui-btn custom-btn" id="got-it-z">知道了</a>
-		</div>
-	</div>
-	
-	<div data-role="page" id="feedback">
-		<p style="margin: 10% 15%; color: #c0c0c0; font-size: 1.5em">“化缘”是一款帮您还信用卡账的产品。产品还在努力完善中，如您在使用过程中有任何意见，都可以在下方吐槽框中表达。</p>
-		<div style="width: 80%; margin: 0 10%"><textarea data-role="none" name="textarea" id="textarea" style="border: 1px solid #c0c0c0; width: 100%; height: 150px; font-size: 1.4em; border-radius: 5px"></textarea></div>
-		<div style="width: 80%; margin: 10% auto"><a href="#thanks-feedback" class="ui-btn custom-btn">提交吐槽</a></div>
-	</div>
-	
-	<div data-role="page" id="thanks-feedback">
-		<h1>感谢您的吐槽!</h1>
-		<div style="width: 80%; margin: 10% auto"><a href="#limit" class="ui-btn custom-btn">返回首页</a></div>
-	</div>
-	
-	<div data-role="page" id="about">
-		<ul data-role="listview" style="width: 80%; height: 80%; margin: 10% auto">
-			<li style="background-color: silver; height: 150px"></li>
-			<li style="background-color: gray; color: white">了解化缘</li>
-			<li>化缘如何帮我省钱?</li>
-			<li>化缘总共分几步?</li>
-		</ul>
-	</div>
-	
-	
-	
+    </div>
+</div>
+<!-- limit -->
 
-<script src="resources/js/app.js?r=1000"></script>
+<!-- basic-info -->
+<div data-role="page" id="basic-info" data-title="信用评估">
+    <div class="cover">
+        <img src="resources/img/3-1/file.png" class="cover-img" style="margin-top:15px; width:140px; height:110px">
+
+        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0.1px">再来填3个空，填空就完成了哦～</h1>
+    </div>
+
+    <p style="margin: 10px auto 3px 6%; font-size: 1.3em">官人拿什么金饭碗?</p>
+
+    <div class="custom-li">
+        <div class="id-card-container" style="width:88%; margin:auto 0 auto 6%">
+            <div class="textinput"
+                 style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%">
+                <span class="placeholder" id="industry-txt">请选择</span></div>
+            <div style="position:absolute; top:-10px; width:100%"><select id="industry-select"
+                                                                          style="width:100%; opacity:0">
+                <option></option>
+            </select></div>
+            <img src="resources/img/public/wrong.png" id="tip-industry"
+                 style="position:absolute; right:5px; top:5px; width:22px; height:22px">
+        </div>
+    </div>
+    <br>
+
+    <p style="margin: -25px auto 3px 6%; font-size: 1.3em">官人学富几车?</p>
+
+    <div class="custom-li">
+        <div class="id-card-container" style="width:88%; margin:auto 0 auto 6%">
+            <div class="textinput"
+                 style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%">
+                <span class="placeholder" id="education-txt">请选择</span></div>
+            <div style="position:absolute; top:-10px; width:100%"><select id="education-select" style="width:100%">
+                <option></option>
+            </select></div>
+            <img src="resources/img/public/wrong.png" id="tip-education"
+                 style="position:absolute; right:5px; top:5px; width:22px; height:22px">
+        </div>
+    </div>
+    <br>
+
+    <p style="margin: -25px auto 3px 6%; font-size: 1.3em">官人平时鸿雁传书用哪个E-mail？</p>
+
+    <div class="custom-li">
+        <div class="id-card-container" style="width:88%">
+            <label for="email" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="email-txt" style="width:50%">请填写</span></label>
+            <input data-role="none" type="email" id="email"
+                   style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+        </div>
+    </div>
+    <br>
+
+    <div style="width:88%; position:relative; top:0; margin:auto">
+        <a href="#" class="ui-btn custom-btn" id="hand-in" style="height:100%">提交</a>
+        <span style="position:absolute; right:5px; top:28px; color:white">2/2</span>
+    </div>
+
+    <div data-role="popup" data-transition="pop" id="billmail"
+         style="width:280px; height: 75%; border: 5px solid gray; border-radius: 10px; background-color:white">
+        <div class="cover" id="cover-billmail" style="text-align:left; height: 120px; border-radius:3px">
+            <img src="resources/img/3-2/bill.png"
+                 style="width:70px; position:relative; left:10%; margin-top:5%; height:75px">
+
+            <div style="float: right; width: 58%; color: white">
+                <h2 style="font-size: 1.4em; margin: 40px 0 0 5%">想获取更高的额度?<br>推荐您填写一</h2>
+
+                <h2 style="font-size: 1.6em; margin-left: 10%">信用卡账单E-mail</h2>
+            </div>
+        </div>
+        <br>
+
+        <p style="margin-top: 6px">信用卡账单E-mail</p>
+
+        <div class="id-card-container" style="margin-top: 10px">
+            <input type="radio" name="billmail" id="radio-new" style="float:left; margin-top: 10px; width: 10%">
+            <label for="mail-new" class="textinput"
+                   style="float:right; position:absolute; top:5px; left:17%; height:30px; border: 1px solid #c0c0c0; width:60%; margin:5px 22% auto auto"></label>
+            <input data-role="none" type="email" id="mail-new"
+                   style="border:none; float:right; width:60%; height:30px; margin:5px 22% auto auto">
+        </div>
+
+        <div class="id-card-container">
+            <input type="radio" name="billmail" id="radio-same" style="float:left; margin-top: 10px; width: 10%">
+            <label for="radio-same" id="mail-same"
+                   style="float:right; position:absolute; top:-5px; height:30px; margin:5px 22% auto auto"></label>
+        </div>
+
+        <p style="margin:100px auto auto 5%">上述E-mail密码</p>
+
+        <div class="custom-li">
+            <div class="id-card-container" style="width:88%">
+                <label for="password" class="textinput"
+                       style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"></label>
+                <input data-role="none" type="password" id="password"
+                       style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+            </div>
+        </div>
+
+        <div class="ui-grid-a" style="margin-top:-20px">
+            <div class="ui-block-a">
+                <a href="#result" class="ui-btn" id="skip"
+                   style="background-color:#3ca0e6; border-radius:3px">跳过本步</a><br>
+            </div>
+
+            <div class="ui-block-b">
+                <a href="#result" class="ui-btn" id="continue"
+                   style="background-color:#3ca0e6; border-radius:3px">提交</a><br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- basic-info -->
+
+<!-- result -->
+<div data-role="page" id="result" data-title="信用评估">
+    <img src="resources/img/4-1/battery.png" style="width:70px; height:130px; float: left; margin: 10% 0 0 10%">
+
+    <h1 style="margin: 15% 0 0 38%; font-size: 2.4em">&yen <span id="amt-shown"
+                                                                 style="font-family: Arial; font-size: 2.3em; color: #404040"></span>
+    </h1>
+    <h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown"
+                                                                                   style="font-size: 1.8em; color: #e67e22"></span>的用户<span
+            id="rank-cmt">，官人还有努力空间。</span></h4>
+
+    <div data-role="listview" style="float: right; width: 65%; margin:10% 5% 0 0 ">
+        <div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-1"
+                                   style="margin: 10% 0">苍蝇也是肉，现在就去申请借款</a></div>
+        <div style="width:100%"><a href="#" class="ui-btn custom-btn" id="option-2" style="margin: 10% 0">去跟小伙伴哭一下穷</a>
+        </div>
+        <div style="width:100%"><a href="#limit" class="ui-btn custom-btn" id="option-3" style="margin: 10% 0">不信邪，换张信用卡再试试</a>
+        </div>
+    </div>
+
+    <div id="share"
+         style="width: 100%; height: 50%; position: absolute; top: 50%; background-color: rgba(0, 0, 0, 0.5); display: none">
+        <a href="#" class="ui-btn"
+           style="height: 5%; background-color: rgba(0, 0, 0, 0.4); margin-top: 0; color: white">分享到</a>
+
+        <div class="grid23">微信对话</div>
+        <div class="grid23">朋友圈</div>
+        <div class="grid23">新浪微博</div>
+        <div class="grid23">腾讯微博</div>
+        <div class="grid23">QQ空间</div>
+        <div class="grid23">人人网</div>
+    </div>
+</div>
+<!-- result -->
+
+<!-- tip-payback -->
+<div data-role="page" id="tip-payback">
+    <div style="text-align: center; margin-top: 12%"><img src="resources/img/5-2/cashin.png" style="max-width: 70%">
+    </div>
+    <h2 style="text-align: center; font-size: 1.6em; margin-top: 8%; color: gray">您化的缘已用完。
+        <br>按时还款，即可恢复部分额度。</h2>
+
+    <div class="custom-btn single-btn" id="go-payback">去测额度</div>
+</div>
+<!-- tip-payback -->
+
+<!-- loan -->
+<div data-role="page" id="loan" data-title="申请借款">
+    <div class="cover" style="height:125px">
+        <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">我的额度:</div>
+        <div style="font-family:Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:45px">&yen; <span
+                id="loan-limit" style="font-size: 2.4em; color: #404040;font-family: Arial;">8,000</span></div>
+    </div>
+    <p>官人本次想动用多少额度?<span style="color:#c0c0c0; font-size:0.9em">(仅支持整百)</span></p>
+
+    <div class="custom-li" style="margin-top:13px">
+        <div class="id-card-container" style="width:88%">
+            <label for="amount" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="amount-txt" style="width:50%">请填写</span></label>
+            <input data-role="none" type="tel" id="amount"
+                   style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+        </div>
+    </div>
+    <br>
+
+    <p style="margin-top:-25px">官人想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
+
+    <div class="ui-grid-a" style="width:80%; margin:10px auto auto auto">
+        <div class="ui-block-a">
+            <a href="#" class="ui-btn term-chose" id="term-3" style="border-radius: 3px;">3期</a>
+        </div>
+
+        <div class="ui-block-b">
+            <a href="#" class="ui-btn term-chose-not" id="term-6" style="border-radius: 3px;">6期</a>
+        </div>
+    </div>
+
+    <div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
+        <div class="ui-block-a">
+            <p>您每期大概需要还款:</p>
+        </div>
+
+        <div class="ui-block-b">
+            <div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">
+                &yen<span id="each-term"></span></div>
+        </div>
+    </div>
+
+    <div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
+        <div class="ui-block-a">
+            <p style="margin-top:-1px">相比信用卡最高可帮您省:</p>
+        </div>
+
+        <div class="ui-block-b">
+            <div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">
+                &yen<span id="saved" style="color:red"></span></div>
+        </div>
+    </div>
+    <hr style="border-style:dashed; margin-bottom:20px">
+
+
+    <div style="margin:0 auto; width:88%">
+        <div id="varifying">
+            <p>官人请输入手机号, 以便确认您的身份</p>
+
+            <div class="custom-li" style="margin-top:13px">
+                <div class="id-card-container" style="width:88%">
+                    <label for="phone" class="textinput"
+                           style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                            class="placeholder" id="phone-txt" style="width:50%">请填写</span></label>
+                    <input data-role="none" type="tel" id="phone"
+                           style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+                </div>
+            </div>
+            <br>
+
+            <p style="margin-top:-25px">手机验证码</p>
+
+            <div class="custom-li" style="margin-top:13px">
+                <div class="id-card-container" style="width:60%; float:left">
+                    <label for="code" class="textinput"
+                           style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                            class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
+                    <input data-role="none" type="tel" id="code"
+                           style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+                </div>
+                <div style="float:right; width:30%">
+                    <a href="#" class="ui-btn custom-btn" id="acquire-code"
+                       style="font-size:1.2em; margin: 1px 8px auto auto">获取验证码</a>
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div style="margin: -15px auto auto 9%; font-size:1.2em">
+            <input data-role="none" type="checkbox" name="agreement" id="agree" style="float:left; width:10%">
+            <label for="agree" style="margin-top:5px; padding-top:6px">我同意<span
+                    style="color:blue">《化缘个人借款条款》</span></label>
+        </div>
+
+        <div style="width:80%; position:relative; top:0; margin:auto">
+            <a href="#" class="ui-btn custom-btn" id="request">提交申请</a>
+        </div>
+    </div>
+
+    <div data-role="popup" data-position-to="#loan-limit" data-transition="pop" id="cardlist-2"
+         style="background-color:white; border:5px solid gray; border-radius:5px">
+        <a href="#card-add-box-2" class="ui-btn ui-icon-plus ui-btn-icon-left" id="add-another-2"
+           style="background-color:white; margin:0; color:#c0c0c0">添加其他信用卡</a>
+    </div>
+
+    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none"
+         id="card-confirm-2">
+        <h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h4>
+
+        <div class="ui-grid-a" style="margin:auto">
+            <div class="ui-block-a">
+                <a href="#" class="ui-btn custom-btn" id="N-2"
+                   style="border:1px solid black; border-radius:3px; color:black">取消</a>
+            </div>
+
+            <div class="ui-block-b">
+                <a href="#full" class="ui-btn custom-btn" id="Y-2"
+                   style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
+            </div>
+        </div>
+    </div>
+
+    <div id="card-add-box-2"
+         style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
+        <h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
+        <input data-role="none" type="tel" class="textinput" id="new-cardnum-2" style="width:80%; margin: 0 15px">
+
+        <p>请使用您自己的卡片, 否则缘可能无法化到</p>
+
+        <div class="ui-grid-a">
+            <div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return-2">返回</a></div>
+            <div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard-2">确认</a></div>
+        </div>
+    </div>
+</div>
+<!-- loan -->
+
+<!-- suspension -->
+<div data-role="page" id="suspension">
+    <div style="text-align: center; margin-top: 12%"><img src="resources/img/5-2/cashin.png" style="max-width: 70%">
+    </div>
+    <ul style="color: #e67e22">
+        <li><span>银行对于信用卡还款都有3天的宽限期，“化缘”不会让您出滞纳金的[酷]</span></li>
+        <li><span>由于这是您和还款帮的第一次[害羞]，故申请的结果（额度和每期还款金额）可能与上述金额有出入。</span></li>
+        <li><span>申请结果出来后，我们会及时通知您，您可以再来决定是否注资到信用卡。</span></li>
+    </ul>
+    <div style="width:50%; margin: 50px auto"><a href="#" class="ui-btn custom-btn" id="got-it">知道了</a></div>
+</div>
+<!-- suspension -->
+
+<!-- patience -->
+<div data-role="page" id="patience" style="text-align: center">
+    <h1>官人莫急!</h1>
+
+    <h2 style="margin-top: -3%">佛曰：第一次，要有点耐心。<br>要不您先去耍个剑？</h2>
+    <img src="resources/img/8-1/sword.png" style="max-width: 60%"><br>
+    <h4>审核还需<span id="hours"></span>小时</h4>
+
+    <div style="width: 80%; margin-left: 10%"><a href="#" class="ui-btn custom-btn" id="got-it-x">知道了</a></div>
+</div>
+<!-- patience -->
+
+<!-- fail -->
+<div data-role="page" id="fail" data-title="复活信用卡">
+    <div id="fail-title">官人对不起!</div>
+    <div id="fail-content">怪我们功力有限，您的缘没有化到，<br>无法为您复活信用卡。</div>
+    <div id="fail-img" style="margin-top: 10%; background-color: #aacf5d;">
+        <img src="resources/img/8-2/face.png" style="max-width: 60%; padding: 10% 0;"><br>
+    </div>
+    <div id="fail-btn" style="width:50%; margin:80px auto 0 auto"><a href="#" class="ui-btn custom-btn" id="got-it-y">知道了</a>
+    </div>
+</div>
+<!-- fail -->
+
+<div data-role="page" id="congratulation">
+    <div data-role="main">
+        <p style="text-align: center; font-size: 3.6em" id="for-popup">恭喜官人!</p>
+
+        <div id="congratulation-cover"
+             style="border-radius: 8px; margin: 0 auto; height:180px; width:80%; background-color:#aacf5d">
+            <div style="font-size: 1.8em; padding-top: 5%;">您本次动用的额度：</div>
+            <p style="font-size: 4em; margin: 10px auto; padding: 0; text-align:center">&yen <span id="amt-x"></span>
+            </p>
+
+            <div style="float: left; font-size: 1.4em; margin: 6% 0 0 12%;">还清期数：</div>
+            <div style="margin: 0;">
+                <div class="ui-btn" style="float: left; text-shadow: none; position: relative; top: -3%;"
+                     id="term-3-shown">3期
+                </div>
+                <div class="ui-btn" style="float: left; text-shadow: none" id="term-6-shown">6期</div>
+            </div>
+            <div>
+                <p style="font-size: 1.4em; float: left; margin: 30px auto auto 12%;">每期需还：&yen <span
+                        id="each-x"></span></p>
+
+                <p style="font-size: 1.4em; float: left; position: absolute; top: 320px; left: 12%; color: red;">
+                    相比信用卡还款，总计约帮您节省&yen <span id="saved-x"></span></p>
+            </div>
+        </div>
+        <br>
+
+        <div style="width:50%; margin:60px auto"><a href="#cardlist" data-rel="popup" class="ui-btn custom-btn"
+                                                    id="go-choose-card">确认,去选择信用卡</a></div>
+    </div>
+
+    <div data-role="popup" data-position-to="#for-popup" data-transition="pop" id="cardlist"
+         style="background-color:white; border:5px solid gray; border-radius:5px">
+        <div>
+            <a href="#card-add-box" class="ui-btn ui-icon-plus ui-btn-icon-left" id="add-another"
+               style="background-color:white; margin:0; color:#c0c0c0">添加其他信用卡</a>
+        </div>
+    </div>
+
+    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none"
+         id="card-confirm">
+        <h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h4>
+
+        <div class="ui-grid-a" style="margin:auto">
+            <div class="ui-block-a">
+                <a href="#" class="ui-btn custom-btn" id="N"
+                   style="border:1px solid black; border-radius:3px; color:black">取消</a>
+            </div>
+
+            <div class="ui-block-b">
+                <a href="#full" class="ui-btn custom-btn" id="Y"
+                   style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
+            </div>
+        </div>
+    </div>
+
+    <div id="card-add-box"
+         style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
+        <h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
+        <input data-role="none" type="tel" class="textinput" id="new-cardnum" style="width:80%; margin: 0 15px">
+
+        <p>请使用您自己的卡片, 否则缘可能无法化到</p>
+
+        <div class="ui-grid-a">
+            <div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return">返回</a></div>
+            <div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard">确认</a></div>
+        </div>
+    </div>
+</div>
+
+<!--repayment-->
+<div data-role="page" id="repayment">
+    <!--<div id="repayment-summary"></div>-->
+    <!--<div id="repayment-amount"></div>-->
+
+    <div id="repay-container">
+        <div id="repay-summary">
+            <span class="r-time">2013-09-09</span>借款&yen<span class="r-amt"></span>入卡片<span class="r-tail">4423</span>
+        </div>
+
+        <div id="repay-amount">
+            <div style="position:relative; top:15px; left:25px; font-size:1.5em">最近应还金额</div>
+            <div style="margin-top:25px; font-size:30px;">&yen;<span class="r-next"></span></div>
+            <div style="position:relative; left:25px; font-size:16px;"><span class="r-deadline"></span>到期</div>
+        </div>
+
+        <div class="repay-list"><span style="font-size:16px;">现在就去还款</span></div>
+        <div class="repay-list"><span style="font-size:16px;">查看借款详情</span></div>
+        <div class="repay-list"><span style="font-size:16px;">历史还款记录</span></div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-id="r-footer" class="footer">
+        <div style="height:20px;width: 100%; margin-top:5px; background-color:white;">
+            <div style="width: 78px;margin: auto;height: 100%;">
+                <div class="spot"></div>
+                <div class="spot"></div>
+                <div class="spot"></div>
+            </div>
+        </div>
+        <div id="repayment-footer">
+            <div id="repay-s-img"></div>
+            <div id="repay-s-txt">总计借款</div>
+            <div id="repay-s-btn"></div>
+            <div id="repay-s-num">3笔</div>
+        </div>
+    </div>
+
+    <div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white;">
+        <li>
+            <div class="li-l">借款时间</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">注入卡片</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">借款金额</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款期数</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款日期</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">总计应还</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">剩余应还</div>
+            <div class="li-r"></div>
+        </li>
+    </div>
+</div>
+
+<div data-role="page" id="sum-loan">
+    <div class="cover">
+        <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:15px; border:1px solid white">
+            总计借款金额<br>&yen<span id="total-amount"></span></div>
+        <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:15px; border:1px solid white">
+            总计借款笔数<br><span id="total-times"></span></div>
+        <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:5px; border:1px solid white">
+            总计应还金额<br>&yen<span id="total-payback"></span></div>
+        <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:5px; border:1px solid white">相比信用卡,
+            总计约省<br>&yen<span id="total-saved"></span></div>
+    </div>
+
+    <ul data-role="listview" data-inset="true" id="total-specific" style="width:90%; margin: 15px 5%">
+    </ul>
+
+    <div style="width:90%; margin-left:5%; clear:both"><a href="#" class="ui-btn custom-btn">返回</a></div>
+</div>
+<!--repayment-->
+
+<div data-role="page" id="full">
+    <h1 style="text-align:center">图暂缺！</h1>
+
+    <h2 style="text-align:center">您的信用卡将在1个工作日内收到借款！</h2>
+
+    <div style="margin: 40px auto; width:50%">
+        <a href="#" class="ui-btn custom-btn" id="got-it-z">知道了</a>
+    </div>
+</div>
+
+<div data-role="page" id="feedback">
+    <p style="margin: 10% 15%; color: #c0c0c0; font-size: 1.5em">
+        “化缘”是一款帮您还信用卡账的产品。产品还在努力完善中，如您在使用过程中有任何意见，都可以在下方吐槽框中表达。</p>
+
+    <div style="width: 80%; margin: 0 10%"><textarea data-role="none" name="textarea" id="textarea"
+                                                     style="border: 1px solid #c0c0c0; width: 100%; height: 150px; font-size: 1.4em; border-radius: 5px"></textarea>
+    </div>
+    <div style="width: 80%; margin: 10% auto"><a href="#thanks-feedback" class="ui-btn custom-btn">提交吐槽</a></div>
+</div>
+
+<div data-role="page" id="thanks-feedback">
+    <h1>感谢您的吐槽!</h1>
+
+    <div style="width: 80%; margin: 10% auto"><a href="#limit" class="ui-btn custom-btn">返回首页</a></div>
+</div>
+
+<div data-role="page" id="about">
+    <ul data-role="listview" style="width: 80%; height: 80%; margin: 10% auto">
+        <li style="background-color: silver; height: 150px"></li>
+        <li style="background-color: gray; color: white">了解化缘</li>
+        <li>化缘如何帮我省钱?</li>
+        <li>化缘总共分几步?</li>
+    </ul>
+</div>
+
+<script src="resources/js/app.js?r=20140514"></script>
 </body>
 </html>
