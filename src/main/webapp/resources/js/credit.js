@@ -12,6 +12,15 @@ info.cert = info.cert.slice(7, info.cert.length);
 
 jQuery.ajaxSetup({async:false});
 $.get(info.path + 'pboc/' + info.id, function(json){
+
+    $.getJSON(info.path + "dict/industry", function(json){
+        addOptions("industry-catography", json);
+    });
+
+    $.getJSON(info.path + "dict/education", function(json){
+        addOptions("education", json);
+    });
+
 	$('#name').val(json.name);
 	$('#id').val(json.certNo);
 	$('#modified-name').val(json.newName);
@@ -68,7 +77,8 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#fund-date').val(json.registerDate);
 	$('#fund-since').val(json.firstMonth);
 	$('#fund-to').val(json.toMonth);
-	$('#fund-state').val(json.yState);
+//	$('#fund-state').val(json.yState);
+    $('#fund-state').val(json.state);
 	$('#amount-each-3').val(json.pay);
     $('#delayed-current').val(json.cardOverDueNum);
 	
@@ -128,14 +138,6 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	info.flag = json.flag;
 	info.risk = json.risk;
 	info.status = json.status;
-
-    $.getJSON(info.path + "dict/industry", function(json){
-        addOptions("industry-catography", json);
-    });
-
-    $.getJSON(info.path + "dict/education", function(json){
-        addOptions("education", json);
-    });
 
 	if(info.status == '4' || info.status == '5'){
 		$('input').attr('disabled', 'disabled');
