@@ -330,10 +330,15 @@ $('#no-record').click(function(){
 });
 
 $('#id-modify').click(function(){
-	info.status = 5;
-	checkboxes();
-	update();
-    window.close();
+    if (!($("#modified-name").val() && $("#modified-id").val())) {
+        alert("请输入修改后的姓名和id!");
+    }
+    else {
+        info.status = 5;
+        checkboxes();
+        update();
+        window.close();
+    }
 });
 
  function addOptions(element_id, json) {
