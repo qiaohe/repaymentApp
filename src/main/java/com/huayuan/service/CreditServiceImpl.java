@@ -138,7 +138,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         updateCreditResultByLastApplication(approval);
         updateMemberStatusAsReject(approval);
         Approval result = approvalRepository.save(approval);
-        application.setStatus(Application.TEMPORARILY_STATUS);
+        application.setStatus(Application.APPROVED_STATUS);
         applicationRepository.save(application);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
@@ -207,11 +207,13 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         member.getCreditCardBills().size();
         member.getCreditCards().size();
         Loans loans = new Loans(loanRepository.findByMember_Id(application.getMember().getId()));
+        Account account = accountRepository.findByMemberId(member.getId());
         return new ApplicationCreditInfo.Builder()
                 .application(application)
                 .pboc(pboc)
                 .member(member)
                 .loans(loans)
+                .account(account)
                 .build();
     }
 
