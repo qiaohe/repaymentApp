@@ -1,4 +1,4 @@
-/* global $:false */
+﻿/* global $:false */
 /* global WeixinJSBridge:false */
 /* global alert:false */
 "use strict";
@@ -686,8 +686,6 @@ $(document).on("pageshow", "#loan", function () {
 	});
 
 	app.term = "3";
-	$("#term-3").css("background-color", "#3ca0e6");
-	$("#term-6").css("background-color", "#c0c0c0");
 	$("#amount").val("").off("keyup").keyup(function(){
 		var tmp = $("#amount").val();
 		if(tmp.length > 0)
@@ -709,16 +707,16 @@ $(document).on("pageshow", "#loan", function () {
 	});
 	
 	$("#term-3").off("click").click(function(){
-		$("#term-3").css("background-color", "#3ca0e6");
-		$("#term-6").css("background-color", "#c0c0c0");
+		$("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
+        $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
 		app.term = "3";
 		app.amount = $("#amount").val();
 		countPayback(app);
 	});
 	
 	$("#term-6").off("click").click(function(){
-		$("#term-6").css("background-color", "#3ca0e6");
-		$("#term-3").css("background-color", "#c0c0c0");
+        $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
+        $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
 		app.term = "6";
 		app.amount = $("#amount").val();
 		countPayback(app);
@@ -835,7 +833,6 @@ $(document).on("pageshow", "#loan", function () {
 
 $(document).on("click", ".card-container", function () {
 	app.card = $(this).html();
-	$("#num-tail-2").html(app.card.slice(app.card.length - 4, app.card.length));
 	$("#cardlist-2").popup("close");
 	$("#card-confirm-2").show();
 });
