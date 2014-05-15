@@ -102,19 +102,13 @@
         appDetail.educationMap = appDetail.makeDict("EDUCATION");
         appDetail.industryMap = appDetail.makeDict("INDUSTRY");
         appDetail.bankMap = appDetail.makeDict("BANK");
+        appDetail.reasonMap = appDetail.makeDict("reason");
         // initialize data
         var url = window.location.href, paramPrefix = "?applyNo=";
         var applyNo = appDetail.applyNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
         $.get(creditPath + "/" + applyNo, function (json) {
             appDetail.loadData(json);
             appDetail.autoTvTelephone(1);
-        });
-        $.get("api/dict/reason", function (json) {
-            var reasonMap = {};
-            $.each(json, function (i, e) {
-                reasonMap[e.key] = e.value;
-            });
-            appDetail.reasonMap = reasonMap;
         });
         appDetail.initTvData();
     };
@@ -277,7 +271,7 @@
             });
         });
         // 完成
-        $("#sumbit").on("click", function () {
+        $("#submit").on("click", function () {
             var applyAmtStr = $.trim($("#apply-amount").val());
             var borrowingAmtStr = $.trim($("#borrowing-amount").val());
             if(applyAmtStr == "" || borrowingAmtStr == "") {
@@ -299,8 +293,28 @@
                 alert("审批额度不能大于'账务信息'的可用额度！");
                 return;
             }
-            if($.trim($("#credit-reasion-1").val()) == "" && $.trim($("#credit-reasion-2").val()) == "" && $.trim($("#credit-reasion-3").val()) == "") {
-                alert("请输入原因码！");
+            var applyResult = $("#applyResult").val();
+            if(applyResult == "") {
+                alert("请选择审核结果！");
+                return;
+            }
+            var reason1 = $.trim($("#credit-reasion-1").val());
+            var reason2 = $.trim($("#credit-reasion-2").val());
+            var reason3 = $.trim($("#credit-reasion-3").val());
+            if(reason1 == "") {
+                alert("请输入征信原因码一！");
+                return;
+            }
+            if (reason1.charAt(0) != applyResult || !appDetail.reasonMap[reason1]) {
+                alert("征信原因码一错误！");
+                return;
+            }
+            if (reason2 && (reason2.charAt(0) != applyResult || !appDetail.reasonMap[reason2])) {
+                alert("征信原因码二错误！");
+                return;
+            }
+            if (reason2 && (reason3.charAt(0) != applyResult || !appDetail.reasonMap[reason3])) {
+                alert("征信原因码三错误！");
                 return;
             }
             appDetail.approveInfo("5");
@@ -329,22 +343,9 @@
         });
     };
     appDetail.approveInfo = function (status) {
-        var decision = $("#applyResult").val();
         var reason1 = $.trim($("#credit-reasion-1").val());
         var reason2 = $.trim($("#credit-reasion-2").val());
         var reason3 = $.trim($("#credit-reasion-3").val());
-        if (reason1 && (reason1.charAt(0) != decision || !appDetail.reasonMap[reason1])) {
-            alert("征信原因码一错误！");
-            return;
-        }
-        if (reason2 && (reason2.charAt(0) != decision || !appDetail.reasonMap[reason2])) {
-            alert("征信原因码二错误！");
-            return;
-        }
-        if (reason2 && (reason3.charAt(0) != decision || !appDetail.reasonMap[reason3])) {
-            alert("征信原因码三错误！");
-            return;
-        }
         var approveData = {
             amt: $("#borrowing-amount").val(),
             sugCrl: $("#apply-amount").val(),
@@ -606,7 +607,11 @@
         $("#forecast-amount").val(member.preCrl);
         $("#year-rate").val(parseFloat(approval.apr) * 100);
         $("#borrowing-limit").val(approval.term);
-        $("#applyResult").val(approval.decision);
+        if(approval.decision) {
+            $("#applyResult").val(approval.decision);
+        } else {
+            $("#applyResult").val("");
+        }
         $("#credit-reasion-1").val(approval.reason1);
         $("#credit-reasion-2").val(approval.reason2);
         $("#credit-reasion-3").val(approval.reason3);
