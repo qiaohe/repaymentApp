@@ -2,7 +2,6 @@ package com.huayuan.service;
 
 import com.huayuan.common.MemberStatusChangeEvent;
 import com.huayuan.domain.accounting.Account;
-import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.Loans;
 import com.huayuan.domain.credit.ApplicationCreditInfo;
 import com.huayuan.domain.credit.Pboc;
@@ -23,10 +22,8 @@ import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,7 +173,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
 
     @Override
     public void replyTv(Long memberId, String replyAnswer) {
-        ReplyAnswer rn = new ReplyAnswer(replyAnswer);
+        ReplyAnswer rn = new ReplyAnswer(replyAnswer.toUpperCase());
         if (!rn.isValidAnswer()) return;
         List<Application> apps = applicationRepository.findByMemberId(memberId);
         TvExecution tvExecution = getTvExecution(apps.get(0).getApplicationNo());
