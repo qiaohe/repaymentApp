@@ -153,7 +153,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return approvalRepository.save(approval);
     }
 
-    @Scheduled(cron = "0 30 8,12,18 * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     @Transactional
     @Override
     public void telephoneVerification() {

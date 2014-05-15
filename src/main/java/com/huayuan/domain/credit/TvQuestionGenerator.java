@@ -49,10 +49,10 @@ public class TvQuestionGenerator {
     public String getTemplate(TelephoneVerification tv) {
         if (StringUtils.isNotEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
             return messageTemplateAll;
-        if (StringUtils.isNotEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
-            return messageTemplateCompanyOnly;
-        if (StringUtils.isEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
+        if (StringUtils.isNotEmpty(tv.getTvQues1()) && StringUtils.isEmpty(tv.getTvQues2()))
             return messageTemplateHomeOnly;
+        if (StringUtils.isEmpty(tv.getTvQues1()) && StringUtils.isNotEmpty(tv.getTvQues2()))
+            return messageTemplateCompanyOnly;
         return null;
     }
 
