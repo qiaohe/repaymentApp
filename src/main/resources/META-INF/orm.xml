@@ -10,7 +10,7 @@
             ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,
             IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and
             appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id
-            and ma.sevenPrefix = substring(mem.mobile, 0 , 8)
+            and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = '3' or appl.status = '99')
         </query>
     </named-query>
 
