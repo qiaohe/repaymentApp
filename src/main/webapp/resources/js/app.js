@@ -1,18 +1,21 @@
-﻿/* global $:false */
+/* global $:false */
 /* global WeixinJSBridge:false */
 /* global alert:false */
 "use strict";
 var config = {};
-config.api_path = "http://180.168.35.37/repaymentApp/api/";
+config.api_path = "http://192.168.0.185:8080/repayment/api/";
 config.debug = true;
 
-config.id_pattern = /(?:memberId=)\d+/;
-config.member_id = config.id_pattern.exec(window.location).toString();
-config.member_id = config.member_id.slice(9, config.member_id.length);
+// config.id_pattern = /(?:memberId=)\d+/;
+// config.member_id = config.id_pattern.exec(window.location).toString();
+// config.member_id = config.member_id.slice(9, config.member_id.length);
 
-config.status_pattern = /(?:status=)\d+/;
-config.status = config.status_pattern.exec(window.location).toString();
-config.status = config.status.slice(7, config.status.length);
+// config.status_pattern = /(?:status=)\d+/;
+// config.status = config.status_pattern.exec(window.location).toString();
+// config.status = config.status.slice(7, config.status.length);
+
+config.member_id = "9";
+config.status = "3.1";
 
 var member = {};
 var app = {};
@@ -21,7 +24,6 @@ var dict = {};
 member.id = config.member_id;
 member.status = config.status;
 member.loanable = false;
-member.mobile_varified = false;
 
 // Actions
 function navigateThruStatus() {
@@ -213,7 +215,7 @@ function sendVarificationCode(phone_num) {
 
 function matchVarificationCode(vcode, phone_num) {
 	return $.ajax({
-		url: config.api_path + "sms/" + phone_num + "/" + vcode,
+		url: config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode,
 		type: "POST",
 		async: false,
 		data: JSON.stringify({
@@ -648,7 +650,7 @@ $(document).on("pagebeforeshow", "#result", function(){
 	
 });
 
-$(document).on("pageshow", "#loan", function () {
+$(document).on("pagecreate", "#loan", function () {
 
 });
 
@@ -687,18 +689,22 @@ $(document).on("pageshow", "#loan", function () {
 	$("#term-6").css("background-color", "#c0c0c0");
 	$("#amount").val("").off("keyup").keyup(function(){
 		var tmp = $("#amount").val();
-		app.amount = tmp;
-		countPayback(app);
 		if(tmp.length > 0)
 			$("#amount-txt").hide();
 		else
 			$("#amount-txt").show();
 			
-		if(parseInt(tmp, 10) % 100 && tmp.length > 3)
+		if (tmp.length > 3 && parseInt(tmp, 10) % 100) {
 			$(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
+		}
 			
 		if(parseInt(tmp, 10) > parseInt(member.avlcrl, 10))
 			$(this).val(parseInt(member.avlcrl));
+
+		if ($(this).val().length > 3) {
+			app.amount = $(this).val();
+			countPayback(app);
+		}
 	});
 	
 	$("#term-3").off("click").click(function(){
@@ -1060,7 +1066,7 @@ $(".bkg").click(function () {
 // window.alert("My Window is reloading");
 // }
 
-window.onblur = function () {
+window.onbeforeunload = function () {
 	 var print_status = "0";
 	 switch(window.location.hash){
 	 	case "":
