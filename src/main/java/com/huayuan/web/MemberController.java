@@ -135,6 +135,7 @@ public class MemberController {
 
     @RequestMapping(value = "/{memberId}/{mobilePhone}/{code}", method = RequestMethod.POST)
     @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     public boolean verifyCode(@PathVariable Long memberId, @PathVariable String mobilePhone, @PathVariable String code) {
         boolean verified = smsVerificationCodeService.verifyCode(mobilePhone, code);
         if (verified) {
