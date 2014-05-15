@@ -34,7 +34,4 @@ public interface CreditService {
     public ApplicationCreditInfo buildCreditInfo(String appNo);
 
     public Approval saveTemporarily(Approval approve);
-
-
-    public String test();
 }

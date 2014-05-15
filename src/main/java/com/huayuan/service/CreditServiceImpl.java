@@ -22,10 +22,8 @@ import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,12 +150,6 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         application.setStatus(Application.TEMPORARILY_STATUS);
         applicationRepository.save(application);
         return approvalRepository.save(approval);
-    }
-
-    @Override
-    public String test() {
-        return MessageFormat.format(tvApproveResultTemplate, "http://sina.com.cn", 12,
-                132, "122222");
     }
 
     @Scheduled(cron = "0 0/20 * * * ?")
