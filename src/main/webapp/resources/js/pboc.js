@@ -45,7 +45,7 @@
         }, 'json');
     }
 
-    getNshow(path + 'pboc/summary');
+    getNshow(path + 'pboc/search?q=pb.status in (2, 3)');
 
     $('#for-all').click(function () {
         //$("input:checkbox:not(:checked)").trigger('click');

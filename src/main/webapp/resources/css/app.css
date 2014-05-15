@@ -1,340 +1,265 @@
-body {
-    font-size: 62.5%;
+body{
+	font-size: 62.5%;
 }
 
-a {
-    text-decoration: none;
-    color: white;
+a{
+	text-decoration: none;
+	color: white;
 }
 
-li {
-    list-style: none;
-    border: none;
+li{
+	list-style: none;
+	border: none;
 }
 
-input {
-    height: 30px;
+input{
+	height: 30px;
 }
 
-/* limit */
-.cover {
-    position: relative;
-    top: 0;
-    text-align: center;
-    background-color: #aacf5d;
-    height: 175px;
-}
+/* limit */ 
+	.cover{
+		position: relative;
+		top: 0;
+		text-align: center;
+		background-color: #aacf5d; 
+		height: 175px;
+	}
 
-.cover:before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 47%;
-    border-color: #aacf5d transparent transparent transparent;
-    border-style: solid;
-    border-width: 10px;
-    width: 0;
-    height: 0;
-}
-
-.cover-img {
-    max-height: 62.3%;
-    max-width: 42.9%;
-}
-
-.custom-li {
-    position: relative;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    margin: auto;
-}
-
-.before-input {
-    float: left;
-    height: 30px;
-    width: 45px;
-    /* max-width: 14%;
-    max-height: 5.5%; */
-    margin-top: 0.8%;
-    margin-left: 3.2%;
-}
-
-.id-card-container {
-    position: relative;
-    width: 75%;
-    top: 0;
-    float: left;
-    margin-left: 6%;
-}
-
-.textinput {
-    border: 1px solid #c0c0c0;
-    border-radius: 3px;
-    width: 100%;
-    height: 30px;
-}
-
-.placeholder {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    font-size: 1.4em;
-    color: #c0c0c0;
-    margin: 6px auto auto 10px;
-}
-
-.placeholder-left {
-    border: none;
-    text-align: left;
-    padding: 2.5% 0 0 2%;
-}
-
-.placeholder-right {
-    border: none;
-    text-align: right;
-    padding-top: 3%;
-}
-
-.small-icon {
-    max-height: 4.5%;
-    max-width: 10.5%;
-}
-
-.custom-btn {
-    position: relative;
-    top: 0;
-    text-decoration: none;
-    background-color: #3ca0e6;
-    text-align: center;
-    border-radius: 3px;
-    color: white;
-    font-weight: bold;
-    font-size: 1.6em;
-}
-
-.single-btn {
-    width: 60%;
-    text-align: center;
-    font-size: 1.8em;
-    margin: 20% auto 0 auto;
-}
-
+	.cover:before{
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 47%;
+		border-color: #aacf5d transparent transparent transparent;
+		border-style: solid;
+		border-width: 10px;
+		width: 0;
+		height: 0;
+	}
+	
+	.cover-img{
+		max-height: 62.3%;
+		max-width: 42.9%;
+	}
+	
+	.custom-li{
+		position: relative;
+		top: 0;
+		width: 100%;
+		height: 60px;
+		margin: auto;
+	}
+	
+	.before-input{
+		float: left;
+		height: 30px;
+		width: 45px;
+		/* max-width: 14%;
+		max-height: 5.5%; */
+		margin-top: 0.8%;
+		margin-left: 3.2%;
+	}
+	
+	.id-card-container{
+		position: relative;
+		width: 75%;
+		top: 0;
+		float: left;
+		margin-left: 6%;
+	}
+	
+	.textinput{
+		border: 1px solid #c0c0c0;
+		border-radius: 3px;
+		width: 100%;
+		height: 30px;
+	}
+	
+	.placeholder{
+		position: absolute;
+		top: 0;
+		width: 100%;
+		font-size: 1.4em;
+		color: #c0c0c0;
+		margin: 6px auto auto 10px;
+	}
+	
+	.placeholder-left{
+		border: none;
+		text-align: left;
+		padding: 2.5% 0 0 2%;
+	}
+	
+	.placeholder-right{
+		border: none;
+		text-align: right;
+		padding-top: 3%;
+	}
+	
+	.small-icon{
+		max-height: 4.5%;
+		max-width: 10.5%;
+	}
+	
+	.custom-btn{
+		position: relative;
+		top: 0;
+		text-decoration: none;
+		background-color: #3ca0e6;
+		text-align: center;
+		border-radius: 3px;
+		color: white;
+		font-weight: bold;
+		font-size: 1.6em;
+	}
+	
+	.single-btn{
+		width: 60%;
+		text-align: center;
+		font-size: 1.8em;
+		margin: 20% auto 0 auto;
+	}
+	
 /* basic-info */
-#basic-info p, #loan p {
-    font-size: 1.4em;
-    color: #e7883c;
-    margin: -1% auto -3% 5%;
-}
-
-.pop-up {
-    position: absolute;
-    top: 10%;
-    left: 5%;
-    display: none;
-    background-color: white;
-    z-index: 5;
-}
-
-.bkg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
+	#basic-info p, #loan p{
+		font-size: 1.4em;
+		color: #e7883c;
+		margin: -1% auto -3% 5%;
+	}
+	
+	.pop-up{
+		position: absolute;
+		top: 10%;
+		left: 5%;
+		display: none;
+		background-color: white;
+		z-index: 5;
+	}
+	
+	.bkg{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.7);		
+	}
+	
 /* suspension */
-#suspension li {
-    list-style-type: square;
-    margin: auto 6%;
-}
-
-#suspension li span {
-    color: #404040;
-    font-size: 1.4em;
-}
+	#suspension li{
+		list-style-type:square;
+		margin: auto 6%;
+	}
+	
+	#suspension li span{
+		color: #404040;
+		font-size: 1.4em;
+	}
 
 /* loan */
-#loan p {
-    margin: 6% auto -3% 5%;
+#loan p{
+	margin: 6% auto -3% 5%;
 }
 
-#about li {
-    font-size: 1.6em;
-    border: 1px solid silver;
-    height: 20%;
-    color: #c0c0c0;
+#about li{
+	font-size: 1.6em;
+	border: 1px solid silver;
+	height: 20%;
+	color: #c0c0c0;
 }
 
-.grid23 {
-    float: left;
-    width: 33.3%;
-    height: 22.5%;
-    text-align: center;
-    color: white;
-    font-size: 1.4em;
+.grid23{
+	float: left;
+	width: 33.3%;
+	height: 22.5%;
+	text-align: center;
+	color: white;
+	font-size: 1.4em;
 }
 
-.card-container {
-    padding-left: 25px;
-    line-height: 45px;
-    font-size: 1.5em;
-    width: 240px;
-    height: 45px;
-    background-color: white;
+.card-container{
+	padding-left:25px;
+	line-height:45px;
+	font-size:1.5em; 
+	width:240px;
+	height:45px;
+	background-color:white;
 }
 
-#repay-container {
-    width: 95%;
-    margin: 10px auto;
-    border-radius: 5px;
-    border: 1px solid #c4c4c4;
+.r-container{
+	width: 95%;
+	margin: 10px 2.5%;
+	border-radius: 5px;
+}
+ 
+.spot{
+	float: left; 
+	width: 10px;
+	height: 10px;
+	border-radius: 10px;
+	background-color: transparent;
+	border: 1px solid black;
 }
 
-.repay-list {
-    border-top: 1px solid #c4c4c4;
+.footer{
+	height: 120px;
+	border:none;
+	background-color: white;
 }
 
-#repay-summary {
-    height: 30px;
-    font-size: 16px;
-    line-height: 30px;
-    background-color: #c4c4c4;
-    border-radius: 5px 5px 0 0;
-    color: white;
+.sl{
+	margin: 0;
+	width: 15%;
+	height: 100% !important;
+	float: left;
+	background-color: silver;
+	color: white;
+	text-align: center;
 }
 
-#repay-amount {
-    height: 150px;
-    padding-left: 10%;
-    background-color: #aacf5d;
+.sr{
+	margin: 0;
+	width: 83%;
+	float: right;
+	margin-right: 2%;
 }
 
-.spot {
-    float: left;
-    width: 10px;
-    height: 10px;
-    margin: 0 7px;
-    border-radius: 10px;
-    background-color: transparent;
-    border: 1px solid black;
+#sum-loan ul li{
+	padding: 0 !important;
 }
 
-.footer {
-    height: 120px;
-    border: none;
-    background-color: white;
+.li-l{
+	text-align: center;
+	float: left;
+	width: 50px;
+	height: 30px;
+	background-color: silver;
 }
 
-.sl {
-    margin: 0;
-    width: 15%;
-    height: 100% !important;
-    float: left;
-    background-color: silver;
-    color: white;
-    text-align: center;
+.li-r{
+	text-align: center;
+	width: 150px;
+	height: 30px;
+	background: white;
 }
 
-.sr {
-    margin: 0;
-    width: 83%;
-    float: right;
-    margin-right: 2%;
+.bkg{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: none;
 }
 
-#sum-loan ul li {
-    padding: 0 !important;
+#cities span{
+	font-size: 1.3em;
+	margin: 5px auto 5px 5%;
 }
 
-.li-l {
-    text-align: center;
-    float: left;
-    width: 50px;
-    height: 30px;
-    background-color: silver;
-}
-
-.li-r {
-    text-align: center;
-    width: 150px;
-    height: 30px;
-    background: white;
-}
-
-.bkg {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-}
-
-#fail {
-    text-align: center;
-    font-family: "宋体";
-}
-
-#fail-title {
-    font-size: 24px;
-    font-weight: bold;
-    height: 45px;
-    line-height: 30px;
-    margin-top: 20px;
-}
-
-#fail-content {
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 24px;
-    height: 48px;
-}
-
-.term-chose {
-    background: #3ca0e6 url("/resources/img/public/correct.png") no-repeat;
-    background-position-x: 10%;
-    background-position-y: 5px;
-}
-
-.term-chose-not {
-    background: #c0c0c0 url("/resources/img/public/correct.png") no-repeat;
-    background-position-x: 10%;
-    background-position-y: 5px;
-}
-
-#repayment-footer {
-    width: 80%;
-    height: 30px;
-    font-size: 16px;
-    line-height: 30px;
-    margin: auto;
-    background-color: white;
-    border-radius: 5px;
-    border: 1px solid #c4c4c4;
-}
-
-#repay-s-img {
-    width: 40px;
-    height: 30px;
-    float: left;
-}
-
-#repay-s-txt {
-    float: left;
-    height: 30px;
-}
-
-#repay-s-num {
-    float: right;
-    height: 30px;
-}
-
-#repay-s-btn {
-    width: 40px;
-    float: right;
-    height: 30px;
+.avl-sign{
+	width: 22px;
+	height: 22px;
+	margin: 5px 0 5px 5%;
 }
