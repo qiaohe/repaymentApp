@@ -251,6 +251,10 @@
                 alert("请填写征信员问题！");
                 return;
             }
+            if($("#phoneType").val() == '6' && $("#tvDecision").val() == '1' && $.trim($("#tv-phone").val()) == '') {
+                alert("请填写电话号码！");
+                return;
+            }
             var tvData = {
                 appNo: appDetail.applyNo,
                 type: parseInt($("#tvType").val(), 10),
@@ -315,6 +319,10 @@
             }
             if (reason3 && (reason3.charAt(0) != applyResult || !appDetail.reasonMap[reason3])) {
                 alert("征信原因码三错误！");
+                return;
+            }
+            if($.trim($("#credit-opinion").val()) == "") {
+                alert("请填写征信意见！");
                 return;
             }
             appDetail.approveInfo("5");
@@ -384,7 +392,7 @@
         $("#wechatCity").val(member.wcProvince);
         $("#blockCode").val(member.blockCode);
         $("#blockTime").val($.formatDate(member.blockTime));
-        $("#memberCreateTime").val(member.blockCode);
+        $("#memberCreateTime").val($.formatDate(member.createTime));
 
         var idCard = member.idCard;
         appDetail.idcard = idCard.idNo;
@@ -593,7 +601,7 @@
         // 电话照会
 
         // 账务信息
-        var account = application.account;
+        var account = json.account;
         if(account) {
             $("#account-all-amt").val(account.crl);
             $("#account-avl-amt").val(account.crlAvl);
