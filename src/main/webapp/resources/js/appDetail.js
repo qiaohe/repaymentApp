@@ -618,10 +618,10 @@
         $("#customer-desc").val(approval.profile);
         $("#credit-opinion").val(approval.opinion);
         $("#creditor").val(approval.creditor);
-        if(application.status != '3' || application.status != '99') {
-            appDetail.readApproveCont();
-        } else {
+        if(application.status == '3' || application.status == '99') {
             $("#operationDiv").children().show();
+        } else {
+            appDetail.readApproveCont();
         }
     };
     appDetail.loadCredits = function (credits) {
