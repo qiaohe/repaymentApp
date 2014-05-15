@@ -1,9 +1,9 @@
-﻿/* global $:false */
+/* global $:false */
 /* global WeixinJSBridge:false */
 /* global alert:false */
 "use strict";
 var config = {};
-config.api_path = "http://192.168.0.155:8080/api/";
+config.api_path = "http://192.168.0.185:8080/repayment/api/";
 config.debug = true;
 
 // config.id_pattern = /(?:memberId=)\d+/;
@@ -91,7 +91,8 @@ function getMemberInfo() {
 			member.industry = json.industry;
 			member.education = json.education;
 			member.email = json.email;
-			member.mobile_varified = json.hasMobilePhone;
+			// member.mobile_varified = json.hasMobilePhone;
+			member.mobile_varified = "true";
 		},
 		error: stdError
 	});
@@ -224,7 +225,7 @@ function matchVarificationCode(vcode, phone_num) {
 		}),
 		dataType: "text",
 		error: function () {
-			alert(config.api_path + "sms/" + phone_num + "/" + vcode);
+			alert(config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode);
 		}
 	});
 }
@@ -840,6 +841,22 @@ $(document).on("click", ".card-container", function () {
 });
 
 $(document).on("pagecreate", "#congratulation", function(){
+	var appNo_pattern = /(?:appNo=)\d+/;
+	var appNo = appNo_pattern.exec(window.location).toString();
+	appNo = appNo.slice(6, appNo.length);
+
+	// $.ajax({
+	// 	url: config.api_path + "app/" + appNo,
+	// 	type: "GET",
+	// 	dataType: "json",
+	// 	success: function (json) {
+
+	// 	},
+	// 	error: function () {
+	// 		alert(config.api_path + "app/" + appNo);
+	// 	}
+	// });
+
 	$("#amt-x").html();
 
 	$("#go-choose-card").click(function(){
@@ -885,16 +902,6 @@ $(document).on("pagecreate", "#congratulation", function(){
 		}).error(function(){
 			$("#add-card-box").hide();
 		});
-	});
-});
-
-$(document).on("pagecreate", "#full", function () {
-	$("#got-it-z").click(function () {
-		if (!member.bill_email) {
-			returnFootPrint(member.id, "4");
-		}
-		
-		WeixinJSBridge.call("closeWindow");
 	});
 });
 
@@ -1067,29 +1074,28 @@ $(".bkg").click(function () {
 // }
 
 window.onbeforeunload = function () {
-	 var print_status = "0";
-	 switch(window.location.hash){
-	 	case "":
-	 		print_status = "1";
-	 		break;
-	 	case "#limit":
-	 		print_status = "1";
-	 		break;
-	 	case "#basic-info":
-	 		print_status = "1";
-	 		break;
-	 	case "#result":
-	 		print_status = "2";
-	 		break;
-	 	case "#congratulation":
-	 		print_status = "3";
-	 		break;
-	 	default:
-	 		return false;
-	 }
-	 returnFootPrint(member.id, print_status);
+	var print_status;
+	switch(window.location.hash){
+		case "#limit":
+			print_status = "0";
+			break;
+		case "#basic-info":
+			print_status = "0";
+			break;
+		case "#result":
+			print_status = "1";
+			break;
+		case "#congratulation":
+			print_status = "2";
+			break;
+		default:
+			print_status = "0";
+	}
+	returnFootPrint(member.id, print_status);
 };
 
 function returnFootPrint(id, status) {
-	$.get(config.api_path + "members/" + id + "/status/" + status, function () {});
+	$.get(config.api_path + "members/" + id + "/status/" + status, function () {
+		alert(config.api_path + "members/"  + id + "/status/" + status);
+	});
 }
