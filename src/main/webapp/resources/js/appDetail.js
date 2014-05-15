@@ -313,7 +313,7 @@
                 alert("征信原因码二错误！");
                 return;
             }
-            if (reason2 && (reason3.charAt(0) != applyResult || !appDetail.reasonMap[reason3])) {
+            if (reason3 && (reason3.charAt(0) != applyResult || !appDetail.reasonMap[reason3])) {
                 alert("征信原因码三错误！");
                 return;
             }
