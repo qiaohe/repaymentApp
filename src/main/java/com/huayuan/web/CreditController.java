@@ -2,6 +2,7 @@ package com.huayuan.web;
 
 import com.huayuan.domain.credit.ApplicationCreditInfo;
 import com.huayuan.domain.credit.ApplicationSummary;
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.loanapplication.TelephoneTV;
 import com.huayuan.service.ApplicationService;
@@ -59,7 +60,7 @@ public class CreditController {
         approval.setDecision(applicationApproveDto.getDecision());
         approval.setProfile(applicationApproveDto.getProfile());
         approval.setCreditor(applicationApproveDto.getCreditor());
-        return creditService.approve(approval);
+        return applicationApproveDto.isSaveTemporarily() ? creditService.saveTemporarily(approval) : creditService.approve(approval);
     }
 
     @RequestMapping(method = RequestMethod.GET)

@@ -138,11 +138,19 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         updateCreditResultByLastApplication(approval);
         updateMemberStatusAsReject(approval);
         Approval result = approvalRepository.save(approval);
-        application.setStatus(5);
+        application.setStatus(Application.TEMPORARILY_STATUS);
         applicationRepository.save(application);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
         return result;
+    }
+
+    @Override
+    public Approval saveTemporarily(Approval approval) {
+        final Application application = approval.getApplication();
+        application.setStatus(Application.TEMPORARILY_STATUS);
+        applicationRepository.save(application);
+        return approvalRepository.save(approval);
     }
 
     @Scheduled(cron = "0 30 8,12,18 * * ?")

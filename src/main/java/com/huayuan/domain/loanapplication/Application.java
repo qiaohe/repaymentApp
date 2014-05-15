@@ -17,6 +17,8 @@ import java.util.List;
 @Entity
 @Table(name = "APPL")
 public class Application {
+    public static final Integer TEMPORARILY_STATUS = 99;
+    public static final Integer APPROVED_STATUS = 5;
     @Id
     @Column(name = "APPL_NO")
     private String applicationNo;

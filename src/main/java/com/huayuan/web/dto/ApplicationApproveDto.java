@@ -1,5 +1,8 @@
 package com.huayuan.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.domain.loanapplication.Application;
+
 /**
  * Created by dell on 14-5-10.
  */
@@ -15,6 +18,7 @@ public class ApplicationApproveDto {
     private String opinion;
     private String profile;
     private String creditor;
+    private Integer status;
 
     public ApplicationApproveDto() {
     }
@@ -105,5 +109,18 @@ public class ApplicationApproveDto {
 
     public void setCreditor(String creditor) {
         this.creditor = creditor;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @JsonIgnore
+    public boolean isSaveTemporarily() {
+        return Application.TEMPORARILY_STATUS.equals(status);
     }
 }
