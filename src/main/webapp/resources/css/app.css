@@ -252,3 +252,14 @@ input{
 	background-color: rgba(0, 0, 0, 0.5);
 	display: none;
 }
+
+#cities span{
+	font-size: 1.3em;
+	margin: 5px auto 5px 5%;
+}
+
+.avl-sign{
+	width: 22px;
+	height: 22px;
+	margin: 5px 0 5px 5%;
+}

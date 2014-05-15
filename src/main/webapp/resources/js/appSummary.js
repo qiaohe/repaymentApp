@@ -3,47 +3,47 @@
     var appSummary = {},
         path = "api/credit",
         userType = {
-            "0":"新用户",
-            "1":"老用户-前次退件",
-            "2":"老用户-前次过件"
+            "0": "新用户",
+            "1": "老用户-前次退件",
+            "2": "老用户-前次过件"
         },
         appStatus = {
-            "0":"客户提交申请",
-            "1":"提交查询人行",
-            "2":"人行报告返回",
-            "3":"内部批次完成",
-            "4":"A级征信审核完成",
-            "5":"B级征信审核完成",
-            "6":"客户放弃",
-            "7":"客户接受，发放借款",
-            "99":"暂存"
+            "0": "客户提交申请",
+            "1": "提交查询人行",
+            "2": "人行报告返回",
+            "3": "内部批次完成",
+            "4": "A级征信审核完成",
+            "5": "B级征信审核完成",
+            "6": "客户放弃",
+            "7": "客户接受，发放借款",
+            "99": "暂存"
         };
 
-    appSummary.init = function() {
+    appSummary.init = function () {
         this.initEvent();
         $.get(path, function (json) {
             appSummary.loadData(json);
         });
     };
-    appSummary.initEvent = function() {
+    appSummary.initEvent = function () {
         // click search button
-        $("#search").click(function(){
+        $("#search").click(function () {
             var param = appSummary.generateParam();
-            $.get(path+"/search?q="+param,function (json) {
+            $.get(path + "/search?q=" + param, function (json) {
                 appSummary.loadData(json);
             });
         });
-        $("#prev").on("click",function(){
+        $("#prev").on("click", function () {
 
         });
-        $("#next").on("click",function(){
+        $("#next").on("click", function () {
 
         });
     };
-    appSummary.loadData = function(json) {
+    appSummary.loadData = function (json) {
         // head of table
         var contentHtml = '<tr>' +
-            '<td style="width: 4%;text-align: center"></td>' +
+            '<td style="width: 4%;text-align: center">序号</td>' +
             '<td>申请编号</td>' +
             '<td>姓名</td>' +
             '<td style="width:12%;">身份证号码</td>' +
@@ -54,32 +54,32 @@
             '<td>征信员</td>' +
             '<td>处理时间</td>' +
             '</tr>';
-        if(!json) {
+        if (!json) {
             $("#data-table").html(contentHtml);
             return;
         }
-        $.each(json,function(i,ele){
+        $.each(json, function (i, ele) {
             contentHtml += '<tr>' +
-                '<td style="text-align: center;">'+(i+1)+'</td>' +
-                '<td class="clickable">'+ele.appNo+'</td>' +
-                '<td>'+ele.name+'</td>' +
-                '<td>'+ele.idCardNo+'</td>' +
-                '<td>'+userType[ele.existingFlag]+'</td>' +
-                '<td>'+$.formatDate(ele.applyDate)+'</td>' +
-                '<td>'+ele.mobileCity+'</td>' +
-                '<td>'+appStatus[ele.status]+'</td>' +
-                '<td>'+ele.creditor+'</td>' +
-                '<td>'+$.formatDate(ele.createDate)+'</td>' +
+                '<td style="text-align: center;">' + (i + 1) + '</td>' +
+                '<td class="clickable">' + ele.appNo + '</td>' +
+                '<td>' + ele.name + '</td>' +
+                '<td>' + ele.idCardNo + '</td>' +
+                '<td>' + userType[ele.existingFlag] + '</td>' +
+                '<td>' + $.formatDate(ele.applyDate) + '</td>' +
+                '<td>' + ele.mobileCity + '</td>' +
+                '<td>' + appStatus[ele.status] + '</td>' +
+                '<td>' + ele.creditor + '</td>' +
+                '<td>' + $.formatDate(ele.createDate) + '</td>' +
                 '</tr>';
         });
         $("#data-table").html(contentHtml);
-        $("#data-table").find(".clickable").each(function(){
-            $(this).on("click",function(){
+        $("#data-table").find(".clickable").each(function () {
+            $(this).on("click", function () {
                 window.open("appDetail.html?applyNo=" + $(this).text(), "_blank");
             });
         });
     };
-    appSummary.generateParam = function() {
+    appSummary.generateParam = function () {
         var name = $("#name").val();
         var idcard = $("#idcard").val();
         var moblie = $("#mobile").val();

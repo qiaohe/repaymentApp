@@ -12,6 +12,15 @@ info.cert = info.cert.slice(7, info.cert.length);
 
 jQuery.ajaxSetup({async:false});
 $.get(info.path + 'pboc/' + info.id, function(json){
+
+    $.getJSON(info.path + "dict/industry", function(json){
+        addOptions("industry-catography", json);
+    });
+
+    $.getJSON(info.path + "dict/education", function(json){
+        addOptions("education", json);
+    });
+
 	$('#name').val(json.name);
 	$('#id').val(json.certNo);
 	$('#modified-name').val(json.newName);
@@ -26,6 +35,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#phone-home').val(json.homeTelephoneNo);
 	$('#education').val(json.eduDegree);
 	$('#show-id').val(json.idImage);
+	$('#credit-min').val(json.cardMinCreditLimitPerOrg);
 
 	if(json.registeredAddress == '1')
 		$('#address-conflict').prop('checked', true);
@@ -67,7 +77,8 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#fund-date').val(json.registerDate);
 	$('#fund-since').val(json.firstMonth);
 	$('#fund-to').val(json.toMonth);
-	$('#fund-state').val(json.yState);
+//	$('#fund-state').val(json.yState);
+    $('#fund-state').val(json.state);
 	$('#amount-each-3').val(json.pay);
     $('#delayed-current').val(json.cardOverDueNum);
 	
@@ -94,7 +105,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#amount-remaining').val(json.loanBalance);
 	$('#payback-average').val(json.loanLatest6MonthUsedAvgAmount);
 	$('#num-corp').val(json.cardOrg);
-    $('#credit-min').val(json.semicardMinCreditLimitPerOrg);
+//    $('#credit-min').val(json.semicardMinCreditLimitPerOrg);
 	$('#num-accounts').val(json.cardAccountCount);
 	$('#amount-credit').val(json.cardCreditLimit);
 	$('#credit-average').val(json.cardAvgCreditLimit);
@@ -109,7 +120,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	$('#credit-max-3').val(json.semiCardMaxCreditLimitPerOrg);
 	$('#credit-min-3').val(json.semicardMinCreditLimitPerOrg);
 	$('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
-
+    
     $.get(info.path + 'dict/mobileArea/' + json.mobile, function(text){
         $('#num-district').val(text);
     }, 'text');
@@ -127,7 +138,7 @@ $.get(info.path + 'pboc/' + info.id, function(json){
 	info.flag = json.flag;
 	info.risk = json.risk;
 	info.status = json.status;
-	
+
 	if(info.status == '4' || info.status == '5'){
 		$('input').attr('disabled', 'disabled');
 	}
@@ -142,7 +153,8 @@ $.get(info.path + 'pboc/' + info.id + '/idCard', function(text){
 jQuery.ajaxSetup({async:true});
 
 //photo and pdf
-$('#pdf').attr('src', info.path.slice(0, info.path.length - 4) + 'resources/pboc/' + info.cert + '.pdf');
+//$('#pdf').attr('src', info.path.slice(0, info.path.length - 4) + 'resources/pboc/' + info.cert + '.pdf');
+$('#pdf').attr('src', info.path + 'resources/pboc/' + info.cert + '.pdf');
 $('#show-idimg').click(function(){
 	$('#img').show();
 });
@@ -238,6 +250,7 @@ function update(){
 			semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
 			semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
             semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
+			cardMinCreditLimitPerOrg: $('#credit-min').val(),
 			rh_1: info.rh_1,
 			rh_2: info.rh_2,
 			rh_3: info.rh_3,
@@ -323,6 +336,12 @@ $('#id-modify').click(function(){
     window.close();
 });
 
-
+ function addOptions(element_id, json) {
+     var tmp = [];
+     for (var i in json) {
+         tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
+     }
+     $("#" + element_id).append($(tmp));
+ }
 // END
 });

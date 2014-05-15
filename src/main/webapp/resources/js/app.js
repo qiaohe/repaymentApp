@@ -1,4 +1,4 @@
-/* global $:false */
+﻿/* global $:false */
 /* global WeixinJSBridge:false */
 /* global alert:false */
 "use strict";
@@ -14,20 +14,19 @@ config.status_pattern = /(?:status=)\d+/;
 config.status = config.status_pattern.exec(window.location).toString();
 config.status = config.status.slice(7, config.status.length);
 
-// config.member_id = "1";
-// config.status = "1";
-
 var member = {};
 var app = {};
 var dict = {};
 
 member.id = config.member_id;
 member.status = config.status;
+member.loanable = false;
+member.mobile_varified = false;
 
 // Actions
 function navigateThruStatus() {
 	if (member.status == "1"){
-		member.isnew = 0;
+		member.isnew = 1;
 	}
 	else if (member.status == "2") {
 		var tmp = localStorage.getItem("idcard_front");
@@ -201,17 +200,6 @@ function testLimit(obj) {
 	});
 }
 
-function getSIMDistrict(phone_num) {
-	return $.ajax({
-		url: config.api_path + "dict/mobileArea/" + phone_num,
-		type: "GET",
-		dataType: "text",
-		error: function () {
-			alert(config.api_path + "dict/mobileArea/" + phone_num);
-		}
-	});
-}
-
 function sendVarificationCode(phone_num) {
 	return $.ajax({
 		url: config.api_path + "sms/" + phone_num,
@@ -375,6 +363,7 @@ $(document).on("pagecreate", "#limit", function () {
 
 	$("#credit-card").on("keyup", function (e) {
 		$("#card-tip").hide();
+		$("#tip-credit").css({"height": "22px", "width": "32px"});
 		var num = $(this).val();
 		if (num)
 			$("#credit-num").hide(); 
@@ -450,31 +439,39 @@ $(document).on("pagecreate", "#limit", function () {
 		
 		if(validateCardNo(num.replace(/ /g, ""))) {
 			$.ajax({
-				url: config.api_path + member.id + "/creditCard/" + num.replace(/ /g, ""),
+				url: config.api_path + "members/" + member.id + "/creditCard/" + num.replace(/ /g, ""),
 				type: "GET",
 				async: false,
-				success: function () {
-					localStorage.setItem("credit_card", num);
-					if (!member.anothertest) {
-						$("#next-step").attr("href", "#basic-info");
+				dataType: "text",
+				success: function (text) {
+					if (text == "true") {
+						$("#tip-credit").attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
+						$("#card-tip").show();
 					}
-					else{
-						$("#next-step").attr("href", "#result").off().click(function () {
-							var obj = {};
-							obj.card_num = num;
-							obj.industry = member.industry;
-							obj.education = member.education;
-							obj.email = member.email;
-							obj.bill_email = member.billemail;
-							obj.password = member.password;
-							testLimit(obj);
-						});
+					else {
+						localStorage.setItem("credit_card", num);
+						if (!member.anothertest) {
+							$("#next-step").attr("href", "#basic-info");
+						}
+						else{
+							$("#next-step").attr("href", "#result").off().click(function () {
+								var obj = {};
+								obj.card_num = num;
+								obj.industry = member.industry;
+								obj.education = member.education;
+								obj.email = member.email;
+								obj.bill_email = member.billemail;
+								obj.password = member.password;
+								testLimit(obj);
+							});
+						}	
 					}
 				},
 				error: function () {
 					// alert(config.api_path + member.id + "/creditCard/" + num.replace(/ /g, ""));
-					$("#tip-credit").attr("src", "resources/img/public/wrong.png");
-					$("#card-tip").show();
+					// $("#tip-credit").attr("src", "resources/img/public/wrong.png");
+					// $("#card-tip").show();
+					alert(config.api_path + "members/" + member.id + "/creditCard/" + num.replace(/ /g, ""));
 				}
 			});
 		}
@@ -503,7 +500,8 @@ $(document).on("pageshow", "#limit", function(){
 	}
 
 	if (member.isnew) {
-		$("#limit .r-popup").popup("open");
+		$("#pop-limit").popup("open");
+		setTimeout(function () {$("#pop-limit").remove();}, 3000);
 	}
 });
 
@@ -650,17 +648,44 @@ $(document).on("pagebeforeshow", "#result", function(){
 	
 });
 
-$(document).on("pageshow", "#loan", function(){
+$(document).on("pageshow", "#loan", function () {
+
+});
+
+$(document).on("pageshow", "#loan", function () {
+	if(!member.loanable){
+		$.ajax({
+			url: config.api_path + "app/members/" + member.id,
+			type: "GET",
+			dataType: "text",
+			async: false,
+			success: function(text){
+				member.loanable = ("false" == text);
+				if (!member.loanable) {
+					$.mobile.navigate("#suspension");
+				}
+			},
+			error: stdError
+		});
+	}
+
 	if (!member.avlcrl) {
 		getAvlCrl();
 	}
-	
+
 	$("#loan-limit").html(Math.round(member.avlcrl));
 	
+	$("#phone").off("click").click(function () {
+		if($(this).val.length > 0)
+			$("#phone-txt").hide();
+		else
+			$("#phone-txt").show();
+	});
+
 	app.term = "3";
 	$("#term-3").css("background-color", "#3ca0e6");
 	$("#term-6").css("background-color", "#c0c0c0");
-	$("#amount").val("").off().keyup(function(){
+	$("#amount").val("").off("keyup").keyup(function(){
 		var tmp = $("#amount").val();
 		app.amount = tmp;
 		countPayback(app);
@@ -676,7 +701,7 @@ $(document).on("pageshow", "#loan", function(){
 			$(this).val(parseInt(member.avlcrl));
 	});
 	
-	$("#term-3").off().click(function(){
+	$("#term-3").off("click").click(function(){
 		$("#term-3").css("background-color", "#3ca0e6");
 		$("#term-6").css("background-color", "#c0c0c0");
 		app.term = "3";
@@ -684,7 +709,7 @@ $(document).on("pageshow", "#loan", function(){
 		countPayback(app);
 	});
 	
-	$("#term-6").off().click(function(){
+	$("#term-6").off("click").click(function(){
 		$("#term-6").css("background-color", "#3ca0e6");
 		$("#term-3").css("background-color", "#c0c0c0");
 		app.term = "6";
@@ -692,25 +717,31 @@ $(document).on("pageshow", "#loan", function(){
 		countPayback(app);
 	});
 	
-	if(member.mobile_varified.toString() == "true"){
+	if(member.mobile_varified == "true"){
 		$("#varifying").remove();
 		member.validate = 1;
 	}
 	else{	
-		$("#acquire-code").off().click(function(){
+		$("#acquire-code").off("click").click(function(){
 			var phone_num = $("#phone").val();
 			if(phone_num.length != 11)
 				alert("请输入正确的手机号码!");
 			else{
-				// $.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
-					// if(text="北京")
-					// alert(text);
-				// });
-				member.phone = phone_num;
-				sendVarificationCode(member.phone).success(function(){
-					alert("您的验证码已发送!");
-				}).error(function () {
-					alert();
+				$.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
+					if(text == "北京" || text == "上海" || text == "广州" || text == "深圳") {
+						member.phone = phone_num;
+						sendVarificationCode(member.phone).success(function(){
+							alert("您的验证码已发送!");
+						}).error(function () {
+							alert("您的验证码发送失败!");
+						}
+						);
+					}
+					else {
+						// alert("您的手机非北上广深号码, 暂时无法为您服务!");
+						$("#out-of-area").show();
+						returnFootPrint(member.id, "0");
+					}
 				});
 			}
 		});
@@ -848,6 +879,16 @@ $(document).on("pagecreate", "#congratulation", function(){
 		}).error(function(){
 			$("#add-card-box").hide();
 		});
+	});
+});
+
+$(document).on("pagecreate", "#full", function () {
+	$("#got-it-z").click(function () {
+		if (!member.bill_email) {
+			returnFootPrint(member.id, "4");
+		}
+		
+		WeixinJSBridge.call("closeWindow");
 	});
 });
 
@@ -1023,26 +1064,26 @@ window.onblur = function () {
 	 var print_status = "0";
 	 switch(window.location.hash){
 	 	case "":
-	 		print_status = "2";
+	 		print_status = "1";
 	 		break;
 	 	case "#limit":
-	 		print_status = "2";
+	 		print_status = "1";
 	 		break;
 	 	case "#basic-info":
-	 		print_status = "2";
+	 		print_status = "1";
 	 		break;
 	 	case "#result":
-	 		print_status = "3";
+	 		print_status = "2";
 	 		break;
 	 	case "#congratulation":
-	 		print_status = "5";
+	 		print_status = "3";
 	 		break;
 	 	default:
-	 		return 0;
+	 		return false;
 	 }
-	 // returnFootPrint(member.id, print_status);
+	 returnFootPrint(member.id, print_status);
 };
 
-// function returnFootPrint(id, status) {
-// 	$.get(config.api_path + "members/" + id + "/status/" + status, function () {});
-// }
+function returnFootPrint(id, status) {
+	$.get(config.api_path + "members/" + id + "/status/" + status, function () {});
+}
