@@ -2,6 +2,9 @@ package com.huayuan.integration.wechat.domain;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by dell on 14-5-5.
  */
@@ -20,9 +23,16 @@ public class ReplyAnswer {
         this.answer = answer;
     }
 
+    private String extract(final String singleAnswer, final String question) {
+        String regEx = "(?<=" + singleAnswer + ":)\\S*";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(question);
+        return m.find() ? m.group() : null;
+    }
+
     public String getRealAnswer1(String question) {
         if (StringUtils.contains(question, HOME_QUESTION_PREFIX)) {
-            return StringUtils.substringBetween(question, answer.substring(1, 2) + ":", "\n");
+            return extract(answer.substring(1, 2), question);
         }
         return null;
     }
@@ -30,9 +40,9 @@ public class ReplyAnswer {
     public String getRealAnswer2(String question) {
         if (StringUtils.contains(question, COMPANY_QUESTION_PREFIX)) {
             if (StringUtils.contains(question, HOME_QUESTION_PREFIX)) {
-                return StringUtils.substringBetween(question, answer.substring(2, 3) + ":", "\n");
+                return extract(answer.substring(2, 3), question);
             } else {
-                return StringUtils.substringBetween(question, answer.substring(1, 2) + ":", "\n");
+                return extract(answer.substring(1, 2), question);
             }
         }
         return null;
