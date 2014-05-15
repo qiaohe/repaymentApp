@@ -340,14 +340,16 @@
 	<!-- patience -->
 	
 	<!-- fail -->
-	<div data-role="page" id="fail" style="text-align: center">
-		<h1>官人对不起!</h1>
-		<h2 style="margin-top: -3%">怪我们功力有限，您的缘没有化到，<br>无法为您复活信用卡。</h2>
-		<div style="margin-top: 10%; background-color: #aacf5d">
-			<img src="resources/img/8-2/face.png" style="max-width: 60%; padding: 10% 0"><br>
-		</div>
-		<div style="width:50%; margin:80px auto 0 auto"><a href="#" class="ui-btn custom-btn" id="got-it-y">知道了</a></div>
-	</div>
+    <div data-role="page" id="fail" data-title="复活信用卡">
+        <div id="fail-title">官人对不起!</div>
+        <div id="fail-content">怪我们功力有限，您的缘没有化到，<br>无法为您复活信用卡。</div>
+        <div id="fail-img" style="margin-top: 10%; background-color: #aacf5d;">
+            <img src="resources/img/8-2/face.png" style="max-width: 60%; padding: 10% 0;"><br>
+        </div>
+        <div id="fail-btn" style="width:50%; margin:80px auto 0 auto"><a href="#" class="ui-btn custom-btn"
+                                                                         id="got-it-y">知道了</a>
+        </div>
+    </div>
 	<!-- fail -->
 	
 	<div data-role="page" id="congratulation">
@@ -402,42 +404,69 @@
 	</div>
 
 	<!--repayment-->
-	<div data-role="page" id="repayment-0">
-		<div class="r-container">
-			<div style="text-align:center; height:30px; font-size:1.4em; line-height:30px; background-color: silver; border-radius: 5px 5px 0 0; color: white">
-				<span class="r-time"></span>借款&yen<span class="r-amt"></span>入卡片<span class="r-tail"></span>
-			</div> 
- 
-			<div class="r-main" style="height:150px; padding-left:10%; background-color: #aacf5d;">
-				<span style="position:relative; top:15px; left:25px; font-size:1.5em">最近应还金额</span><br>
-				<h1 style="margin-top:25px; font-size:2.4em">&yen<span class="r-next"></span></h1>
-				<p style="position:relative; left:25px; font-size:1.5em"><span class="r-deadline"></span>到期</p>
-			</div>
+    <div data-role="page" id="repayment">
+        <div id="repay-container">
+            <div id="repay-summary">
+                <span class="r-time">2013-09-09</span>借款&yen<span class="r-amt"></span>入卡片<span
+                    class="r-tail">4423</span>
+            </div>
+            <div id="repay-amount">
+                <div style="position:relative; top:15px; left:25px; font-size:1.5em">最近应还金额</div>
+                <div style="margin-top:25px; font-size:30px;">&yen;<span class="r-next"></span></div>
+                <div style="position:relative; left:25px; font-size:16px;"><span class="r-deadline"></span>到期</div>
+            </div>
+            <div class="repay-list"><span style="font-size:16px;">现在就去还款</span></div>
+            <div class="repay-list"><span style="font-size:16px;">查看借款详情</span></div>
+            <div class="repay-list"><span style="font-size:16px;">历史还款记录</span></div>
+        </div>
 
-			<ul data-role="listview">
-				<li><span style="font-size:1.5em">现在就去还款</span></li>
-				<li><span style="font-size:1.5em">查看借款详情</span></li>
-				<div data-role="collapsible" id="ss"><h1 style="border: none; font-size:1.5em; color: black !important">历史还款记录</h1><p>记录1</p><p>记录2</p></div>
-			</ul>
-		</div>
-		
-		<div data-role="footer" data-position="fixed" data-id="r-footer" class="footer">
-			<div style="width:100%; height:30px; margin:auto; background-color:white; padding-top:10px">
-				<div class="spot" style="margin:auto"></div>
-			</div>
-			<a href="#sum-loan" style="width:87%; margin:auto 2.5%; border-radius: 5px; color:black; border:1px solid black; text-align:left; padding:10px">总计借款</a>
-		</div>
+        <div data-role="footer" data-position="fixed" data-id="r-footer" class="footer">
+            <div style="height:20px;width: 100%; margin-top:5px; background-color:white;">
+                <div style="width: 78px;margin: auto;height: 100%;">
+                    <div class="spot"></div>
+                    <div class="spot"></div>
+                    <div class="spot"></div>
+                </div>
+            </div>
+            <div id="repayment-footer">
+                <div id="repay-s-img"></div>
+                <div id="repay-s-txt">总计借款</div>
+                <div id="repay-s-btn"></div>
+                <div id="repay-s-num">3笔</div>
+            </div>
+        </div>
 
-		<div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
-			<li><div class="li-l">借款时间</div><div class="li-r"></div></li>
-			<li><div class="li-l">注入卡片</div><div class="li-r"></div></li>
-			<li><div class="li-l">借款金额</div><div class="li-r"></div></li>
-			<li><div class="li-l">还款期数</div><div class="li-r"></div></li>
-			<li><div class="li-l">还款日期</div><div class="li-r"></div></li>
-			<li><div class="li-l">总计应还</div><div class="li-r"></div></li>
-			<li><div class="li-l">剩余应还</div><div class="li-r"></div></li>
-		</div>
-	</div>
+        <div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white;">
+            <li>
+                <div class="li-l">借款时间</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">注入卡片</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">借款金额</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">还款期数</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">还款日期</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">总计应还</div>
+                <div class="li-r"></div>
+            </li>
+            <li>
+                <div class="li-l">剩余应还</div>
+                <div class="li-r"></div>
+            </li>
+        </div>
+    </div>
 
 	<div data-role="page" id="sum-loan">
 		<div class="cover">
