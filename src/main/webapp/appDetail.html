@@ -124,31 +124,7 @@
     </div>
 </div>
 
-<div class="itembox h1-info">申请基本信息</div>
-<div class="itemDiv" style="height: 105px;">
-    <div class="single-item">
-        <div class="grid-2">申请编号</div>
-        <div class="grid-2"><input type="text" id="applNo" readonly="readonly" style="width: 250px;"></div>
-        <div class="grid-2">旧户标示</div>
-        <div class="grid-2"><input type="text" id="existingFlag" readonly="readonly"></div>
-        <div class="grid-2">申请借款数额</div>
-        <div class="grid-2"><input type="text" id="applAmount" readonly="readonly">元</div>
-        <div class="grid-2">申请借款期限</div>
-        <div class="grid-2"><input type="text" id="applLimit" readonly="readonly">月</div>
-    </div>
-    <div class="single-item">
-        <div class="grid-2">申请还款方式</div>
-        <div class="grid-2"><input type="text" id="applType" readonly="readonly"></div>
-        <div class="grid-2">申请说明</div>
-        <div class="grid-2"><input type="text" id="applNote" readonly="readonly" style="width: 600px;"></div>
-    </div>
-    <div class="single-item">
-        <div class="grid-2">创建时间</div>
-        <div class="grid-2"><input type="text" id="applCreateTime" readonly="readonly"></div>
-        <div class="grid-2">申请时间</div>
-        <div class="grid-2"><input type="text" id="appTime" readonly="readonly"></div>
-    </div>
-</div>
+
 
 <div class="itembox h1-info">人行基础资料</div>
 <input type="button" id="rhBaseInfo" style="margin:30px auto 5px 30px;cursor: pointer;" value="人行信息">
@@ -397,7 +373,7 @@
     <div class="grid-2"><input type="text" id="search-time" readonly="readonly"></div>
 </div>
 
-<div class="itembox h1-info">账务信息</div>
+<div class="itembox h1-info">贷款信息</div>
 <div class="block" style="height: auto;">
     <div class="audit-item" style="height: 70px;">
         <div class="single-item">
@@ -578,6 +554,42 @@
     </table>
 </div>
 
+<div class="itembox h1-info">申请基本信息</div>
+<div class="itemDiv" style="height: 105px;">
+    <div class="single-item">
+        <div class="grid-2">申请编号</div>
+        <div class="grid-2"><input type="text" id="applNo" readonly="readonly" style="width: 250px;"></div>
+        <div class="grid-2">旧户标示</div>
+        <div class="grid-2"><input type="text" id="existingFlag" readonly="readonly"></div>
+        <div class="grid-2">申请借款数额</div>
+        <div class="grid-2"><input type="text" id="applAmount" readonly="readonly">元</div>
+        <div class="grid-2">申请借款期限</div>
+        <div class="grid-2"><input type="text" id="applLimit" readonly="readonly" style="width: 60px;">月</div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">申请还款方式</div>
+        <div class="grid-2"><input type="text" id="applType" readonly="readonly"></div>
+        <div class="grid-2">申请说明</div>
+        <div class="grid-2"><input type="text" id="applNote" readonly="readonly" style="width: 600px;"></div>
+    </div>
+    <div class="single-item">
+        <div class="grid-2">创建时间</div>
+        <div class="grid-2"><input type="text" id="applCreateTime" readonly="readonly"></div>
+        <div class="grid-2">申请时间</div>
+        <div class="grid-2"><input type="text" id="appTime" readonly="readonly"></div>
+    </div>
+</div>
+
+<div class="itembox h1-info">账务信息</div>
+<div class="block" style="height: 40px;">
+    <div class="grid-2">已有额度</div>
+    <div class="grid-2"><input type="text" id="account-all-amt" readonly="readonly" style="width: 80px;">元</div>
+    <div class="grid-2">可用额度</div>
+    <div class="grid-2"><input type="text" id="account-avl-amt" readonly="readonly" style="width: 80px;">元</div>
+    <div class="grid-2">已用额度</div>
+    <div class="grid-2"><input type="text" id="account-used-amt" readonly="readonly" style="width: 80px;">元</div>
+</div>
+
 <div class="itembox h1-info">审核</div>
 <div class="block" style="height:370px">
     <div class="audit-item" style="height: 105px;">
@@ -594,12 +606,12 @@
         </div>
         <div class="single-item">
             <div class="grid-2">核准年化利率</div>
-            <div class="grid-2"><input type="text" id="year-rate" style="width: 30px;">%</div>
+            <div class="grid-2"><input type="text" id="year-rate" style="width: 30px;" readonly="readonly">%</div>
             <div class="grid-2">核准借款期限</div>
-            <div class="grid-2"><input type="text" id="borrowing-limit" style="width: 40px;">月</div>
+            <div class="grid-2"><input type="text" id="borrowing-limit" style="width: 40px;" readonly="readonly">月</div>
             <div class="grid-2">审核结果</div>
             <div class="grid-2"><select id="applyResult" style="width: 80px;">
-            <option value="A">通过</option>
+                <option value="A">通过</option>
                 <option value="D">拒绝</option>
             </select></div>
         </div>
@@ -630,8 +642,8 @@
     </div>
 </div>
 
-<div class="operation">
-    <input id="sumbit" type="button" value="完成"><input id="save" type="button" value="暂存" style="float: right;">
+<div class="operation" id="operationDiv">
+    <input id="submit" type="button" value="完成"><input id="save" type="button" value="暂存" style="float: right;">
 </div>
 
 </div>

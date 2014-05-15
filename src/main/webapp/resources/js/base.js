@@ -38,7 +38,7 @@
 
     $.extend({
         formatDate:function(ms){
-            return ms ? new Date(ms).format("yyyy-MM-dd") : "";
+            return ms ? new Date(ms).format("yyyyMMdd") : "";
         }
     });
 })(jQuery);
