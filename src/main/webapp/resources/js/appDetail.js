@@ -52,8 +52,8 @@
             "2": "老用户-前次过件"
         },
         conflictMap = {
-            "0": "不一致",
-            "1": "一致"
+            "1": "不一致",
+            "0": "一致"
         },
         loanStatus = {
             "0": "正常",
@@ -97,23 +97,18 @@
         };
     appDetail.init = function () {
         this.initEvent();
+        appDetail.maxApplyAmt = 50000;
         // initialize dictionary
         appDetail.educationMap = appDetail.makeDict("EDUCATION");
         appDetail.industryMap = appDetail.makeDict("INDUSTRY");
         appDetail.bankMap = appDetail.makeDict("BANK");
+        appDetail.reasonMap = appDetail.makeDict("reason");
         // initialize data
         var url = window.location.href, paramPrefix = "?applyNo=";
         var applyNo = appDetail.applyNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
         $.get(creditPath + "/" + applyNo, function (json) {
             appDetail.loadData(json);
             appDetail.autoTvTelephone(1);
-        });
-        $.get("api/dict/reason", function (json) {
-            var reasonMap = {};
-            $.each(json, function (i, e) {
-                reasonMap[e.key] = e.value;
-            });
-            appDetail.reasonMap = reasonMap;
         });
         appDetail.initTvData();
     };
@@ -216,7 +211,7 @@
         $("#rhBaseInfo,#rhWorkInfo,#rhResInfo").click(function () {
             window.open(pdfPrefix + appDetail.idcard + ".pdf", "_blank");
         });
-        // 账务信息
+        // 贷款信息
         // 0-正常 1-逾期 2-打呆 8-等待放款 9-结清
         $("#normal-times").click(function () {
             appDetail.showLoansByStatus('0');
@@ -248,6 +243,14 @@
         });
         // 照会完成
         $("#doTv").on("click", function () {
+            if(!$("#tv-phone") || !$("#creditor")) {
+                alert("照会信息错误，请重新填写！");
+                return;
+            }
+            if($("#tvDecision").val() == "1" && $.trim($("#creditor-question").val()) == "") {
+                alert("请填写征信员问题！");
+                return;
+            }
             var tvData = {
                 appNo: appDetail.applyNo,
                 type: parseInt($("#tvType").val(), 10),
@@ -268,8 +271,53 @@
             });
         });
         // 完成
-        $("#sumbit").on("click", function () {
-            appDetail.approveInfo("7");
+        $("#submit").on("click", function () {
+            var applyAmtStr = $.trim($("#apply-amount").val());
+            var borrowingAmtStr = $.trim($("#borrowing-amount").val());
+            if(applyAmtStr == "" || borrowingAmtStr == "") {
+                alert("核准借款金额和审批额度不能为空！");
+                return;
+            }
+            var applyAmt = parseFloat(applyAmtStr);
+            if(applyAmt > appDetail.maxApplyAmt) {
+                alert("审批额度不能大于"+appDetail.maxApplyAmt+"！");
+                return;
+            }
+            var borrowingAmt = parseFloat(borrowingAmtStr);
+            if(borrowingAmt > applyAmt) {
+                alert("核准借款金额不能大于审批额度！");
+                return;
+            }
+            var accountAvlStr = $("#account-avl-amt");
+            if (appDetail.existingFlag == 2 && parseFloat(accountAvlStr) < borrowingAmt) {
+                alert("审批额度不能大于'账务信息'的可用额度！");
+                return;
+            }
+            var applyResult = $("#applyResult").val();
+            if(applyResult == "") {
+                alert("请选择审核结果！");
+                return;
+            }
+            var reason1 = $.trim($("#credit-reasion-1").val());
+            var reason2 = $.trim($("#credit-reasion-2").val());
+            var reason3 = $.trim($("#credit-reasion-3").val());
+            if(reason1 == "") {
+                alert("请输入征信原因码一！");
+                return;
+            }
+            if (reason1.charAt(0) != applyResult || !appDetail.reasonMap[reason1]) {
+                alert("征信原因码一错误！");
+                return;
+            }
+            if (reason2 && (reason2.charAt(0) != applyResult || !appDetail.reasonMap[reason2])) {
+                alert("征信原因码二错误！");
+                return;
+            }
+            if (reason2 && (reason3.charAt(0) != applyResult || !appDetail.reasonMap[reason3])) {
+                alert("征信原因码三错误！");
+                return;
+            }
+            appDetail.approveInfo("5");
         });
         // 暂存
         $("#save").on("click", function () {
@@ -295,22 +343,9 @@
         });
     };
     appDetail.approveInfo = function (status) {
-        var decision = $("#applyResult").val();
-        var reason1 = $("#credit-reasion-1").val();
-        var reason2 = $("#credit-reasion-2").val();
-        var reason3 = $("#credit-reasion-3").val();
-        if (reason1 && (reason1.charAt(0) != decision || !appDetail.reasonMap[reason1])) {
-            alert("征信原因码一错误");
-            return;
-        }
-        if (reason2 && (reason2.charAt(0) != decision || !appDetail.reasonMap[reason2])) {
-            alert("征信原因码二错误");
-            return;
-        }
-        if (reason2 && (reason3.charAt(0) != decision || !appDetail.reasonMap[reason3])) {
-            alert("征信原因码三错误");
-            return;
-        }
+        var reason1 = $.trim($("#credit-reasion-1").val());
+        var reason2 = $.trim($("#credit-reasion-2").val());
+        var reason3 = $.trim($("#credit-reasion-3").val());
         var approveData = {
             amt: $("#borrowing-amount").val(),
             sugCrl: $("#apply-amount").val(),
@@ -322,8 +357,8 @@
             reason3: reason3,
             opinion: $("#credit-opinion").val(),
             profile: $("#customer-desc").val(),
-            creditor: $("#creditor").val()
-//            status:status
+            creditor: $("#creditor").val(),
+            status:status
         };
         $.ajax({
             url: creditPath + "/approve/" + appDetail.applyNo,
@@ -332,7 +367,7 @@
             type: "POST",
             contentType: "application/json",
             success: function (json) {
-                alert("success");
+                alert("提交成功！");
             }
         });
     };
@@ -378,6 +413,7 @@
         var application = json.application;
         // 申请基本信息
         $("#applNo").val(application.applicationNo);
+        appDetail.existingFlag = application.existingFlag; // 用户状态
         $("#existingFlag").val(userFlag[application.existingFlag]);
         $("#applAmount").val(application.amt);
         $("#applLimit").val(application.term);
@@ -389,8 +425,8 @@
         var pboc = json.pboc;
         // 基础资料
         $("#marriage").val(marriageStatus[pboc.maritalState]);
-        $("#mobile").val(pboc.moblie);
-        $("#num-district").val(pboc.pbocmobileCity);
+        $("#mobile").val(pboc.mobile);
+        $("#num-district").val(pboc.mobileCity);
         $("#phone-at-work").val(pboc.officeTelephoneNo);
         $("#phone-home").val(pboc.homeTelephoneNo);
         $("#education").val(appDetail.educationMap[pboc.eduDegree]);
@@ -510,7 +546,7 @@
         // 人行查询次数
         $("#search-time").val(pboc.cardQueryLatest6Month);
 
-        // 账务信息
+        // 贷款信息
         appDetail.makeLoansMap(json.loans.loans);
         appDetail.loadLoansSummary(json.loans);
         appDetail.loadLoans();
@@ -555,21 +591,38 @@
         $("#result-table").val(tvDicision[telephoneVerification.decision]);
         $("#wc-create-time").val($.formatDate(telephoneVerification.createTime));
         // 电话照会
+
+        // 账务信息
+        var account = application.account;
+        if(account) {
+            $("#account-all-amt").val(account.crl);
+            $("#account-avl-amt").val(account.crlAvl);
+            $("#account-used-amt").val(account.crlUsed);
+        }
         // 审核
         var approval = application.approval;
         $("#borrowing-amount").val(approval.amt);
         $("#bank-amount").val(pboc.rh_crl);
         $("#apply-amount").val(approval.sugCrl);
         $("#forecast-amount").val(member.preCrl);
-        $("#year-rate").val(parseFloat(approval.apr, 10) * 100);
+        $("#year-rate").val(parseFloat(approval.apr) * 100);
         $("#borrowing-limit").val(approval.term);
-        $("#applyResult").val(approval.decision);
+        if(approval.decision) {
+            $("#applyResult").val(approval.decision);
+        } else {
+            $("#applyResult").val("");
+        }
         $("#credit-reasion-1").val(approval.reason1);
         $("#credit-reasion-2").val(approval.reason2);
         $("#credit-reasion-3").val(approval.reason3);
         $("#customer-desc").val(approval.profile);
         $("#credit-opinion").val(approval.opinion);
         $("#creditor").val(approval.creditor);
+        if(application.status != '3' || application.status != '99') {
+            appDetail.readApproveCont();
+        } else {
+            $("#operationDiv").children().show();
+        }
     };
     appDetail.loadCredits = function (credits) {
         var contentHtml = "";
@@ -757,7 +810,7 @@
     appDetail.showLoansByStatus = function (status) {
         var contentHtml = appDetail.genLoansTableHtml(appDetail.loansMap[status]);
         if (contentHtml) {
-            new Dialog(contentHtml, {title: "账务信息", modal: false}).show();
+            new Dialog(contentHtml, {title: "贷款信息", modal: false}).show();
             $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(0)").click(function () {
                 var borrowNo = $(this).text();
                 if (borrowNo) {
@@ -794,7 +847,7 @@
                 contentHtml += '<tr><td style="cursor: pointer;text-decoration: underline;">' + loan.id + '</td>' +
                     '<td style="cursor: pointer;text-decoration: underline;">' + loan.applicationNo + '</td>' +
                     '<td>' + loan.amt + '</td>' +
-                    '<td>' + parseFloat(loan.apr, 10) * 100 + '</td>' +
+                    '<td>' + parseFloat(loan.apr) * 100 + '</td>' +
                     '<td>' + loan.term + '</td>' +
                     '<td>' + $.formatDate(loan.startDate) + '</td>' +
                     '<td>' + loan.principal + '</td>' +
@@ -809,6 +862,22 @@
         } else {
             return "";
         }
+    };
+    appDetail.readApproveCont = function() {
+        $("#tvType").prop("disabled",true);
+        $("#phoneType").prop("disabled",true);
+        $("#tvDecision").prop("disabled",true);
+        $("#creditor-question").attr("readonly","readonly");
+        $("#doTv").remove();
+        $("#borrowing-amount").attr("readonly","readonly");
+        $("#apply-amount").attr("readonly","readonly");
+        $("#applyResult").prop("disabled",true);
+        $("#credit-reasion-1").attr("readonly","readonly");
+        $("#credit-reasion-2").attr("readonly","readonly");
+        $("#credit-reasion-3").attr("readonly","readonly");
+        $("#customer-desc").attr("readonly","readonly");
+        $("#credit-opinion").attr("readonly","readonly");
+        $("#operationDiv").children().remove();
     };
     // initialize
     appDetail.init();
