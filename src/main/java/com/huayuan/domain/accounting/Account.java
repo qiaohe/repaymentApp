@@ -49,7 +49,7 @@ public class Account {
     }
 
     public Double getCrlAvl() {
-        return crl - crlUsed;
+        return crlAvl;
     }
 
     public void setCrlAvl(Double crl_Avl) {

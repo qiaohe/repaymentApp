@@ -133,6 +133,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         }
         account.setCrl(approval.getSugCrl());
         if (approval.isApproved()) account.setCrlUsed(account.getCrlUsed() + approval.getAmt());
+        account.setCrlAvl(account.getCrl() - account.getCrlUsed());
         accountRepository.save(account);
         updateCreditResultByLastApplication(approval);
         updateMemberStatusAsReject(approval);
