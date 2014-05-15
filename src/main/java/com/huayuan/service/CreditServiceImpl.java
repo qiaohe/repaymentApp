@@ -92,7 +92,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private String getApproveResultMessage(Approval approval) {
         String status = approval.isApproved() ? "5.1" : "5.2" + "&&random=" + RandomStringUtils.randomNumeric(15);
         return MessageFormat.format(tvApproveResultTemplate, baseUrl, approval.getApplication().getMember().getId(),
-                status, approval.getApplication().getApplicationNo());
+                status, approval.getApplication().getApplicationNo()).replaceAll("\"", "\\\\\"");
     }
 
     private void updateMemberStatusAsReject(Approval approval) {
