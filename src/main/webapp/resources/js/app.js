@@ -1,9 +1,9 @@
-/* global $:false */
+﻿/* global $:false */
 /* global WeixinJSBridge:false */
 /* global alert:false */
 "use strict";
 var config = {};
-config.api_path = "http://192.168.0.185:8080/repayment/api/";
+config.api_path = "http://192.168.0.155:8080/api/";
 config.debug = true;
 
 // config.id_pattern = /(?:memberId=)\d+/;
