@@ -4,7 +4,6 @@ import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
 import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
@@ -12,7 +11,6 @@ import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.service.AccountService;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
-import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.web.dto.LoanApplicationDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by Johnson on 4/7/14.
@@ -77,14 +74,25 @@ public class ApplicationLoanController {
     @ResponseBody
     public LoanApplicationDto getApplication(@PathVariable Long memberId) {
         Application application = applicationService.getApplicationBy(memberId);
-        LoanApplicationDto loanApplicationDto = new LoanApplicationDto();
-        loanApplicationDto.setAppNo(application.getApplicationNo());
-        loanApplicationDto.setAmt(application.getAmt());
-        loanApplicationDto.setTerm(application.getTerm());
-        SavedCostDto sc = getSavedCost(new LoanRequestDto(memberId, application.getAmt(), application.getTerm()));
-        loanApplicationDto.setRepayPerTerm(sc.getPayBackEachTerm());
-        loanApplicationDto.setSaveCost(sc.getSavedCost());
-        return loanApplicationDto;
+        return createLoanApplicationDto(application);
+    }
+
+    @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
+    @ResponseBody
+    public LoanApplicationDto getApplication(@PathVariable String appNo) {
+        Application application = applicationService.getApplication(appNo);
+        return createLoanApplicationDto(application);
+    }
+
+    private LoanApplicationDto createLoanApplicationDto(Application application) {
+        LoanApplicationDto result = new LoanApplicationDto();
+        result.setAppNo(application.getApplicationNo());
+        result.setAmt(application.getAmt());
+        result.setTerm(application.getTerm());
+        SavedCostDto sc = getSavedCost(new LoanRequestDto(application.getMember().getId(), application.getAmt(), application.getTerm()));
+        result.setRepayPerTerm(sc.getPayBackEachTerm());
+        result.setSaveCost(sc.getSavedCost());
+        return result;
     }
 
     @RequestMapping(value = "/members/{memberId}/creditCard/{creditCardNo}", method = RequestMethod.POST)
