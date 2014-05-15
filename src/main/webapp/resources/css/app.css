@@ -186,20 +186,42 @@ input{
 	background-color:white;
 }
 
-.r-container{
-	width: 95%;
-	margin: 10px 2.5%;
-	border-radius: 5px;
+#repay-container {
+    width: 95%;
+    margin: 10px auto;
+    border-radius: 5px;
+    border: 1px solid #c4c4c4;
 }
- 
+
+.repay-list {
+    border-top: 1px solid #c4c4c4;
+}
+
+#repay-summary {
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+    background-color: #c4c4c4;
+    border-radius: 5px 5px 0 0;
+    color: white;
+}
+
+#repay-amount {
+    height: 150px;
+    padding-left: 10%;
+    background-color: #aacf5d;
+}
+
 .spot{
-	float: left; 
-	width: 10px;
-	height: 10px;
-	border-radius: 10px;
-	background-color: transparent;
-	border: 1px solid black;
+    float: left;
+    width: 10px;
+    height: 10px;
+    margin: 0 7px;
+    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid black;
 }
+
 
 .footer{
 	height: 120px;
@@ -269,4 +291,69 @@ input{
 	border-bottom: 1px solid black;
 	margin: 0;
 	padding: 0;
+}
+
+#fail {
+    text-align: center;
+    font-family: "宋体";
+}
+
+#fail-title {
+    font-size: 24px;
+    font-weight: bold;
+    height: 45px;
+    line-height: 30px;
+    margin-top: 20px;
+}
+
+#fail-content {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 24px;
+    height: 48px;
+}
+
+.term-chose {
+    background: #3ca0e6 url("/resources/img/public/correct.png") no-repeat;
+    background-position-x: 10%;
+    background-position-y: 5px;
+}
+
+.term-chose-not {
+    background: #c0c0c0 url("/resources/img/public/correct.png") no-repeat;
+    background-position-x: 10%;
+    background-position-y: 5px;
+}
+
+#repayment-footer {
+    width: 80%;
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+    margin: auto;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #c4c4c4;
+}
+
+#repay-s-img {
+    width: 40px;
+    height: 30px;
+    float: left;
+}
+
+#repay-s-txt {
+    float: left;
+    height: 30px;
+}
+
+#repay-s-num {
+    float: right;
+    height: 30px;
+}
+
+#repay-s-btn {
+    width: 40px;
+    float: right;
+    height: 30px;
 }
