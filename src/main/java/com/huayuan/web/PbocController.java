@@ -10,6 +10,7 @@ import com.huayuan.service.MemberService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,6 +90,7 @@ public class PbocController {
 
     @RequestMapping(value = "/out", method = RequestMethod.GET)
     @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     public void exportIdCardAsPdf() {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         for (IdCard idCard : idCardRepository.findFromPbocOut()) {
@@ -104,8 +106,9 @@ public class PbocController {
             PdfWriter.getInstance(document, new FileOutputStream(pdfFileName));
             document.open();
             for (String imageFileName : images) {
-                Image image = Image.getInstance(new URL(imageFileName));
-                image.setAbsolutePosition(500f, 650f);
+                Image image = Image.getInstance(imageFileName);
+//                image.setAbsolutePosition(500f, 650f);
+                image.scaleAbsolute(550f, 350f);
                 document.add(image);
             }
             document.close();
