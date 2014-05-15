@@ -133,7 +133,7 @@ public class MemberController {
         return memberService.getAvlCrl(id);
     }
 
-    @RequestMapping(value = "/{id}/{mobilePhone}/{code}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{memberId}/{mobilePhone}/{code}", method = RequestMethod.POST)
     @ResponseBody
     public boolean verifyCode(@PathVariable Long memberId, @PathVariable String mobilePhone, @PathVariable String code) {
         boolean verified = smsVerificationCodeService.verifyCode(mobilePhone, code);
