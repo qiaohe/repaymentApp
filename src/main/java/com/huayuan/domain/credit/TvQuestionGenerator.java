@@ -38,7 +38,7 @@ public class TvQuestionGenerator {
         for (int i = 1; i <= questions.size(); i++) {
             qs.add(String.format("%s:%s", Character.toChars(64 + i)[0], questions.get(i - 1)));
         }
-        return StringUtils.join(qs, "\n");
+        return StringUtils.join(qs, "\n").concat("\n");
     }
 
     private String getCity(TelephoneVerification tv) {
