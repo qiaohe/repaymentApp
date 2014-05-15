@@ -46,6 +46,7 @@ public class Application {
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CC_ID")
+    @JsonIgnore
     private CreditCard creditCard;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)

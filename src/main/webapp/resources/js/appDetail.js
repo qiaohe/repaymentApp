@@ -666,7 +666,7 @@
         $.each(bills, function (i, bill) {
             contentHtml += '<div class="cardOrder">账单1</div>\n' +
                 '<input type="button" name="billImgBtn" style="margin:5px auto 5px 50px" value="账单影像">\n' +
-                '<img src="' + bill.image + '" id="billImg" style="position:absolute; top:5px; left:40%; display:none">\n\n' +
+                '<img src="'+bill.image+'" style="position:absolute; top:5px; left:40%; display:none">\n\n' +
                 '<div class="itemDiv" style="height: 105px;">\n    <div class="single-item">\n        ' +
                 '<div class="grid-2">银行</div>\n        ' +
                 '<div class="grid-2"><input type="text" name="bank" readonly="readonly" style="width: 300px;" value="' + bill.bank + '"></div>\n        ' +
