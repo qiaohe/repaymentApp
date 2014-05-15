@@ -1,15 +1,21 @@
 package com.huayuan.web;
 
+import com.huayuan.common.App;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.repository.credit.PbocRepository;
 import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.service.MemberService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -79,5 +85,32 @@ public class PbocController {
         if (type == 3) return pboc.getHomeTelephoneNo();
         if (type == 4) return pboc.getPartnerTelephoneNo();
         return null;
+    }
+
+    @RequestMapping(value = "/out", method = RequestMethod.GET)
+    @ResponseBody
+    public void exportIdCardAsPdf() {
+        final String path = App.getInstance().getIdCardImageBase() + "/";
+        for (IdCard idCard : idCardRepository.findFromPbocOut()) {
+            final String front = path + idCard.getImageFront();
+            final String back = path + idCard.getImageBack();
+            exportToPdf(path + idCard.getIdNo() + ".pdf", new String[]{front, back});
+        }
+    }
+
+    private void exportToPdf(String pdfFileName, String[] images) {
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(pdfFileName));
+            document.open();
+            for (String imageFileName : images) {
+                Image image = Image.getInstance(new URL(imageFileName));
+                image.setAbsolutePosition(500f, 650f);
+                document.add(image);
+            }
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

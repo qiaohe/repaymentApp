@@ -22,14 +22,17 @@ import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -151,11 +154,18 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return approvalRepository.save(approval);
     }
 
+    @Override
+    public String test() {
+        return MessageFormat.format(tvApproveResultTemplate, "http://sina.com.cn", 12,
+                132, "122222");
+    }
+
     @Scheduled(cron = "0 0/20 * * * ?")
     @Transactional
     @Override
     public void telephoneVerification() {
-        for (TelephoneVerification tv : tvRepository.findByTypeAndDecision(0, StringUtils.EMPTY)) {
+        List<TelephoneVerification> tvs = Collections.unmodifiableList(tvRepository.findByTypeAndDecision(0, StringUtils.EMPTY));
+        for (TelephoneVerification tv : tvs) {
             if (getTvExecution(tv.getApplication().getApplicationNo()) != null) continue;
             final String q = tvQuestionGenerator.generate(tv);
             TvExecution te = new TvExecution();

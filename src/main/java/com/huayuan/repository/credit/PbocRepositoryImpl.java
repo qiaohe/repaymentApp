@@ -1,6 +1,8 @@
 package com.huayuan.repository.credit;
 
+import com.huayuan.domain.credit.PbocOut;
 import com.huayuan.domain.credit.PbocSummary;
+import com.huayuan.domain.member.IdCard;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

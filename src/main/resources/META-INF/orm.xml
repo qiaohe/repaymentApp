@@ -13,11 +13,13 @@
             and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = '3' or appl.status = '99')
         </query>
     </named-query>
-
-
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4)</query>
     </named-query>
+    <named-query name="IdCard.findFromPbocOut">
+        <query>SELECT ic from IdCard ic where ic.idNo in (select id_No from PbocOut)</query>
+    </named-query>
+
     <named-query name="RepayPlan.findByMemberId">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and
             rp.member.id=?2 order by rp.dueDate, rp.dueAmt
@@ -28,7 +30,8 @@
         </query>
     </named-query>
     <named-query name="TelephoneVerification.findByTypeAndDecision">
-        <query>select tv from TelephoneVerification tv where tv.type = ?1 and tv.decision = ?2 and (tv.tvMemAns1 != '' or tv.tvMemAns2 != '')
+        <query>select tv from TelephoneVerification tv where tv.type = ?1 and tv.decision = ?2 and (tv.tvMemAns1 != ''
+            or tv.tvMemAns2 != '')
         </query>
     </named-query>
 
