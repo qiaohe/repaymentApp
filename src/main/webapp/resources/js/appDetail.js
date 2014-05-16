@@ -325,10 +325,16 @@
                 alert("请填写征信意见！");
                 return;
             }
+            appDetail.readApproveCont();
+            $("#doTv").prop("disabled",true);
+            $("#operationDiv").children().prop("disabled",true);
             appDetail.approveInfo("5");
         });
         // 暂存
         $("#save").on("click", function () {
+            appDetail.readApproveCont();
+            $("#doTv").prop("disabled",true);
+            $("#operationDiv").children().prop("disabled",true);
             appDetail.approveInfo("99");
         });
     };
@@ -376,6 +382,20 @@
             contentType: "application/json",
             success: function (json) {
                 alert("提交成功！");
+                var appNos = $.cookie("appNos");
+                appNos = appNos.replace(appDetail.applyNo,"").replace(",,",',');
+                if($.trim(appNos)) {
+                    $.cookie("appNos",appNos);
+                    window.location.href = "appDetail.html?applyNo="+appNos.split(",")[0];
+                } else {
+                    window.location.href = "appSummary.html";
+                }
+            },
+            error:function() {
+                alert("提交失败，请重新提交！");
+                $("#doTv").prop("disabled",false);
+                $("#operationDiv").children().prop("disabled",false);
+                appDetail.reverseApproveCont();
             }
         });
     };
@@ -630,6 +650,8 @@
             $("#operationDiv").children().show();
         } else {
             appDetail.readApproveCont();
+            $("#doTv").remove();
+            $("#operationDiv").children().remove();
         }
     };
     appDetail.loadCredits = function (credits) {
@@ -876,7 +898,6 @@
         $("#phoneType").prop("disabled",true);
         $("#tvDecision").prop("disabled",true);
         $("#creditor-question").attr("readonly","readonly");
-        $("#doTv").remove();
         $("#borrowing-amount").attr("readonly","readonly");
         $("#apply-amount").attr("readonly","readonly");
         $("#applyResult").prop("disabled",true);
@@ -885,7 +906,20 @@
         $("#credit-reasion-3").attr("readonly","readonly");
         $("#customer-desc").attr("readonly","readonly");
         $("#credit-opinion").attr("readonly","readonly");
-        $("#operationDiv").children().remove();
+    };
+    appDetail.reverseApproveCont = function(){
+        $("#tvType").prop("disabled",false);
+        $("#phoneType").prop("disabled",false);
+        $("#tvDecision").prop("disabled",false);
+        $("#creditor-question").removeAttr("readonly");
+        $("#borrowing-amount").removeAttr("readonly");
+        $("#apply-amount").removeAttr("readonly");
+        $("#applyResult").prop("disabled",false);
+        $("#credit-reasion-1").removeAttr("readonly");
+        $("#credit-reasion-2").removeAttr("readonly");
+        $("#credit-reasion-3").removeAttr("readonly");
+        $("#customer-desc").removeAttr("readonly");
+        $("#credit-opinion").removeAttr("readonly");
     };
     // initialize
     appDetail.init();
