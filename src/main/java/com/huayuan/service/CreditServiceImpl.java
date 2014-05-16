@@ -16,7 +16,7 @@ import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.account.LoanRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
-import com.huayuan.repository.applicationloan.TelephoneTVRepository;
+import com.huayuan.repository.applicationloan.TelephoneTvRepository;
 import com.huayuan.repository.credit.*;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
@@ -57,7 +57,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Inject
     private ApplicationRepository applicationRepository;
     @Inject
-    private TelephoneTVRepository telephoneTVRepository;
+    private TelephoneTvRepository telephoneTVRepository;
     @Inject
     private PbocRepository pbocRepository;
     @Inject
@@ -92,7 +92,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private String getApproveResultMessage(Approval approval) {
         String status = approval.isApproved() ? "5.1" : "5.2" + "&&random=" + RandomStringUtils.randomNumeric(15);
         return MessageFormat.format(tvApproveResultTemplate, baseUrl, approval.getApplication().getMember().getId(),
-                status, approval.getApplication().getApplicationNo()).replaceAll("\"", "\\\"");
+                status, approval.getApplication().getApplicationNo()).replaceAll("\"", "\\\\\"");
     }
 
     private void updateMemberStatusAsReject(Approval approval) {

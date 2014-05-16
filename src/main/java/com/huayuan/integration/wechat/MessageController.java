@@ -154,7 +154,7 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId));
         }
         if (tp.isApplicationNoNeeded()) {
-            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId),
+            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status,
                     memberStatusEvaluator.getApprovingApplication(memberId).getApplicationNo());
         }
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
