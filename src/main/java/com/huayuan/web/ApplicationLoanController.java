@@ -14,6 +14,7 @@ import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.LoanApplicationDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,8 @@ public class ApplicationLoanController {
         application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
-        bindCreditCard(member.getId(), applicationDto.getCreditCarNo());
+        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo()))
+            bindCreditCard(member.getId(), applicationDto.getCreditCarNo());
         return application.getApplicationNo();
     }
 
