@@ -313,13 +313,13 @@ input {
 .term-chose {
     background: #3ca0e6 url("/resources/img/public/correct.png") no-repeat;
     background-position-x: 10%;
-    background-position-y: 5px;
+    background-position-y: 7px;
 }
 
 .term-chose-not {
     background: #c0c0c0 url("/resources/img/public/correct.png") no-repeat;
     background-position-x: 10%;
-    background-position-y: 5px;
+    background-position-y: 7px;
 }
 
 #repayment-footer {
