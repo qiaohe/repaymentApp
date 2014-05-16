@@ -130,6 +130,7 @@ public class AccountServiceImpl implements AccountService {
         loan.setTerm(application.getApproval().getTerm());
         loan.setApr(application.getApproval().getApr());
         loan.setAmt(application.getApproval().getAmt());
+        loan.setPrincipal(loan.getAmt());
         loan.setStartDate(application.getApproval().getCreateTime());
         return createLoan(loan);
     }
