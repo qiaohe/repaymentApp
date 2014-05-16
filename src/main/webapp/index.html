@@ -303,7 +303,7 @@
         </div>
 
         <div class="ui-block-b">
-            <a href="#" class="ui-btn term-chose" id="term-6">6期</a>
+            <a href="#" class="ui-btn term-chose-not" id="term-6">6期</a>
         </div>
     </div>
 
@@ -538,17 +538,18 @@
 <div data-role="page" id="repayment">
     <div id="repay-container">
         <div id="repay-summary">
-            <span class="r-time">2013-09-09</span>借款&yen<span class="r-amt"></span>入卡片<span
-                class="r-tail">4423</span>
+            <div class="repay-s-time">2013-09-09</div>
+            <div class="repay-s-info">借款&yen;99,000入卡片4423</div>
+            <!--<span class="r-time">2013-09-09</span>借款&yen;99,000<span class="r-amt"></span>入卡片<span class="r-tail">4423</span>-->
         </div>
         <div id="repay-amount">
-            <div style="position:relative; top:15px; left:25px; font-size:1.5em">最近应还金额</div>
-            <div style="margin-top:25px; font-size:30px;">&yen;<span class="r-next"></span></div>
-            <div style="position:relative; left:25px; font-size:16px;"><span class="r-deadline"></span>到期</div>
+            <div id="repay-amt-title">最近应还金额</div>
+            <div id="repay-amt-num">&yen;<span class="r-next">5,114.00</span></div>
+            <div id="repay-amt-limit"><span class="r-deadline">4月20日</span>到期</div>
         </div>
-        <div class="repay-item"><span class="repay-detail"></span><span class="repay-info">现在就去还款</span><span class="replay-collapse"></span></div>
-        <div class="repay-item"><span class="repay-detail"></span><span class="repay-info">查看借款详情</span><span class="replay-collapse"></span></div>
-        <div class="repay-item"><span class="repay-detail"></span><span class="repay-info">历史还款记录</span><span class="replay-expand"></span></div>
+        <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-2.png');"></div><div class="repay-info">现在就去还款</div><div class="replay-collapse"></div></div>
+        <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-3.png');"></div><div class="repay-info">查看借款详情</div><div class="replay-collapse"></div></div>
+        <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-4.png');"></div><div class="repay-info">历史还款记录</div><div class="replay-expand"></div></div>
         <ul class="repay-history">
             <li class="repay-h-item">
                 <div class="repay-h-term">
@@ -575,7 +576,7 @@
         </ul>
     </div>
 
-    <div data-role="footer" data-position="fixed" data-id="r-footer" class="footer" style="height: 62px;">
+    <div id="repay-footer-wrap" data-role="footer" data-position="fixed"  data-id="r-footer" class="footer" style="height: 62px;">
         <div id="repay-switch">
             <div style="width: 78px;margin: auto;height: 100%;">
                 <div class="spot"></div>
@@ -591,7 +592,30 @@
         </div>
     </div>
 
-    <div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
+    <div id="repay-h-detail" data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
+        <li>
+            <div class="li-l">还款金额</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款时间</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">支付卡</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">流水号</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款状态</div>
+            <div class="li-r"></div>
+        </li>
+    </div>
+
+    <div id="repay-borrow-detail" data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
         <li>
             <div class="li-l">借款时间</div>
             <div class="li-r"></div>
