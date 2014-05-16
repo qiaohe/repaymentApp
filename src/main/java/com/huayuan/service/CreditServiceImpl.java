@@ -108,7 +108,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         memberRepository.save(member);
     }
 
-    private void updateCreditResultByLastApplication(Approval approval) {
+    private void updateCreditResultUsingLastApplication(Approval approval) {
         CreditResult creditResult = approval.getApplication().getMember().getCreditResult();
         creditResult.setCreateTime(new Date());
         creditResult.setLastApplicationNo(approval.getApplication());
@@ -119,30 +119,42 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         creditResult.setLastReason2(approval.getReason2());
         creditResult.setLastReason3(approval.getReason3());
         creditResult.setLastScore(approval.getApplication().getaScore().getScore());
+        creditResult.setCreateTime(new Date());
         creditResultRepository.save(creditResult);
+    }
+
+    private Account createAccount(Approval approval) {
+        Account account = accountRepository.findByMemberId(approval.getApplication().getMember().getId());
+        if (account == null && approval.isDeclined()) return null;
+        if (account == null) {
+            account = new Account();
+            account.setMember(approval.getApplication().getMember());
+        }
+        account.setCrl(approval.getSugCrl());
+        if (approval.isApproved()) account.setCrlUsed(account.getCrlUsed() + approval.getAmt());
+        account.setCrlAvl(account.getCrl() - account.getCrlUsed());
+        return accountRepository.save(account);
     }
 
     @Override
     public Approval approve(Approval approval) {
         final Application application = approval.getApplication();
-        Account account = accountRepository.findByMemberId(application.getMember().getId());
-        if (account == null && approval.isDeclined()) return null;
-        if (account == null) {
-            account = new Account();
-            account.setMember(application.getMember());
-        }
-        account.setCrl(approval.getSugCrl());
-        if (approval.isApproved()) account.setCrlUsed(account.getCrlUsed() + approval.getAmt());
-        account.setCrlAvl(account.getCrl() - account.getCrlUsed());
-        accountRepository.save(account);
-        updateCreditResultByLastApplication(approval);
+        Account account = createAccount(approval);
+        if (account == null) return null;
+        updateCreditResultUsingLastApplication(approval);
         updateMemberStatusAsReject(approval);
+        updateApplicationAsApproved(application);
+        approval.setCreateTime(new Date());
         Approval result = approvalRepository.save(approval);
-        application.setStatus(Application.APPROVED_STATUS);
-        applicationRepository.save(application);
         MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
         return result;
+    }
+
+    private void updateApplicationAsApproved(Application application) {
+        application.setStatus(Application.APPROVED_STATUS);
+        application.setCreateTime(new Date());
+        applicationRepository.save(application);
     }
 
     @Override
