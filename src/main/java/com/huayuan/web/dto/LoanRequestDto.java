@@ -7,6 +7,7 @@ public class LoanRequestDto {
     private Long memberId;
     private double amt;
     private int term;
+    private String creditCarNo;
 
     public LoanRequestDto() {
     }
@@ -15,6 +16,10 @@ public class LoanRequestDto {
         this.memberId = memberId;
         this.amt = amt;
         this.term = term;
+    }
+    public LoanRequestDto(Long memberId, double amt, int term, String creditCarNo) {
+        this(memberId, amt, term);
+        this.creditCarNo = creditCarNo;
     }
 
     public Long getMemberId() {
@@ -39,5 +44,13 @@ public class LoanRequestDto {
 
     public void setTerm(int term) {
         this.term = term;
+    }
+
+    public String getCreditCarNo() {
+        return creditCarNo;
+    }
+
+    public void setCreditCarNo(String creditCarNo) {
+        this.creditCarNo = creditCarNo;
     }
 }

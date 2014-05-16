@@ -150,7 +150,9 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         if (tp.isCreditLimit()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId));
         }
-
+        if (tp.isUsedCrl()) {
+            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId));
+        }
         if (tp.isApplicationNoNeeded()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId),
                     memberStatusEvaluator.getApprovingApplication(memberId).getApplicationNo());

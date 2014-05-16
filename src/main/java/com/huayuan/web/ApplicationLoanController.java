@@ -67,6 +67,7 @@ public class ApplicationLoanController {
         application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
         application = applicationService.applyLoan(application);
         applicationRepository.execute(application);
+        bindCreditCard(member.getId(), applicationDto.getCreditCarNo());
         return application.getApplicationNo();
     }
 

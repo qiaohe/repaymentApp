@@ -35,4 +35,10 @@ public class AccountingController {
     public List<RepayPlan> getLoanBy(@PathVariable Long loanId) {
         return accountService.getRepayPlan(loanId);
     }
+
+    @RequestMapping(value = "/loans/{loanId}/review", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean reviewLoan(@PathVariable Long loanId) {
+        return accountService.review(loanId);
+    }
 }
