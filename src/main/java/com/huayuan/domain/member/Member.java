@@ -72,6 +72,9 @@ public class Member implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private MemberKindEnum type;
 
+    @Column(name = "EXISTING_FLAG")
+    private Integer existingFlag = 0;
+
     @Column(name = "POINTS")
     private Integer poIntegers;
 
@@ -371,6 +374,14 @@ public class Member implements Serializable {
 
     public void setPreCredits(Set<PreCredit> preCredits) {
         this.preCredits = preCredits;
+    }
+
+    public Integer getExistingFlag() {
+        return existingFlag;
+    }
+
+    public void setExistingFlag(Integer existingFlag) {
+        this.existingFlag = existingFlag;
     }
 
     public void removePreCredit(PreCredit preCredit) {
