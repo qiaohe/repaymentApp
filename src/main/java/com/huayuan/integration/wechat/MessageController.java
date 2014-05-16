@@ -1,7 +1,7 @@
 package com.huayuan.integration.wechat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.huayuan.common.MemberStatusChangeEvent;
+import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
 import com.huayuan.domain.member.SexEnum;

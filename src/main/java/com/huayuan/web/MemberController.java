@@ -1,6 +1,6 @@
 package com.huayuan.web;
 
-import com.huayuan.common.Day;
+import com.huayuan.common.util.Day;
 import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
@@ -13,7 +13,6 @@ import com.huayuan.service.SmsVerificationCodeService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
 import com.huayuan.web.dto.MemberResponseDto;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 

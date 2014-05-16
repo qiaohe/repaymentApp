@@ -1,6 +1,6 @@
 package com.huayuan.domain.accounting.core;
 
-import com.huayuan.common.Number;
+import com.huayuan.common.util.Number;
 
 import java.util.Date;
 

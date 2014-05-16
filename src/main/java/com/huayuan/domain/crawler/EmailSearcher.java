@@ -1,6 +1,6 @@
 package com.huayuan.domain.crawler;
 
-import com.huayuan.common.Day;
+import com.huayuan.common.util.Day;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

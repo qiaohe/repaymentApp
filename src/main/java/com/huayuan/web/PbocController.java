@@ -1,6 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.common.App;
+import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
@@ -106,9 +107,8 @@ public class PbocController {
             PdfWriter.getInstance(document, new FileOutputStream(pdfFileName));
             document.open();
             for (String imageFileName : images) {
-                Image image = Image.getInstance(imageFileName);
-//                image.setAbsolutePosition(500f, 650f);
-                image.scaleAbsolute(550f, 350f);
+                Image image = Image.getInstance(OtsuBinarize.binarize(imageFileName));
+                image.scaleAbsolute(243f, 153f);
                 document.add(image);
             }
             document.close();

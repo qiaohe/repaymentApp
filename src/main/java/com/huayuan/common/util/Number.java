@@ -1,4 +1,4 @@
-package com.huayuan.common;
+package com.huayuan.common.util;
 
 import org.apache.commons.math.util.MathUtils;
 

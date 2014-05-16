@@ -1,4 +1,4 @@
-package com.huayuan.common;
+package com.huayuan.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;

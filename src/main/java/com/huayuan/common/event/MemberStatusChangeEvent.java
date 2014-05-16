@@ -1,4 +1,4 @@
-package com.huayuan.common;
+package com.huayuan.common.event;
 
 import org.springframework.context.ApplicationEvent;
 

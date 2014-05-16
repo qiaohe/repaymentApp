@@ -1,6 +1,6 @@
 package com.huayuan.service;
 
-import com.huayuan.common.MemberStatusChangeEvent;
+import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.accounting.Loans;
 import com.huayuan.domain.credit.ApplicationCreditInfo;

@@ -1,6 +1,6 @@
 package com.huayuan.web.dto;
 
-import com.huayuan.common.Day;
+import com.huayuan.common.util.Day;
 import com.huayuan.domain.member.Member;
 import org.apache.commons.lang.StringUtils;
 
