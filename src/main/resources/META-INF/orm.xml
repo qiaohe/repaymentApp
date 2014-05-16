@@ -27,7 +27,7 @@
     </named-query>
 
     <named-query name="CreditCard.findByMemberId">
-        <query>SELECT card FROM CreditCard card WHERE card.isValid = true
+        <query>SELECT card FROM CreditCard card WHERE card.member.id = ?1 and isValid = true
         </query>
     </named-query>
     <named-query name="RepayPlan.findByLoanId">
