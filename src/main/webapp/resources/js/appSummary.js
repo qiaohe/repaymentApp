@@ -58,7 +58,9 @@
             $("#data-table").html(contentHtml);
             return;
         }
+        var applNos = [];
         $.each(json, function (i, ele) {
+            applNos.push(ele.appNo);
             contentHtml += '<tr>' +
                 '<td style="text-align: center;">' + (i + 1) + '</td>' +
                 '<td class="clickable">' + ele.appNo + '</td>' +
@@ -72,6 +74,9 @@
                 '<td>' + $.formatDate(ele.createDate) + '</td>' +
                 '</tr>';
         });
+        if(applNos && applNos.length != 0) {
+            $.cookie("appNos",applNos.join(","));
+        }
         $("#data-table").html(contentHtml);
         $("#data-table").find(".clickable").each(function () {
             $(this).on("click", function () {
