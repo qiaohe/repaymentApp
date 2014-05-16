@@ -266,7 +266,8 @@ function applyLoan(obj) {
         data: JSON.stringify({
             term: obj.term,
             amt: obj.amount,
-            memberId: member.id
+            memberId: member.id,
+            creditCarNo: obj.creditCarNo
         }),
         dataType: "text",
         error: function () {
@@ -665,8 +666,9 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#request").click(function(){
         if($("#agree").is(":checked") && member.validate && app.term && app.amount){
-            applyLoan(app);
             if(parseInt(member.status, 10) < 10){
+                app.creditCarNo = "";
+                applyLoan(app);
                 $.mobile.navigate("#suspension");
                 $(this).off("click");
             }
@@ -678,7 +680,9 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#Y-2").click(function(){
-        loanToThisCard(app.card).success(function(){});
+        app.creditCarNo = app.card;
+        applyLoan(app);
+//        loanToThisCard(app.card).success(function(){});
     });
 
     $("#N-2").click(function(){
