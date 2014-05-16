@@ -318,13 +318,13 @@ input {
     height: 30px;
 }
 /************************** Repayment Page Start *****************************/
-#repay-container {
+.repay-container {
     width: 90%;
     margin: 10px auto;
     border-radius: 5px;
     border: 1px solid #c4c4c4;
 }
-#repay-summary {
+.repay-summary {
     height: 40px;
     font-size: 14px;
     font-weight: bold;
@@ -334,21 +334,21 @@ input {
     border-radius: 5px 5px 0 0;
     color: white;
 }
-#repay-summary .repay-s-time {
+.repay-summary .repay-s-time {
     float:left;
     margin-left: 5%;
     height: 100%;
 }
-#repay-summary .repay-s-info {
+.repay-summary .repay-s-info {
     float:right;
     margin-right: 5%;
     height: 100%;
 }
-#repay-amount {
+.repay-amount {
     height: 150px;
     background-color: #aacf5d;
 }
-#repay-amt-title {
+.repay-amt-title {
     font-size: 18px;
     font-family: "黑体";
     font-weight: bold;
@@ -356,7 +356,7 @@ input {
     padding: 30px 0 20px 0;
     margin-left: 5%;
 }
-#repay-amt-num {
+.repay-amt-num {
     color: #404040;
     font-family: "Arial";
     font-weight: bold;
@@ -367,7 +367,7 @@ input {
 .r-next {
     font-size: 30px;
 }
-#repay-amt-limit {
+.repay-amt-limit {
     position: relative;
     color: #404040;
     font-size: 16px;
@@ -459,17 +459,16 @@ input {
     width: 10%;
     float: right;
 }
-#repay-footer-wrap{
+.repay-footer{
     bottom: 30px;
-    /*position: fixed;*/
 }
-#repay-switch {
+.repay-switch {
     height: 20px;
     width: 100%;
     margin-top: 5px;
     background-color: white;
 }
-#repay-footer {
+.repay-footer-summary {
     width: 90%;
     height: 50px;
     font-size: 16px;

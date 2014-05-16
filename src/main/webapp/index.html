@@ -81,8 +81,7 @@
 
     <div class="bkg"></div>
 
-    <div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit"
-         style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">
+    <div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit" style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">
         <div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em; color: white;">
             <p>目前化缘仅能服务北上广深的<br>用户。其他地区的用户可以先做信用评<br>估，但暂时无法申请借款。</p>
 
@@ -535,17 +534,16 @@
 </div>
 
 <!--repayment-->
-<div data-role="page" id="repayment">
-    <div id="repay-container">
-        <div id="repay-summary">
+<div data-role="page" id="repayment-0">
+    <div class="repay-container">
+        <div class="repay-summary">
             <div class="repay-s-time">2013-09-09</div>
             <div class="repay-s-info">借款&yen;99,000入卡片4423</div>
-            <!--<span class="r-time">2013-09-09</span>借款&yen;99,000<span class="r-amt"></span>入卡片<span class="r-tail">4423</span>-->
         </div>
-        <div id="repay-amount">
-            <div id="repay-amt-title">最近应还金额</div>
-            <div id="repay-amt-num">&yen;<span class="r-next">5,114.00</span></div>
-            <div id="repay-amt-limit"><span class="r-deadline">4月20日</span>到期</div>
+        <div class="repay-amount">
+            <div class="repay-amt-title">最近应还金额</div>
+            <div class="repay-amt-num">&yen;<span class="r-next">5,114.00</span></div>
+            <div class="repay-amt-limit"><span class="r-deadline">4月20日</span>到期</div>
         </div>
         <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-2.png');"></div><div class="repay-info">现在就去还款</div><div class="replay-collapse"></div></div>
         <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-3.png');"></div><div class="repay-info">查看借款详情</div><div class="replay-collapse"></div></div>
@@ -576,46 +574,23 @@
         </ul>
     </div>
 
-    <div id="repay-footer-wrap" data-role="footer" data-position="fixed"  data-id="r-footer" class="footer" style="height: 62px;">
-        <div id="repay-switch">
+    <div data-role="footer" data-position="fixed"  data-id="r-footer" class="footer repay-footer" style="height: 62px;">
+        <div class="repay-switch">
             <div style="width: 78px;margin: auto;height: 100%;">
                 <div class="spot"></div>
                 <div class="spot"></div>
                 <div class="spot"></div>
             </div>
         </div>
-        <div id="repay-footer">
-            <div id="repay-s-img"></div>
-            <div id="repay-s-txt">总计借款</div>
-            <div id="repay-s-btn"></div>
-            <div id="repay-s-num">3笔</div>
+        <div class="repay-footer-summary">
+            <div class="repay-s-img"></div>
+            <div class="repay-s-txt">总计借款</div>
+            <div class="repay-s-btn"></div>
+            <div class="repay-s-num">3笔</div>
         </div>
     </div>
 
-    <div id="repay-h-detail" data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
-        <li>
-            <div class="li-l">还款金额</div>
-            <div class="li-r"></div>
-        </li>
-        <li>
-            <div class="li-l">还款时间</div>
-            <div class="li-r"></div>
-        </li>
-        <li>
-            <div class="li-l">支付卡</div>
-            <div class="li-r"></div>
-        </li>
-        <li>
-            <div class="li-l">流水号</div>
-            <div class="li-r"></div>
-        </li>
-        <li>
-            <div class="li-l">还款状态</div>
-            <div class="li-r"></div>
-        </li>
-    </div>
-
-    <div id="repay-borrow-detail" data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
+    <div data-role="popup" data-transition="pop" class="r-popup" style="background-color: white">
         <li>
             <div class="li-l">借款时间</div>
             <div class="li-r"></div>
@@ -645,18 +620,41 @@
             <div class="li-r"></div>
         </li>
     </div>
+
+    <div data-role="popup" data-transition="pop" class="repay-popup-his" style="background-color: white">
+        <li>
+            <div class="li-l">还款金额</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款时间</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">支付卡</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">流水号</div>
+            <div class="li-r"></div>
+        </li>
+        <li>
+            <div class="li-l">还款状态</div>
+            <div class="li-r"></div>
+        </li>
+    </div>
 </div>
 
 <div data-role="page" id="sum-loan">
     <div class="cover">
         <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:15px; border:1px solid white">
-            总计借款金额<br>&yen<span id="total-amount"></span></div>
+            总计借款金额<br>&yen;<span id="total-amount"></span></div>
         <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:15px; border:1px solid white">
             总计借款笔数<br><span id="total-times"></span></div>
         <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:5px; border:1px solid white">
-            总计应还金额<br>&yen<span id="total-payback"></span></div>
+            总计应还金额<br>&yen;<span id="total-payback"></span></div>
         <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:5px; border:1px solid white">相比信用卡,
-            总计约省<br>&yen<span id="total-saved"></span></div>
+            总计约省<br>&yen;<span id="total-saved"></span></div>
     </div>
 
     <ul data-role="listview" data-inset="true" id="total-specific" style="width:90%; margin: 15px 5%">
