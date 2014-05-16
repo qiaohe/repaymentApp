@@ -42,8 +42,9 @@ public class MemberStatusEvaluator {
             if (loan.getStatus() == 1 || loan.getStatus() == 2) return "11";
             maps.put(loan.getStatus(), maps.get(loan.getStatus()) == null ? 0 : maps.get(loan.getStatus()) + 1);
         }
-        if (loans.size() == maps.get(8)) return "7";
-        if (loans.size() == maps.get(9) || !maps.containsKey(0)) {
+
+        if (maps.get(8) != null && loans.size() == maps.get(8)) return "7";
+        if (maps.get(9) != null && loans.size() == maps.get(9) || !maps.containsKey(0)) {
             if (accountRepository.findByMemberId(memberId).getCrlAvl() < 1000) return "9";
             return "10";
         }
