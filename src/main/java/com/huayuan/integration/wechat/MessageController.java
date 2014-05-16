@@ -183,7 +183,6 @@ public class MessageController implements ApplicationListener<MemberStatusChange
 
     public String getAccessToken() {
         String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
-        System.out.println(StringUtils.mid(token, 17, token.length() - 37));
         return StringUtils.mid(token, 17, token.length() - 37);
     }
 

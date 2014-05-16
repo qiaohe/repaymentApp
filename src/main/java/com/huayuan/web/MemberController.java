@@ -5,6 +5,7 @@ import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.MemberStatusEvaluator;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.PreCreditRepository;
@@ -39,6 +40,8 @@ public class MemberController {
     private SmsVerificationCodeService smsVerificationCodeService;
     @Inject
     private CreditCardRepository creditCardRepository;
+    @Inject
+    private MemberStatusEvaluator memberStatusEvaluator;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -143,4 +146,11 @@ public class MemberController {
         }
         return verified;
     }
+
+    @RequestMapping(value = "/{memberId}/status", method = RequestMethod.GET)
+    @ResponseBody
+    public String getStatus(@PathVariable Long memberId) {
+        return memberStatusEvaluator.evaluate(memberId);
+    }
+
 }
