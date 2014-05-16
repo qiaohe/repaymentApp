@@ -16,7 +16,7 @@ import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.account.LoanRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
-import com.huayuan.repository.applicationloan.TelephoneTVRepository;
+import com.huayuan.repository.applicationloan.TelephoneTvRepository;
 import com.huayuan.repository.credit.*;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.lang.RandomStringUtils;
@@ -57,7 +57,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Inject
     private ApplicationRepository applicationRepository;
     @Inject
-    private TelephoneTVRepository telephoneTVRepository;
+    private TelephoneTvRepository telephoneTVRepository;
     @Inject
     private PbocRepository pbocRepository;
     @Inject
