@@ -3,19 +3,24 @@
 /* global alert:false */
 "use strict";
 var config = {};
-config.api_path = "http://192.168.0.185:8080/repayment/api/";
-config.debug = true;
+config.api_path = "http://180.168.35.37/repaymentApp/api/";
 
-// config.id_pattern = /(?:memberId=)\d+/;
-// config.member_id = config.id_pattern.exec(window.location).toString();
-// config.member_id = config.member_id.slice(9, config.member_id.length);
+config.debug = false;
+config.local_debug = false;
 
-// config.status_pattern = /(?:status=)\d+/;
-// config.status = config.status_pattern.exec(window.location).toString();
-// config.status = config.status.slice(7, config.status.length);
+if (config.local_debug) {
+	config.member_id = "36";
+	config.status = "10";
+}
+else {
+	config.id_pattern = /(?:memberId=)\d+/;
+	config.member_id = config.id_pattern.exec(window.location).toString();
+	config.member_id = config.member_id.slice(9, config.member_id.length);
 
-config.member_id = "9";
-config.status = "3.1";
+	config.status_pattern = /(?:status=)\d+/;
+	config.status = config.status_pattern.exec(window.location).toString();
+	config.status = config.status.slice(7, config.status.length);
+}
 
 var member = {};
 var app = {};
@@ -91,10 +96,12 @@ function getMemberInfo() {
 			member.industry = json.industry;
 			member.education = json.education;
 			member.email = json.email;
-			// member.mobile_varified = json.hasMobilePhone;
-			member.mobile_varified = "true";
+			member.mobile_varified = json.hasMobilePhone;
 		},
-		error: stdError
+		error: function () {
+			if (config.debug)
+				alert(config.api_path + "members/" + member.id);
+		}
 	});
 }
 
@@ -108,9 +115,9 @@ function getCreditLimit() {
 			member.limit = json.creditLimit;
 			member.rank = json.rankOfLimit;
 		},
-		// error: stdError
 		error: function () {
-			alert(config.api_path + "members/" + member.id + "/crl");
+			if (config.debug)
+				alert(config.api_path + "members/" + member.id + "/crl");
 		}
 	});
 }
@@ -124,17 +131,17 @@ function getAvlCrl() {
 		success: function (text) {
 			member.avlcrl = text;
 		},
-		// error: stdError
 		error: function () {
-			alert(config.api_path + "members/" + member.id + "/avlCrl");
+			if (config.debug)
+				alert(config.api_path + "members/" + member.id + "/avlCrl");
 		}
 	});
 }
 
-function stdError(jqXHR, textStatus, errorThrown) {
-	if (config.debug)
-		alert(jqXHR + " " + textStatus + " " + errorThrown);
-}
+// function stdError(jqXHR, textStatus, errorThrown) {
+// 	if (config.debug)
+// 		alert(jqXHR + " " + textStatus + " " + errorThrown);
+// }
 
 function recongizeIdCard(form_data, url_path, datatype) {
 	return $.ajax({
@@ -645,7 +652,10 @@ $(document).on("pagebeforeshow", "#result", function(){
 					$("#option-1").attr("href", "#");
 				}
 			},
-			error: stdError
+			error: function () {
+				if (config.debug)
+					alert(config.api_path + "app/members/" + member.id);
+			}
 		});
 	}
 	
@@ -668,7 +678,10 @@ $(document).on("pageshow", "#loan", function () {
 					$.mobile.navigate("#suspension");
 				}
 			},
-			error: stdError
+			error: function () {
+				if (config.debug)
+					alert(config.api_path + "app/members/" + member.id);
+			}
 		});
 	}
 
@@ -791,10 +804,10 @@ $(document).on("pageshow", "#loan", function () {
 		});
 	}
 
-	$("#request").click(function(){
+	$("#request").off("click").click(function(){
 		if($("#agree").is(":checked") && member.validate && app.term && app.amount){
 			applyLoan(app);
-			if(parseInt(member.status, 10) < 8){
+			if(parseInt(member.status, 10) < 10){
 				$.mobile.navigate("#suspension");
 				$(this).off("click");
 			}
@@ -842,19 +855,21 @@ $(document).on("pagecreate", "#congratulation", function(){
 	var appNo = appNo_pattern.exec(window.location).toString();
 	appNo = appNo.slice(6, appNo.length);
 
-	// $.ajax({
-	// 	url: config.api_path + "app/" + appNo,
-	// 	type: "GET",
-	// 	dataType: "json",
-	// 	success: function (json) {
-
-	// 	},
-	// 	error: function () {
-	// 		alert(config.api_path + "app/" + appNo);
-	// 	}
-	// });
-
-	$("#amt-x").html();
+	$.ajax({
+		url: config.api_path + "app/" + appNo,
+		type: "GET",
+		async: false,
+		dataType: "json",
+		success: function (json) {
+			$("#amt-x").html(json.amt);
+			$("#term-" + json.term + "-shown").css("background-color", "#3ca0e6");
+			$("#each-x").html(json.repayPerTerm);
+			$("#saved-x").html(json.saveCost);
+		},
+		error: function () {
+			alert(config.api_path + "app/" + appNo);
+		}
+	});
 
 	$("#go-choose-card").click(function(){
 		if(!member.creditcard){
@@ -911,7 +926,10 @@ $(document).on("pagecreate", "#repayment-0", function(){
 		success: function(json){ 
 			member.loan = json;
 		},
-		error: stdError
+		error: function () {
+			if (config.debug)
+				alert(config.api_path + "account/members/" + member.id);
+		}
 	});
 
 	generateSumPage(member.loan);
@@ -1064,18 +1082,12 @@ $(".bkg").click(function () {
 	$(this).hide();
 });
 
-// window.onbeforeunload = WindowCloseHanlder;
-// function WindowCloseHanlder()
-// {
-// window.alert("My Window is reloading");
-// }
-
-window.onbeforeunload = function () {
+window.onunload = function () {
 	var print_status;
-	switch(window.location.hash){
-		case "#limit":
-			print_status = "0";
-			break;
+	var pattern = /#\w+\?/;
+	var hash = pattern.exec(window.location).toString();
+	hash = hash.slice(0, hash.length - 1);
+	switch(hash){
 		case "#basic-info":
 			print_status = "0";
 			break;
@@ -1086,13 +1098,20 @@ window.onbeforeunload = function () {
 			print_status = "2";
 			break;
 		default:
-			print_status = "0";
+			print_status = "-1";
 	}
-	returnFootPrint(member.id, print_status);
+	if (print_status !== "-1")
+		returnFootPrint(member.id, print_status);
 };
 
 function returnFootPrint(id, status) {
-	$.get(config.api_path + "members/" + id + "/status/" + status, function () {
-		alert(config.api_path + "members/"  + id + "/status/" + status);
+	$.ajax({
+		url: config.api_path + "members/" + id + "/status/" + status,
+		type: "GET",
+		async: false,
+		error: function () {
+			if (config.debug)
+				alert(config.api_path + "members/" + id + "/status/" + status);
+		}
 	});
 }
