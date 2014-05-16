@@ -735,7 +735,7 @@ $(document).on("pageshow", "#loan", function () {
 		countPayback(app);
 	});
 	
-	if(member.mobile_varified == "true"){
+	if(member.mobile_varified){
 		$("#varifying").remove();
 		member.validate = 1;
 	}
