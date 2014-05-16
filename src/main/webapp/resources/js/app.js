@@ -962,34 +962,35 @@ $(document).on("pagecreate", "#repayment-0", function(){
 
     function generateRepaymentPages(obj){
         var loans = obj.loans;
+        var templateHtml = $("#repayment-0").html();
         for(var i = 0; i < loans.length; i++){
             var id = "repayment-" + i;
             if(i){
-                var tmp = $("<div data-role='page' id='" + id + "'>" + $("#repayment-0").html() + "</div>");
+                var tmp = $("<div data-role='page' id='" + id + "'>" + templateHtml + "</div>");
                 tmp.appendTo($("body"));
                 $.mobile.initializePage();
             }
-            $("#" + id + " .r-time").html(getReadableDate(loans[i].startDate));
-            $("#" + id + " .r-amt").html(loans[i].amount);
-            $("#" + id + " .r-tail").html(loans[i].creditCardNo.slice(loans[i].creditCardNo.length - 4, loans[i].creditCardNo.length));
-            $("#" + id + " .r-next").html(loans[i].dueAmt);
-            var date = new Date(loans[i].startDate);
+            var loan = loans[i];
+            var creditCardSuffix = loan.creditCardNo.slice(loan.creditCardNo.length - 4, loan.creditCardNo.length);
+            $("#" + id + " .repay-s-time").html(getReadableDate(loan.startDate));
+            $("#" + id + " .repay-s-info").html("借款&yen;"+loan.amount+"入卡片"+creditCardSuffix);
+            $("#" + id + " .r-next").html(loan.dueAmt);
+            var date = new Date(loan.startDate);
             var month = date.getMonth()+1;
-            var duemonth = month + loans[i].paidTerm + 1;
+            var duemonth = month + loan.paidTerm + 1;
             var day = date.getDate();
-            if(duemonth > 12)
+            if(duemonth > 12) {
                 duemonth -= 12;
+            }
             $("#" + id + " .r-deadline").html(duemonth + "月" + day + "日");
 
-            $("#" + id + " li:nth-child(1) .li-r").html(getReadableDate(loans[i].startDate));
-            $("#" + id + " li:nth-child(2) .li-r").html("尾号" + loans[i].creditCardNo.slice(loans[i].creditCardNo.length - 4, loans[i].creditCardNo.length));
-            $("#" + id + " li:nth-child(3) .li-r").html(loans[i].amount);
-            $("#" + id + " li:nth-child(4) .li-r").html(obj.loanCount + "期(已还" + loans[i].paidTerm + "期)");
-            $("#" + id + " li:nth-child(5) .li-r").html("每月" + day + "日");
-            $("#" + id + " li:nth-child(6) .li-r").html(loans[i].principal);
-            $("#" + id + " li:nth-child(7) .li-r").html(loans[i].restPrincipal);
+            var loanInfo = [getReadableDate(loan.startDate),"尾号" + creditCardSuffix,loan.amount,
+                obj.loanCount + "期(已还" + loan.paidTerm + "期)","每月" + day + "日",loan.principal,loan.restPrincipal]
+            $("#"+id+" .r-popup .li-r").each(function(i,e){
+                $(e).html(loanInfo[i]);
+            });
 
-            for(var j = 0; j < loans[i].paidTerm; j++){
+            for(var j = 0; j < loan.paidTerm; j++){
                 if(j === 0)
                     $("#" + id + " ul:last-child").after("<li></li>");
                 else
