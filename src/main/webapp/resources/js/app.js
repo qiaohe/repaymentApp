@@ -97,6 +97,7 @@ function getMemberInfo() {
             member.education = json.education;
             member.email = json.email;
             member.mobile_varified = json.hasMobilePhone;
+            member.existingFlag = json.existingFlag;
         },
         error: function () {
             if (config.debug)
@@ -666,7 +667,7 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#request").click(function(){
         if($("#agree").is(":checked") && member.validate && app.term && app.amount){
-            if(parseInt(member.status, 10) < 10){
+            if(member.existingFlag == "0" || member.existingFlag == "1"){
                 app.creditCarNo = "";
                 applyLoan(app);
                 $.mobile.navigate("#suspension");
