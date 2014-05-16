@@ -54,6 +54,8 @@ public class RepayPlan {
         this.overDue_Interest = 0d;
         this.overDueAmt = 0d;
         this.overDueDay = 0;
+        this.paidInterest = 0d;
+        this.paidPrincipal = 0d;
     }
 
     public Loan getLoan() {
