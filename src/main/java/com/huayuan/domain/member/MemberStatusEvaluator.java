@@ -51,7 +51,7 @@ public class MemberStatusEvaluator {
         return "8";
     }
 
-    private Application getApprovingApplication(Long memberId) {
+    public Application getApprovingApplication(Long memberId) {
         List<Application> applications = applicationRepository.findByMemberIdOrderByApplicationNoDesc(memberId);
         return CollectionUtils.isNotEmpty(applications) ? applications.get(0) : null;
     }

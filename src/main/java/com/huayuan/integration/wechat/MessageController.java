@@ -147,8 +147,14 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         String status = memberStatusEvaluator.evaluate(memberId);
         MessageTemplate tp = getTemplates(message.getEventKey(), status);
         status += "&&random=" + RandomStringUtils.randomNumeric(15);
-        if (tp.isCreditLimit())
+        if (tp.isCreditLimit()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId));
+        }
+
+        if (tp.isApplicationNoNeeded()) {
+            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId),
+                    memberStatusEvaluator.getApprovingApplication(memberId).getApplicationNo());
+        }
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
         return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status);
     }
