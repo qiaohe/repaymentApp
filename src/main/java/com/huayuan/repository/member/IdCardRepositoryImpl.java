@@ -1,6 +1,8 @@
 package com.huayuan.repository.member;
 
+import com.huayuan.common.util.JpaSqlResultMapper;
 import com.huayuan.domain.member.IdCard;
+import com.huayuan.web.dto.MemberLoanSummaryDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -27,5 +29,20 @@ public class IdCardRepositoryImpl implements IdCardRepositoryCustom {
     @SuppressWarnings("unchecked")
     public List<IdCard> findFromPbocOut() {
         return em.createNamedQuery("IdCard.findFromPbocOut", IdCard.class).getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<MemberLoanSummaryDto> findMembersWithLoanSummary() {
+        Query q = em.createNamedQuery("Member.findMembersWithLoanSummary");
+        return JpaSqlResultMapper.list(q, MemberLoanSummaryDto.class);
+    }
+
+    @Override
+    public List<MemberLoanSummaryDto> findMembersWithLoanSummary(String query) {
+        String q = em.createNamedQuery("Member.searchMembersWithLoanSummary")
+                .unwrap(org.hibernate.Query.class)
+                .getQueryString();
+        return JpaSqlResultMapper.list(em.createNativeQuery(q.replace(":q", "WHERE " + query)), MemberLoanSummaryDto.class);
     }
 }
