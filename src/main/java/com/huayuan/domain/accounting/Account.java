@@ -1,5 +1,6 @@
 package com.huayuan.domain.accounting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.Member;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Account {
     private Long id;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
     @Column(name = "CRL")
     private Double crl;

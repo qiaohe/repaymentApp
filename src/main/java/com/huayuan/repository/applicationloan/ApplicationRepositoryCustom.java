@@ -2,6 +2,7 @@ package com.huayuan.repository.applicationloan;
 
 import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.MemberProfile;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface ApplicationRepositoryCustom {
 
     public List<ApplicationSummary> findApplicationSummaries(String q);
 
+    public List<MemberProfile.Application> findApplicationsProfile(Long memberId);
 }

@@ -6,11 +6,13 @@ import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
+import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
@@ -49,6 +51,8 @@ public class MemberServiceImpl implements MemberService {
     private CreditResultRepository creditResultRepository;
     @Inject
     private DictionaryRepository dictionaryRepository;
+    @Inject
+    private ApplicationRepository applicationRepository;
 
 
     @PostConstruct
@@ -231,5 +235,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String getPhone(String idCardNo) {
         return memberRepository.findByIdCard_IdNo(idCardNo).getMobile();
+    }
+
+    @Override
+    public MemberProfile populateProfile(Long memberId) {
+        Member member = memberRepository.findOne(memberId);
+        member.getCreditCardBills().size();
+        member.getCreditCards().size();
+        return new MemberProfile.Builder().account(accountRepository.findByMemberId(memberId))
+                .applications(applicationRepository.findApplicationsProfile(memberId))
+                .member(member).build();
     }
 }

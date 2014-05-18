@@ -10,9 +10,17 @@
             ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,
             IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and
             appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id
-            and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = '3' or appl.status = '99')
+            and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = 3 or appl.status = 99)
         </query>
     </named-query>
+
+    <named-query name="Application.findByMemberIdWithProfile">
+        <query>
+            select NEW com.huayuan.domain.member.MemberProfile$Application(appl.applicationNo, appl.applyTime, apv.decision) from
+            Application appl, Approval apv where appl.applicationNo = apv.application.applicationNo and appl.member.id = ?1 and appl.status in (3,5,7)
+        </query>
+    </named-query>
+
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4)</query>
     </named-query>

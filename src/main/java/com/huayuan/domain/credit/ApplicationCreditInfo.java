@@ -1,13 +1,11 @@
 package com.huayuan.domain.credit;
 
 import com.huayuan.domain.accounting.Account;
-import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.Loans;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by dell on 14-5-10.
@@ -72,39 +70,39 @@ public class ApplicationCreditInfo implements Serializable {
     }
 
     public static class Builder {
-        private ApplicationCreditInfo dto;
+        private ApplicationCreditInfo creditInfo;
 
         public Builder() {
-            this.dto = new ApplicationCreditInfo();
+            this.creditInfo = new ApplicationCreditInfo();
         }
 
         public Builder application(Application application) {
-            this.dto.setApplication(application);
+            this.creditInfo.setApplication(application);
             return this;
         }
 
         public Builder member(Member member) {
-            this.dto.setMember(member);
+            this.creditInfo.setMember(member);
             return this;
         }
 
         public Builder pboc(Pboc pboc) {
-            this.dto.setPboc(pboc);
+            this.creditInfo.setPboc(pboc);
             return this;
         }
 
         public Builder loans(Loans loans) {
-            this.dto.setLoans(loans);
+            this.creditInfo.setLoans(loans);
             return this;
         }
 
         public Builder account(Account account) {
-            this.dto.setAccount(account);
+            this.creditInfo.setAccount(account);
             return this;
         }
 
         public ApplicationCreditInfo build() {
-            return dto;
+            return creditInfo;
         }
 
     }
