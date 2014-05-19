@@ -27,8 +27,8 @@ public class CreditResult implements Serializable {
     @JsonIgnore
     private Member member;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "LAST_APPL_NO")
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "LAST_APPL_NO", nullable = true)
     @JsonIgnore
     private Application lastApplicationNo;
 

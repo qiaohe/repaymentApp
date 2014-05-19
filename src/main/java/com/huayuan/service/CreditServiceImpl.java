@@ -105,7 +105,6 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
             }
             member.setCreateTime(new Date());
         }
-        member.setExistingFlag(approval.getDecision().equals("A") ? 2 : 1);
         memberRepository.save(member);
     }
 
