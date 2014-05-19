@@ -22,7 +22,8 @@ input {
     top: 0;
     text-align: center;
     background-color: #aacf5d;
-    height: 175px;
+    height: 150px;
+    padding-top: 30px;
 }
 
 .cover:before {
@@ -483,6 +484,48 @@ input {
     border: 1px solid #c4c4c4;
 }
 /************************** Repayment Page End *****************************/
+/************************** Loan Page Start *****************************/
+.loan-container {
+    height: 120px;
+    width: 90%;
+    margin: auto;
+}
+.loan-item {
+    float: left;
+    width: 49%;
+    height: 59px;
+    border: 1px solid #c0c0c0;
+    background-color: #efefef;
+    line-height: 16px;
+}
+span.loan-i-title {
+    color: #404040;
+    font-size: 14px;
+    font-family: "黑体";
+    font-weight: bold;
+}
+span.loan-i-cont {
+    font-size: 14px;
+    font-weight: bold;
+    color: #e67e22;
+    font-family: "Arial";
+}
+.loan-item-1 {
+    border-top-left-radius: 5px;
+}
+.loan-item-2 {
+    border-top-right-radius: 5px;
+    border-left: none;
+}
+.loan-item-3 {
+    border-bottom-left-radius: 5px;
+    border-top:none;
+}
+.loan-item-4 {
+    border-bottom-right-radius:5px;
+    border-left: none;border-top:none;
+}
+/************************** Loan Page End *****************************/
 hr{
     margin: 0;
     padding: 0;

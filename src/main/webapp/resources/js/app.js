@@ -976,13 +976,59 @@ $(function () {
                     $(e).html(loanInfo[i]);
                 });
 
-                for(var j = 0; j < loan.paidTerm; j++){
-                    if(j === 0)
-                        $("#" + id + " ul:last-child").after("<li></li>");
-                    else
-                        $("#" + id + " ul:last-child").before("<li></li>");
-                }
+                var repayHistory = $("#" + id + " .repay-history");
+                $("#" + id + " .repay-item:eq(2)").off("click").on("click",function(){
+                    if(repayHistory.is("visible")) {
+                        repayHistory.hide();
+                    } else {
+                        if(repayHistory.attr("load") && repayHistory.attr("load") == "1") {
+                            repayHistory.show();
+                        } else {
+                            loadLoanInfo(id,repayHistory,loan.loanId);
+                        }
+                    }
+                });
+                // loadLoanInfo(repayHistory,loan.loanId);
             }
+        }
+
+        // load repay plan history
+        function loadLoanInfo(containerId,repayHistory,loanId) {
+            $.ajax({
+                url: config.api_path + "account/loans/" + loanId,
+                type: "GET",
+                async: false,
+                success:function(json){
+                    if(!json) {
+                        return;
+                    }
+                    var contentHtml = "";
+                    $.each(json,function(i,repayPlan){
+                        contentHtml += "<li class=\"repay-h-item\">\n"+
+                            "<div class=\"repay-h-term\">\n"+
+                            "    <div class=\"repay-h-index\">第"+repayPlan.termNo+"期还款</div>\n"+
+                            "    <div class=\"repay-h-time\">"+repayPlan.dueDate+"</div>\n"+
+                            "</div>\n"+
+                            "<div class=\"repay-h-status\">\n"+
+                            "    <div class=\"repay-h-amt\">"+repayPlan.dueAmt+"</div>\n"+
+                            "    <div class=\"repay-h-sta\">还款成功</div>\n"+
+                            "</div>\n"+
+                            "<div class=\"repay-h-img\"></div>\n"+
+                            "</li>";
+                    });
+                    repayHistory.html(contentHtml).attr("load","1");
+                    repayHistory.find("li").on("click",function(){
+                        var repayPlanDetailPop = $("#"+containerId+" .repay-popup-his");
+                        repayPlanDetailPop.find(".li-r").each(function(){
+
+                        });
+                    });
+                },
+                error: function () {
+                    if (config.debug)
+                        alert(config.api_path + "account/loans/" + loanId);
+                }
+            });
         }
 
         function registerEvents(obj){
