@@ -111,7 +111,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     private void updateCreditResultUsingLastApplication(Approval approval) {
         CreditResult creditResult = approval.getApplication().getMember().getCreditResult();
         creditResult.setCreateTime(new Date());
-        creditResult.setLastApplicationNo(approval.getApplication());
+        creditResult.setLastApplication(approval.getApplication());
         creditResult.setLastDecision(approval.getDecision());
         creditResult.setLastPbocBackTime(approval.getApplication().getaScore().getPbocBackTime());
         creditResult.setLastRating(approval.getApplication().getaScore().getRating());

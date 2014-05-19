@@ -22,15 +22,18 @@ public class CreditResult implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
     private Member member;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "LAST_APPL_NO", nullable = true)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "LAST_APPL_NO")
     @JsonIgnore
-    private Application lastApplicationNo;
+    private Application lastApplication;
+
+    @Column(name = "LAST_APPL_NO", insertable = false, updatable = false)
+    private String applicationNo;
 
 
     @Column(name = "LAST_SCORE")
@@ -86,12 +89,12 @@ public class CreditResult implements Serializable {
         this.member = member;
     }
 
-    public Application getLastApplicationNo() {
-        return lastApplicationNo;
+    public Application getLastApplication() {
+        return lastApplication;
     }
 
-    public void setLastApplicationNo(Application lastApplicationNo) {
-        this.lastApplicationNo = lastApplicationNo;
+    public void setLastApplication(Application lastApplicationNo) {
+        this.lastApplication = lastApplicationNo;
     }
 
     public void setLastPbocBackTime(Date lastPbocBackTime) {
@@ -169,8 +172,11 @@ public class CreditResult implements Serializable {
                 || StringUtils.endsWithAny(lastReason3, DECLINED_REASON_CODES);
     }
 
-    @Transient
     public String getApplicationNo() {
-        return getLastApplicationNo().getApplicationNo();
+        return applicationNo;
+    }
+
+    public void setApplicationNo(String applicationNo) {
+        this.applicationNo = applicationNo;
     }
 }
