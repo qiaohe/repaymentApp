@@ -384,7 +384,7 @@
                 alert("提交成功！");
                 var appNos = $.cookie("appNos");
                 appNos = appNos.replace(appDetail.applyNo,"").replace(",,",',');
-                if($.trim(appNos)) {
+                if($.trim(appNos) && $.trim(appNos) != ",") {
                     $.cookie("appNos",appNos);
                     window.location.href = "appDetail.html?applyNo="+appNos.split(",")[0];
                 } else {
@@ -590,7 +590,7 @@
         // 前次申请情况
         var creditResult = member.creditResult;
         if (creditResult) {
-            $("#last-appl-no").val(creditResult.lastApplicationNo);
+            $("#last-appl-no").val(creditResult.applicationNo);
             if (creditResult.lastScore) {
                 $("#last-credit-score").val(new String(creditResult.lastScore).substring(0, 6));
             }
@@ -600,7 +600,7 @@
             $("#last-credit-reason2").val(creditResult.lastReason2);
             $("#last-credit-reason3").val(creditResult.lastReason3);
             if (creditResult.lastPbocBackTime > 0) {
-                $("#last-report-time").val();
+                $("#last-report-time").val($.formatDate(creditResult.lastPbocBackTime));
             }
             $("#last-create-time").val($.formatDate(creditResult.createTime));
         }
