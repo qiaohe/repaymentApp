@@ -384,7 +384,7 @@
                 alert("提交成功！");
                 var appNos = $.cookie("appNos");
                 appNos = appNos.replace(appDetail.applyNo,"").replace(",,",',');
-                if($.trim(appNos)) {
+                if($.trim(appNos) && $.trim(appNos) != ",") {
                     $.cookie("appNos",appNos);
                     window.location.href = "appDetail.html?applyNo="+appNos.split(",")[0];
                 } else {
