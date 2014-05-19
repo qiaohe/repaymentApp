@@ -27,7 +27,7 @@ public class CreditResult implements Serializable {
     @JsonIgnore
     private Member member;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "LAST_APPL_NO")
     @JsonIgnore
     private Application lastApplicationNo;
@@ -167,5 +167,10 @@ public class CreditResult implements Serializable {
         return StringUtils.endsWithAny(lastReason1, DECLINED_REASON_CODES)
                 || StringUtils.endsWithAny(lastReason2, DECLINED_REASON_CODES)
                 || StringUtils.endsWithAny(lastReason3, DECLINED_REASON_CODES);
+    }
+
+    @Transient
+    public String getApplicationNo() {
+        return getLastApplicationNo().getApplicationNo();
     }
 }
