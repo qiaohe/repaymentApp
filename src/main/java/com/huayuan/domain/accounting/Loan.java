@@ -228,16 +228,6 @@ public class Loan {
         return curDelq > 0;
     }
 
-    public Double currentBalance(Date date) {
-        Double result = 0d;
-        for (RepayPlan plan : repayPlans) {
-            if (plan.getDueDate().before(date) && (plan.getPaidPrincipal() == null || plan.getOverDue_Interest() > 0)) {
-                result += plan.getDueAmt();
-            }
-        }
-        return result;
-    }
-
     @JsonIgnore
     public int getPaidTerm() {
         int result = 0;

@@ -10,16 +10,25 @@
             ma.city, appl.status, appl.createTime,apv.creditor) from Application appl , Approval apv,
             IdCard idcard, Member mem, ValueMobileArea ma where appl.member.id = mem.id and
             appl.applicationNo = apv.application.applicationNo and mem.id = idcard.member.id
-            and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = '3' or appl.status = '99')
+            and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = 3 or appl.status = 99)
         </query>
     </named-query>
+
+    <named-query name="Application.findByMemberIdWithProfile">
+        <query>
+            select NEW com.huayuan.domain.member.MemberProfile$Application(appl.applicationNo, appl.applyTime,
+            apv.decision) from
+            Application appl, Approval apv where appl.applicationNo = apv.application.applicationNo and appl.member.id =
+            ?1 and appl.status in (3,5,7)
+        </query>
+    </named-query>
+
     <named-query name="Application.findByMemberId">
         <query>SELECT appl FROM Application appl WHERE appl.member.id=?1 and appl.status in(0,1,2,3,4)</query>
     </named-query>
     <named-query name="IdCard.findFromPbocOut">
         <query>SELECT ic from IdCard ic where ic.idNo in (select id_No from PbocOut)</query>
     </named-query>
-
     <named-query name="RepayPlan.findByMemberId">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= CURRENT_DATE and rp.paidPrincipal =0 and
             rp.member.id=?2 order by rp.dueDate, rp.dueAmt
@@ -50,8 +59,40 @@
         <query>  select home.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 2 and CITY = ?1 order by newid()) home
                  union select company.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 1 and CITY = ?1 order by newid()) company</query>
     </named-native-query>
+    <named-native-query name="Member.findMembersWithLoanSummary" result-set-mapping="memberLoanSummaryMapping">
+        <query>
+            select m.id, m.sex, m.mobile,m.email,
+            m.education, m.industry, m.WC_NO,ic.ID_NO, ic.NAME, ma.city, count(loan.BID) as loanCount
+            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID left join Borrow loan on loan.MEMBER_ID = m.id
+            left join VALUE_MOBILE_AREA ma on ma.N1_7 = substring(m.mobile, 0 , 8)
+            group by m.id, m.sex, m.mobile,m.email, m.education, m.industry, ma.city, m.WC_NO, ic.NAME,ic.ID_NO
+        </query>
+    </named-native-query>
 
+    <named-native-query name="Member.searchMembersWithLoanSummary" result-set-mapping="memberLoanSummaryMapping">
+        <query>
+            select m.id, m.sex, m.mobile,m.email,
+            m.education, m.industry, m.WC_NO,ic.ID_NO, ic.NAME, ma.city, count(loan.BID) as loanCount
+            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID left join Borrow loan on loan.MEMBER_ID = m.id
+            left join VALUE_MOBILE_AREA ma on ma.N1_7 = substring(m.mobile, 0 , 8) :q
+            group by m.id, m.sex, m.mobile,m.email, m.education, m.industry, ma.city, m.WC_NO, ic.NAME,ic.ID_NO
+         </query>
+    </named-native-query>
     <sql-result-set-mapping name="tvQuestionListMapping">
         <column-result name="address"/>
     </sql-result-set-mapping>
+    <sql-result-set-mapping name="memberLoanSummaryMapping">
+        <column-result name="id"/>
+        <column-result name="sex"/>
+        <column-result name="mobile"/>
+        <column-result name="email"/>
+        <column-result name="education"/>
+        <column-result name="industry"/>
+        <column-result name="WC_NO"/>
+        <column-result name="ID_NO"/>
+        <column-result name="NAME"/>
+        <column-result name="CITY"/>
+        <column-result name="loanCount"/>
+    </sql-result-set-mapping>
+
 </entity-mappings>

@@ -2,17 +2,16 @@ package com.huayuan.web;
 
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.dictionary.CreditLimitRanges;
-import com.huayuan.domain.member.CreditCard;
-import com.huayuan.domain.member.IdCard;
-import com.huayuan.domain.member.Member;
-import com.huayuan.domain.member.MemberStatusEvaluator;
+import com.huayuan.domain.member.*;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.repository.member.CreditCardRepository;
+import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.SmsVerificationCodeService;
 import com.huayuan.web.dto.CreditLimitDto;
 import com.huayuan.web.dto.MemberDto;
+import com.huayuan.web.dto.MemberLoanSummaryDto;
 import com.huayuan.web.dto.MemberResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -42,6 +41,8 @@ public class MemberController {
     private CreditCardRepository creditCardRepository;
     @Inject
     private MemberStatusEvaluator memberStatusEvaluator;
+    @Inject
+    private IdCardRepository idCardRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -153,4 +154,21 @@ public class MemberController {
         return memberStatusEvaluator.evaluate(memberId);
     }
 
+    @RequestMapping(value = "/{memberId}/profile", method = RequestMethod.GET)
+    @ResponseBody
+    public MemberProfile getProfile(@PathVariable Long memberId) {
+        return memberService.populateProfile(memberId);
+    }
+
+    @RequestMapping(value = "/loanSummary", method = RequestMethod.GET)
+    @ResponseBody
+    public List<MemberLoanSummaryDto> getMembersWithLoanSummary() {
+        return idCardRepository.findMembersWithLoanSummary();
+    }
+
+    @RequestMapping(value = "/loanSummary/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<MemberLoanSummaryDto> getMembersWithLoanSummary(@RequestParam("q") String query) {
+        return idCardRepository.findMembersWithLoanSummary(query);
+    }
 }

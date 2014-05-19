@@ -2,6 +2,7 @@ package com.huayuan.repository.applicationloan;
 
 import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.MemberProfile;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,5 +82,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
             applicationSummaryList.add(applicationSummary);
         }
         return applicationSummaryList;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<MemberProfile.Application> findApplicationsProfile(Long memberId) {
+        return em.createNamedQuery("Application.findByMemberIdWithProfile").setParameter(1, memberId).getResultList();
     }
 }

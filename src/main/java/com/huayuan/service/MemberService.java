@@ -51,4 +51,6 @@ public interface MemberService {
     public String getRating(Long memberId);
 
     public String getPhone(String idCardNo);
+
+    public MemberProfile populateProfile(Long memberId);
 }
