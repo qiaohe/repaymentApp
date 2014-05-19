@@ -546,7 +546,7 @@
         <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-3.png');"></div><div class="repay-info">查看借款详情</div><div class="replay-collapse"></div></div>
         <div class="repay-item"><div class="repay-detail" style="background-image: url('resources/img/other_icons/9-3-4.png');"></div><div class="repay-info">历史还款记录</div><div class="replay-expand"></div></div>
         <ul class="repay-history">
-            <li class="repay-h-item">
+            <!--<li class="repay-h-item">
                 <div class="repay-h-term">
                     <div class="repay-h-index">第二期还款</div>
                     <div class="repay-h-time">10月18日 12:17</div>
@@ -567,7 +567,7 @@
                     <div class="repay-h-sta">还款成功</div>
                 </div>
                 <div class="repay-h-img"></div>
-            </li>
+            </li>-->
         </ul>
     </div>
 
@@ -644,19 +644,30 @@
 
 <div data-role="page" id="sum-loan">
     <div class="cover">
-        <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:15px; border:1px solid white">
-            总计借款金额<br>&yen;<span id="total-amount"></span></div>
-        <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:15px; border:1px solid white">
-            总计借款笔数<br><span id="total-times"></span></div>
-        <div style="float:left; width:44%; height:60px; margin-left:5%; margin-top:5px; border:1px solid white">
-            总计应还金额<br>&yen;<span id="total-payback"></span></div>
-        <div style="float:right; width:44%; height:60px; margin-right:5%; margin-top:5px; border:1px solid white">相比信用卡,
-            总计约省<br>&yen;<span id="total-saved"></span></div>
+        <div class="loan-container">
+            <div class="loan-item loan-item-1" style="height: 45px;padding-top: 14px;">
+                <span class="loan-i-title">总计借款金额</span><br>
+                <span class="loan-i-cont">&yen;</span>
+                <span class="loan-i-cont" id="total-amount">100,000</span>
+            </div>
+            <div class="loan-item loan-item-2" style="height: 45px;padding-top: 14px;">
+                <span class="loan-i-title">总计借款笔数</span><br>
+                <span class="loan-i-cont" id="total-times">3</span>
+            </div>
+            <div class="loan-item loan-item-3" style="height: 45px;padding-top: 14px;">
+                <span class="loan-i-title">总计还款金额</span><br>
+                <span class="loan-i-cont">&yen;</span>
+                <span class="loan-i-cont" id="total-payback">10000.00</span>
+            </div>
+            <div class="loan-item loan-item-4" style="height: 54px;padding-top: 5px;">
+                <span class="loan-i-title">相比信用卡</span><br>
+                <span class="loan-i-title">总计约省</span><br>
+                <span class="loan-i-cont">&yen;</span>
+                <span class="loan-i-cont" id="total-saved">600</span>
+            </div>
+        </div>
     </div>
-
-    <ul data-role="listview" data-inset="true" id="total-specific" style="width:90%; margin: 15px 5%">
-    </ul>
-
+    <ul data-role="listview" data-inset="true" id="total-specific" style="width:90%; margin: 15px 5%"></ul>
     <div style="width:90%; margin-left:5%; clear:both"><a href="#" class="ui-btn custom-btn">返回</a></div>
 </div>
 <!--repayment-->
