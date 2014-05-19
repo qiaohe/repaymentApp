@@ -243,7 +243,7 @@
         });
         // 照会完成
         $("#doTv").on("click", function () {
-            if(!$("#tv-phone") || !$("#creditor")) {
+            if(!$.trim($("#tv-phone").val()) || !$.trim($("#creditor-question").val())) {
                 alert("照会信息错误，请重新填写！");
                 return;
             }
