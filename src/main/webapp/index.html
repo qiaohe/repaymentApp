@@ -6,8 +6,12 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="http://180.168.35.37:8080/target/target-script-min.js#anonymous"></script>
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
     <link type="text/css" rel="stylesheet" href="resources/css/app.css">
+    <script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
+    <script type="text/javascript" src="resources/js/navigator.js"></script>
 </head>
 <body>
 <!-- limit -->
@@ -32,7 +36,7 @@
                  style="position:absolute; left:5px; top:5px; width:22px; height:22px">
         </div>
         <label for="front-upload"><img src="resources/img/public/camera.png"
-                                       style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+                                       style="float: right; position: absolute; top:3px; right: 1% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
     </div>
     <br>
 
@@ -50,7 +54,7 @@
                  style="position:absolute; left:5px; top:5px; width:22px; height:22px">
         </div>
         <label for="back-upload"><img src="resources/img/public/camera.png"
-                                      style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+                                      style="float: right; position: absolute; top:3px; right:1% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
     </div>
     <br>
 
@@ -70,7 +74,7 @@
             <div id="card-tip" style="color:#cc0000; font-size:1.3em; clear:both; display:none">不可用的信用卡号!</div>
         </div>
         <label for="credit-card"><img src="resources/img/public/keyboard.png"
-                                      style="float: right; position: absolute; top:3px; right:12px ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+                                      style="float: right; position: absolute; top:3px; right:1% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
     </div>
     <br>
 
@@ -78,8 +82,6 @@
         <a href="#" class="ui-btn custom-btn" id="next-step" style="height:100%">下一步</a>
         <span style="position:absolute; right:5px; top:28px; color:white">1/2</span>
     </div>
-
-    <div class="bkg"></div>
 
     <div data-role="popup" data-transition="pop" class="r-popup" id="pop-limit" style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">
         <div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em; color: white;">
@@ -132,7 +134,7 @@
                                                                           style="width:100%; opacity:0">
                 <option></option>
             </select></div>
-            <img src="resources/img/public/wrong.png" id="tip-industry"
+            <img src="resources/img/other_icons/down.png" id="tip-industry"
                  style="position:absolute; right:5px; top:5px; width:22px; height:22px">
         </div>
     </div>
@@ -148,7 +150,7 @@
             <div style="position:absolute; top:-10px; width:100%"><select id="education-select" style="width:100%">
                 <option></option>
             </select></div>
-            <img src="resources/img/public/wrong.png" id="tip-education"
+            <img src="resources/img/other_icons/down.png" id="tip-education"
                  style="position:absolute; right:5px; top:5px; width:22px; height:22px">
         </div>
     </div>
@@ -188,12 +190,12 @@
 
         <p style="margin-top: 6px">信用卡账单E-mail</p>
 
-        <div class="id-card-container" style="margin-top: 10px">
+        <div class="id-card-container" style="margin-top: 10px; width: 80%">
             <input type="radio" name="billmail" id="radio-new" style="float:left; margin-top: 10px; width: 10%">
             <label for="mail-new" class="textinput"
                    style="float:right; position:absolute; top:5px; left:17%; height:30px; border: 1px solid #c0c0c0; width:60%; margin:5px 22% auto auto"></label>
             <input data-role="none" type="email" id="mail-new"
-                   style="border:none; float:right; width:78%; height:30px; margin:5px 22% auto auto">
+                   style="font-size: 1.3em; border:none; float:right; width:90%; height:30px; margin:5px -10% auto 20%">
         </div>
 
         <div class="id-card-container">
@@ -253,12 +255,12 @@
         <a href="#" class="ui-btn"
            style="height: 5%; background-color: rgba(0, 0, 0, 0.4); margin-top: 0; color: white">分享到</a>
 
-        <div class="grid23">微信对话</div>
-        <div class="grid23">朋友圈</div>
-        <div class="grid23">新浪微博</div>
-        <div class="grid23">腾讯微博</div>
-        <div class="grid23">QQ空间</div>
-        <div class="grid23">人人网</div>
+        <div class="grid23"><div id="share-wechat"><img src="resources/img/other_icons/4-5-3.png"></div>微信对话</div>
+        <div class="grid23"><div id="share-circle"><img src="resources/img/other_icons/4-5-2.png"></div>朋友圈</div>
+        <div class="grid23"><div id="share-sina"><img src="resources/img/other_icons/4-5-4.png"></div>新浪微博</div>
+        <div class="grid23"><div id="share-tencent"><img src="resources/img/other_icons/4-5-5.png"></div>腾讯微博</div>
+        <div class="grid23"><div id="share-qzone"><img src="resources/img/other_icons/4-5-6.png"></div>QQ空间</div>
+        <div class="grid23"><div id="share-renren"><img src="resources/img/other_icons/4-5-7.png"></div>人人网</div>
     </div>
 </div>
 <!-- result -->
@@ -277,147 +279,139 @@
 <!-- loan -->
 <div data-role="page" id="loan" data-title="信用评估">
     <div class="cover" style="height:125px">
-        <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">我的额度:</div>
+        <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">可用额度:</div>
         <div style="font-family:Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:45px">&yen <span
                 id="loan-limit" style="font-size: 2.4em; color: #404040"></span></div>
     </div>
     <p>官人本次想动用多少额度?<span style="color:#c0c0c0; font-size:0.9em">(仅支持整百)</span></p>
 
     <div class="custom-li" style="margin-top:13px">
-        <div class="id-card-container" style="width:88%">
+        <div class="id-card-container" style="width:80%; margin-left: 10%">
             <label for="amount" class="textinput"
                    style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                     class="placeholder" id="amount-txt" style="width:50%">请填写</span></label>
             <input data-role="none" type="tel" id="amount"
                    style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+            <label for="amount"><img src="resources/img/public/keyboard.png"
+                                      style="float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
         </div>
     </div>
     <br>
 
-    <p style="margin-top:-25px">官人想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
+    <div style="width:100%; height: 65px">
+        <p style="margin-top:-25px">官人想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
 
-    <div class="ui-grid-a" style="width:80%; margin:10px auto auto auto">
-        <div class="ui-block-a">
-            <a href="#" class="ui-btn term-chose" id="term-3">3期</a>
-        </div>
+        <div class="ui-grid-a" style="width:80%; margin:10px auto auto auto; clear:both">
+            <div class="ui-block-a">
+                <a href="#" class="ui-btn term-chose" id="term-3">3期</a>
+            </div>
 
-        <div class="ui-block-b">
-            <a href="#" class="ui-btn term-chose-not" id="term-6">6期</a>
-        </div>
-    </div>
-
-    <div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
-        <div class="ui-block-a">
-            <p>您每期大概需要还款:</p>
-        </div>
-
-        <div class="ui-block-b">
-            <div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">
-                &yen<span id="each-term"></span></div>
+            <div class="ui-block-b">
+                <a href="#" class="ui-btn term-chose-not" id="term-6">6期</a>
+            </div>
         </div>
     </div>
 
-    <div class="ui-grid-a" style="width:80%; height:40px; margin:10px auto auto auto">
-        <div class="ui-block-a">
-            <p style="margin-top:-1px">相比信用卡最高可帮您省:</p>
-        </div>
-
-        <div class="ui-block-b">
-            <div style="height:30px; border-radius:3px; text-align:center; background-color:#c0c0c0; font-size:1.3em; width:90%; margin:auto; line-height:30px">
-                &yen<span id="saved" style="color:red"></span></div>
-        </div>
+    <div style="width: 100%; height: 80px">
+        <p>您每期大概需要还款:<span style="color: #333333"> &yen</span><span id="each-term" style="color: #333333"></span></p>
+        <p>相比信用卡最高可帮您省:<span style="color: #333333"> &yen</span><span id="saved" style="color: #333333"></span></p>
     </div>
-    <hr style="border-style:dashed; margin-bottom:20px">
 
-
-    <div style="margin:0 auto; width:88%">
+    <div style="position: relative; top:-10px">
         <div id="varifying">
+            <hr style="border-style:dashed; margin-top:20px">
             <p>官人请输入手机号, 以便确认您的身份</p>
 
             <div class="custom-li" style="margin-top:13px">
-                <div class="id-card-container" style="width:88%">
+                <div class="id-card-container" style="width:80%; margin-left:10%">
                     <label for="phone" class="textinput"
                            style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                             class="placeholder" id="phone-txt" style="width:50%">请填写</span></label>
                     <input data-role="none" type="tel" id="phone"
                            style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
+                    <label for="phone"><img src="resources/img/public/keyboard.png"
+                                      style="float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
                 </div>
             </div>
             <br>
 
             <p style="margin-top:-25px">手机验证码</p>
-
-            <div class="custom-li" style="margin-top:13px">
-                <div class="id-card-container" style="width:60%; float:left">
+            <div class="custom-li" style="margin-top:10px">
+                <div class="id-card-container" style="width:50%; margin-left: 10%; float:left">
                     <label for="code" class="textinput"
                            style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                             class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
                     <input data-role="none" type="tel" id="code"
                            style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
                 </div>
-                <div style="float:right; width:30%">
+                <div style="float:left; margin-left:5%">
                     <a href="#" class="ui-btn custom-btn" id="acquire-code"
-                       style="font-size:1.2em; margin: 1px 8px auto auto">获取验证码</a>
+                       style="font-size:1.2em; margin: 1px 8px auto auto; height:15px; width:60px">获取验证码</a>
                 </div>
             </div>
-            <br>
         </div>
 
         <div style="margin: -15px auto auto 9%; font-size:1.2em">
-            <input data-role="none" type="checkbox" name="agreement" id="agree" style="float:left; width:10%">
+            <input data-role="none" type="checkbox" id="agree" style="float:left; width:10%">
             <label for="agree" style="margin-top:5px; padding-top:6px">我同意<span
                     style="color:blue">《化缘个人借款条款》</span></label>
         </div>
 
-        <div style="width:80%; position:relative; top:0; margin:auto">
-            <a href="#" class="ui-btn custom-btn" id="request">提交申请</a>
+        <div style="width:100%; clear:both">
+            <a href="#" class="ui-btn custom-btn" id="request" style="width: 72%; margin-left:10%">提交申请</a>        
         </div>
     </div>
 
-    <div data-role="popup" data-position-to="#loan-limit" data-transition="pop" id="cardlist-2"
-         style="background-color:white; border:5px solid gray; border-radius:5px">
-        <a href="#card-add-box-2" class="ui-btn ui-icon-plus ui-btn-icon-left" id="add-another-2"
-           style="background-color:white; color:#c0c0c0"><img src="resources/img/public/correct.png"
-                                                              style="width:22px; height:22px">添加其他信用卡</a>
+    <div data-role="popup" data-position-to="window" data-transition="pop" id="cardlist-2" style="border: 1px solid silver; background-color: white; border-radius: 5px">
+        <img src="resources/img/other_icons/7-3-2.png" id="close" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
+        <div id="add-another-2" style="text-align: center; border: none; font-size: 1.4em; line-height: 40px; height:40px; margin: 0">
+            <a href="#card-add-box-2" style="background-color:white; color:#333333; margin: 0; font-size:1.1em !important"><img src="resources/img/other_icons/7-3-1.png" style="width:22px; height:22px; position: relative; top: 6px">添加其他信用卡</a>
+        </div>
     </div>
 
-    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none"
+    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; border: 1px solid silver; background-color: white; border-radius: 5px; display:none"
          id="card-confirm-2">
-        <h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h4>
+        <h5 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail"></span>的卡片?</h5>
 
-        <div class="ui-grid-a" style="margin:auto">
-            <div class="ui-block-a">
-                <a href="#" class="ui-btn custom-btn" id="N-2"
-                   style="border:1px solid black; border-radius:3px; color:black">取消</a>
-            </div>
-
-            <div class="ui-block-b">
-                <a href="#full" class="ui-btn custom-btn" id="Y-2"
-                   style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
-            </div>
+        <div style="height:40px; margin-top:8px">
+            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="N-2" style="height: 20px; line-height: 20px">返回</a></div>
+            <div style="width:35%; margin-right:10%; float:right"><a href="#full" class="ui-btn custom-btn" id="Y-2" style="height: 20px; line-height: 20px">确认</a></div>
         </div>
     </div>
 
     <div id="card-add-box-2"
-         style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
-        <h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-        <input data-role="none" type="tel" class="textinput" id="new-cardnum-2" style="width:80%; margin: 0 15px">
+         style="position:absolute; top:20%; left:10%; width:80%; border: 1px solid silver; background-color: white; border-radius: 5px; display:none">
 
-        <p>请使用您自己的卡片, 否则缘可能无法化到</p>
+        <img src="resources/img/other_icons/7-3-2.png" id="close-2" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
-        <div class="ui-grid-a">
-            <div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return-2">返回</a></div>
-            <div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard-2">确认</a></div>
+         <div class="id-card-container" style="float:left; width:100%; margin-top:40px; margin-left:10%">
+            <label for="new-cardnum-2" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 80%"><span
+                    class="placeholder" id="new-cardnum-2-placeholder" style="padding-left:32px; width:50%">请填写</span></label>
+            <input data-role="none" type="tel" id="new-cardnum-2"
+                   style="border:none; padding-left:42px; font-size:1.4em; width: 65%">
+            <img src="resources/img/card_icon/card.png" id="tip-new-cardnum-2"
+                 style="position:absolute; left:5px; top:5px; width:32px; height:22px">
+        </div>
+        <label for="new-cardnum-2"><img src="resources/img/public/keyboard.png"
+                                      style="float: right; position: absolute; top:43px; right:5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+
+        <span id="new-cardnum-2-tip" style="font-size:1.2em; margin-left: 10%">请使用您自己的卡片, 否则借款将无法注入</span>
+
+        <div style="height:40px; margin-top:8px">
+            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="return-2" style="height: 20px; line-height: 20px">返回</a></div>
+            <div style="width:35%; margin-right:10%; float:right"><a href="#" class="ui-btn custom-btn" id="addcard-2" style="height: 20px; line-height: 20px">确认</a></div>
         </div>
     </div>
 
     <div id="out-of-area"
          style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); display:none">
-        <div style="width: 80%; height: 70%; position: absolute; left: 10%; top:10%; border: 5px solid #dddddd; border-radius: 5px; background-color:white">
-            <div class="cover" style="color: white">
-                <span style="font-size: 1.3em">目前化缘仅能服务北上广深的用户, 我们会尽快开放到更多地区. 感谢!</span>
+        <div style="width: 80%; height: 280px; position: absolute; left: 10%; top:10%; border: 5px solid #dddddd; border-radius: 5px; background-color:white">
+            <div class="cover" style="color: white; padding:15px">
+                <div><span style="font-size: 1.3em; margin:20px">目前化缘仅能服务北上广深的用户, 我们会尽快开放到更多地区. 感谢!</span></div>
+                <div style="margin-top:15px"><img src="resources/img/other_icons/6-3-1.png" style="width:65px; height:120px"></div>
             </div>
-            <div style="width: 60%; margin: 5% auto"><a href="#loan" type="button" class="custom-btn ui-btn">好吧,
+            <div style="width: 60%; margin: 15px auto 10px auto"><a href="#" type="button" class="custom-btn ui-btn" id="ok">好吧,
                 只能这样了</a></div>
         </div>
     </div>
@@ -426,7 +420,7 @@
 
 <!-- suspension -->
 <div data-role="page" id="suspension">
-    <div style="text-align: center; margin-top: 12%"><img src="resources/img/5-2/cashin.png" style="max-width: 70%">
+    <div style="text-align: center; margin-top: 12%"><img src="resources/img/other_icons/6-4-1.png" style="width: 140px; height: 140px">
     </div>
     <ul style="color: #e67e22">
         <li><span>银行对于信用卡还款都有3天的宽限期，“化缘”不会让您出滞纳金的[酷]</span></li>
@@ -453,10 +447,10 @@
 <div data-role="page" id="fail" data-title="复活信用卡">
     <div id="fail-title">官人对不起!</div>
     <div id="fail-content">怪我们功力有限，您的缘没有化到，<br>无法为您复活信用卡。</div>
-    <div id="fail-img" style="margin-top: 10%; background-color: #aacf5d;">
-        <img src="resources/img/8-2/face.png" style="max-width: 60%; padding: 10% 0;">
+    <div id="fail-img" style="margin-top: 25px">
+        <img src="resources/img/other_icons/8-2-1.png" style="width:150px; height:150px">
     </div>
-    <div id="fail-btn" style="width:50%; margin:80px auto 0 auto">
+    <div id="fail-btn" style="width:50%; margin:25px auto 0 auto">
         <a href="#" class="ui-btn custom-btn" id="got-it-y">知道了</a>
     </div>
 </div>
@@ -467,23 +461,21 @@
         <p style="text-align: center; font-size: 3.6em" id="for-popup">恭喜官人!</p>
 
         <div id="congratulation-cover"
-             style="border-radius: 8px; margin: 0 auto; height:180px; width:80%; background-color:#aacf5d">
-            <div style="font-size: 1.8em; padding-top: 5%;">您本次动用的额度：</div>
+             style="border-radius: 8px; margin: 0 auto; height:220px; width:80%; background-color:#aacf5d">
+            <div style="font-size: 1.6em; padding-top: 5%;">您本次动用的额度：</div>
             <p style="font-size: 4em; margin: 10px auto; padding: 0; text-align:center">&yen <span id="amt-x"></span>
             </p>
 
-            <div style="float: left; font-size: 1.4em; margin: 6% 0 0 12%;">还清期数：</div>
-            <div style="margin: 0;">
-                <div class="ui-btn" style="float: left; text-shadow: none; position: relative; top: -3%;"
-                     id="term-3-shown">3期
-                </div>
-                <div class="ui-btn" style="float: left; text-shadow: none" id="term-6-shown">6期</div>
+            <div style="font-size: 1.4em; margin: 10px auto;">还清期数：</div>
+            <div style="width: 100%; height: 90px">
+                <div class="ui-btn" style="border-radius:5px; height: 20px; width:15%; border: 1px solid black; margin-left: 20%; float: left" id="term-3-shown">3期</div>
+                <div class="ui-btn" style="border-radius:5px; height: 20px; width:15%; border: 1px solid black; margin-right: 20%; float: right" id="term-6-shown">6期</div>
             </div>
-            <div>
-                <p style="font-size: 1.4em; float: left; margin: 20px auto 15px 12%;">每期需还：&yen <span
+            <div style="width: 100%">
+                <p style="font-size: 1.4em; margin: 5px auto">每期需还：&yen <span
                         id="each-x"></span></p>
 
-                <p style="font-size: 1.4em; float: left; position: absolute; top: 320px; left: 12%; color: red">
+                <p style="font-size: 1.4em; margin: 5px auto">
                     相比信用卡还款，总计约帮您节省&yen <span id="saved-x"></span></p>
             </div>
         </div>
@@ -493,42 +485,47 @@
                                                     id="go-choose-card">确认,去选择信用卡</a></div>
     </div>
 
-    <div data-role="popup" data-position-to="window" data-transition="pop" id="cardlist"
-         style="background-color:white; border:5px solid silver; border-radius:5px">
-        <div>
-            <a href="#card-add-box" class="ui-btn" id="add-another"
-               style="background-color:white; margin:0; color:#c0c0c0;"><img src="resources/img/public/correct.png"
-                                                                             style="width: 22px; height: 22px">添加其他信用卡</a>
+    <div data-role="popup" data-position-to="window" data-transition="pop" id="cardlist" style="border: 1px solid silver; background-color: white; border-radius: 5px">
+        <img src="resources/img/other_icons/7-3-2.png" id="close-0" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
+        <div id="add-another" style="text-align: center; border: none; font-size: 1.4em; line-height: 40px; height:40px; margin: 0">
+            <a href="#card-add-box" style="background-color:white; color:#333333; margin: 0; font-size:1.1em !important"><img src="resources/img/other_icons/7-3-1.png" style="width:22px; height:22px; position: relative; top: 6px">添加其他信用卡</a>
         </div>
     </div>
 
-    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; background:white; border:5px solid gray; border-radius:8px; display:none"
+    <div style="position:absolute; top:20%; left:20%; width:60%; height:120px; border: 1px solid silver; background-color: white; border-radius: 5px; display:none"
          id="card-confirm">
-        <h4 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span></span>的卡片?</h4>
 
-        <div class="ui-grid-a" style="margin:auto">
-            <div class="ui-block-a">
-                <a href="#" class="ui-btn custom-btn" id="N"
-                   style="border:1px solid black; border-radius:3px; color:black">取消</a>
-            </div>
+         <img src="resources/img/other_icons/7-3-2.png" id="close-3" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
+        <h5 style="width:100%; text-align:center; font-size:1.4em">确认借款注入尾号<span id="num-tail-0"></span>的卡片?</h5>
 
-            <div class="ui-block-b">
-                <a href="#full" class="ui-btn custom-btn" id="Y"
-                   style="border:1px solid black; border-radius:3px; color:black">确认</a><br>
-            </div>
+        <div style="height:40px; margin-top:8px">
+            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="N" style="height: 20px; line-height: 20px">返回</a></div>
+            <div style="width:35%; margin-right:10%; float:right"><a href="#suspension" class="ui-btn custom-btn" id="Y" style="height: 20px; line-height: 20px">确认</a></div>
         </div>
     </div>
 
     <div id="card-add-box"
-         style="position:absolute; top:20%; left:20%; width:60%; background:white; border:5px solid gray; border-radius:8px; display:none">
-        <h1 style="text-align: center; color:#c0c0c0">添加信用卡</h1>
-        <input data-role="none" type="tel" class="textinput" id="new-cardnum" style="width:80%; margin: 0 15px">
+         style="position:absolute; top:20%; left:10%; width:80%; border: 1px solid silver; background-color: white; border-radius: 5px; display:none">
 
-        <p>请使用您自己的卡片, 否则缘可能无法化到</p>
+        <img src="resources/img/other_icons/7-3-2.png" id="close-1" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
-        <div class="ui-grid-a">
-            <div class="ui-block-a"><a href="#" class="ui-btn custom-btn" id="return">返回</a></div>
-            <div class="ui-block-b"><a href="#" class="ui-btn custom-btn" id="addcard">确认</a></div>
+         <div class="id-card-container" style="float:left; width:100%; margin-top:40px; margin-left:10%">
+            <label for="new-cardnum" class="textinput"
+                   style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 80%"><span
+                    class="placeholder" id="new-cardnum-placeholder" style="padding-left:32px; width:50%">请填写</span></label>
+            <input data-role="none" type="tel" id="new-cardnum"
+                   style="border:none; padding-left:42px; font-size:1.4em; width: 65%">
+            <img src="resources/img/card_icon/card.png" id="tip-new-cardnum"
+                 style="position:absolute; left:5px; top:5px; width:32px; height:22px">
+        </div>
+        <label for="new-cardnum"><img src="resources/img/public/keyboard.png"
+                                      style="float: right; position: absolute; top:43px; right:5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+
+        <span id="new-cardnum-tip" style="font-size:1.2em; margin-left: 10%">请使用您自己的卡片, 否则借款将无法注入</span>
+
+        <div style="height:40px; margin-top:8px">
+            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="return" style="height: 20px; line-height: 20px">返回</a></div>
+            <div style="width:35%; margin-right:10%; float:right"><a href="#" class="ui-btn custom-btn" id="addcard" style="height: 20px; line-height: 20px">确认</a></div>
         </div>
     </div>
 </div>
@@ -665,11 +662,13 @@
 <!--repayment-->
 
 <div data-role="page" id="full">
-    <h1 style="text-align:center">图暂缺！</h1>
+    <div style="text-align: center">
+        <img src="resources/img/7-3/revive.png" style="width: 260px; height: 130px; margin-top: 8%">
+    </div>
 
-    <h2 style="text-align:center">您的信用卡将在1个工作日内收到借款！</h2>
+    <h2 style="text-align:center; margin-top: 5%">您的信用卡将在1个工作日内收到借款！</h2>
 
-    <div style="margin: 40px auto; width:50%">
+    <div style="margin: 100px auto; width:50%">
         <a href="#" class="ui-btn custom-btn" id="got-it-z">知道了</a>
     </div>
 </div>
@@ -698,8 +697,7 @@
         <li>化缘总共分几步?</li>
     </ul>
 </div>
-<script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
-<script type="text/javascript" src="resources/js/app.js?r=10002"></script>
+
+<script type="text/javascript" src="resources/js/app.js"></script>
 </body>
 </html>
