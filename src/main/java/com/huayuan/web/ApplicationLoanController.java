@@ -5,9 +5,11 @@ import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.RepaymentModeEnum;
+import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
+import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.service.AccountService;
 import com.huayuan.service.ApplicationService;
 import com.huayuan.service.MemberService;
@@ -41,6 +43,8 @@ public class ApplicationLoanController {
     private PricingRepository pricingRepository;
     @Inject
     private AccountService accountService;
+    @Inject
+    private CreditCardRepository creditCardRepository;
 
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
@@ -66,10 +70,17 @@ public class ApplicationLoanController {
         application.setMember(member);
         application.setIdCard(member.getIdCard());
         application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
+        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo())) {
+            CreditCard creditCard = creditCardRepository.findByCardNo(applicationDto.getCreditCarNo()).get(0);
+            application.setCreditCard(creditCard);
+        }
         application = applicationService.applyLoan(application);
+        member.setExistingFlag(application.getExistingFlag());
+        memberService.update(member);
         applicationRepository.execute(application);
-        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo()))
-            bindCreditCard(member.getId(), applicationDto.getCreditCarNo());
+        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo())) {
+            accountService.createLoanBy(applicationRepository.findOne(application.getApplicationNo()));
+        }
         return application.getApplicationNo();
     }
 
@@ -79,6 +90,22 @@ public class ApplicationLoanController {
         Application application = applicationService.getApplicationBy(memberId);
         return createLoanApplicationDto(application);
     }
+
+    @RequestMapping(value = "/members/{memberId}/appNo", method = RequestMethod.GET)
+    @ResponseBody
+    public String getApprovedAppNo(@PathVariable Long memberId) {
+        Application application = applicationRepository.findByMemberIdAndStatusAndApproval_Decision(memberId, 5, "A");
+        if (application != null) return application.getApplicationNo();
+        return null;
+    }
+
+    @RequestMapping(value = "/members/{memberId}/loanable", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean getApplicationBy(@PathVariable Long memberId) {
+        Double avl = memberService.getAvlCrl(memberId);
+        return avl != null && avl > 1000 && !hasApplicationInProgress(memberId);
+    }
+
 
     @RequestMapping(value = "/{appNo}", method = RequestMethod.GET)
     @ResponseBody

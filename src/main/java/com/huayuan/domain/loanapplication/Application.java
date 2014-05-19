@@ -234,7 +234,7 @@ public class Application {
     @Transient
     @JsonIgnore
     public String getWeChatStatus() {
-        if (status < 5) return "4";
+        if (status < 5 || status == 99) return "4";
         if (status == 5) {
             if (isApproved()) return "5.1";
             if (isDeclined()) return "5.2";
