@@ -5,6 +5,7 @@ import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.Approval;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.MemberStatusEnum;
 import com.huayuan.repository.applicationloan.AScoreRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.applicationloan.ApprovalRepository;
@@ -57,14 +58,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application bindCreditCard(Long memberId, String creditCArdNo) {
+    public Application bindCreditCard(Long memberId, String creditCardNo) {
         Member member = memberRepository.findOne(memberId);
         Application application = applicationRepository.findByMemberIdAndStatusAndApproval_Decision(memberId, member.getExistingFlag().equals(2) ? 7 : 5, "A");
         if (application == null)
             throw new IllegalStateException("member id:" + memberId + "'s application is in illegal status");
-        CreditCard creditCard = creditCardRepository.findByCardNo(creditCArdNo).get(0);
+        CreditCard creditCard = creditCardRepository.findByCardNo(creditCardNo).get(0);
         application.setCreditCard(creditCard);
         application.setStatus(7);
+        member.setExistingFlag(2);
+        memberRepository.save(member);
         return applicationRepository.save(application);
     }
 

@@ -23,4 +23,5 @@ public interface ApplicationService {
     public List<ApplicationSummary> getApplicationSummaries();
 
     public List<ApplicationSummary> getApplicationSummaries(String query);
+
 }
