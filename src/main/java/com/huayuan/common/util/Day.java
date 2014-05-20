@@ -2,6 +2,7 @@ package com.huayuan.common.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Months;
 
 import java.util.Date;
 
@@ -39,5 +40,14 @@ public final class Day {
 
     public String toString(String pattern) {
         return new DateTime(date).toString(pattern);
+    }
+
+    public Date getCurrentDayOfMonth() {
+        int months = Months.monthsBetween(new DateTime(date), new DateTime()).getMonths();
+        return new DateTime(date).plusMonths(months + 1).toDate();
+    }
+
+    public Date plusDays(Integer days) {
+        return new DateTime(date).plusDays(days).toDate();
     }
 }

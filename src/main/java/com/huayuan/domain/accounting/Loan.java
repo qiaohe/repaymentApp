@@ -1,6 +1,7 @@
 package com.huayuan.domain.accounting;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.accounting.core.RepayItem;
 import com.huayuan.domain.accounting.core.RepayListCalculator;
@@ -255,6 +256,13 @@ public class Loan {
     @Transient
     public boolean isOverDueStatus() {
        return status == 1 || status == 2;
+    }
+
+    public Date getDuePayDay() {
+
+      return   new Day(getStartDate()).getCurrentDayOfMonth();
+
+
     }
 }
 
