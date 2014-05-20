@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>客户查询</title>
+    <link type="text/css" rel="stylesheet" href="../resources/css/account.css">
+</head>
+<body>
+<div class="account-content">
+    <div id="summary-title">
+        <div class="title-label">身份证号</div>
+        <div class="title-input"><input id="idcard" type="text"></div>
+        <div class="title-label">姓名</div>
+        <div class="title-input"><input id="name" type="text"></div>
+        <div class="title-label">手机</div>
+        <div class="title-input"><input id="mobile" type="text"></div>
+        <div class="title-label"><input type="button" id="search-btn" value="查询" style="width: 120px;"></div>
+    </div>
+    <div id="summary-result">
+        <table id="summary-table">
+            <tr>
+                <td style="width:6%;">会员号</td>
+                <td style="width:8%;">微信号</td>
+                <td style="width:6%;">姓名</td>
+                <td style="width:10%;">身份证号</td>
+                <td style="width:8%;">手机号</td>
+                <td style="width:6%;">手机归属地</td>
+                <td style="width:4%;">性别</td>
+                <td style="width:10%;">行业</td>
+                <td style="width:6%;">学历</td>
+                <td style="width:10%;">email</td>
+                <td style="width:6%;">贷款笔数</td>
+                <td style="width:8%;">BLK</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../resources/js/tools.js"></script>
+<script type="text/javascript" src="../resources/js/biz/summary.js"></script>
+</body>
+</html>

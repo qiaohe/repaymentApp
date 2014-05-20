@@ -21,9 +21,10 @@ public class MemberLoanSummaryDto implements Serializable {
     private String name;
     private String mobileCity;
     private Integer countOfLoan;
+    private String blockCode;
 
     public MemberLoanSummaryDto(BigInteger id, Integer sex, String mobile, String email, Integer education, Integer industry,
-                                String wcNo, String idNo, String name, String mobileCity, Integer countOfLoan) {
+                                String wcNo, String idNo, String name, String mobileCity, Integer countOfLoan,String blockCode) {
         this.id = id;
         this.sex = sex;
         this.mobile = mobile;
@@ -35,6 +36,7 @@ public class MemberLoanSummaryDto implements Serializable {
         this.name = name;
         this.mobileCity = mobileCity;
         this.countOfLoan = countOfLoan;
+        this.blockCode = blockCode;
     }
 
     public BigInteger getId() {
@@ -123,5 +125,13 @@ public class MemberLoanSummaryDto implements Serializable {
 
     public void setCountOfLoan(Integer countOfLoan) {
         this.countOfLoan = countOfLoan;
+    }
+
+    public String getBlockCode() {
+        return blockCode;
+    }
+
+    public void setBlockCode(String blockCode) {
+        this.blockCode = blockCode;
     }
 }

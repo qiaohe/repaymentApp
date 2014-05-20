@@ -1,6 +1,8 @@
 /**
  * Created by Richard Xue on 14-5-10.
  */
+
+
 (function($){
     Date.prototype.format=function(fmt) {
         var o = {
@@ -39,6 +41,10 @@
     $.extend({
         formatDate:function(ms){
             return ms ? new Date(ms).format("yyyyMMdd") : "";
+        },
+        formatDate1:function(ms){
+            return ms ? new Date(ms).format("yyyy-MM-dd HH:mm") : "";
         }
     });
 })(jQuery);
+

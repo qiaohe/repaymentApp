@@ -99,8 +99,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean review(Long loadId) {
-        Loan loan = loanRepository.findOne(loadId);
+    public boolean review(Long loanId) {
+        Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setConfirmDate(new Date());
         loan.getPay().setTransferTime(new Date());
         loan.getPay().setConfirm(1);
