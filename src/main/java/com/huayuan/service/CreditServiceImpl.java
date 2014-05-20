@@ -139,14 +139,13 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Override
     public Approval approve(Approval approval) {
         final Application application = approval.getApplication();
-        Account account = createAccount(approval);
-        if (account == null) return null;
+        createAccount(approval);
         updateCreditResultUsingLastApplication(approval);
         updateMemberStatusAsReject(approval);
         updateApplicationAsApproved(application);
         approval.setCreateTime(new Date());
         Approval result = approvalRepository.save(approval);
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, account.getMember().getWcNo(), getApproveResultMessage(approval));
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this,application.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
         return result;
     }
