@@ -7,9 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -17,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "MEMBER")
 public class Member implements Serializable {
-    public static final String[] REJECT_BLOCK_CODE_ARRAY = new String[] {"D102","D108","D801","D100","D109","D101","D105"};
+    public static final List<String> REJECT_BLOCK_CODES = Arrays.asList("D102","D108","D801","D100","D109","D101","D105");
 
     private static final long serialVersionUID = 4541559421896160856L;
     @Id
