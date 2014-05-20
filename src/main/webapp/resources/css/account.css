@@ -182,4 +182,14 @@ table {
     border: 1px solid #000000;
     padding: 5px;
 }
+
+#detail2-repay-table {
+    line-height: 20px;
+    text-align: center;
+}
+
+#detail2-repay-table td {
+    border: 1px solid #000000;
+    padding: 5px;
+}
 /****************************** 贷款查询 End *************************************/
