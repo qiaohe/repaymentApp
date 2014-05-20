@@ -50,12 +50,16 @@ public class RepayPlan {
     @Column(name = "OVERDUE_INTEREST")
     private Double overDue_Interest;
 
+    @Column(name = "PAID_OVERDUE_INTEREST")
+    private Double paidOverDueInterest;
+
     public RepayPlan() {
         this.overDue_Interest = 0d;
         this.overDueAmt = 0d;
         this.overDueDay = 0;
         this.paidInterest = 0d;
         this.paidPrincipal = 0d;
+        this.paidOverDueInterest = 0d;
     }
 
     public Loan getLoan() {
@@ -176,5 +180,13 @@ public class RepayPlan {
 
     public void setRestPrincipal(Double restPrincipal) {
         this.restPrincipal = restPrincipal;
+    }
+
+    public Double getPaidOverDueInterest() {
+        return paidOverDueInterest;
+    }
+
+    public void setPaidOverDueInterest(Double paidOverDueInterest) {
+        this.paidOverDueInterest = paidOverDueInterest;
     }
 }
