@@ -1,0 +1,53 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>客户信息</title>
+    <link type="text/css" rel="stylesheet" href="../resources/css/account.css">
+</head>
+<body>
+<div class="account-content">
+    <div class="detail1-title">用户信息</div>
+    <div class="detail1-cont">
+        <table class="detail1-table" id="user-info" style="width:60%;">
+            <tr><td style="width: 16%;">MemberID</td><td style="width: 34%;" id="memberId"></td><td style="width: 16%;">微信号</td><td style="width: 34%;" id="wechatNo"></td></tr>
+            <tr><td>姓名</td><td id="name"></td><td>身份证号</td><td id="idcard" style="text-decoration: underline;cursor: pointer;">12345678931122111X</td></tr>
+            <tr><td>性别</td><td id="gender"></td><td>身份证地址</td><td id="idcard-address"></td></tr>
+            <tr><td>出生日期</td><td id="birthday"></td><td>身份证有效期</td><td id="idcard-valid"></td></tr>
+            <tr><td>行职业</td><td id="profession"></td><td>学历</td><td id="degree"></td></tr>
+            <tr><td>手机号</td><td id="mobile"></td><td>BLK</td><td id="block"></td></tr>
+            <tr><td>手机归属地</td><td id="mobileCity"></td><td>BLK时间</td><td id="blockTime"></td></tr>
+            <tr><td>email</td><td id="email"></td><td>拒绝往来</td><td id="dishonored"></td></tr>
+            <tr><td>注册日期</td><td id="register"></td><td>最近一次信用评级</td><td id="last-rating"></td></tr>
+            <tr><td>信用额度</td><td id="limitAmt"></td><td>预测额度</td><td id="forecastAmt"></td></tr>
+            <tr><td>可用额度</td><td id="avlAmt"></td><td>现金余额</td><td id="cashAmt"></td></tr>
+        </table>
+        <!--<div id="idcard-img"><img></div>-->
+    </div>
+
+    <div class="detail1-title">申请记录</div>
+    <div class="detail1-cont">
+        <table class="detail1-table" id="app-record" style="width:60%;">
+            <tr><td style="width: 30%;">申请编号</td><td style="width: 30%;">申请日期</td><td style="width: 30%;">审批结果</td></tr>
+        </table>
+    </div>
+
+    <div class="detail1-title">信用卡</div>
+    <div class="detail1-cont">
+        <table class="detail1-table" id="credit-table" style="width:60%;">
+            <tr><td style="width: 20%;">发卡行</td><td style="width: 20%;">卡类型</td><td style="width: 20%;">信用卡号</td><td style="width: 20%;">账单EMAIL</td><td style="width: 20%;">是否可用</td></tr>
+        </table>
+    </div>
+
+    <div class="detail1-title">账单信息</div>
+    <div class="detail1-cont">
+        <table class="detail1-table" style="width:60%;" id="bill-table">
+            <tr><td style="width: 12%;">EMAIL</td><td style="width: 12%;">银行</td><td style="width: 12%;">信用额度</td><td style="width: 12%;">账单周期</td><td style="width: 12%;">账单金额RMB/USD</td><td style="width: 12%;">创建日期</td></tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../resources/js/tools.js"></script>
+<script type="text/javascript" src="../resources/js/biz/base.js"></script>
+<script type="text/javascript" src="../resources/js/biz/detail1.js"></script>
+</body>
+</html>

@@ -105,8 +105,8 @@ $(function(){
             window.open("detail1.html?memberNo="+memberNo,"_blank");
         });
         $("#summary-table").on("click",".summary-count",function(){
-            var loanCount = $.trim($(this).text());
-            window.open("detail2.html","_blank");
+            var memberNo = $.trim($(this).prev(".summary-mem").text());
+            window.open("detail2.html?memberNo="+memberNo,"_blank");
         });
     };
     summary.init();
