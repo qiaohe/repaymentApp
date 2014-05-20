@@ -104,9 +104,9 @@
         appDetail.bankMap = appDetail.makeDict("BANK");
         appDetail.reasonMap = appDetail.makeDict("reason");
         // initialize data
-        var url = window.location.href, paramPrefix = "?applyNo=";
-        var applyNo = appDetail.applyNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
-        $.get(creditPath + "/" + applyNo, function (json) {
+        var url = window.location.href, paramPrefix = "?appNo=";
+        var appNo = appDetail.appNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
+        $.get(creditPath + "/" + appNo, function (json) {
             appDetail.loadData(json);
             appDetail.autoTvTelephone(1);
         });
@@ -256,7 +256,7 @@
                 return;
             }
             var tvData = {
-                appNo: appDetail.applyNo,
+                appNo: appDetail.appNo,
                 type: parseInt($("#tvType").val(), 10),
                 telephoneType: parseInt($("#phoneType").val(), 10),
                 telephoneNo: $("#tv-phone").val(),
@@ -348,7 +348,7 @@
         $("#tv-list-table").append(contentHtml);
     };
     appDetail.initTvData = function () {
-        $.get(creditPath + "/telephoneTV/" + appDetail.applyNo, function (json) {
+        $.get(creditPath + "/telephoneTV/" + appDetail.appNo, function (json) {
             var contentHtml = "";
             $.each(json, function (i, e) {
                 contentHtml += '<tr><td>' + tvPhoneType[e.telephoneType] + '</td><td>' + e.telephoneNo + '</td><td>' + e.question + '</td><td>' + tvResult[e.decision] + '</td><td>' + $.formatDate(e.createTime) + '</td></tr>';
@@ -375,7 +375,7 @@
             status:status
         };
         $.ajax({
-            url: creditPath + "/approve/" + appDetail.applyNo,
+            url: creditPath + "/approve/" + appDetail.appNo,
             data: JSON.stringify(approveData),
             dataType: "json",
             type: "POST",
@@ -383,10 +383,10 @@
             success: function (json) {
                 alert("提交成功！");
                 var appNos = $.cookie("appNos");
-                appNos = appNos.replace(appDetail.applyNo,"").replace(",,",',');
+                appNos = appNos.replace(appDetail.appNo,"").replace(",,",',');
                 if($.trim(appNos) && $.trim(appNos) != ",") {
                     $.cookie("appNos",appNos);
-                    window.location.href = "appDetail.html?applyNo="+appNos.split(",")[0];
+                    window.location.href = "appDetail.html?appNo="+appNos.split(",")[0];
                 } else {
                     window.location.href = "appSummary.html";
                 }
@@ -802,7 +802,7 @@
         $("#loans-div").find("tr:gt(0)").find("td:eq(1)").click(function () {
             var applNo = $(this).text();
             if (applNo) {
-                window.open("appDetail.html?applyNo=" + applNo, "_blank");
+                window.open("appDetail.html?appNo=" + applNo, "_blank");
             }
         });
     };
@@ -850,7 +850,7 @@
             $(".dialog").find(".loans-table-style tr:gt(0)").find("td:eq(1)").click(function () {
                 var applNo = $(this).text();
                 if (applNo) {
-                    window.open("appDetail.html?applyNo=" + applNo, "_blank");
+                    window.open("appDetail.html?appNo=" + applNo, "_blank");
                 }
             });
         }

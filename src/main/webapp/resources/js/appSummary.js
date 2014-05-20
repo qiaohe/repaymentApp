@@ -80,7 +80,7 @@
         $("#data-table").html(contentHtml);
         $("#data-table").find(".clickable").each(function () {
             $(this).on("click", function () {
-                window.open("appDetail.html?applyNo=" + $(this).text(), "_blank");
+                window.open("appDetail.html?appNo=" + $(this).text(), "_blank");
             });
         });
     };
