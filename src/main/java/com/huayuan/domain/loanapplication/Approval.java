@@ -2,10 +2,12 @@ package com.huayuan.domain.loanapplication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.Member;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 14-4-3.
@@ -237,14 +239,15 @@ public class Approval {
 
     @JsonIgnore
     public boolean isRejectNeeded() {
-        return StringUtils.endsWithAny(reason1, Member.REJECT_BLOCK_CODE_ARRAY)
-                || StringUtils.endsWithAny(reason2, Member.REJECT_BLOCK_CODE_ARRAY)
-                || StringUtils.endsWithAny(reason3, Member.REJECT_BLOCK_CODE_ARRAY);
+        return CollectionUtils.intersection(getReasonCodes(), Member.REJECT_BLOCK_CODES).size() > 0;
+    }
+
+    public List<String> getReasonCodes() {
+        return Arrays.asList(reason1, reason2, reason3);
     }
 
     @JsonIgnore
     public boolean isBlockXNeeded() {
-        return StringUtils.endsWithAny("D105", new String[]{reason1, reason2, reason3});
+        return getReasonCodes().contains("D105");
     }
-
 }
