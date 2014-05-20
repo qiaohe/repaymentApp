@@ -78,6 +78,20 @@
             group by m.id, m.sex, m.mobile, m.email, m.education, m.industry, m.block_code, ma.city, m.WC_NO, ic.NAME,ic.ID_NO
          </query>
     </named-native-query>
+
+    <named-native-query name="Member.findMemberLoans" result-set-mapping="memberLoansMapping">
+        <query>
+            select m.ID,idcard.NAME,b.BID,appl.AMT,b.APR,appl.TERM,b.STARTDATE,b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,
+            SUM(rp.PAID_OVERDUE_INTEREST) as PAID_OVERDUE_INTEREST,b.CUR_DELQ,b.MAX_DELQ,appl.STATUS from MEMBER m
+            inner join ID_CARD idcard on m.ID = idcard.MEMBER_ID
+            inner join APPL appl on appl.MEMBER_ID = m.ID
+            inner join BORROW b on b.APP_NO = appl.APPL_NO
+            left join REPAY_PLAN rp on rp.MEMBER_ID = m.ID :q
+            group by m.ID,idcard.NAME,b.BID,appl.AMT,appl.TERM,b.APR,b.STARTDATE,
+            b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,b.CUR_DELQ,b.MAX_DELQ,appl.STATUS
+         </query>
+    </named-native-query>
+
     <sql-result-set-mapping name="tvQuestionListMapping">
         <column-result name="address"/>
     </sql-result-set-mapping>
@@ -94,5 +108,22 @@
         <column-result name="CITY"/>
         <column-result name="loanCount"/>
         <column-result name="block_code"/>
+    </sql-result-set-mapping>
+    <sql-result-set-mapping name="memberLoansMapping">
+        <column-result name="ID"/>
+        <column-result name="NAME"/>
+        <column-result name="BID"/>
+        <column-result name="AMT"/>
+        <column-result name="APR"/>
+        <column-result name="TERM"/>
+        <column-result name="STARTDATE"/>
+        <column-result name="PRINAIPAL"/>
+        <column-result name="PAID_PRINAIPAL"/>
+        <column-result name="INTEREST"/>
+        <column-result name="PAID_INTEREST"/>
+        <column-result name="PAID_OVERDUE_INTEREST"/>
+        <column-result name="CUR_DELQ"/>
+        <column-result name="MAX_DELQ"/>
+        <column-result name="STATUS"/>
     </sql-result-set-mapping>
 </entity-mappings>

@@ -6,13 +6,11 @@ import com.huayuan.domain.member.*;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.IdCardRepository;
+import com.huayuan.repository.member.MemberRepository;
 import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.SmsVerificationCodeService;
-import com.huayuan.web.dto.CreditLimitDto;
-import com.huayuan.web.dto.MemberDto;
-import com.huayuan.web.dto.MemberLoanSummaryDto;
-import com.huayuan.web.dto.MemberResponseDto;
+import com.huayuan.web.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +41,8 @@ public class MemberController {
     private MemberStatusEvaluator memberStatusEvaluator;
     @Inject
     private IdCardRepository idCardRepository;
+    @Inject
+    private MemberRepository memberRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -158,6 +158,12 @@ public class MemberController {
     @ResponseBody
     public MemberProfile getProfile(@PathVariable Long memberId) {
         return memberService.populateProfile(memberId);
+    }
+
+    @RequestMapping(value = "/loans/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<MemberLoansDto> getMemberLoans(@RequestParam("q") String query) {
+        return memberRepository.getLoansBy(query);
     }
 
     @RequestMapping(value = "/loanSummary", method = RequestMethod.GET)
