@@ -23,7 +23,7 @@ public class LoanSummaryBuilder {
         LoanSummary summary = new LoanSummary();
         for (Loan loan : loans) {
             final Double savedCost = getSavedCost(loan);
-            summary.addLoan(new LoanSummary.LoanItem(loan.getStartDate(),
+            summary.addLoan(new LoanSummary.LoanItem(loan.getId(),loan.getStartDate(),
                     loan.getApplication().getCreditCard().getCardNo(),
                     loan.getAmt(),
                     loan.getTerm(),

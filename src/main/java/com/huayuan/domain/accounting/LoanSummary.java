@@ -79,6 +79,7 @@ public class LoanSummary {
     }
 
     public static class LoanItem {
+        private Long loanId;
         private Date applyDate;
         private String creditCardNo;
         private Double amount;
@@ -94,7 +95,8 @@ public class LoanSummary {
         public LoanItem() {
         }
 
-        public LoanItem(Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost, Double dueAmt, boolean isOverDue) {
+        public LoanItem(Long loanId,Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost, Double dueAmt, boolean isOverDue) {
+            this.loanId = loanId;
             this.applyDate = applyDate;
             this.creditCardNo = creditCardNo;
             this.amount = amount;
@@ -106,6 +108,14 @@ public class LoanSummary {
             this.savedCost = savedCost;
             this.dueAmt = dueAmt;
             this.isOverDue = isOverDue;
+        }
+
+        public Long getLoanId() {
+            return loanId;
+        }
+
+        public void setLoanId(Long loanId) {
+            this.loanId = loanId;
         }
 
         public Date getApplyDate() {
