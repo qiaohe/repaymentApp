@@ -22,10 +22,12 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BID")
     private Long id;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "APP_NO")
     @JsonIgnore
     private Application application;
+    @Column(name = "APP_NO", updatable = false, insertable = false)
+    private String applicationNo;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
@@ -172,6 +174,14 @@ public class Loan {
         return status == null ? 0 : status;
     }
 
+    public String getApplicationNo() {
+        return applicationNo;
+    }
+
+    public void setApplicationNo(String applicationNo) {
+        this.applicationNo = applicationNo;
+    }
+
     public void setStatus(Integer status) {
         this.status = status;
     }
@@ -243,8 +253,8 @@ public class Loan {
     }
 
     @Transient
-    public String getApplicationNo() {
-        return getApplication().getApplicationNo();
+    public boolean isOverDueStatus() {
+       return status == 1 || status == 2;
     }
 }
 

@@ -1,6 +1,7 @@
 package com.huayuan.common.util;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import java.util.Date;
 
@@ -26,6 +27,10 @@ public final class Day {
 
     public Day valueOf(Date d) {
         return new Day(d);
+    }
+
+    public int escapeDays(Date date) {
+        return Days.daysBetween(new DateTime(date), new DateTime(date)).getDays();
     }
 
     public String toString() {

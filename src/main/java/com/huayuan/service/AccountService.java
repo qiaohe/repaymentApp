@@ -35,4 +35,6 @@ public interface AccountService {
     public LoanSummary getLoansSummary(Long memberId);
 
     public Loan createLoanBy(Application application);
+
+    public void updateOverDue();
 }
