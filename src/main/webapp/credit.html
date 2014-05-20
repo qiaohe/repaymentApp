@@ -22,7 +22,7 @@
 
 <div class="itembox h1-info">系统信息</div>
 <input type="button" id="show-idimg" style="margin:50px auto 25px 50px" value="身份证照片(正面)">
-<img src="test.png" id="img" style="position:absolute; top:50px; left:40%; display:none; max-width: 900px; min-width: 600px">
+<img id="img" style="position:absolute; top:50px; left:40%; display:none; max-width: 900px; min-width: 600px">
 
 <div style="clear:both; margin: 5px auto; padding:10px; border: 1px solid black; height: 210px">
     <div class="grid-2">姓名</div>
@@ -42,9 +42,9 @@
 </div>
 
 <div class="itembox h1-info">基础资料</div>
-<div class="itembox h2-info">1.基础信息</div>
-
-<div class="block">
+<div class="block" style="height: 240px;">
+    <div class="grid-2" style="font-weight: bold;">基础信息</div>
+    <div class="grid-2"></div>
     <div class="grid-2">婚姻状况</div>
     <div class="grid-2"><select id="marriage">
         <option value="1">1.已婚</option>
@@ -62,14 +62,16 @@
     <div class="grid-2">住宅电话</div>
     <div class="grid-2"><input type="text" id="phone-home"></div>
     <div class="grid-2">学位</div>
-    <div class="grid-2"><select id="education"><option></option></select></div>
+    <div class="grid-2"><select id="education">
+        <option></option>
+    </select></div>
     <div class="grid-2">户籍地址比对不一致</div>
     <div class="grid-2"><input type="checkbox" id="address-conflict"></div>
 </div>
 
-<div class="itembox h2-info">2.居住信息</div>
-
-<div class="block" style="height:130px">
+<div class="block" style="height:160px">
+    <div class="grid-2" style="font-weight: bold;">居住信息</div>
+    <div class="grid-2"></div>
     <div class="grid-2">居住城市</div>
     <div class="grid-2"><select id="livein">
         <option>北京</option>
@@ -92,9 +94,9 @@
     <div class="grid-2"><input type="text" id="update-date"></div>
 </div>
 
-<div class="itembox h2-info">3.配偶信息</div>
-
-<div class="block" style="height:90px">
+<div class="block" style="height:120px">
+    <div class="grid-2" style="font-weight: bold;">配偶信息</div>
+    <div class="grid-2"></div>
     <div class="grid-2">配偶姓名</div>
     <div class="grid-2"><input type="text" id="spouse-name"></div>
     <div class="grid-2">配偶证件号码</div>
@@ -104,9 +106,9 @@
 </div>
 
 <div class="itembox h1-info">工作资料</div>
-<div class="itembox h2-info">1.工作信息</div>
-
-<div class="block" style="height:360px">
+<div class="block" style="height:390px;">
+    <div class="grid-2" style="font-weight: bold;">工作信息</div>
+    <div class="grid-2"></div>
     <div class="grid-2">工作单位</div>
     <div class="grid-2"><input type="text" id="work-at"></div>
     <div class="grid-2">工作城市</div>
@@ -151,9 +153,9 @@
     <div class="grid-2"><input type="text" id="works-since"></div>
 </div>
 
-<div class="itembox h2-info">2.养老金缴纳记录</div>
-
-<div class="block" style="height:240px">
+<div class="block" style="height:270px;">
+    <div class="grid-2" style="font-weight: bold;">养老金缴纳记录</div>
+    <div class="grid-2"></div>
     <div class="grid-2">参保日期</div>
     <div class="grid-2"><input type="text" id="pension-date"></div>
     <div class="grid-2">参加工作月份</div>
@@ -178,9 +180,9 @@
     <div class="grid-2"><input type="text" id="update-date-2"></div>
 </div>
 
-<div class="itembox h2-info">3.公积金缴纳记录</div>
-
-<div class="block" style="height:210px">
+<div class="block" style="height:240px;">
+    <div class="grid-2" style="font-weight: bold;">公积金缴纳记录</div>
+    <div class="grid-2"></div>
     <div class="grid-2">参缴日期</div>
     <div class="grid-2"><input type="text" id="fund-date"></div>
     <div class="grid-2">初缴月份</div>
@@ -204,14 +206,17 @@
 </div>
 
 <div class="itembox h1-info">银行资料</div>
-<div class="itembox h2-info">1.银行往来</div>
-<div class="itembox h2-info" style="width:40%; text-align:left; padding:5px 0"><span>最早信贷记录时间</span><input
-        type="text" id="earlist-credit" style="margin:0 20px; float:right"></div>
-<div class="itembox h2-info">2.逾期信息</div>
 
-<div class="itembox h2-info">2.1 贷款</div>
+<div class="block" style="height:60px;">
+    <div class="grid-2" style="font-weight: bold;">银行往来</div>
+    <div class="grid-2"></div>
+    <div class="grid-2">最早信贷记录时间</div>
+    <div class="grid-2"><input type="text" id="earlist-credit"></div>
+</div>
 
-<div class="block" style="height:90px">
+<div class="block" style="height:120px;">
+    <div class="grid-2" style="font-weight: bold;">逾期信息-贷款</div>
+    <div class="grid-2"></div>
     <div class="grid-2">笔数</div>
     <div class="grid-2"><input type="text" id="num-delayed"></div>
     <div class="grid-2">单月最高逾期总额</div>
@@ -220,9 +225,9 @@
     <div class="grid-2"><input type="text" id="time-delayed"></div>
 </div>
 
-<div class="itembox h2-info">2.2 信用卡</div>
-
-<div class="block" style="height:150px">
+<div class="block" style="height:180px;">
+    <div class="grid-2" style="font-weight: bold;">逾期信息-信用卡</div>
+    <div class="grid-2"></div>
     <div class="grid-2">账户数</div>
     <div class="grid-2"><input type="text" id="account-num"></div>
     <div class="grid-2">单月最高逾期总额</div>
@@ -235,9 +240,9 @@
     <div class="grid-2"><input type="text" id="time-delayed-2"></div>
 </div>
 
-<div class="itembox h2-info">2.3 准贷记卡</div>
-
-<div class="block" style="height:90px">
+<div class="block" style="height:120px;">
+    <div class="grid-2" style="font-weight: bold;">逾期信息-准贷记卡</div>
+    <div class="grid-2"></div>
     <div class="grid-2">账户数</div>
     <div class="grid-2"><input type="text" id="account-num-3"></div>
     <div class="grid-2">单月最高透支总额</div>
@@ -246,10 +251,9 @@
     <div class="grid-2"><input type="text" id="overdraft-time"></div>
 </div>
 
-<div class="itembox h2-info">3.信息汇总</div>
-
-<div class="itembox h2-info">3.1 贷款信息汇总</div>
-<div class="block" style="height:120px">
+<div class="block" style="height:150px;">
+    <div class="grid-2" style="font-weight: bold;">信息汇总-贷款信息汇总</div>
+    <div class="grid-2"></div>
     <div class="grid-2">笔数</div>
     <div class="grid-2"><input type="text" id="num-loan"></div>
     <div class="grid-2">合同金额</div>
@@ -260,8 +264,9 @@
     <div class="grid-2"><input type="text" id="payback-average"></div>
 </div>
 
-<div class="itembox h2-info">3.2 信用卡信息汇总</div>
-<div class="block" style="height:240px">
+<div class="block" style="height:270px;">
+    <div class="grid-2" style="font-weight: bold;">信息汇总-信用卡信息汇总</div>
+    <div class="grid-2"></div>
     <div class="grid-2">机构数</div>
     <div class="grid-2"><input type="text" id="num-corp"></div>
     <div class="grid-2">账户数</div>
@@ -280,8 +285,9 @@
     <div class="grid-2"><input type="text" id="used-average"></div>
 </div>
 
-<div class="itembox h2-info">3.3 准贷记卡信息汇总</div>
-<div class="block" style="height:240px">
+<div class="block" style="height:270px;">
+    <div class="grid-2" style="font-weight: bold;">信息汇总-准贷记卡信息汇总</div>
+    <div class="grid-2"></div>
     <div class="grid-2">机构数</div>
     <div class="grid-2"><input type="text" id="num-corp-3"></div>
     <div class="grid-2">账户数</div>
@@ -300,12 +306,16 @@
     <div class="grid-2"><input type="text" id="overdraft-average"></div>
 </div>
 
-<div class="itembox h2-info">4.人行查询次数</div>
-<div class="itembox h2-info" style="width:60%; text-align:left; padding:5px 0"><span>近6个月信用卡审核查询次数</span><input
-        type="text" id="search-time" style="margin:0 20px; float:right"></div>
+<div class="block" style="height:80px;">
+    <div class="grid-2" style="font-weight: bold;">人行查询次数</div>
+    <div class="grid-2"></div>
+    <div class="grid-2">近6个月信用卡审核查询次数</div>
+    <div class="grid-2"><input type="text" id="search-time"></div>
+</div>
+
 
 <div class="itembox h1-info">公共信息</div>
-<div class="block" style="height:420px">
+<div class="block" style="height:420px;">
     <div class="grid-2">呆账信息</div>
     <div class="grid-2"><input type="checkbox" id="g-1"></div>
     <div class="grid-2">资产处置信息</div>

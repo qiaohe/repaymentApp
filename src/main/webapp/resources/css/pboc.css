@@ -89,3 +89,31 @@ input{
 .ylo{
     background-color: yellow;
 }
+
+.operation {
+    margin-top: 40px;
+    width: 100%;
+    height: 30px;
+}
+
+#prev {
+    width:100px;
+    height: 26px;
+    margin-left: 480px;
+    border-radius: 3px;
+    border: 1px solid #000000;
+    text-align: center;
+    line-height: 26px;
+    float:left;
+}
+
+#next {
+    width: 100px;
+    height: 26px;
+    margin-left: 200px;
+    border-radius: 3px;
+    border: 1px solid #000000;
+    text-align: center;
+    line-height: 26px;
+    float:left;
+}

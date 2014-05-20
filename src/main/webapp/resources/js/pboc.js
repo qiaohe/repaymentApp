@@ -3,7 +3,7 @@
     var path = "api/";
 
     function getNshow(path) {
-        $('#table').html('<div class="grid ylo">ID</div><div class="grid ylo">身份证号</div><div class="grid ylo">姓名</div><div class="grid ylo">时间</div><div class="grid ylo">员工编号</div><div class="grid ylo">无此人</div><div class="grid ylo">状态</div>');
+        $('#table').html('<div class="grid ylo">序号</div><div class="grid ylo">身份证号</div><div class="grid ylo">姓名</div><div class="grid ylo">时间</div><div class="grid ylo">员工编号</div><div class="grid ylo">无此人</div><div class="grid ylo">状态</div>');
 
         $.get(path, function (json) {
             for (var i = 0, l = json.length; i < l; i++) {
@@ -28,12 +28,19 @@
                             tmp="完成";
                         else if(json[i][j] == '5')
                             tmp="修改id";
-
                         $('#table').append('<div class="grid">' + tmp + '</div>');
-                    }
-                    else
+                    } else if(j == 1) {
+                        $('#table').append('<div class="grid" style="cursor: pointer;">' + json[i][j] + '</div>');
+                    } else {
                         $('#table').append('<div class="grid">' + json[i][j] + '</div>');
+                    }
                 }
+            }
+            // set table height
+            if(json && json.length != 0) {
+                $('#table').height(27*json.length+27);
+            } else {
+                $('#table').height(27);
             }
 
             $('.grid').click(function () {
@@ -48,8 +55,14 @@
     getNshow(path + 'pboc/search?q=pb.status in (2, 3)');
 
     $('#for-all').click(function () {
-        //$("input:checkbox:not(:checked)").trigger('click');
-        $("#chooseboxes input:checkbox").trigger('click');
+        var $all = $(this);
+        if($all.attr("checkFlag") && $all.attr("checkFlag")!= "0") {
+            $("#chooseboxes input:checkbox").prop("checked",false);
+            $all.attr("checkFlag","0");
+        } else {
+            $("#chooseboxes input:checkbox").prop("checked",true);
+            $all.attr("checkFlag","1");
+        }
     });
 
     $('#none').click(function(){
@@ -106,6 +119,14 @@
         }
 
         getNshow(path + "pboc/search?" + q);
+    });
+
+    $("#prev").click(function(){
+        alert("待建中...");
+    });
+
+    $("#next").click(function(){
+        alert("待建中...");
     });
 // END
 });
