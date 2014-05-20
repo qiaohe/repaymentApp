@@ -6,14 +6,14 @@
 /* global console:false */
 "use strict";
 $(function () {
-// START    
+// START
     var app = {};
     var dict = {};
 
 // Methods
     function getCreditLimit() {
         $.ajax({
-            url: config.api_path + "members/" + member.id + "/crl",
+            url: config.api_path + "members/" + member.id + "/crl" + config.time,
             type: "GET",
             dataType: "json",
             async: false,
@@ -23,14 +23,14 @@ $(function () {
             },
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/crl");
+                    alert(config.api_path + "members/" + member.id + "/crl" + config.time);
             }
         });
     }
 
     function getAvlCrl() {
         $.ajax({
-            url: config.api_path + "members/" + member.id + "/avlCrl",
+            url: config.api_path + "members/" + member.id + "/avlCrl" + config.time,
             type: "GET",
             dataType: "text",
             async: false,
@@ -39,7 +39,7 @@ $(function () {
             },
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/avlCrl");
+                    alert(config.api_path + "members/" + member.id + "/avlCrl" + config.time);
             }
         });
     }
@@ -143,7 +143,7 @@ $(function () {
     function whetherUsedCard(card_num) {
         card_num = card_num.replace(/ /g, "");
         return $.ajax({
-            url: config.api_path + "members/" + member.id + "/creditCard/" + card_num.replace(/ /g, ""),
+            url: config.api_path + "members/" + member.id + "/creditCard/" + card_num.replace(/ /g, "") + config.time,
             type: "GET",
             async: false,
             dataType: "text"
@@ -152,7 +152,7 @@ $(function () {
 
     function testLimit(obj) {
         $.ajax({
-            url: config.api_path + "members/" + member.id,
+            url: config.api_path + "members/" + member.id + config.time,
             type: "POST",
             async: false,
             contentType: "application/json",
@@ -179,7 +179,7 @@ $(function () {
 
     function sendVarificationCode(phone_num) {
         return $.ajax({
-            url: config.api_path + "sms/" + phone_num,
+            url: config.api_path + "sms/" + phone_num + config.time,
             type: "GET",
             dataType: "text",
             error: function () {
@@ -191,7 +191,7 @@ $(function () {
 
     function matchVarificationCode(vcode, phone_num) {
         return $.ajax({
-            url: config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode,
+            url: config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode + config.time,
             type: "POST",
             async: false,
             data: JSON.stringify({
@@ -201,14 +201,14 @@ $(function () {
             dataType: "text",
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode);
+                    alert(config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode + config.time);
             }
         });
     }
 
     function countPayback(obj) {
         $.ajax({
-            url: config.api_path + "app/saveCost",
+            url: config.api_path + "app/saveCost" + config.time,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
@@ -223,14 +223,14 @@ $(function () {
             },
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "app/saveCost");
+                    alert(config.api_path + "app/saveCost" + config.time);
             }
         });
     }
 
     function applyLoan(obj) {
         return $.ajax({
-            url: config.api_path + "app",
+            url: config.api_path + "app" + config.time,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
@@ -242,32 +242,32 @@ $(function () {
             dataType: "text",
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "app");
+                    alert(config.api_path + "app" + config.time);
             }
         });
     }
 
     function loanToThisCard(card_num) {
         return $.ajax({
-            url: config.api_path + "app/members/" + member.id + "/creditCard/" + card_num,
+            url: config.api_path + "app/members/" + member.id + "/creditCard/" + card_num + config.time,
             type: "POST",
             data: card_num,
             dataType: "text",
             error: function () {
-                alert(config.api_path + "app/members/" + member.id + "/creditCard/" + card_num);
+                alert(config.api_path + "app/members/" + member.id + "/creditCard/" + card_num + config.time);
             }
         });
     }
 
     function addCreditCard(new_card) {
         return $.ajax({
-            url: config.api_path + "members/" + member.id + "/creditCards/" + new_card,
+            url: config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time,
             type: "POST",
             async: false,
             dataType: "text",
             error: function () {
                 if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/creditCards/" + new_card);
+                    alert(config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time);
             }
         });
     }
@@ -289,7 +289,8 @@ $(function () {
         }
         else {
             $("#front-upload").change(function (e) {
-                $.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                $("#front-num").html("正在识别...");
                 var form_data = new FormData();
                 form_data.append("idCardFrontFile", e.target.files[0]);
                 recongizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
@@ -306,7 +307,7 @@ $(function () {
                     $("label[for='front-upload']").css("border-color", "#cc0000");
                     $("#tip-front").attr("src", "resources/img/public/wrong.png");
                 }).complete(function () {
-                    $.mobile.loading("hide");
+                    //$.mobile.loading("hide");
                 });
             });
         }
@@ -318,7 +319,8 @@ $(function () {
         }
         else {
             $("#back-upload").change(function (e) {
-                $.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                $("#back-num").html("正在识别...")
                 var form_data = new FormData();
                 form_data.append("idCardBackFile", e.target.files[0]);
                 recongizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
@@ -333,7 +335,7 @@ $(function () {
                     $("label[for='back-upload']").css("border-color", "#cc0000");
                     $("#tip-back").attr("src", "resources/img/public/wrong.png");
                 }).complete(function () {
-                    $.mobile.loading("hide");
+                    //$.mobile.loading("hide");
                 });
             });
         }
@@ -461,19 +463,19 @@ $(function () {
 
         $("#industry-select").change(function(){
             member.industry = $(this).val();
-            localStorage.setItem("industry", $(this).val);
+            localStorage.setItem("industry", $(this).val());
             $("#industry-txt").hide();
         });
 
         $("#education-select").change(function(){
             member.education = $(this).val();
-            localStorage.setItem("education", $(this).val);
+            localStorage.setItem("education", $(this).val());
             $("#education-txt").hide();
         });
 
         $("#email").keyup(function(){
             $("#mail-same").html($(this).val());
-            localStorage.setItem("email", $(this).val);
+            localStorage.setItem("email", $(this).val());
             if($(this).val().length)
                 $("#email-txt").hide();
             else
@@ -541,6 +543,11 @@ $(function () {
             getAvlCrl();
         }
 
+        if (member.status == "11" || member.status == "12"){
+            member.limit = 0;
+            member.rank = 0;
+        }
+
         $("#amt-shown").html(member.limit);
         $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
         if(member.limit > 4000){
@@ -550,7 +557,37 @@ $(function () {
             $("#option-3").html("换张信用卡再试试");
         }
 
-        if (member.avlcrl > 1000 && !member.applying) {
+        $.ajax({
+            url: config.api_path + "app/members/" + member.id + "/loanable" + config.time,
+            type: "POST",
+            async: false,
+            dataType: "text",
+            success: function (text) {
+                member.loanable = (text == "true");
+            },
+            error: function () {
+                if (config.debug) {
+                    alert(config.api_path + "app/members/" + member.id + "/loanable" + config.time);
+                }
+            }
+        });
+
+        $.ajax({
+            url: config.api_path + "app/members/" + member.id + "/appNo" + config.time,
+            type: "GET",
+            async: false,
+            dataType: "text",
+            success: function (text) {
+                member.appNo = text;
+            },
+            error: function () {
+                if (config.debug) {
+                    alert(config.api_path + "app/members/" + member.id + "/appNo" + config.time);
+                }
+            }
+        });
+
+        if (member.loanable) {
             $("#option-1").attr("href", "#loan");
         }
         else {
@@ -560,19 +597,22 @@ $(function () {
         if (member.status == "5.1") {
             $("#option-1").attr("href", "#congratulation");
         }
+        else if (member.status == "5.2") {
+            $("#option-1").attr("href", "#fail");
+        }
     });
 
     $(document).on("pagecreate", "#loan", function () {
         $("#request").click(function(){
             if($("#agree").is(":checked") && member.validate && app.term && app.amount){
-                if(member.existingFlag === 0 || member.existingFlag == 1){
+                if (member.existingFlag == 2) {
+                    $("#cardlist-2").popup("open");
+                }
+                else {
                     app.credit_card = "";
                     applyLoan(app);
                     $.mobile.navigate("#suspension");
                     $(this).off("click");
-                }
-                else {
-                    $("#cardlist-2").popup("open");
                 }
             }
         });
@@ -657,7 +697,7 @@ $(function () {
                         else {
                             // alert("您的手机非北上广深号码, 暂时无法为您服务!");
                             $("#out-of-area").show();
-                            returnFootPrint(member.id, "0");
+                            returnFootPrint(member.id, "-1");
                         }
                     });
                 }
@@ -801,12 +841,14 @@ $(function () {
     });
 
     $(document).on("pagecreate", "#congratulation", function(){
-        var appNo_pattern = /(?:appNo=)\d+/;
-        var appNo = appNo_pattern.exec(window.location).toString();
-        appNo = appNo.slice(6, appNo.length);
+        if (!member.appNo){
+            var appNo_pattern = /(?:appNo=)\d+/;
+            mamber.appNo = appNo_pattern.exec(window.location).toString();
+            member.appNo = member.appNo.slice(6, member.appNo.length);
+        }
 
         $.ajax({
-            url: config.api_path + "app/" + appNo,
+            url: config.api_path + "app/" + member.appNo + config.time,
             type: "GET",
             async: false,
             dataType: "json",
@@ -817,7 +859,7 @@ $(function () {
                 $("#saved-x").html(json.saveCost);
             },
             error: function () {
-                alert(config.api_path + "app/" + appNo);
+                alert(config.api_path + "app/" + member.appNo + config.time);
             }
         });
 
@@ -1116,12 +1158,28 @@ $(function () {
         }
     });
 
-// $("#got-it, #got-it-x, #got-it-y, #got-it-z").click(function(){
-//     WeixinJSBridge.call("closeWindow");
-// });
+    $(document).on("pagecreate", "#fail", function () {
+        $("#got-it-y").on("vclick", function () {
+            WeixinJSBridge.call("closeWindow");
+        });
+    });
 
-    $(document).on("vclick", "#got-it, #got-it-x, #got-it-y, #got-it-z", function () {
-        WeixinJSBridge.call("closeWindow");
+    $(document).on("pagecreate", "#full", function () {
+        $("#got-it-z").on("vclick", function () {
+            WeixinJSBridge.call("closeWindow");
+        });
+    });
+
+    $(document).on("pagecreate", "#suspension", function () {
+        $("#got-it").on("vclick", function () {
+            WeixinJSBridge.call("closeWindow");
+        });
+    });
+
+    $(document).on("pagecreate", "#patience", function () {
+        $("#got-it-x").on("vclick", function () {
+            WeixinJSBridge.call("closeWindow");
+        });
     });
 
     window.onunload = function () {
@@ -1129,20 +1187,21 @@ $(function () {
         var pattern = /#\w+\?/;
         var hash = pattern.exec(window.location).toString();
         hash = hash.slice(0, hash.length - 1);
-        switch(hash){
-            case "#basic-info":
-                print_status = "0";
-                break;
-            case "#result":
-                print_status = "1";
-                break;
-            case "#congratulation":
-                print_status = "2";
-                break;
-            default:
-                print_status = "-1";
+
+        if (member.status == "0" && (hash == "#limit" || hash == "#basic-info")) {
+            print_status = "0";
         }
-        if (print_status != "-1")
+        else if (hash == "#result") {
+            print_status = "1";
+        }
+        else if (hash == "#congratulation" && (!app.credit_card)) {
+            print_status = "2";
+        }
+        else {
+            print_status = "-9";
+        }
+
+        if (print_status != "-9")
             returnFootPrint(member.id, print_status);
     };
 
