@@ -81,14 +81,9 @@
 
     <named-native-query name="Member.findMemberLoans" result-set-mapping="memberLoansMapping">
         <query>
-            select m.ID,idcard.NAME,b.BID,appl.AMT,b.APR,appl.TERM,b.STARTDATE,b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,
-            SUM(rp.PAID_OVERDUE_INTEREST) as PAID_OVERDUE_INTEREST,b.CUR_DELQ,b.MAX_DELQ,appl.STATUS from MEMBER m
-            inner join ID_CARD idcard on m.ID = idcard.MEMBER_ID
-            inner join APPL appl on appl.MEMBER_ID = m.ID
-            inner join BORROW b on b.APP_NO = appl.APPL_NO
-            left join REPAY_PLAN rp on rp.MEMBER_ID = m.ID :q
-            group by m.ID,idcard.NAME,b.BID,appl.AMT,appl.TERM,b.APR,b.STARTDATE,
-            b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,b.CUR_DELQ,b.MAX_DELQ,appl.STATUS
+            select idcard.MEMBER_ID,idcard.NAME,b.BID,b.AMT,b.APR,b.TERM,b.STARTDATE,
+            b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,b.CUR_DELQ,b.MAX_DELQ,b.STATUS
+            from ID_CARD idcard inner join BORROW b on b.MEMBER_ID = idcard.MEMBER_ID :q
          </query>
     </named-native-query>
 
@@ -110,7 +105,7 @@
         <column-result name="block_code"/>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="memberLoansMapping">
-        <column-result name="ID"/>
+        <column-result name="MEMBER_ID"/>
         <column-result name="NAME"/>
         <column-result name="BID"/>
         <column-result name="AMT"/>
