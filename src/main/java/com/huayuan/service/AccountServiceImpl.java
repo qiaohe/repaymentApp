@@ -33,8 +33,10 @@ public class AccountServiceImpl implements AccountService {
     private LoanSummaryBuilder loanSummaryBuilder;
     @Value("${weChat.bindCreditCardSuccess}")
     private String bindCreditCardSuccess;
-    @Value("${weChat.bindCreditCardFail}")
-    private String bindCreditCardFail;
+    @Value("${account.graceDay}")
+    private String graceDay;
+    @Value("${account.overdueRating}")
+    private String overDueRating;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -140,12 +142,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Scheduled(cron = "0 0 * * * ?")
     public void updateOverDue() {
-        List<RepayPlan> plans = repayPlanRepository.findAll();
+        List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays(Integer.valueOf(graceDay)));
         for (RepayPlan plan : plans) {
             plan.setOverDueAmt(plan.getDuePrincipal());
-            plan.setOverDue_Interest(plan.getOverDueAmt() * 0.10);
             int overDueDays = Day.TODAY.escapeDays(plan.getDueDate());
             plan.setOverDueDay(overDueDays);
+            plan.setOverDue_Interest(overDueDays * plan.getOverDueAmt() * Double.valueOf(overDueRating));
             plan.getLoan().setStatus(2);
             plan.getLoan().setMaxDelq(Math.max(plan.getLoan().getMaxDelq(), overDueDays));
             plan.getLoan().setCurDelq(overDueDays);
