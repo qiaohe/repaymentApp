@@ -251,5 +251,10 @@ public class Loan {
     public String getRating() {
         return application.getaScore().getRating();
     }
+
+    @Transient
+    public boolean isOverDueStatus() {
+       return status == 1 || status == 2;
+    }
 }
 

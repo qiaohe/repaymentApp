@@ -1,9 +1,11 @@
 package com.huayuan.service;
 
+import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.repository.account.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,5 +135,21 @@ public class AccountServiceImpl implements AccountService {
         loan.setPrincipal(loan.getAmt());
         loan.setStartDate(application.getApproval().getCreateTime());
         return createLoan(loan);
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 * * * ?")
+    public void updateOverDue() {
+        List<RepayPlan> plans = repayPlanRepository.findAll();
+        for (RepayPlan plan : plans) {
+            plan.setOverDueAmt(plan.getDuePrincipal());
+            plan.setOverDue_Interest(plan.getOverDueAmt() * 0.10);
+            int overDueDays = Day.TODAY.escapeDays(plan.getDueDate());
+            plan.setOverDueDay(overDueDays);
+            plan.getLoan().setStatus(2);
+            plan.getLoan().setMaxDelq(Math.max(plan.getLoan().getMaxDelq(), overDueDays));
+            plan.getLoan().setCurDelq(overDueDays);
+        }
+        repayPlanRepository.save(plans);
     }
 }
