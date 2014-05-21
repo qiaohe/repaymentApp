@@ -65,13 +65,6 @@
         }
     });
 
-    $('#none').click(function(){
-        if($(this).is(':checked')){
-            var q = 'q=pb.RISK=1' ;
-            getNshow(path + "pboc/search?" + q);
-        }
-    });
-
     $('#search').click(function () {
         var q = [], id = $('#id').val();
         if(id)
@@ -92,6 +85,10 @@
         var keyiner = $('#typein').val();
         if(keyiner)
             q.push("pb.KEYINER='" + keyiner + "'");
+
+        if($('#none').prop("checked")) {
+            q.push("pb.RISK=1");
+        }
 
         var status = [];
         if ($('#undocumented').is(':checked'))

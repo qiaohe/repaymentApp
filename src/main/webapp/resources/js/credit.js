@@ -121,9 +121,9 @@
         $('#overdraft-average').val(json.semiCardLatest6MonthUsedAvgAmount);
 
         $.get(info.path + 'dict/mobileArea/' + json.mobile, function(text){
-            var pattern = /[^\"\w]+/;
-            text = pattern.exec(text).toString();
-            $('#num-district').val(text);
+            if(text) {
+                $('#num-district').val(text.replace(/[\[\]]/g,""));
+            }
         }, 'text');
 
         for(var i = 0; i<15; i++){
