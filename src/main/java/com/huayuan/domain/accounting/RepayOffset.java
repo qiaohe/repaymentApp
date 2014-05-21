@@ -15,9 +15,6 @@ public class RepayOffset {
     @Column(name = "TERM_NO")
     private Integer termNo;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "REPAY_ID")
-    private Repay repay;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
     private Loan loan;
     @Column(name = "AMT")
@@ -37,14 +34,6 @@ public class RepayOffset {
 
     public void setTermNo(Integer termNo) {
         this.termNo = termNo;
-    }
-
-    public Repay getRepay() {
-        return repay;
-    }
-
-    public void setRepay(Repay repay) {
-        this.repay = repay;
     }
 
     public Loan getLoan() {

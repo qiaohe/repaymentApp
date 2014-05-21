@@ -42,6 +42,8 @@ public class AccountServiceImpl implements AccountService {
     private String graceDay;
     @Value("${account.overdueRating}")
     private String overDueRating;
+    @Inject
+    private RepayOffsetRepository repayOffsetRepository;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -97,11 +99,15 @@ public class AccountServiceImpl implements AccountService {
             plan.getLoan().setStatus(0);
             plan.getLoan().setPaidInterest(plan.getPaidInterest() + plan.getLoan().getPaidInterest());
             plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
+            plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
             account.setDebit_amt(account.getDebit_amt() - plan.getPaidInterest() - plan.getPaidPrincipal() - plan.getOverDue_Interest());
+            accountRepository.save(account);
             RepayOffset repayOffset = new RepayOffset();
             repayOffset.setAmt(plan.getPaidInterest() + plan.getPaidPrincipal() + plan.getOverDue_Interest());
             repayOffset.setLoan(plan.getLoan());
             repayOffset.setTermNo(plan.getTermNo());
+            repayOffset.setLoan(plan.getLoan());
+            repayOffsetRepository.save(repayOffset);
             loanRepository.save(plan.getLoan());
         }
     }

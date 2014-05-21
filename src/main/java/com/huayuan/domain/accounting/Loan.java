@@ -59,6 +59,8 @@ public class Loan {
     private Integer maxDelq = 0;
     @Column(name = "STATUS")
     private Integer status;
+    @Column(name = "PAID_OVERDUE_INT")
+    private Double paidOverDueInt;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
@@ -71,6 +73,7 @@ public class Loan {
         status = 8;
         paidInterest = 0d;
         paidPrincipal = 0d;
+        paidOverDueInt = 0d;
     }
 
     public Long getId() {
@@ -264,6 +267,14 @@ public class Loan {
     @JsonIgnore
     public String getRating() {
         return application.getaScore().getRating();
+    }
+
+    public Double getPaidOverDueInt() {
+        return paidOverDueInt;
+    }
+
+    public void setPaidOverDueInt(Double paidOverDueInt) {
+        this.paidOverDueInt = paidOverDueInt;
     }
 
     @Transient
