@@ -3,13 +3,12 @@ package com.huayuan.web;
 import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.LoanSummary;
 import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.service.AccountService;
+import com.huayuan.web.dto.LoanCommonDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,6 +22,8 @@ import java.util.List;
 public class AccountingController {
     @Inject
     private AccountService accountService;
+    @Inject
+    private AccountRepository accountRepository;
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)
     @ResponseBody
@@ -40,5 +41,11 @@ public class AccountingController {
     @ResponseBody
     public boolean reviewLoan(@PathVariable Long loanId) {
         return accountService.review(loanId);
+    }
+
+    @RequestMapping(value = "/loans/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<LoanCommonDto> findLoanTransDetails(@RequestParam("q") String query) {
+        return accountRepository.findLoanTransDetails(query);
     }
 }
