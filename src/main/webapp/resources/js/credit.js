@@ -122,9 +122,9 @@
 
         $.get(info.path + 'dict/mobileArea/' + json.mobile, function(text){
             if(text) {
-                $('#num-district').val(text.replace(/[\[\]]/g,""));
+                $('#num-district').val(text);
             }
-        }, 'text');
+        }, 'json');
 
         for(var i = 0; i<15; i++){
             if(json['rh_' + i] == '1')
@@ -164,6 +164,7 @@
     });
 
     function update(){
+        checkInput();
         $.ajax({
             url: info.path + 'pboc/' + info.id,
             type: "POST",
@@ -341,6 +342,34 @@
             window.close();
         }
     });
+
+    function checkInput() {
+        var update1 = $.trim($("#update-date").val());
+        if(update1 != "" && update1.length != 8) {
+            alert("居住信息中'信息更新日期'只能输入8位有效时间！");
+            return;
+        }
+        var update2 = $.trim($("#works-since").val());
+        if(update2 != "" && update2.length != 8) {
+            alert("工作信息中'信息更新日期'只能输入8位有效时间！");
+            return;
+        }
+        var update3 = $.trim($("#update-date-2").val());
+        if(update3 != "" && update3.length != 8) {
+            alert("养老金缴纳记录中'信息更新日期'只能输入8位有效时间！");
+            return;
+        }
+        var update4 = $.trim($("#update-date-3").val());
+        if(update3 != "" && update3.length != 8) {
+            alert("公积金缴纳记录中'信息更新日期'只能输入8位有效时间！");
+            return;
+        }
+        var update4 = $.trim($("#earlist-credit").val());
+        if(update3 != "" && update3.length != 6) {
+            alert("最早信贷记录时间只能输入6位有效时间！");
+            return;
+        }
+    }
 
     function addOptions(element_id, json) {
         var tmp = [];
