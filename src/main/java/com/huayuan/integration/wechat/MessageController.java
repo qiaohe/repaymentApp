@@ -153,6 +153,9 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         if (tp.isUsedCrl()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId));
         }
+        if (tp.isRepay()) {
+            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId), accountService.getAmtWithinThisPeriod(memberId));
+        }
         if (tp.isApplicationNoNeeded()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status,
                     memberStatusEvaluator.getApprovingApplication(memberId).getApplicationNo());
