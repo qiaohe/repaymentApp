@@ -160,6 +160,17 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
+    public boolean transferLoan(Long loanId, String transCode) {
+        Loan loan = loanRepository.findOne(loanId);
+        loan.getPay().setTransferTime(new Date());
+        loan.getPay().setCode(transCode);
+//        loan.getPay().setStaff();
+        loan.getPay().setConfirm(1);
+        loanRepository.save(loan);
+        return true;
+    }
+
+    @Override
     public LoanSummary getLoansSummary(Long memberId) {
         return loanSummaryBuilder.build(getLoansBy(memberId));
     }

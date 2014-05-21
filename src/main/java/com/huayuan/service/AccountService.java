@@ -34,6 +34,8 @@ public interface AccountService {
 
     public boolean review(Long loanId);
 
+    public boolean transferLoan(Long loanId,String transCode);
+
     public LoanSummary getLoansSummary(Long memberId);
 
     public Loan createLoanBy(Application application);

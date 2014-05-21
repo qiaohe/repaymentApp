@@ -52,6 +52,20 @@ $(function(){
                 summary.loadData("../api/members/loanSummary");
             }
         });
+        $("#summary-table").on("click",".summary-mem",function(){
+            var memberNo = $.trim($(this).text());
+            window.open("detail1.html?memberNo="+memberNo,"_blank");
+        });
+        $("#summary-table").on("click",".summary-count",function(){
+            var count = $.trim($(this).text());
+            if(!count || count == "0") {
+                return;
+            }
+            var memberNo = $.trim($(this).prevAll(".summary-mem").text());
+            if(memberNo) {
+                window.open("detail2.html?memberNo="+memberNo,"_blank");
+            }
+        });
     };
     summary.loadData = function(url){
         $("#summary-table").html("<tr>\n"+
@@ -95,23 +109,6 @@ $(function(){
                         "</tr>";
                 });
                 $("#summary-table").append(contentHtml);
-            }
-        });
-        summary.bindDetail();
-    };
-    summary.bindDetail = function() {
-        $("#summary-table").on("click",".summary-mem",function(){
-            var memberNo = $.trim($(this).text());
-            window.open("detail1.html?memberNo="+memberNo,"_blank");
-        });
-        $("#summary-table").on("click",".summary-count",function(){
-            var count = $.trim($(this).text());
-            if(!count || count == "0") {
-                return;
-            }
-            var memberNo = $.trim($(this).prevAll(".summary-mem").text());
-            if(memberNo) {
-                window.open("detail2.html?memberNo="+memberNo,"_blank");
             }
         });
     };

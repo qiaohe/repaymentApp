@@ -43,6 +43,12 @@ public class AccountingController {
         return accountService.review(loanId);
     }
 
+    @RequestMapping(value = "/loan/{loanId}/code/{transCode}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean transferLoan(@PathVariable Long loanId,@PathVariable String transCode) {
+        return accountService.transferLoan(loanId,transCode);
+    }
+
     @RequestMapping(value = "/loans/search", method = RequestMethod.GET)
     @ResponseBody
     public List<LoanCommonDto> findLoanTransDetails(@RequestParam("q") String query) {
