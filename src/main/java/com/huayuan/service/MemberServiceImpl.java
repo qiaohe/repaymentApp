@@ -6,7 +6,6 @@ import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
-import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
 import com.huayuan.repository.DictionaryRepository;
@@ -177,7 +176,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean creditCardIsUsedByAnother(Long memberId, String creditCardNo) {
-        List<CreditCard> cards = creditCardRepository.findByCardNo(creditCardNo);
+        List<CreditCard> cards = creditCardRepository.findByCardNoAndIsValid(creditCardNo, true);
         return CollectionUtils.isNotEmpty(cards) && !memberId.equals(cards.get(0).getMember().getId());
     }
 
@@ -254,7 +253,6 @@ public class MemberServiceImpl implements MemberService {
         MemberService service = applicationContext.getBean("memberService", MemberService.class);
         Member member = service.findMemberBy("ofR7Kt8gvfx-hYNd9t9JIsAt2EDU");
         System.out.println(member.toString());
-
 
 
     }

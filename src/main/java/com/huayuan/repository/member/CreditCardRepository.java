@@ -11,5 +11,7 @@ import java.util.List;
 public interface CreditCardRepository extends CrudRepository<CreditCard, Long> {
     public List<CreditCard> findByCardNo(String cardNo);
 
+    public List<CreditCard> findByCardNoAndIsValid(String cardNo, boolean isValid);
+
     public List<CreditCard> findByMemberId(Long memberId);
 }
