@@ -1,18 +1,19 @@
 package com.huayuan.web.dto;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Created by Richard Xue on 14-5-20.
  */
-public class MemberLoansDto {
-    private String memberNo;
+public class MemberLoansDto implements Serializable {
+    private BigInteger memberNo;
     private String name;
-    private String loanNo;
+    private BigInteger loanNo;
     private Double amt;
     private Double apr;
     private Integer term;
-    private Date loanDate;
+    private String loanDate;
     private Double prinaipal;
     private Double paidPrinaipal;
     private Double interest;
@@ -20,11 +21,11 @@ public class MemberLoansDto {
     private Double paidOverdueInterest;
     private Integer curDelq;
     private Integer maxDelq;
-    private String status;
+    private Integer status;
 
-    public MemberLoansDto(String memberNo, String name, String loanNo, Double amt, Double apr, Integer term, Date loanDate,
+    public MemberLoansDto(BigInteger memberNo, String name, BigInteger loanNo, Double amt, Double apr, Integer term, String loanDate,
                           Double prinaipal, Double paidPrinaipal, Double interest, Double paidInterest,
-                          Double paidOverdueInterest, Integer curDelq, Integer maxDelq, String status) {
+                          Double paidOverdueInterest, Integer curDelq, Integer maxDelq, Integer status) {
         this.memberNo = memberNo;
         this.name = name;
         this.loanNo = loanNo;
@@ -42,11 +43,11 @@ public class MemberLoansDto {
         this.status = status;
     }
 
-    public String getMemberNo() {
+    public BigInteger getMemberNo() {
         return memberNo;
     }
 
-    public void setMemberNo(String memberNo) {
+    public void setMemberNo(BigInteger memberNo) {
         this.memberNo = memberNo;
     }
 
@@ -58,11 +59,11 @@ public class MemberLoansDto {
         this.name = name;
     }
 
-    public String getLoanNo() {
+    public BigInteger getLoanNo() {
         return loanNo;
     }
 
-    public void setLoanNo(String loanNo) {
+    public void setLoanNo(BigInteger loanNo) {
         this.loanNo = loanNo;
     }
 
@@ -90,11 +91,11 @@ public class MemberLoansDto {
         this.term = term;
     }
 
-    public Date getLoanDate() {
+    public String getLoanDate() {
         return loanDate;
     }
 
-    public void setLoanDate(Date loanDate) {
+    public void setLoanDate(String loanDate) {
         this.loanDate = loanDate;
     }
 
@@ -154,11 +155,11 @@ public class MemberLoansDto {
         this.maxDelq = maxDelq;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

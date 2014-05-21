@@ -86,7 +86,7 @@
     <named-native-query name="Member.findMemberLoans" result-set-mapping="memberLoansMapping">
         <query>
             select idcard.MEMBER_ID,idcard.NAME,b.BID,b.AMT,b.APR,b.TERM,b.STARTDATE,
-            b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,b.CUR_DELQ,b.MAX_DELQ,b.STATUS
+            b.PRINAIPAL,b.PAID_PRINAIPAL,b.INTEREST,b.PAID_INTEREST,b.PAID_OVERDUE_INT,b.CUR_DELQ,b.MAX_DELQ,b.STATUS
             from ID_CARD idcard inner join BORROW b on b.MEMBER_ID = idcard.MEMBER_ID :q
          </query>
     </named-native-query>
@@ -120,7 +120,7 @@
         <column-result name="PAID_PRINAIPAL"/>
         <column-result name="INTEREST"/>
         <column-result name="PAID_INTEREST"/>
-        <column-result name="PAID_OVERDUE_INTEREST"/>
+        <column-result name="PAID_OVERDUE_INT"/>
         <column-result name="CUR_DELQ"/>
         <column-result name="MAX_DELQ"/>
         <column-result name="STATUS"/>
