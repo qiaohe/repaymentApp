@@ -91,6 +91,34 @@
          </query>
     </named-native-query>
 
+    <named-native-query name="Loan.findLoanTransDetails" result-set-mapping="loanTransMapping">
+        <query>
+            select b.BID,appl.APPL_NO,appl.APPLY_TIME,idcard.NAME,cc.CARD_NO,cc.BANK,appl.AMT,
+            p.PAY_AMT,p.TRANS_CODE,p.TRANS_TIME,p.CONFORMED_ID,p.CONFORMED_DATE,p.ERROR_MESSAGE,p.CONFORMED from MEMBER m
+            inner join ID_CARD idcard on m.ID = idcard.MEMBER_ID
+            inner join APPL appl on appl.MEMBER_ID = m.ID
+            inner join BORROW b on b.APP_NO = appl.APPL_NO
+            inner join CREDITCARD cc on appl.CC_ID = cc.ID
+            left join PAY p on p.APP_NO = appl.APPL_NO :q
+         </query>
+    </named-native-query>
+
+    <sql-result-set-mapping name="loanTransMapping">
+        <column-result name="BID"/>
+        <column-result name="APPL_NO"/>
+        <column-result name="APPLY_TIME"/>
+        <column-result name="NAME"/>
+        <column-result name="CARD_NO"/>
+        <column-result name="AMT"/>
+        <column-result name="PAY_AMT"/>
+        <column-result name="TRANS_CODE"/>
+        <column-result name="TRANS_TIME"/>
+        <column-result name="CONFORMED_ID"/>
+        <column-result name="CONFORMED_DATE"/>
+        <column-result name="ERROR_MESSAGE"/>
+        <column-result name="CONFORMED"/>
+    </sql-result-set-mapping>
+
     <sql-result-set-mapping name="tvQuestionListMapping">
         <column-result name="address"/>
     </sql-result-set-mapping>

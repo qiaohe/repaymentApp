@@ -39,6 +39,12 @@
             }
             detail2.loadData("../api/members/loans/search?q="+param);
         });
+        $("#detail2-table").on("click",".detail",function(){
+            var loanNo = $(this).attr("loanNo");
+            if(loanNo) {
+                detail2.showLoanDetail(loanNo);
+            }
+        });
     };
     detail2.loadData = function(url){
         $("#detail2-table").html("<tr>\n"+
@@ -83,15 +89,6 @@
                         "</tr>";
                 });
                 $("#detail2-table").append(contentHtml);
-                detail2.bindDetail();
-            }
-        });
-    };
-    detail2.bindDetail = function() {
-        $("#detail2-table").on("click",".detail",function(){
-            var loanNo = $(this).attr("loanNo");
-            if(loanNo) {
-                detail2.showLoanDetail(loanNo);
             }
         });
     };
