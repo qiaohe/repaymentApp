@@ -1,8 +1,9 @@
 /**
  * Created by Richard Xue on 14-5-19.
  */
-$(function(){
+(function($){
     var detail1 = {},
+        imgPrefix = "../api/resources/idcard/",
         memberStatus = {
             "NORMAL":"0",
             "CLOSED":"1",
@@ -57,8 +58,18 @@ $(function(){
         });
     };
     detail1.initEvent = function(){
+        var mleft = $(".account-content").css("margin-left");
+        $("#idcardPositiveImg").css({"left":parseFloat(mleft.substr(0,mleft.length-2))+$("#user-info").width(),"top":88});
         $("#user-info").on("click","#idcard",function(){
-            alert("idcard");
+            var $idcardPositiveImg = $("#idcardPositiveImg");
+            if (!$idcardPositiveImg.attr("src")) {
+                return;
+            }
+            if ($idcardPositiveImg.is(":visible")) {
+                $idcardPositiveImg.hide();
+            } else {
+                $idcardPositiveImg.show();
+            }
         });
     };
     detail1.loadData = function(json) {
@@ -71,6 +82,7 @@ $(function(){
         $("#wechatNo").text(member.wcUserName);
         $("#name").text(idcard.name);
         $("#idcard").text(idcard.idNo);
+        $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
         $("#gender").text(idcard.sex);
         $("#idcard-address").text(idcard.address);
         $("#birthday").text($.formatDate(idcard.birthday));
@@ -115,7 +127,7 @@ $(function(){
         if(applications) {
             $.each(applications,function(i,application){
                 var decision = decisionStatus[application.decision];
-                appRecordHtml += "<tr><td class=\"app-appNo\">"+application.appNo+"</td><td>"+application.applyDate+"</td><td>"+(decision?decision:"")+"</td></tr>";
+                appRecordHtml += "<tr><td class=\"app-appNo\">"+application.appNo+"</td><td>"+ $.formatDate(application.applyDate)+"</td><td>"+(decision?decision:"")+"</td></tr>";
             });
         }
         $("#app-record").append(appRecordHtml);
@@ -143,4 +155,4 @@ $(function(){
         }
     };
     detail1.init();
-});
+})(jQuery);

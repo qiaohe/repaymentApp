@@ -46,21 +46,56 @@ table {
     width: 80%;
     margin: auto;
 }
+/****************************** 转账查询 Start *************************************/
+#search-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+#search-info{
+    height: 40px;
+    margin-top: 30px;
+}
+#search-result {
+    margin-top: 30px;
+}
+#search-table {
+    line-height: 20px;
+}
+#search-table td {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+/****************************** 转账查询 End *************************************/
+/****************************** 转账错误 Start *************************************/
+#handle-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 40px;
+}
+#handle-result {
+    margin-top: 30px;
+}
+#handle-table {
+    line-height: 20px;
+}
+#handle-table td {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+/****************************** 转账错误 End *************************************/
 /****************************** 贷款转账 Start *************************************/
 #transfer-title {
     font-size: 24px;
     font-weight: bold;
     margin-top: 40px;
 }
-
 #transfer-result {
     margin-top: 30px;
 }
-
 #transfer-table {
     line-height: 20px;
 }
-
 #transfer-table td {
     border: 1px solid #000000;
     padding: 5px;
@@ -72,15 +107,12 @@ table {
     font-weight: bold;
     margin-top: 40px;
 }
-
 #audit-result {
     margin-top: 30px;
 }
-
 #audit-table {
     line-height: 20px;
 }
-
 #audit-table td {
     border: 1px solid #000000;
     padding: 5px;
@@ -94,26 +126,21 @@ table {
     line-height: 20px;
     height: 20px;
 }
-
 #summary-result {
     margin-top: 40px;
 }
-
 #summary-table {
     line-height: 20px;
     text-align: center;
 }
-
 #summary-table td {
     border: 1px solid #000000;
     padding: 5px;
 }
-
 .title-label {
     float: left;
     margin-right: 20px;
 }
-
 .title-input {
     float: left;
     margin-right: 20px;
@@ -122,12 +149,10 @@ table {
 .title-input input {
     vertical-align: middle;
 }
-
 .summary-mem {
     text-decoration: underline;
     cursor: pointer;
 }
-
 .summary-count {
     text-decoration: underline;
     cursor: pointer;
@@ -141,20 +166,16 @@ table {
     line-height: 30px;
     margin-top: 30px;
 }
-
 .detail1-cont {
     width: 100%;
 }
-
 .detail1-table {
 
 }
-
 .detail1-table td {
     border: 1px solid #000000;
     padding: 5px;
 }
-
 .app-appNo {
     cursor: pointer;
     text-decoration: underline;
@@ -168,27 +189,22 @@ table {
     line-height: 20px;
     height: 20px;
 }
-
 #detail2-result {
     margin-top: 40px;
 }
-
 #detail2-table {
     line-height: 20px;
     text-align: center;
 }
-
 #detail2-table td {
     border: 1px solid #000000;
     padding: 5px;
 }
-
-#detail2-repay-table {
+.detail2-repay-table {
     line-height: 20px;
     text-align: center;
 }
-
-#detail2-repay-table td {
+.detail2-repay-table td {
     border: 1px solid #000000;
     padding: 5px;
 }

@@ -10,7 +10,7 @@
     <div class="detail1-cont">
         <table class="detail1-table" id="user-info" style="width:60%;">
             <tr><td style="width: 16%;">MemberID</td><td style="width: 34%;" id="memberId"></td><td style="width: 16%;">微信号</td><td style="width: 34%;" id="wechatNo"></td></tr>
-            <tr><td>姓名</td><td id="name"></td><td>身份证号</td><td id="idcard" style="text-decoration: underline;cursor: pointer;">12345678931122111X</td></tr>
+            <tr><td>姓名</td><td id="name"></td><td>身份证号</td><td id="idcard" style="text-decoration: underline;cursor: pointer;"></td></tr>
             <tr><td>性别</td><td id="gender"></td><td>身份证地址</td><td id="idcard-address"></td></tr>
             <tr><td>出生日期</td><td id="birthday"></td><td>身份证有效期</td><td id="idcard-valid"></td></tr>
             <tr><td>行职业</td><td id="profession"></td><td>学历</td><td id="degree"></td></tr>
@@ -21,7 +21,10 @@
             <tr><td>信用额度</td><td id="limitAmt"></td><td>预测额度</td><td id="forecastAmt"></td></tr>
             <tr><td>可用额度</td><td id="avlAmt"></td><td>现金余额</td><td id="cashAmt"></td></tr>
         </table>
-        <!--<div id="idcard-img"><img></div>-->
+    </div>
+
+    <div>
+        <img id="idcardPositiveImg" style="position:absolute; top:5px; left:420px; display:none;max-height: 300px;min-width: 500px;">
     </div>
 
     <div class="detail1-title">申请记录</div>
