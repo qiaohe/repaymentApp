@@ -39,6 +39,16 @@ public class Pay implements Serializable {
     private Date confirmDate;
     @Column(name = "ERROR_MESSAGE")
     private String errorMessage;
+    @Column(name = "CONFORMED_ID")
+    private String confirmID;
+
+    public String getConfirmID() {
+        return confirmID;
+    }
+
+    public void setConfirmID(String confirmID) {
+        this.confirmID = confirmID;
+    }
 
     public Pay() {
         this.payAmt = 0d;

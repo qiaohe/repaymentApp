@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>放款记录查询</title>
+    <link type="text/css" rel="stylesheet" href="../resources/css/account.css">
+</head>
+<body>
+<div class="account-content">
+    <div id="search-title">转账结果复核</div>
+    <div id="search-info">
+        <div class="title-label">贷款编号</div>
+        <div class="title-input"><input id="loanNo" type="text"></div>
+        <div class="title-label">状态</div>
+        <div class="title-input"><select id="status">
+            <option value="">全部</option>
+            <option>待处理</option>
+            <option>已转账</option>
+            <option>错误</option>
+            <option>取消</option>
+        </select></div>
+        <div class="title-label">转账日期</div>
+        <div class="title-input"><input id="transDate" type="text"></div>
+        <div class="title-label"><input type="button" id="search-btn" value="查询" style="width: 120px;"></div>
+    </div>
+    <div id="search-result">
+        <table id="search-table">
+            <tr>
+                <td style="width:6%;">贷款编号</td>
+                <td style="width:8%;">申请编号</td>
+                <td style="width:8%;">审核时间</td>
+                <td style="width:6%;">贷款人姓名</td>
+                <td style="width:10%;">信用卡卡号</td>
+                <td style="width:6%;">发卡行</td>
+                <td style="width:6%;">贷款金额</td>
+                <td style="width:6%;">已转金额</td>
+                <td style="width:8%;">转账流水号</td>
+                <td style="width:8%;">转账日期</td>
+                <td style="width:6%;">复核人</td>
+                <td style="width:8%;">复核时间</td>
+                <td style="width:8%;">错误描述</td>
+                <td style="width:4%;">状态</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../resources/js/tools.js"></script>
+<script type="text/javascript" src="../resources/js/biz/search.js"></script>
+</body>
+</html>
