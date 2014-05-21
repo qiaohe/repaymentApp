@@ -1,0 +1,47 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>放款错误处理</title>
+    <link type="text/css" rel="stylesheet" href="../resources/css/account.css">
+</head>
+<body>
+<div class="account-content">
+    <div id="handle-title">放款错误处理</div>
+    <div id="handle-result">
+        <table id="handle-table">
+            <tr>
+                <td style="width:6%;">贷款编号</td>
+                <td style="width:10%;">申请编号</td>
+                <td style="width:8%;">审核时间</td>
+                <td style="width:6%;">贷款人姓名</td>
+                <td style="width:10%;">信用卡卡号</td>
+                <td style="width:6%;">发卡行</td>
+                <td style="width:6%;">贷款金额</td>
+                <td style="width:6%;">已转金额</td>
+                <td style="width:12%;">错误原因</td>
+                <td style="width:12%;">操作</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2014021200000001</td>
+                <td>2014-12-1 3:00</td>
+                <td>张三</td>
+                <td>4392287588888888</td>
+                <td>浦发银行</td>
+                <td>4200</td>
+                <td>3000</td>
+                <td>错误原因</td>
+                <td class="operation">
+                    <input type="button" class="fallBack" value="转账退回">
+                    <input type="button" class="addTo" value="补款">
+                    <input type="button" class="takeBack" value="追回">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../resources/js/tools.js"></script>
+<script type="text/javascript" src="../resources/js/biz/handle.js"></script>
+</body>
+</html>
