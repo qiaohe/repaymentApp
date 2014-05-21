@@ -25,7 +25,7 @@ public class Repay {
     @Column(name = "REF_NO")
     private String refNo;
     @Column(name = "IS_SUCCESS")
-    private boolean isSuccess;
+    private int isSuccess;
 
     public String getRepayNo() {
         return repayNo;
@@ -75,11 +75,11 @@ public class Repay {
         this.refNo = refNo;
     }
 
-    public boolean isSuccess() {
+    public int isSuccess() {
         return isSuccess;
     }
 
-    public void setSuccess(boolean isSuccess) {
+    public void setSuccess(int isSuccess) {
         this.isSuccess = isSuccess;
     }
 

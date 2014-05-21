@@ -24,15 +24,19 @@ public class Loan {
     @Column(name = "BID")
     private Long id;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+
     @JoinColumn(name = "APP_NO")
     @JsonIgnore
     private Application application;
+
     @Column(name = "APP_NO", updatable = false, insertable = false)
     private String applicationNo;
+
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
     private Member member;
+
     @Column(name = "AMT")
     private Double amt;
     @Column(name = "APR")
@@ -55,9 +59,11 @@ public class Loan {
     private Integer maxDelq = 0;
     @Column(name = "STATUS")
     private Integer status;
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
     private Pay pay;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
@@ -215,8 +221,13 @@ public class Loan {
         return new LoanRequest(this.amt, apr, term, pay.getConfirmDate());
     }
 
-    public List<RepayPlan> createRepayPlan() {
-        List<RepayPlan> result = new ArrayList<>();
+    public void addRepayPlan(RepayPlan plan) {
+        if (!repayPlans.contains(plan))
+            repayPlans.add(plan);
+    }
+
+    public void createRepayPlans() {
+        Double sumInterest = 0d;
         List<RepayItem> items = new RepayListCalculator(getLoanRequest()).calculate();
         for (RepayItem repayItem : items) {
             RepayPlan rp = new RepayPlan();
@@ -229,9 +240,11 @@ public class Loan {
             rp.setRestPrincipal(repayItem.getRestPrincipal());
             rp.setDueAmt(repayItem.getAmt());
             rp.setMember(this.getMember());
-            result.add(rp);
+            sumInterest += rp.getDueInterest();
+            this.addRepayPlan(rp);
         }
-        return result;
+        interest = sumInterest;
+
     }
 
     @JsonIgnore
@@ -255,14 +268,12 @@ public class Loan {
 
     @Transient
     public boolean isOverDueStatus() {
-       return status == 1 || status == 2;
+        return status == 1 || status == 2;
     }
 
+    @Transient
     public Date getDuePayDay() {
-
-      return   new Day(getStartDate()).getCurrentDayOfMonth();
-
-
+        return new Day(getStartDate()).getCurrentDayOfMonth();
     }
 }
 

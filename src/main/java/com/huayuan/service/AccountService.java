@@ -28,13 +28,17 @@ public interface AccountService {
 
     public List<Loan> getLoansBy(Long memberId);
 
-    public void rePay(Long memberId, Double amount);
+    public void offset(Long memberId);
+
+    public void repay(Long memberId, Double amount);
 
     public boolean review(Long loanId);
 
     public LoanSummary getLoansSummary(Long memberId);
 
     public Loan createLoanBy(Application application);
+
+    public Double getAmtWithinThisPeriod(Long memberId);
 
     public void updateOverDue();
 }
