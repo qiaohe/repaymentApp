@@ -43,7 +43,7 @@
             return ms ? new Date(ms).format("yyyyMMdd") : "";
         },
         formatDate1:function(ms){
-            return ms ? new Date(ms).format("yyyy-MM-dd HH:mm") : "";
+            return ms ? new Date(ms).format("yyyy-MM-dd") : "";
         }
     });
 })(jQuery);
