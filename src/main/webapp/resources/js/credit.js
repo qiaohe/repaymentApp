@@ -343,6 +343,27 @@
         }
     });
 
+    $("#mobile").keyup(function () {
+        if ($(this).val().length == 11) {
+            $.ajax({
+                url:info.path + "dict/mobileArea/" + $(this).val(),
+                type: "GET",
+                dataType: "text",
+                success: function (text) {
+                    if (text.length) {
+                        $("#num-district").val(text);
+                    }
+                    else {
+                        alert("归属地为空!");
+                    }
+                },
+                error: function () {
+                    alert("手机号码归属地查询错误!");
+                },
+            });
+        }
+    });
+
     function checkInput() {
         var update1 = $.trim($("#update-date").val());
         if(update1 != "" && update1.length != 8) {
