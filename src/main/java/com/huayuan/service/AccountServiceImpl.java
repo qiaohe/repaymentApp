@@ -165,6 +165,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setTransferTime(new Date());
         loan.getPay().setCode(transCode);
+        loan.getPay().setErrorMessage("");
         loan.getPay().setConfirm(1);
 //        loan.getPay().setStaff();
         loanRepository.save(loan);
@@ -184,6 +185,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     public boolean takeBackLoan(Long loanId) {
         Loan loan = loanRepository.findOne(loanId);
+        loan.getPay().setErrorMessage("");
         loan.getPay().setConfirm(1);
         loanRepository.save(loan);
         return true;
