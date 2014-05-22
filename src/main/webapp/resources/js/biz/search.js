@@ -2,7 +2,14 @@
  * Created by Richard Xue on 14-5-19.
  */
 $(function(){
-    var search = {};
+    var search = {},
+        payStatus = {
+            "0":"待处理",
+            "1":"已转账",
+            "2":"完成",
+            "9":"错误",
+            "10":"取消"
+        };
     search.init = function(){
         search.bankMap = search.makeDict("BANK");
         var url = "../api/account/loans/search?q=1=1";
@@ -13,16 +20,23 @@ $(function(){
         $("#search-info").on("click","#search-btn",function(){
             var loanNo = $.trim($("#loanNo").val());
             var status = $.trim($("#status").val());
-            var transDate = $.trim($("#transDate").val());
+            var transDate = $("#transDate").val().replace(/\s+/g,"");
             var param = "";
             if(loanNo) {
                 param += " and b.BID="+loanNo;
             }
             if(status) {
-                param += "";
+                param += " and p.CONFORMED="+status;
             }
             if(transDate) {
-                param += " and p.TRANS_TIME='"+transDate+"'";
+                if(transDate.length == 10) {
+                    var endDate = new Date(transDate.substr(0,4),parseInt(transDate.substr(5,2),10)-1,transDate.substr(8,2));
+                    endDate.setDate(parseInt(transDate.substr(8,2),10)+1);
+                    param += " and p.TRANS_TIME>'"+transDate+"' and p.TRANS_TIME<'"+ $.formatDate1(endDate.getTime())+"'";
+                } else {
+                    alert("转账日期格式不正确！");
+                    return;
+                }
             }
             if(param) {
                 param = param.replace(" and","");
@@ -75,21 +89,22 @@ $(function(){
                 if (!json) { return; }
                 var contentHtml = "";
                 $.each(json,function(i,entity){
+                    var status = payStatus[entity.confirmStatus];
                     contentHtml += "<tr>\n"+
                         "<td>"+entity.loanId+"</td>\n"+
                         "<td>"+entity.appNo+"</td>\n"+
-                        "<td>"+ $.formatDate(entity.appDate)+"</td>\n"+
+                        "<td>"+ $.formatDate1(entity.appDate)+"</td>\n"+
                         "<td>"+entity.name+"</td>\n"+
                         "<td>"+entity.cardNo+"</td>\n"+
                         "<td>"+search.bankMap[entity.bank]+"</td>\n"+
                         "<td>"+entity.amt+"</td>\n"+
                         "<td>"+entity.payAmt+"</td>\n"+
                         "<td>"+(entity.transCode?entity.transCode:"")+"</td>\n"+
-                        "<td>"+$.formatDate(entity.transTime)+"</td>\n"+
-                        "<td>"+entity.confirmId+"</td>\n"+
-                        "<td>"+$.formatDate(entity.confirmDate)+"</td>\n"+
-                        "<td>"+entity.errorMsg+"</td>\n"+
-                        "<td>"+entity.confirmStatus+"</td>\n"+
+                        "<td>"+$.formatDate1(entity.transTime)+"</td>\n"+
+                        "<td>"+(entity.confirmId?entity.confirmId:"")+"</td>\n"+
+                        "<td>"+$.formatDate1(entity.confirmDate)+"</td>\n"+
+                        "<td>"+(entity.errorMsg?entity.errorMsg:"")+"</td>\n"+
+                        "<td>"+(status?status:"")+"</td>\n"+
                     "</tr>";
                 });
                 $("#search-table").append(contentHtml);

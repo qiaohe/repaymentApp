@@ -34,7 +34,7 @@ public class Pay implements Serializable {
     @Column(name = "TRANS_TIME")
     private Date transferTime;
     @Column(name = "CONFORMED")
-    private Integer confirm;
+    private Integer confirm = 0;
     @Column(name = "CONFORMED_DATE")
     private Date confirmDate;
     @Column(name = "ERROR_MESSAGE")

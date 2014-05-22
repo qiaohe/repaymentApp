@@ -3,6 +3,7 @@
 <head>
     <title>转账复核</title>
     <link type="text/css" rel="stylesheet" href="../resources/plugin/bootstrap3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="../resources/plugin/dialog/dialog.css">
     <link type="text/css" rel="stylesheet" href="../resources/css/account.css">
 </head>
 <body>
@@ -11,10 +12,25 @@
     <div id="audit-result">
         <table id="audit-table"></table>
     </div>
+
+    <div id="error-div" style="display: none;">
+        <div class="error-cont">
+            <div class="msg-cont"><span>转账错误描述：</span><select class="msgType">
+                    <option value="卡号或姓名错误">卡号或姓名错误</option>
+                    <option value="转账金额错误，需补款">转账金额错误，需补款</option>
+                    <option value="转账金额错误，需追回">转账金额错误，需追回</option>
+                    <option value="其它">其它</option>
+                </select>
+            </div>
+            <div class="msg-oper"><input type="button" class="msg-confirm" value="确认"><input type="button" class="msg-cancel" value="取消"></div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../resources/js/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="../resources/plugin/bootstrap3/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../resources/plugin/bootbox/bootbox.min.js"></script>
+<script type="text/javascript" src="../resources/plugin/dialog/dialog.js"></script>
 <script type="text/javascript" src="../resources/js/tools.js"></script>
 <script type="text/javascript" src="../resources/js/biz/audit.js"></script>
 </body>
