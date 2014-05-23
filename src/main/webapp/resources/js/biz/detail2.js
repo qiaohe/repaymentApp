@@ -51,9 +51,9 @@
     detail2.loadData = function(url){
         $("#detail2-table").html("<tr>\n"+
             "<td style=\"width:4%;\"></td>"+
+            "<td style=\"width:6%;\">贷款编号</td>\n"+
             "<td style=\"width:6%;\">会员编号</td>\n"+
             "<td style=\"width:6%;\">姓名</td>\n"+
-            "<td style=\"width:6%;\">贷款编号</td>\n"+
             "<td style=\"width:8%;\">金额</td>\n"+
             "<td style=\"width:6%;\">APR(%)</td>\n"+
             "<td style=\"width:6%;\">期数</td>\n"+
@@ -76,9 +76,9 @@
                 $.each(json,function(i,entity){
                     contentHtml += "<tr>\n"+
                         "<td class=\"detail\" loanNo=\""+entity.loanNo+"\" style='cursor: pointer;'> >> </td>"+
+                        "<td>"+entity.loanNo+"</td>\n"+
                         "<td>"+entity.memberNo+"</td>\n"+
                         "<td>"+entity.name+"</td>\n"+
-                        "<td>"+entity.loanNo+"</td>\n"+
                         "<td>&yen;"+entity.amt.toFixed(2)+"</td>\n"+
                         "<td>"+(entity.apr*100).toFixed(2)+"</td>\n"+
                         "<td>"+entity.term+"</td>\n"+

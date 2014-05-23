@@ -16,7 +16,7 @@ public class MemberLoanSummaryDto implements Serializable {
     private String email;
     private Integer education;
     private Integer industry;
-    private String wcNo;
+    private String wcName;
     private String idNo;
     private String name;
     private String mobileCity;
@@ -24,14 +24,14 @@ public class MemberLoanSummaryDto implements Serializable {
     private String blockCode;
 
     public MemberLoanSummaryDto(BigInteger id, Integer sex, String mobile, String email, Integer education, Integer industry,
-                                String wcNo, String idNo, String name, String mobileCity, Integer countOfLoan,String blockCode) {
+                                String wcName, String idNo, String name, String mobileCity, Integer countOfLoan,String blockCode) {
         this.id = id;
         this.sex = sex;
         this.mobile = mobile;
         this.email = email;
         this.education = education;
         this.industry = industry;
-        this.wcNo = wcNo;
+        this.wcName = wcName;
         this.idNo = idNo;
         this.name = name;
         this.mobileCity = mobileCity;
@@ -87,12 +87,12 @@ public class MemberLoanSummaryDto implements Serializable {
         this.industry = industry;
     }
 
-    public String getWcNo() {
-        return wcNo;
+    public String getWcName() {
+        return wcName;
     }
 
-    public void setWcNo(String wcNo) {
-        this.wcNo = wcNo;
+    public void setWcName(String wcName) {
+        this.wcName = wcName;
     }
 
     public String getIdNo() {

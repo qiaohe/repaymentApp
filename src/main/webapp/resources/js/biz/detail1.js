@@ -83,7 +83,7 @@
         $("#name").text(idcard.name);
         $("#idcard").text(idcard.idNo);
         $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
-        $("#gender").text(idcard.sex);
+        $("#gender").text(gender[idcard.sex]);
         $("#idcard-address").text(idcard.address);
         $("#birthday").text($.formatDate(idcard.birthday));
         $("#idcard-valid").text($.formatDate(idcard.validFrom)+"-"+$.formatDate(idcard.validThru));

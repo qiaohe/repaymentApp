@@ -36,20 +36,24 @@ $(function(){
             var idcard = $.trim($("#idcard").val());
             var name = $.trim($("#name").val());
             var mobile = $.trim($("#mobile").val());
+            var onlyFlag = $("#only").prop("checked");
             var param = "";
             if(idcard) {
-                param += " and ic.ID_NO='"+idcard+"'";
+                param += " and ic.ID_NO = '"+idcard+"'";
             }
             if(name) {
-                param += " and ic.NAME='"+name+"'";
+                param += " and ic.NAME = '"+name+"'";
             }
             if(mobile) {
-                param += " and m.mobile='"+mobile+"'";
+                param += " and m.mobile = '"+mobile+"'";
+            }
+            if(onlyFlag) {
+                param += " and ic.ID_NO > ''";
             }
             if(param) {
                 summary.loadData("../api/members/loanSummary/search?q="+param.replace(" and",""));
             } else {
-                summary.loadData("../api/members/loanSummary");
+                summary.loadData("../api/members/loanSummary/search?q=1=1");
             }
         });
         $("#summary-table").on("click",".summary-mem",function(){
@@ -70,7 +74,8 @@ $(function(){
     summary.loadData = function(url){
         $("#summary-table").html("<tr>\n"+
             "<td style=\"width:6%;\">会员号</td>\n"+
-            "<td style=\"width:8%;\">微信号</td>\n"+
+            "<td style=\"width:6%;\">贷款笔数</td>\n"+
+            "<td style=\"width:6%;\">微信用户名</td>\n"+
             "<td style=\"width:6%;\">姓名</td>\n"+
             "<td style=\"width:10%;\">身份证号</td>\n"+
             "<td style=\"width:8%;\">手机号</td>\n"+
@@ -79,7 +84,6 @@ $(function(){
             "<td style=\"width:10%;\">行业</td>\n"+
             "<td style=\"width:6%;\">学历</td>\n"+
             "<td style=\"width:10%;\">email</td>\n"+
-            "<td style=\"width:6%;\">贷款笔数</td>\n"+
             "<td style=\"width:8%;\">BLK</td>\n"+
             "</tr>");
         $.ajax({
@@ -95,7 +99,8 @@ $(function(){
                     var education = summary.educationMap[entity.education];
                     contentHtml += "<tr>\n"+
                         "<td class=\"summary-mem\">"+entity.id+"</td>\n"+
-                        "<td>"+entity.wcNo+"</td>\n"+
+                        "<td class=\"summary-count\">"+entity.countOfLoan+"</td>\n"+
+                        "<td>"+entity.wcName+"</td>\n"+
                         "<td>"+(entity.name?entity.name:"")+"</td>\n"+
                         "<td>"+(entity.idNo?entity.idNo:"")+"</td>\n"+
                         "<td>"+(entity.mobile?entity.mobile:"")+"</td>\n"+
@@ -104,7 +109,6 @@ $(function(){
                         "<td>"+(industry?industry:"")+"</td>\n"+
                         "<td>"+(education?education:"")+"</td>\n"+
                         "<td>"+(entity.email?entity.email:"")+"</td>\n"+
-                        "<td class=\"summary-count\">"+entity.countOfLoan+"</td>\n"+
                         "<td>"+(entity.blockCode?entity.blockCode:"")+"</td>\n"+
                         "</tr>";
                 });
