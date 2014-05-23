@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by dell on 14-5-13.
  */
 public class Loans {
-    private static final List<Integer> STATUS_IND = Arrays.asList(8, 9, 0, 1, 2);
+    private static final List<Integer> STATUS_IND = Arrays.asList(10, 8, 9, 0, 1, 2);
     private Integer count;
     private Integer status = 0;
     private Double amount = 0d;
@@ -28,7 +28,9 @@ public class Loans {
             if (STATUS_IND.indexOf(status) < STATUS_IND.indexOf(loan.getStatus())) status = loan.getStatus();
             if (curDelq < loan.getCurDelq()) curDelq = loan.getCurDelq();
             if (maxDelq < loan.getMaxDelq()) curDelq = loan.getMaxDelq();
-            amount += loan.getAmt();
+            if(loan.getStatus() != 10) {
+                amount += loan.getAmt();
+            }
             if (!statusCountMap.containsKey(loan.getStatus())) statusCountMap.put(loan.getStatus(), 1);
             statusCountMap.put(loan.getStatus(), statusCountMap.get(loan.getStatus()) + 1);
         }
