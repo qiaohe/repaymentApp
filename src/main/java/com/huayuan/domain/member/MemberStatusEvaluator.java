@@ -39,6 +39,7 @@ public class MemberStatusEvaluator {
         List<Loan> loans = loanRepository.findByMember_Id(memberId);
         Map<Integer, Integer> maps = new ConcurrentHashMap<>();
         for (Loan loan : loans) {
+            if (loan.getStatus() == 10) loan.setStatus(0);
             if (loan.isOverDueStatus()) return "11";
             maps.put(loan.getStatus(), maps.get(loan.getStatus()) == null ? 0 : maps.get(loan.getStatus()) + 1);
         }
