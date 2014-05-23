@@ -71,4 +71,12 @@ public class AccountingController {
     public List<LoanCommonDto> findLoanTransDetails(@RequestParam("q") String query) {
         return accountRepository.findLoanTransDetails(query);
     }
+
+    @RequestMapping(value = "/repay/{memberId}/{repayAmt}", method = RequestMethod.GET)
+    @ResponseBody
+    public String repay(@PathVariable Long memberId,@PathVariable Double repayAmt) {
+        accountService.repay(memberId,repayAmt);
+        accountService.offset(memberId);
+        return "1";
+    }
 }

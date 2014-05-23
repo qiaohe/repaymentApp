@@ -9,11 +9,13 @@
             "2": "打呆",
             "8": "等待放款",
             "9": "结清",
+            "10":"放款失败",
             "null": ""
         };
     detail2.init = function() {
         var url = window.location.href, paramPrefix = "?memberNo=";
         var memberNo = detail2.memberNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
+        $("#memberNo").val(memberNo);
         detail2.loadData("../api/members/loans/search?q=idcard.MEMBER_ID='"+memberNo+"'");
         detail2.initEvent();
     };

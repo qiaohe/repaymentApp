@@ -4,7 +4,9 @@ import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.CreditCard;
 import com.huayuan.repository.account.*;
+import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -49,6 +51,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private RepayOffsetRepository repayOffsetRepository;
     @Inject
     private MemberRepository memberRepository;
+    @Inject
+    private CreditCardRepository creditCardRepository;
     private ApplicationEventPublisher publisher;
 
     @Override
@@ -93,6 +97,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         return loanRepository.findByMember_Id(memberId);
     }
 
+    @Override
     public void offset(Long memberId) {
         Account account = accountRepository.findByMemberId(memberId);
         List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.nextMonth());
@@ -205,6 +210,9 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         accountRepository.save(account);
         loan.getPay().setConfirm(10);
         loan.setStatus(10);
+        CreditCard card = loan.getApplication().getCreditCard();
+        card.setIsValid(false);
+        creditCardRepository.save(card);
         sendMessage(loan);
         loanRepository.save(loan);
         return true;
