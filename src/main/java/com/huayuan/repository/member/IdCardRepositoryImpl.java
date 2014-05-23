@@ -43,6 +43,6 @@ public class IdCardRepositoryImpl implements IdCardRepositoryCustom {
         String q = em.createNamedQuery("Member.searchMembersWithLoanSummary")
                 .unwrap(org.hibernate.Query.class)
                 .getQueryString();
-        return JpaSqlResultMapper.list(em.createNativeQuery(q.replace(":q", "WHERE " + query)), MemberLoanSummaryDto.class);
+        return JpaSqlResultMapper.list(em.createNativeQuery(q.replace(":q", "WHERE " + query).replaceAll("\\[","%").replaceAll("]","%")), MemberLoanSummaryDto.class);
     }
 }

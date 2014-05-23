@@ -39,13 +39,13 @@ $(function(){
             var onlyFlag = $("#only").prop("checked");
             var param = "";
             if(idcard) {
-                param += " and ic.ID_NO = '"+idcard+"'";
+                param += " and ic.ID_NO like '["+idcard+"]'";
             }
             if(name) {
-                param += " and ic.NAME = '"+name+"'";
+                param += " and ic.NAME like '["+name+"]'";
             }
             if(mobile) {
-                param += " and m.mobile = '"+mobile+"'";
+                param += " and m.mobile like '["+mobile+"]'";
             }
             if(onlyFlag) {
                 param += " and ic.ID_NO > ''";
