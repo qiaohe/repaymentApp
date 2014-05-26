@@ -3,26 +3,16 @@
 // Configuration
 "use strict";
 
-if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-    window.applicationCache.update();
-}
-
 var config = {};
 config.api_path = "http://180.168.35.37/repaymentApp/api/";
-config.debug = false;
-config.local_debug = false;
+config.debug = true;
+config.local_debug = true;
 config.time = new Date();
-config.time = "?time=" + config.time;
+config.time = "?time=" + config.time.getTime();
 
-if (config.local_debug) {
-    config.member_id = "39";
-    config.status = "3.1";
-}
-else {
-    var id_pattern = /(?:memberId=)\d+/;
-    config.member_id = id_pattern.exec(window.location).toString();
-    config.member_id = config.member_id.slice(9, config.member_id.length);
-}
+var id_pattern = /(?:memberId=)\d+/;
+config.member_id = id_pattern.exec(window.location).toString();
+config.member_id = config.member_id.slice(9, config.member_id.length);
 
 // Methods
 function getStatus() {
@@ -93,7 +83,7 @@ function navigateThruStatusNDes(status, destination) {
         if (parseInt(status) > 2) {
             $.mobile.navigate("#result");
         }
-        else {
+        else{
             var tmp = localStorage.getItem("idcard_front");
             if (tmp) {
                 member.id_card = tmp;
@@ -106,7 +96,7 @@ function navigateThruStatusNDes(status, destination) {
 
             tmp = localStorage.getItem("credit_card");
             if (tmp) {
-                member.card_num = tmp;
+                member.credit_card = tmp;
             }
 
             tmp = localStorage.getItem("industry");
@@ -123,10 +113,6 @@ function navigateThruStatusNDes(status, destination) {
             if (tmp) {
                 member.email = tmp;
             }
-
-            if (member.id_card && member.valid_thru && member.card_num){
-                $.mobile.navigate("#basic-info");
-            }
         }
     }
     else if (/loan/.test(destination)) {
@@ -135,11 +121,11 @@ function navigateThruStatusNDes(status, destination) {
         }
     }
     else if (/congratulation/.test(destination)) {
-        if (status != "5.1" && status != "5.2") {
-            $.mobile.navigate("#loan");
-        }
-        else if (status == "5.2" || status == "12") {
+        if (status == "5.2") {
             $.mobile.navigate("#fail");
+        }
+        else if (status != "5.1") {
+            $.mobile.navigate("#loan");
         }
     }
 }
