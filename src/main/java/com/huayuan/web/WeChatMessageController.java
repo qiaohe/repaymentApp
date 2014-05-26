@@ -104,7 +104,6 @@ public class WeChatMessageController {
         }
         if (tp.isRepay()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
-                    memberService.getAvlCrl(member.getId()),
                     accountService.getAmtWithinThisPeriod(member.getId()));
         }
         if (tp.isApplicationNoNeeded()) {

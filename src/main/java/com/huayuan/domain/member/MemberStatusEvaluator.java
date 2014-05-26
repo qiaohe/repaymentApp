@@ -65,7 +65,7 @@ public class MemberStatusEvaluator {
         Application application = getApprovingApplication(member.getId());
         if (application != null) {
             final String status = application.getWeChatStatus();
-            if (application.getExistingFlag() == 2) return getStatusByLoans(member.getId());
+            if (application.getExistingFlag() == 2 || application.getStatus() == 7) return getStatusByLoans(member.getId());
             return status;
         }
         return member.getPreCrl() > 1000 ? "3.1" : "3.2";
