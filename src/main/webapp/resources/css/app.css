@@ -508,6 +508,7 @@ span.loan-i-cont {
 }
 .loan-item-1 {
     border-top-left-radius: 5px;
+    width: 50%;
 }
 .loan-item-2 {
     border-top-right-radius: 5px;
@@ -516,10 +517,48 @@ span.loan-i-cont {
 .loan-item-3 {
     border-bottom-left-radius: 5px;
     border-top:none;
+    width: 50%;
 }
 .loan-item-4 {
     border-bottom-right-radius:5px;
     border-left: none;border-top:none;
+}
+.loan-sum {
+    border: 1px solid #c0c0c0;
+    font-family: "黑体";
+    width: 89%;
+    margin: 30px 0px 0px 5%;
+    padding-left:0px;
+}
+.loan-sum .sum-item {
+    height: 140px;
+}
+.loan-sum .sum-item-l {
+    background-color: #efefef;
+    color: #404040;
+    font-size: 24px;
+    width: 16%;
+    height: 140px;
+    line-height: 140px;
+    float: left;
+    text-align: center;
+}
+.loan-sum .sum-item-r {
+    float: left;
+}
+.loan-sum .sum-r-detail {
+    padding: 10px 0 10px 20px;
+}
+.loan-sum .sum-r-item {
+    line-height: 24px;
+    height: 24px;
+    font-size: 16px;
+}
+.loan-sum .sum-r-l {
+    color: #c0c0c0;
+}
+.loan-sum .sum-r-r {
+    color: #404040;
 }
 /************************** Loan Page End *****************************/
 hr{
