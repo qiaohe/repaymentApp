@@ -1,0 +1,21 @@
+CACHE MANIFEST
+#version 3.1
+NETWORK:
+index.html
+resources/js/jquery-1.11.0.min.js
+resources/js/jquery.mobile-1.4.2.min.js
+resources/js/app.js
+resources/js/navigator.js
+resources/css/jquery.mobile.structure-1.4.2.min.css
+resources/js/jquery.mobile-1.4.2.min.js
+resources/css/app.css
+resources/img/
+api/members/27/crl
+api/members/40/crl
+api/members/27/avlCrl
+api/members/40/avlCrl
+api/
+resources/css/
+resources/js/
+resources/img/public/
+resources/img/other_icons/
