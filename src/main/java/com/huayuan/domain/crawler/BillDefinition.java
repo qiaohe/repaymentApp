@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by dell on 14-4-6.
  */
-@XmlRootElement(name="bill")
+@XmlRootElement(name = "bill")
 public class BillDefinition {
     private String bank;
     private String title;
