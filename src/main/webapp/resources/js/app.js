@@ -210,7 +210,7 @@ function testLimit() {
 }
 
 function getAppNo() {
-	$.ajax({
+    $.ajax({
         url: config.api_path + "app/members/" + member.id + "/appNo" + config.time,
         type: "GET",
         async: false,
@@ -227,7 +227,7 @@ function getAppNo() {
 }
 
 function whetherLoanable() {
-	$.ajax({
+    $.ajax({
         url: config.api_path + "app/members/" + member.id + "/loanable" + config.time,
         type: "POST",
         async: false,
@@ -363,50 +363,7 @@ function getReadableDate(million_seconds){
 }
 
 function requestAvilable() {
-	$("#request").css("background-color", "#3ca0e6");
-}
-
-function generateLoanSum(info) {
-    if(info) {
-        $("#total-amount").text(info.totalAmount);
-        $("#total-times").text(info.loanCount);
-        $("#total-payback").text(info.totalDueAmt);
-        $("#total-saved").text(info.totalSavedCost.toFixed(2));
-    }
-    if(info.loans) {
-        var contentHtml = "";
-        var len = info.loans.length;
-        $.each(info.loans,function(i,loan){
-            contentHtml += "<li class=\""+(i!=len-1?"sum-item":"sum-item-last")+"\">\n"+
-                "<div class=\"sum-item-l\">"+(i+1)+"</div>\n"+
-                "<div class=\"sum-item-r\">\n"+
-                "    <ul class=\"sum-r-detail\">\n"+
-                "        <li class=\"sum-r-item\">\n"+
-                "            <span class=\"sum-r-l\">借款日期:</span>\n"+
-                "            <span class=\"sum-r-r\">"+getReadableDate(loan.applyDate).join("-")+"</span>\n"+
-                "        </li>\n"+
-                "        <li class=\"sum-r-item\">\n"+
-                "            <span class=\"sum-r-l\">借款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+loan.amount+"</span>\n"+
-                "        </li>\n"+
-                "        <li class=\"sum-r-item\">\n"+
-                "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
-                "            <span class=\"sum-r-r\">尾号"+loan.creditCardNo.substring(loan.creditCardNo.length - 4)+"</span>\n"+
-                "        </li>\n"+
-                "        <li class=\"sum-r-item\">\n"+
-                "            <span class=\"sum-r-l\">总计应还:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+loan.dueAmt+"</span>\n"+
-                "        </li>\n"+
-                "        <li class=\"sum-r-item\">\n"+
-                "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost.toFixed(2)+"</span>\n"+
-                "        </li>\n"+
-                "    </ul>\n"+
-                "</div>\n"+
-                "</li>";
-        });
-        $("#total-specific").html(contentHtml);
-    }
+    $("#request").css("background-color", "#3ca0e6");
 }
 
 function generateCarousels(loans, template) {
@@ -471,7 +428,7 @@ function returnFootPrint(id, status) {
         }
     });
 }
-         
+
 function shareToChat() {
     WeixinJSBridge.invoke("sendAppMessage",{
         "appid": share.appid,
@@ -482,9 +439,9 @@ function shareToChat() {
         "desc": share.description,
         "title": share.title
     }, function(res) {
-	    if (config.debug) {
-		    alert(res);
-	    }
+        if (config.debug) {
+            alert(res);
+        }
     });
 }
 
@@ -497,14 +454,14 @@ function shareToTimeline() {
         "desc": share.description,
         "title": share.title
     }, function(res) {
-		if (config.debug) {
-			alert(res);
-		}
+        if (config.debug) {
+            alert(res);
+        }
     });
 }
 
 function shareToSina() {
-	
+
 }
 
 function shareToTencent() {
@@ -513,17 +470,17 @@ function shareToTencent() {
         "url": share.link,
     }, function(res) {
         if (config.debug) {
-		    alert(res);
-	    }
+            alert(res);
+        }
     });
 }
 
 function shareToQzone() {
-	
+
 }
 
 function shareToRenren() {
-	
+
 }
 
 // Actions
@@ -581,7 +538,7 @@ $(document).on("pagecreate", "#limit", function () {
             });
         });
     }
-	
+
     $("#credit-card").on("keyup", function (e) {
         $("#card-tip").hide();
         $("#tip-credit").css({"height": "22px", "width": "32px"});
@@ -608,7 +565,7 @@ $(document).on("pagecreate", "#limit", function () {
                         testLimit();
                     });
                 }
-				member.credit_card = num.replace(/ /g, "");
+                member.credit_card = num.replace(/ /g, "");
             }
         }
         else {
@@ -625,8 +582,8 @@ $(document).on("pagecreate", "#limit", function () {
 
     if (member.credit_card) {
         $("#credit-card").val(member.credit_card);
-		$("#tip-credit").attr("src", localStorage.getItem("card_icon"));
-		$("#credit-num").hide();
+        $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
+        $("#credit-num").hide();
     }
 });
 
@@ -659,20 +616,20 @@ $(document).on("pagecreate", "#basic-info", function(){
     if (member.industry) {
         $("#industry-select option[value='" + member.industry + "']").attr("selected", "selected");
     }
-	
-	$("#industry-select").change(function () {
-		$("#industry-txt").hide();
-		localStorage.setItem("industry", $(this).val());
-	});
+
+    $("#industry-select").change(function () {
+        $("#industry-txt").hide();
+        localStorage.setItem("industry", $(this).val());
+    });
 
     if (member.education) {
         $("#education-select option[value='" + member.education + "']").attr("selected", "selected");
     }
-	
-	$("#education-select").change(function () {
-		$("#education-txt").hide();
-		localStorage.setItem("education", $(this).val());
-	});
+
+    $("#education-select").change(function () {
+        $("#education-txt").hide();
+        localStorage.setItem("education", $(this).val());
+    });
 
     if (member.bill_email) {
         $("#mail-new").val(member.bill_email);
@@ -694,11 +651,11 @@ $(document).on("pagecreate", "#basic-info", function(){
                 "data-rel": "popup"
             });
         }
-		else {
-			$("#hand-in").css("background-color", "silver").attr({
+        else {
+            $("#hand-in").css("background-color", "silver").attr({
                 "href": "#",
             });
-		}
+        }
     });
 
     $("#skip, #continue").click(function(){
@@ -717,14 +674,14 @@ $(document).on("pagecreate", "#basic-info", function(){
 
 $(document).on("pagecreate", "#result", function(){
     $("#option-2").click(function(e){
-		$("#share").show();
-	});
-	
-	$("#share-close").click(function () {
-		$("#share").hide();
-	});
-	
-	$("#option-3").click(function(){
+        $("#share").show();
+    });
+
+    $("#share-close").click(function () {
+        $("#share").hide();
+    });
+
+    $("#option-3").click(function(){
         $("#next-step").attr("href", "#");
         member.anothertest = true;
     });
@@ -736,33 +693,33 @@ $(document).on("pagecreate", "#result", function(){
     share.appid = "";
 
     $("#share-wechat").click(function () {
-	    shareToChat();
+        shareToChat();
     });
 
     $("#share-circle").click(function () {
-	    shareToTimeline();
+        shareToTimeline();
     });
 
     $("#share-sina").click(function () {
-	    shareToSina();
+        shareToSina();
     });
 
     $("#share-tencent").click(function () {
-	    shareToTencent();
+        shareToTencent();
     });
 
-	$("#share-qzone").click(function () {
-	    shareToQzone();
+    $("#share-qzone").click(function () {
+        shareToQzone();
     });
 
     $("#share-renren").click(function () {
-	    shareToRenren();
+        shareToRenren();
     });
 });
 
 $(document).on("pagebeforeshow", "#result", function(){
-	getCreditLimit();
-	getAvlCrl();
+    getCreditLimit();
+    getAvlCrl();
 
     if (member.status == "11" || member.status == "12"){
         member.limit = 0;
@@ -795,7 +752,7 @@ $(document).on("pagebeforeshow", "#result", function(){
 });
 
 $(document).on("pagecreate", "#loan", function () {
-	if (!dict.bincode) {
+    if (!dict.bincode) {
         getBincode();
     }
 
@@ -812,11 +769,11 @@ $(document).on("pagecreate", "#loan", function () {
             }
         }
     });
-	
-	$("#agree").click(function () {
-		if($("#agree").is(":checked") && member.validate && app.term && app.amount)
-			requestAvilable();
-	});
+
+    $("#agree").click(function () {
+        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+            requestAvilable();
+    });
 
     $("#ok").click(function() {
         $("#out-of-area").hide();
@@ -845,10 +802,17 @@ $(document).on("pagecreate", "#loan", function () {
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum-2").val()).success(function(text){
                 if (text == "true") {
-                    alert("您的信用卡添加成功!");
+                    $("#varifying-tips h4").html("您的信用卡添加成功!");
+                    $("#varifying-tips").show();
+                    var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
+
+                    var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+
+                    $("#cardlist-2").prepend($(tmp));
                 }
                 else {
-                    alert("您的信用卡添加失败!");
+                    $("#varifying-tips h4").html("您的信用卡添加失败!");
+                    $("#varifying-tips").show();
                 }
                 $("#card-add-box-2").hide();
                 member.creditcard = 0;
@@ -868,10 +832,10 @@ $(document).on("pagecreate", "#loan", function () {
     $("#close-2").click(function() {
         $("#card-add-box-2").hide();
     });
-	
-	$("#varifying-tips a").click(function () {
-		$("#varifying-tips").hide();
-	});
+
+    $("#varifying-tips a").click(function () {
+        $("#varifying-tips").hide();
+    });
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
@@ -892,19 +856,19 @@ $(document).on("pagebeforeshow", "#loan", function () {
         $("#acquire-code").off("click").click(function(){
             var phone_num = $("#phone").val();
             if(phone_num.length != 11) {
-				$("#varifying-tips h4").html("请输入正确的手机号码!");
-				$("#varifying-tips").show();
-			}
+                $("#varifying-tips h4").html("请输入正确的手机号码!");
+                $("#varifying-tips").show();
+            }
             else{
                 $.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
                     if(text == "北京" || text == "上海" || text == "广州" || text == "深圳") {
                         member.phone = phone_num;
                         sendVarificationCode(member.phone).success(function(){
                             $("#varifying-tips h4").html("您的验证码已发送!");
-							$("#varifying-tips").show();
+                            $("#varifying-tips").show();
                         }).error(function () {
                             $("#varifying-tips h4").html("您的验证码发送失败!");
-							$("#varifying-tips").show();
+                            $("#varifying-tips").show();
                         });
                     }
                     else {
@@ -932,16 +896,16 @@ $(document).on("pagebeforeshow", "#loan", function () {
             if(vcode.length == 6 && member.phone.length == 11){
                 matchVarificationCode(vcode, member.phone).success(function(text){
                     if("true" == text){
-						$("#varifying-tips h4").html("您已输入有效的验证码!");
-						$("#varifying-tips").show();
+                        $("#varifying-tips h4").html("您已输入有效的验证码!");
+                        $("#varifying-tips").show();
                         member.validate = true;
-						if($("#agree").is(":checked") && member.validate && app.term && app.amount)
-							requestAvilable();
+                        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+                            requestAvilable();
                     }
                     else {
-						$("#varifying-tips h4").html("验证码错误!");
-						$("#varifying-tips").show();
-					}
+                        $("#varifying-tips h4").html("验证码错误!");
+                        $("#varifying-tips").show();
+                    }
                 });
             }
         });
@@ -973,29 +937,29 @@ $(document).on("pagebeforeshow", "#loan", function () {
             app.amount = $(this).val();
             countPayback(app);
         }
-		
-		if($("#agree").is(":checked") && member.validate && app.term && app.amount)
-			requestAvilable();
+
+        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+            requestAvilable();
     });
 
     $("#term-3").off("click").click(function(){
-		if (app.term != "3"){
-			$("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
-			$("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
-			app.term = "3";
-			app.amount = $("#amount").val();
-			countPayback(app);
-		}
+        if (app.term != "3"){
+            $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
+            $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
+            app.term = "3";
+            app.amount = $("#amount").val();
+            countPayback(app);
+        }
     });
 
     $("#term-6").off("click").click(function(){
-		if (app.term != "6") {
-			$("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
-			$("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
-			app.term = "6";
-			app.amount = $("#amount").val();
-			countPayback(app);
-		}
+        if (app.term != "6") {
+            $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
+            $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
+            app.term = "6";
+            app.amount = $("#amount").val();
+            countPayback(app);
+        }
     });
 
     if(!member.creditcard){
@@ -1004,7 +968,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist-2").prepend($(tmp));
@@ -1018,8 +982,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#new-cardnum-2-placeholder").hide();
         else
             $("#new-cardnum-2-placeholder").show();
-		
-		setCardIcon("tip-new-cardnum-2", tmp);
+
+        setCardIcon("tip-new-cardnum-2", tmp);
 
         if (tmp.length % 5 == 4) {
             if (e.keyCode != 8)
@@ -1030,27 +994,28 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 });
 
-$(document).on("click", ".card-container", function () {
+$(document).on("tap", ".card-container", function () {
+    alert("card-container!");
     app.credit_card = $(this).children("div").html();
     $("#cardlist-2").popup("close");
-	setTimeout(function () {
-		$("#card-confirm-2").show();
-	}, 200);
+    setTimeout(function () {
+        $("#card-confirm-2").show();
+    }, 200);
     $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
-$(document).on("click", ".card-container-0", function () {
+$(document).on("tap", ".card-container-0", function () {
     app.credit_card = $(this).children("div").html();
     $("#cardlist").popup("close");
     setTimeout(function () {
-		$("#card-confirm").show();
-	}, 200);
+        $("#card-confirm").show();
+    }, 200);
     $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
 $(document).on("pagebeforeshow", "#congratulation", function(){
     getAppNo();
-	if (!dict.bincode) {
+    if (!dict.bincode) {
         getBincode();
     }
 
@@ -1075,8 +1040,8 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
             var tmp = [];
             $.each(data, function(ind, obj){
-                var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container-0' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:0 30px'>" + obj.cardNo + "</div></div><hr>";
+                var icon_src = getCardIconSrc(obj.bank);
+                tmp += "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>"
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist").prepend($(tmp));
@@ -1086,13 +1051,13 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     $("#new-cardnum").off("keyup").keyup(function (e) {
         $("new-cardnum-tip").html("请使用您自己的卡片, 否则借款将无法注入").css("color", "#333333");
         var tmp = $(this).val();
-		
+
         if(tmp.length > 0)
             $("#new-cardnum-placeholder").hide();
         else
             $("#new-cardnum-placeholder").show();
 
-		setCardIcon("tip-new-cardnum", tmp);
+        setCardIcon("tip-new-cardnum", tmp);
 
         if (tmp.length % 5 == 4) {
             if (e.keyCode != 8)
@@ -1112,7 +1077,9 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#add-another").off("click").click(function(){
         $("#cardlist").popup("close");
-        $("#card-add-box").show();
+        setTimeout(function () {
+            $("#card-add-box").show();
+        }, 200);
     });
 
     $("#return").off("click").click(function(){
@@ -1123,8 +1090,17 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         var card_num = $("#new-cardnum").val();
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum").val()).success(function(){
-                alert("您的信用卡添加成功!");
                 $("#card-add-box").hide();
+
+                var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
+
+                var tmp = "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+
+                $("#cardlist-2").prepend($(tmp));
+
+                $("#cong-tips h4").html("您的信用卡添加成功!");
+                $("#cong-tips").show();
+
             }).error(function(){
                 $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
             });
@@ -1140,6 +1116,26 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#close-1").off("click").click(function() {
         $("#card-add-box").hide();
+    });
+
+    $("#cong-tips a").off("tap").tap(function () {
+        $("#cong-tips").hide();
+    });
+});
+
+$(document).on("pagecreate", "#repayment-0", function(){
+    $.ajax({
+        url: config.api_path + "account/members/" + member.id,
+        type: "GET",
+        async: false,
+        dataType:"json",
+        success: function(json){
+            member.loan = json;
+        },
+        error: function () {
+            if (config.debug)
+                alert(config.api_path + "account/members/" + member.id);
+        }
     });
 });
 
