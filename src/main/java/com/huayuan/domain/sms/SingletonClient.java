@@ -1,4 +1,4 @@
-package com.huayuan.integration.sms;
+package com.huayuan.domain.sms;
 
 
 import cn.emay.sdk.client.api.Client;

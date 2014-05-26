@@ -1,18 +1,16 @@
-package com.huayuan.integration.wechat.domain;
+package com.huayuan.domain.wechat;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.huayuan.common.util.Constants.*;
+
 /**
  * Created by dell on 14-5-5.
  */
 public class ReplyAnswer {
-    private static final String REPLY_ANSWER_PATTERN = "#[A-F]{1,2}";
-    private static final String COMPANY_QUESTION_PREFIX = "工作地址";
-    private static final String HOME_QUESTION_PREFIX = "家庭住址";
-
     private String answer;
 
     public boolean isValidAnswer() {
@@ -46,9 +44,5 @@ public class ReplyAnswer {
             }
         }
         return null;
-    }
-
-    public String getAnswer() {
-        return answer;
     }
 }

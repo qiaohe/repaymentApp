@@ -11,7 +11,7 @@ import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.*;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEnum;
-import com.huayuan.integration.wechat.domain.ReplyAnswer;
+import com.huayuan.domain.wechat.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.account.LoanRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;

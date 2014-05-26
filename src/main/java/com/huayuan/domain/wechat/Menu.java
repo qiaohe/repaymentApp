@@ -1,4 +1,4 @@
-package com.huayuan.integration.wechat.domain;
+package com.huayuan.domain.wechat;
 
 import javax.persistence.*;
 import java.io.Serializable;

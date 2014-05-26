@@ -1,6 +1,6 @@
 package com.huayuan.repository.integration;
 
-import com.huayuan.integration.wechat.domain.Menu;
+import com.huayuan.domain.wechat.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

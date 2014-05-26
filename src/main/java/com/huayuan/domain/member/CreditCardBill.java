@@ -2,6 +2,8 @@ package com.huayuan.domain.member;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.domain.crawler.BillEmail;
+import com.huayuan.domain.crawler.billparser.BillValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,14 +23,14 @@ public class CreditCardBill implements Serializable {
     private Long id;
 
     @Column(name = "BANK")
-    private Short bank;
+    private Integer bank;
 
     @Column(name = "SOURCE")
     @Enumerated
     private BillSourceEnum source;
 
     @Column(name = "CRL")
-    private Long crl;
+    private Double crl;
 
     @Column(name = "PAY_DUE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -69,11 +71,11 @@ public class CreditCardBill implements Serializable {
         this.id = id;
     }
 
-    public Short getBank() {
+    public Integer getBank() {
         return bank;
     }
 
-    public void setBank(Short bank) {
+    public void setBank(Integer bank) {
         this.bank = bank;
     }
 
@@ -85,11 +87,11 @@ public class CreditCardBill implements Serializable {
         this.source = source;
     }
 
-    public Long getCrl() {
+    public Double getCrl() {
         return crl;
     }
 
-    public void setCrl(Long crl) {
+    public void setCrl(Double crl) {
         this.crl = crl;
     }
 
@@ -163,5 +165,21 @@ public class CreditCardBill implements Serializable {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public static CreditCardBill valueOf(final BillValue billValue, final BillEmail billEmail, final Integer bankId) {
+        CreditCardBill result = new CreditCardBill();
+        result.setCrl(billValue.getCrl());
+        result.setAmtUsd(billValue.getAmtUsd());
+        result.setAmtRmb(billValue.getAmtRmb());
+        result.setCycleThru(billValue.getCycleThru());
+        result.setCycleFrom(billValue.getCycleFrom());
+        result.setSource(BillSourceEnum.CRAWLER);
+        result.setCreateTime(new Date());
+        result.setPayDue(result.getPayDue());
+        result.setEmail(billEmail.getEmail());
+        result.setBank(bankId);
+        return result;
+
     }
 }

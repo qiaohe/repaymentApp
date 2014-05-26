@@ -1,4 +1,4 @@
-package com.huayuan.integration.wechat.domain;
+package com.huayuan.domain.wechat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -71,6 +71,6 @@ public class MessageTemplate implements Serializable {
     }
 
     public boolean isUrlNotNeeded() {
-        return getStatuses().equalsIgnoreCase("1,2,3.1,3.2,4,5.1,5.2,6,7,12,13") || getStatuses().equalsIgnoreCase("12,13") ;
+        return getStatuses().equalsIgnoreCase("1,2,3.1,3.2,4,5.1,5.2,6,7,12,13") || getStatuses().equalsIgnoreCase("12,13");
     }
 }

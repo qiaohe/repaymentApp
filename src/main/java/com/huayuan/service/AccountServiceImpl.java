@@ -266,11 +266,4 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
     }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        accountService.review(6l, 11.0);
-    }
-
 }

@@ -1,6 +1,6 @@
 package com.huayuan.service;
 
-import com.huayuan.integration.sms.SingletonClient;
+import com.huayuan.domain.sms.SingletonClient;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

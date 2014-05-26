@@ -1,13 +1,14 @@
 package com.huayuan.service;
 
+import com.huayuan.common.App;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.accounting.Account;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
-import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
+import com.huayuan.domain.wechat.WeChatUser;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
@@ -17,15 +18,11 @@ import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by dell on 14-3-19.
@@ -33,7 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service(value = "memberService")
 @Transactional
 public class MemberServiceImpl implements MemberService {
-    private static final ConcurrentHashMap<Integer, String> BANK_MAP = new ConcurrentHashMap<>();
     @Inject
     private MemberRepository memberRepository;
     @Inject
@@ -54,15 +50,10 @@ public class MemberServiceImpl implements MemberService {
     private DictionaryRepository dictionaryRepository;
     @Inject
     private ApplicationRepository applicationRepository;
-
-
-    @PostConstruct
-    private void init() {
-        List<Dictionary> banks = dictionaryRepository.findByType("BANK");
-        for (Dictionary dictionary : banks) {
-            BANK_MAP.put(Integer.valueOf(dictionary.getValue()), dictionary.getName());
-        }
-    }
+    @Inject
+    private BillCrawler billCrawler;
+    @Inject
+    private App app;
 
     @Override
     public PreCredit testCreditLimit(MemberDto memberDto) {
@@ -77,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
         pc.setIdCard(member.getIdCard());
         pc.setCreditCard(creditCard);
         if (memberDto.crawlBillIfNeeded()) {
-            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), BANK_MAP.get(creditCard.getBank()));
+            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), app.getBankName(creditCard.getBank()));
             CreditCardBill bill = addBill(member, billEmail);
             pc.setCreditCardBill(bill);
         }
@@ -90,10 +81,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member createMemberFromWeChat(Member member) {
-        Member mb = memberRepository.findByWcNo(member.getWcNo());
-        if (mb == null) return update(member);
-        return mb;
+    public Member findMemberByWeChatUser(WeChatUser weChatUser) {
+        Member member = memberRepository.findByWcNo(weChatUser.getOpenid());
+        if (member != null) return member;
+        member = new Member(weChatUser.getOpenid());
+        member.setSex(weChatUser.getSex() == 1 ? SexEnum.MALE : SexEnum.FEMALE);
+        member.setWcProvince(weChatUser.getProvince());
+        member.setWcCity(weChatUser.getCity());
+        member.setWcSignature(weChatUser.getNickname());
+        member.setWcUserName(weChatUser.getNickname());
+        return update(member);
     }
 
     @Override
@@ -162,8 +159,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public CreditCardBill addBill(Member member, BillEmail billEmail) {
-        BillCrawler crawler = new BillCrawler();
-        CreditCardBill bill = crawler.crawl(billEmail);
+        CreditCardBill bill = billCrawler.crawl(billEmail);
         bill.setMember(member);
         return creditCardBillRepository.save(bill);
     }
@@ -246,14 +242,5 @@ public class MemberServiceImpl implements MemberService {
         return new MemberProfile.Builder().account(accountRepository.findByMemberId(memberId))
                 .applications(applicationRepository.findApplicationsProfile(memberId))
                 .member(member).build();
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        MemberService service = applicationContext.getBean("memberService", MemberService.class);
-        Member member = service.findMemberBy("ofR7Kt8gvfx-hYNd9t9JIsAt2EDU");
-        System.out.println(member.toString());
-
-
     }
 }

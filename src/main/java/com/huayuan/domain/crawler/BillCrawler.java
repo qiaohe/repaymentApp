@@ -1,8 +1,11 @@
 package com.huayuan.domain.crawler;
 
-import com.huayuan.domain.member.BillSourceEnum;
+import com.huayuan.common.App;
+import com.huayuan.domain.crawler.billparser.BillEmailParser;
+import com.huayuan.domain.crawler.billparser.BillEmailParserFactory;
+import com.huayuan.domain.crawler.billparser.BillValue;
 import com.huayuan.domain.member.CreditCardBill;
-import org.joda.time.DateTime;
+import com.huayuan.service.AccountService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -22,6 +25,8 @@ public class BillCrawler {
     private static final String DEFINITION_PATH = "billDefinition.xml";
     @Inject
     private Unmarshaller jaxbMarshaller;
+    @Inject
+    private App app;
     private BillDefinitions billDefinitions;
 
     @PostConstruct
@@ -33,16 +38,8 @@ public class BillCrawler {
     public CreditCardBill crawl(BillEmail billEmail) {
         final BillDefinition bd = billDefinitions.getDefinitionBy(billEmail.getBank());
         final String content = new EmailSearcher(billEmail).search(bd.getTitle());
-        System.out.println(content);
-        String[] items = new BillEmailParser(bd).parse(content);
-        CreditCardBill result = new CreditCardBill();
-        result.setEmail(billEmail.getEmail());
-        result.setSource(BillSourceEnum.CRAWLER);
-        result.setBank((short) 1);
-        result.setAmtRmb(55000d);
-        result.setCrl(55000l);
-        result.setCycleFrom(new DateTime(2014, 4, 11, 0, 0, 0).toDate());
-        result.setCycleFrom(new DateTime(2014, 5, 11, 0, 0, 0).toDate());
-        return result;
+        BillEmailParser parser = BillEmailParserFactory.getInstance().create(app.getBankId(billEmail.getBank()));
+        BillValue billValue = parser.parse(content);
+        return CreditCardBill.valueOf(billValue, billEmail, app.getBankId(billEmail.getBank()));
     }
 }

@@ -56,17 +56,16 @@ public class MemberStatusEvaluator {
         return CollectionUtils.isNotEmpty(applications) ? applications.get(0) : null;
     }
 
-    public String evaluate(final Long memberId) {
-        Member member = memberRepository.findOne(memberId);
+    public String evaluate(Member member) {
         if (MemberStatusEnum.REJECTED.equals(member.getStatus())) {
             if (StringUtils.containsAny(member.getBlockCode(), new char[]{'D', 'E', 'F', 'G', 'I'})) return "11";
             return "12";
         }
         if (member.getPreCrl() == null || member.getPreCrl() == 0) return "1";
-        Application application = getApprovingApplication(memberId);
+        Application application = getApprovingApplication(member.getId());
         if (application != null) {
             final String status = application.getWeChatStatus();
-            if (application.getExistingFlag() == 2) return getStatusByLoans(memberId);
+            if (application.getExistingFlag() == 2) return getStatusByLoans(member.getId());
             return status;
         }
         return member.getPreCrl() > 1000 ? "3.1" : "3.2";
