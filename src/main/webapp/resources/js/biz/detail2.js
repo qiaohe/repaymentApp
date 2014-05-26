@@ -13,10 +13,16 @@
             "null": ""
         };
     detail2.init = function() {
-        var url = window.location.href, paramPrefix = "?memberNo=";
-        var memberNo = detail2.memberNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
-        $("#memberNo").val(memberNo);
-        detail2.loadData("../api/members/loans/search?q=idcard.MEMBER_ID='"+memberNo+"'");
+        var url = window.location.href, paramPrefix = "?memberNo=",paramPrefix2 = "?loanNo=";
+        if(url.indexOf(paramPrefix) > -1) {
+            var memberNo = detail2.memberNo = url.substring(url.indexOf(paramPrefix) + paramPrefix.length);
+            $("#memberNo").val(memberNo);
+            detail2.loadData("../api/members/loans/search?q=idcard.MEMBER_ID='"+memberNo+"'");
+        } else if(url.indexOf(paramPrefix2) > -1) {
+            var loanNo = detail2.loanNo = url.substring(url.indexOf(paramPrefix2) + paramPrefix2.length);
+            $("#loanNo").val(loanNo);
+            detail2.loadData("../api/members/loans/search?q=b.BID='"+loanNo+"'");
+        }
         detail2.initEvent();
     };
     detail2.initEvent = function() {

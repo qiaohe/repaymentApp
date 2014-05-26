@@ -45,6 +45,12 @@ $(function(){
             }
             search.loadData("../api/account/loans/search?q="+param);
         });
+        $("#search-table").on("click",".search_no",function(){
+            var search_no = $(this).text();
+            if(search_no) {
+                window.open("detail2.html?loanNo="+search_no,"_blank");
+            }
+        });
     };
     search.makeDict = function (type) {
         var map = {};
@@ -65,7 +71,7 @@ $(function(){
     };
     search.loadData = function(url){
         $("#search-table").html("<tr>\n"+
-                "<td style=\"width:6%;\">贷款编号</td>\n"+
+                "<td style=\"width:5%;\">贷款编号</td>\n"+
                 "<td style=\"width:8%;\">申请编号</td>\n"+
                 "<td style=\"width:8%;\">审核时间</td>\n"+
                 "<td style=\"width:6%;\">贷款人姓名</td>\n"+
@@ -91,7 +97,7 @@ $(function(){
                 $.each(json,function(i,entity){
                     var status = payStatus[entity.confirmStatus];
                     contentHtml += "<tr>\n"+
-                        "<td>"+entity.loanId+"</td>\n"+
+                        "<td class=\"search_no\">"+entity.loanId+"</td>\n"+
                         "<td>"+entity.appNo+"</td>\n"+
                         "<td>"+ $.formatDate1(entity.appDate)+"</td>\n"+
                         "<td>"+entity.name+"</td>\n"+
