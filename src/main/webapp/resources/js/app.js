@@ -368,21 +368,22 @@ function requestAvilable() {
 
 function generateLoanSum(info) {
     if(info) {
-        $("#total-amount").text(loan.totalAmount);
-        $("#total-times").text(loan.loanCount);
-        $("#total-payback").text(loan.totalDueAmt);
-        $("#total-saved").text(loan.totalSavedCost);
+        $("#total-amount").text(info.totalAmount);
+        $("#total-times").text(info.loanCount);
+        $("#total-payback").text(info.totalDueAmt);
+        $("#total-saved").text(info.totalSavedCost.toFixed(2));
     }
     if(info.loans) {
         var contentHtml = "";
-        $.each(loan.loans,function(i,loan){
-            contentHtml += "<li class=\"sum-item\">\n"+
+        var len = info.loans.length;
+        $.each(info.loans,function(i,loan){
+            contentHtml += "<li class=\""+(i!=len-1?"sum-item":"sum-item-last")+"\">\n"+
                 "<div class=\"sum-item-l\">"+(i+1)+"</div>\n"+
                 "<div class=\"sum-item-r\">\n"+
                 "    <ul class=\"sum-r-detail\">\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款日期:</span>\n"+
-                "            <span class=\"sum-r-r\">"+loan.applyDate+"</span>\n"+
+                "            <span class=\"sum-r-r\">"+getReadableDate(loan.applyDate).join("-")+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+
@@ -390,7 +391,7 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
-                "            <span class=\"sum-r-r\">尾号"+loan.creditCardNo.substring(0,loan.creditCardNo.length - 4)+"</span>\n"+
+                "            <span class=\"sum-r-r\">尾号"+loan.creditCardNo.substring(loan.creditCardNo.length - 4)+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">总计应还:</span>\n"+
@@ -398,7 +399,7 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost+"</span>\n"+
+                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost.toFixed(2)+"</span>\n"+
                 "        </li>\n"+
                 "    </ul>\n"+
                 "</div>\n"+
@@ -1187,12 +1188,6 @@ $(document).on("pageshow", "#repayment-0", function () {
     generateCarousels(member.loan.loans, html_template);
 
     generateLoanSum(member.loan);
-});
-
-$(document).on("pagecreate", "#sum-loan", function(){
-    $("#sum-loan a").click(function(){
-        $.mobile.back();
-    });
 });
 
 $("a").on({

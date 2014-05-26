@@ -531,15 +531,19 @@ span.loan-i-cont {
     padding-left:0px;
 }
 .loan-sum .sum-item {
-    height: 140px;
+    height: 110px;
+    border-bottom: 1px solid #c0c0c0;
+}
+.loan-sum .sum-item-last {
+    height: 110px;
 }
 .loan-sum .sum-item-l {
     background-color: #efefef;
     color: #404040;
-    font-size: 24px;
+    font-size: 20px;
     width: 16%;
-    height: 140px;
-    line-height: 140px;
+    height: 110px;
+    line-height: 110px;
     float: left;
     text-align: center;
 }
@@ -547,12 +551,12 @@ span.loan-i-cont {
     float: left;
 }
 .loan-sum .sum-r-detail {
-    padding: 10px 0 10px 20px;
+    padding: 10px 0 10px 16px;
 }
 .loan-sum .sum-r-item {
-    line-height: 24px;
-    height: 24px;
-    font-size: 16px;
+    line-height: 18px;
+    height: 18px;
+    font-size: 12px;
 }
 .loan-sum .sum-r-l {
     color: #c0c0c0;
