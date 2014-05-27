@@ -50,7 +50,9 @@ public class LoanSummaryBuilder {
                     loan.getPaidTerm(),
                     savedCost,
                     getAmtWithinThisPeriod(loan.getId()),
-                    loan.isOverDue(), repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
+                    loan.isOverDue(),
+                    loan.getStatus(),
+                    repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
         }
         return summary;
     }
