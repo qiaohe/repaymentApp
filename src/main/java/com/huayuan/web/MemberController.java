@@ -1,5 +1,6 @@
 package com.huayuan.web;
 
+import com.huayuan.common.util.Constants;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.*;
@@ -20,6 +21,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import static com.huayuan.common.util.Constants.*;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -60,6 +63,7 @@ public class MemberController {
             public IdCard call() throws Exception {
                 IdCardRecognizer recognizer = new IdCardRecognizer(idCardFrontFile.getBytes());
                 IdCard idCard = recognizer.recognize(true);
+                if (!validateIdCard18(idCard.getIdNo())) throw new IllegalStateException("The id card is not valid");
                 idCard = memberService.addIdCard(memberService.find(id), idCard);
                 return idCard;
             }

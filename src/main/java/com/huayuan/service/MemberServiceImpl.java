@@ -67,11 +67,11 @@ public class MemberServiceImpl implements MemberService {
         pc.setMember(member);
         pc.setIdCard(member.getIdCard());
         pc.setCreditCard(creditCard);
-        if (memberDto.crawlBillIfNeeded()) {
-            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), app.getBankName(creditCard.getBank()));
-            CreditCardBill bill = addBill(member, billEmail);
-            pc.setCreditCardBill(bill);
-        }
+//        if (memberDto.crawlBillIfNeeded()) {
+//            BillEmail billEmail = new BillEmail(memberDto.getBillEmail(), memberDto.getBillPassword(), app.getBankName(creditCard.getBank()));
+//            CreditCardBill bill = addBill(member, billEmail);
+//            pc.setCreditCardBill(bill);
+//        }
         return preCreditRepository.save(pc);
     }
 
