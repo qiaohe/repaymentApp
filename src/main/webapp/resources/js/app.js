@@ -192,8 +192,8 @@ function testLimit() {
             industry: member.industry,
             education: member.education,
             email: member.email,
-            billEmail: member.bill_email,
-            billPassword: member.password
+            billEmail: "",
+            billPassword: ""
         }),
         dataType: "json",
         success: function (json) {
@@ -201,12 +201,21 @@ function testLimit() {
             member.rank = json.rankOfLimit;
             member.anothertest = 0;
             localStorage.clear();
+            $.mobile.navigate("#result");
         },
         error: function () {
             if (config.debug)
                 alert(config.api_path + "members/" + member.id);
         }
     });
+}
+
+function enableLimitTest(btn_id) {
+    if(member.credit_card && member.industry && member.education && member.email) {
+        $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
+            testLimit();
+        });
+    }
 }
 
 function getAppNo() {
@@ -417,6 +426,49 @@ function generateCarousels(loans, template) {
     });
 }
 
+function generateLoanSum(info) {
+    if(info) {
+        $("#total-amount").text(info.totalAmount);
+        $("#total-times").text(info.loanCount);
+        $("#total-payback").text(info.totalDueAmt);
+        $("#total-saved").text(info.totalSavedCost.toFixed(2));
+    }
+    if(info.loans) {
+        var contentHtml = "";
+        var len = info.loans.length;
+        $.each(info.loans,function(i,loan){
+            contentHtml += "<li class=\""+(i!=len-1?"sum-item":"sum-item-last")+"\">\n"+
+                "<div class=\"sum-item-l\">"+(i+1)+"</div>\n"+
+                "<div class=\"sum-item-r\">\n"+
+                "    <ul class=\"sum-r-detail\">\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">借款日期:</span>\n"+
+                "            <span class=\"sum-r-r\">"+getReadableDate(loan.applyDate).join("-")+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">借款金额:</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+loan.amount+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
+                "            <span class=\"sum-r-r\">尾号"+loan.creditCardNo.substring(loan.creditCardNo.length - 4)+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">总计应还:</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+loan.dueAmt+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
+                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost.toFixed(2)+"</span>\n"+
+                "        </li>\n"+
+                "    </ul>\n"+
+                "</div>\n"+
+                "</li>";
+        });
+        $("#total-specific").html(contentHtml);
+    }
+}
+
 function returnFootPrint(id, status) {
     $.ajax({
         url: config.api_path + "members/" + id + "/status/" + status,
@@ -461,7 +513,8 @@ function shareToTimeline() {
 }
 
 function shareToSina() {
-
+    share_to('tsina');
+    return false;
 }
 
 function shareToTencent() {
@@ -476,14 +529,20 @@ function shareToTencent() {
 }
 
 function shareToQzone() {
-
+    share_to('qzone');
+    return false;
 }
 
 function shareToRenren() {
-
+    share_to('renren');
+    return false;
 }
 
 // Actions
+if (member.gender == 1) {
+    $(".gender").html("娘子");
+}
+
 $(document).on("pagecreate", "#limit", function () {
     if (!dict.bincode) {
         getBincode();
@@ -507,6 +566,9 @@ $(document).on("pagecreate", "#limit", function () {
                 $("#front-upload").attr("disabled", true);
                 member.id_card = json.idNo;
                 member.gender = json.sex;
+                if (member.gender == 1) {
+                    $(".gender").html("娘子");
+                }
             }).error(function () {
                 $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
                 $("label[for='front-upload']").css("border-color", "#cc0000");
@@ -584,12 +646,13 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-card").val(member.credit_card);
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
         $("#credit-num").hide();
+        $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
 });
 
 $(document).on("pageshow", "#limit", function(){
     if (member.anothertest) {
-        $("#credit-card").val("").trigger("click");
+        $("#credit-card").val("").trigger("tap");
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
     }
 
@@ -619,7 +682,9 @@ $(document).on("pagecreate", "#basic-info", function(){
 
     $("#industry-select").change(function () {
         $("#industry-txt").hide();
+        member.industry = $(this).val();
         localStorage.setItem("industry", $(this).val());
+        enableLimitTest("hand-in");
     });
 
     if (member.education) {
@@ -628,16 +693,10 @@ $(document).on("pagecreate", "#basic-info", function(){
 
     $("#education-select").change(function () {
         $("#education-txt").hide();
+        member.education = $(this).val();
         localStorage.setItem("education", $(this).val());
+        enableLimitTest("hand-in");
     });
-
-    if (member.bill_email) {
-        $("#mail-new").val(member.bill_email);
-    }
-
-    if (member.password) {
-        $("#password").val(member.password);
-    }
 
     $("#email").keyup(function(){
         if($(this).val().length)
@@ -645,30 +704,8 @@ $(document).on("pagecreate", "#basic-info", function(){
         else
             $("#email-txt").show();
 
-        if($("#industry-select").val() && $("#education-select").val() && $(this).val().length > 8){
-            $("#hand-in").css("background-color", "#3ca0e6").attr({
-                "href": "#billmail",
-                "data-rel": "popup"
-            });
-        }
-        else {
-            $("#hand-in").css("background-color", "silver").attr({
-                "href": "#",
-            });
-        }
-    });
-
-    $("#skip, #continue").click(function(){
-        member.credit_card = $("#credit-card").val();
-        member.industry = $("#industry-select").val();
-        member.education = $("#education-select").val();
-        member.email = $("#email").val();
-        if($("#mail-new").val().length > 8)
-            member.bill_email = $("#mail-new").val();
-        else
-            member.bill_email = member.email;
-        member.password = $("#password").val();
-        testLimit();
+        member.email = $(this).val();
+        enableLimitTest("hand-in");
     });
 });
 
@@ -686,10 +723,10 @@ $(document).on("pagecreate", "#result", function(){
         member.anothertest = true;
     });
 
-    share.img_url = "";
-    share.link = "";
-    share.description = "";
-    share.title = "";
+    share.img_url = "../img/8-1/sword.png";
+    share.link = window.location;
+    share.description = "么么贷的描述, 暂缺";
+    share.title = "么么贷的title, 暂缺";
     share.appid = "";
 
     $("#share-wechat").click(function () {
@@ -727,7 +764,7 @@ $(document).on("pagebeforeshow", "#result", function(){
     }
 
     $("#amt-shown").html(numberWithCommas(member.limit));
-    $("#rank-shown").html(member.rank * 100 + "&#37");
+    $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
     if(member.limit > 4000){
         $("#rank-cmt").html("，官人您是权贵啊！");
         $("#option-1").html("巨款啊！现在就去申请借款");
@@ -749,6 +786,10 @@ $(document).on("pagebeforeshow", "#result", function(){
     else if (member.status == "5.2") {
         $("#option-1").attr("href", "#fail").css("background-color", "#3ca0e6");
     }
+
+    $("#option-3").tap(function () {
+        member.anothertest = 1;
+    });
 });
 
 $(document).on("pagecreate", "#loan", function () {
@@ -789,8 +830,8 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#add-another-2").click(function(){
-        $("#card-add-box-2").show();
         $("#cardlist-2").popup("close");
+        $("#card-add-box-2").show();
     });
 
     $("#return-2").click(function(){
@@ -1027,8 +1068,8 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         success: function (json) {
             $("#amt-x").html(numberWithCommas(json.amt));
             $("#term-shown").html(json.term);
-            $("#each-x").html(json.repayPerTerm);
-            $("#saved-x").html(json.saveCost);
+            $("#each-x").html(Math.round(json.repayPerTerm * 100)/100);
+            $("#saved-x").html(Math.round(json.saveCost * 100)/100);
         },
         error: function () {
             alert(config.api_path + "app/" + member.appNo + config.time);
@@ -1040,8 +1081,8 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
             var tmp = [];
             $.each(data, function(ind, obj){
-                var icon_src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>"
+                var src = getCardIconSrc(obj.bank);
+                tmp += "<div class='card-container-0' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:0 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist").prepend($(tmp));
@@ -1077,9 +1118,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#add-another").off("click").click(function(){
         $("#cardlist").popup("close");
-        setTimeout(function () {
-            $("#card-add-box").show();
-        }, 200);
+        $("#card-add-box").show();
     });
 
     $("#return").off("click").click(function(){
@@ -1090,6 +1129,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         var card_num = $("#new-cardnum").val();
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum").val()).success(function(){
+                alert("您的信用卡添加成功!");
                 $("#card-add-box").hide();
 
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
@@ -1097,9 +1137,6 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                 var tmp = "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
 
                 $("#cardlist-2").prepend($(tmp));
-
-                $("#cong-tips h4").html("您的信用卡添加成功!");
-                $("#cong-tips").show();
 
             }).error(function(){
                 $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
@@ -1117,10 +1154,6 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     $("#close-1").off("click").click(function() {
         $("#card-add-box").hide();
     });
-
-    $("#cong-tips a").off("tap").tap(function () {
-        $("#cong-tips").hide();
-    });
 });
 
 $(document).on("pagecreate", "#repayment-0", function(){
@@ -1139,6 +1172,38 @@ $(document).on("pagecreate", "#repayment-0", function(){
     });
 });
 
+// $(document).on("pageshow", "#repayment-0", function () {
+// var html_template = "<div class=\"c-head\">" +
+// "<div><span class=\"ch-time\"></span>借款&yen;<span class=\"ch-amount\"></span>入卡片<span class=\"ch-tail\"></span></div>" +
+// "</div>" +
+
+// "<div class=\"c-board\">" +
+// "<h3>最近应还金额:</h3>" +
+// "<div>&yen;<span class=\"cb-num\"></span></div>" +
+// "<p><span class=\"cb-date\"></span>到期</p>" +
+// "</div>" +
+
+// "<div class=\"c-paybacknow\">" +
+// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-2.png\"></div>" +
+// "<div class=\"cp-word\">现在就去还款</div>" +
+// "</div>" +
+
+// "<div class=\"c-checkspecific\">" +
+// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-3.png\"></div>" +
+// "<div class=\"cc-word\">查看借款详情</div>" +
+// "</div>" +
+
+// "<div class=\"c-history\">" +
+// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-4.png\"></div>" +
+// "<div class=\"chs-word\">历史还款记录</div>" +
+// "</div>";
+
+// generateCarousels(member.loan.loans, html_template);
+
+// generateLoanSum(member.loan);
+// });
+
+////////////////////////////////////////////////////////////////
 $(document).on("pagecreate", "#repayment-0", function(){
     $.ajax({
         url: config.api_path + "account/members/" + member.id,
@@ -1153,38 +1218,118 @@ $(document).on("pagecreate", "#repayment-0", function(){
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
+
+    generateSumPage(member.loan);
+    generateRepaymentPages(member.loan);
+    registerEvents(member.loan);
+
+    function generateSumPage(obj){
+        $("#total-amount").html(obj.totalAmount);
+        $("#total-times").html(obj.loanCount);
+        $("#total-payback").html(obj.totalDueAmt);
+        $("#total-saved").html(Math.round(obj.totalSavedCost + 100) / 100);
+
+        for(var i = 0; i < obj.loanCount; i++){
+            var tmp = "<li><div class='sl' id='" + ("sl-" + (i + 1)) + "'></div><div class='sr' id='" + ("sr-" + (i + 1)) + "'></div></li>";
+            $("#total-specific").append(tmp);
+            $("#sl-" + (i + 1)).html(i + 1);
+            var readable_date = getReadableDate(obj.loans[i].startDate);
+            $("#sr-" + (i + 1)).append("借款日期: " + readable_date + "<br>借款金额: &yen" + obj.loans[i].amount + "<br>注入卡片: 尾号" + obj.loans[i].creditCardNo.slice(obj.loans[i].creditCardNo.length - 4, obj.loans[i].creditCardNo.length) + "<br>总计应还: &yen" + obj.loans[i].dueAmt + "<br>较信用卡最低还款额，约省&yen" + Math.round(obj.loans[i].savedCost * 100) / 100);
+        }
+    }
+
+    function generateRepaymentPages(obj){
+        var loans = obj.loans;
+        var templateHtml = $("#repayment-0").html();
+        for(var i = 0; i < loans.length; i++){
+            var id = "repayment-" + i;
+            if(i){
+                var tmp = $("<div data-role='page' id='" + id + "'>" + templateHtml + "</div>");
+                tmp.appendTo($("body"));
+                $.mobile.initializePage();
+            }
+            var loan = loans[i];
+            var creditCardSuffix = loan.creditCardNo.slice(loan.creditCardNo.length - 4, loan.creditCardNo.length);
+            $("#" + id + " .repay-s-time").html(getReadableDate(loan.startDate));
+            $("#" + id + " .repay-s-info").html("借款&yen;"+loan.amount+"入卡片"+creditCardSuffix);
+            $("#" + id + " .r-next").html(loan.dueAmt);
+            var date = new Date(loan.startDate);
+            var month = date.getMonth()+1;
+            var duemonth = month + loan.paidTerm + 1;
+            var day = date.getDate();
+            if(duemonth > 12) {
+                duemonth -= 12;
+            }
+            $("#" + id + " .r-deadline").html(duemonth + "月" + day + "日");
+
+            var loanInfo = [getReadableDate(loan.startDate),"尾号" + creditCardSuffix,loan.amount,
+                obj.loanCount + "期(已还" + loan.paidTerm + "期)","每月" + day + "日",loan.principal,loan.restPrincipal];
+            $("#"+id+" .r-popup .li-r").each(function(i,e){
+                $(e).html(loanInfo[i]);
+            });
+
+            for(var j = 0; j < loan.paidTerm; j++){
+                if(j === 0)
+                    $("#" + id + " ul:last-child").after("<li></li>");
+                else
+                    $("#" + id + " ul:last-child").before("<li></li>");
+            }
+        }
+    }
+
+    function registerEvents(obj){
+        if(obj.loans.length > 1){
+            $("#repayment-0").on("swipeleft", function(){
+                $.mobile.changePage("#repayment-1", {transition: "slide"});
+            });
+
+            for(var i = 1; i < obj.loans.length - 1; i++){
+                registerSlides(i);
+            }
+
+            $("#repayment-" + (obj.loans.length - 1)).on("swiperight", function(){
+                $.mobile.changePage("#repayment-" + (obj.loans.length - 2), {transition: "slide", reverse: true});
+            });
+        }
+
+        for(var j = 0; j < obj.loans.length; j++){
+            popLoanSpecific(j);
+        }
+    }
+
+    function registerSlides(i) {
+        $("#repayment-" + i).on("swipeleft", function(){
+            $.mobile.changePage("#repayment-" + (i + 1), {transition: "slide"});
+        });
+
+        $("#repayment-" + i).on("swiperight", function(){
+            $.mobile.changePage("#repayment-" + (i - 1), {transition: "slide", reverse: true});
+        });
+    }
+
+    function popLoanSpecific(i){
+        $("#repayment-" + i + " ul li:nth-child(2)").click(function(){
+            $("#repayment-" + i + " .r-popup").popup("open");
+        });
+    }
+
+    function getReadableDate(million_seconds){
+        var date = new Date(million_seconds);
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var year = date.getFullYear();
+        return year + "-" + month + "-" + day;
+    }
+
+
+
+
+
+
+
 });
+////////////////////////////////////////////////////////////////
 
-$(document).on("pageshow", "#repayment-0", function () {
-    var html_template = "<div class=\"c-head\">" +
-        "<div><span class=\"ch-time\"></span>借款&yen;<span class=\"ch-amount\"></span>入卡片<span class=\"ch-tail\"></span></div>" +
-    "</div>" +
-
-    "<div class=\"c-board\">" +
-        "<h3>最近应还金额:</h3>" +
-        "<div>&yen;<span class=\"cb-num\"></span></div>" +
-        "<p><span class=\"cb-date\"></span>到期</p>" +
-    "</div>" +
-
-    "<div class=\"c-paybacknow\">" +
-        "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-2.png\"></div>" +
-        "<div class=\"cp-word\">现在就去还款</div>" +
-    "</div>" +
-    
-    "<div class=\"c-checkspecific\">" + 
-        "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-3.png\"></div>" +
-        "<div class=\"cc-word\">查看借款详情</div>" +
-    "</div>" +
-    
-    "<div class=\"c-history\">" +
-        "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-4.png\"></div>" +
-        "<div class=\"chs-word\">历史还款记录</div>" +
-    "</div>";
-
-    generateCarousels(member.loan.loans, html_template);
-
-    generateLoanSum(member.loan);
-});
 
 $("a").on({
     vmousedown: function(){
@@ -1218,6 +1363,21 @@ $(document).on("pagecreate", "#patience", function () {
     });
 });
 
+$(document).on("pagecreate", "#feedback", function () {
+    $("#feedback a").tap(function () {
+        var tmp = $("#textarea").val();
+        $.ajax({
+            url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
+            type: "POST",
+            success: function () {},
+            error: function () {
+                if (config.debug)
+                    alert(config.api_path + "members/" + member.id + "/feedback");
+            }
+        });
+    });
+});
+
 window.onunload = function () {
     var print_status;
     var pattern = /#\w+\?/;
@@ -1227,7 +1387,7 @@ window.onunload = function () {
     if (member.status == "0" && (hash == "#limit" || hash == "#basic-info")) {
         print_status = "0";
     }
-    else if (hash == "#result") {
+    else if (hash == "#result" && status == "3.1") {
         print_status = "1";
     }
     else if (hash == "#congratulation" && (!app.credit_card)) {
@@ -1249,7 +1409,7 @@ window.onunload = function () {
         }
         if (member.credit_card) {
             localStorage.setItem("credit_card", member.credit_card);
-			localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
+            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
         }
         if (member.education) {
             localStorage.setItem("education", member.education);

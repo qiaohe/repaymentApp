@@ -6,7 +6,6 @@
 var config = {};
 config.api_path = "http://180.168.35.37/repaymentApp/api/";
 config.debug = true;
-config.local_debug = true;
 config.time = new Date();
 config.time = "?time=" + config.time.getTime();
 
@@ -54,6 +53,7 @@ function getMemberInfo() {
             member.email = json.email;
             member.mobile_varified = json.hasMobilePhone;
             member.existingFlag = json.existingFlag;
+            member.gender = json.sex;
         },
         error: function () {
             if (config.debug)
