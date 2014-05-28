@@ -298,32 +298,13 @@ input {
     height: 18px;
     line-height: 18px;
 }
-#repay-s-img {
-    width: 40px;
-    height: 30px;
-    float: left;
-}
-#repay-s-txt {
-    float: left;
-    height: 30px;
-}
-#repay-s-num {
-    float: right;
-    height: 30px;
-    color: #e67e22;
-    font-weight: bold;
-}
-#repay-s-btn {
-    width: 40px;
-    float: right;
-    height: 30px;
-}
 /************************** Repayment Page Start *****************************/
 .repay-container {
     width: 90%;
     margin: 10px auto;
     border-radius: 5px;
     border: 1px solid #c4c4c4;
+    background-color: #ffffff;
 }
 .repay-summary {
     height: 40px;
@@ -348,6 +329,10 @@ input {
 .repay-amount {
     height: 150px;
     background-color: #aacf5d;
+}
+.repay-amount-delay {
+    height: 150px;
+    background-color: #ffcc32;
 }
 .repay-amt-title {
     font-size: 18px;
@@ -381,6 +366,8 @@ input {
     height: 50px;
     line-height: 50px;
     border-top: 1px solid #c4c4c4;
+    cursor: pointer;
+
 }
 .repay-detail {
     width: 8%;
@@ -397,26 +384,33 @@ input {
     margin-left:2%;
     float: left;
 }
+.repay-info span {
+    color: #e74c3c;
+}
 .replay-collapse {
     float:right;
-    margin-right: 4%;
+    margin-right: 5%;
     height: 100%;
-    background-color: blanchedalmond;
+    width: 25px;
+    background:url("../img/other_icons/collapse.png") no-repeat;
+    background-position-y:12px;
 }
 .replay-expand {
     float:right;
-    margin-right: 4%;
+    margin-right: 5%;
+    width: 25px;
     height: 100%;
-    background-color: blanchedalmond;
+    background:url("../img/other_icons/expand.png") no-repeat;
+    background-position-y:12px;
 }
 .repay-history {
     font-size:18px;
     font-weight: bold;
     color: #757575;
     width: 100%;
-    height: 120px;
     padding:5px 0;
     margin:0px;
+    display: none;
 }
 .repay-h-item {
     height: 50px;
@@ -460,6 +454,53 @@ input {
     width: 10%;
     float: right;
 }
+#loan-specific {
+    width: 800px;
+    background-color: white;
+    height: 216px;
+    border: 1px solid silver;
+    border-radius: 5px;
+    color: #404040;
+    position: relative;
+}
+#loan-specific .loan-d-left {
+    width: 35%;
+    border-radius: 5px 0 0 5px;
+    background-color: #e7e7e7;
+    float: left;
+    text-align: center;
+}
+#loan-specific .loan-d-right {
+    width: 65%;
+    border-radius: 0 5px 5px 0;
+    float: left;
+}
+#loan-specific .loan-d-l {
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-family: "黑体";
+    font-weight: bold;
+    border-bottom: 1px solid #c0c0c0;
+}
+#loan-specific .loan-d-r {
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-family: "黑体";
+    font-weight: bold;
+    border-bottom: 1px solid #c0c0c0;
+    padding-left: 8%;
+}
+.loan-d-close {
+    cursor: pointer;
+    position: absolute;
+    background: url("../img/other_icons/7-3-2.png") no-repeat;
+    width: 50px;
+    height: 50px;
+    top: -30px;
+    right: -5px;
+}
 .repay-footer{
     bottom: 30px;
 }
@@ -472,12 +513,44 @@ input {
 .repay-footer-summary {
     width: 90%;
     height: 50px;
-    font-size: 16px;
-    line-height: 30px;
+    font-size: 18px;
+    line-height: 50px;
     margin: auto;
     background-color: white;
     border-radius: 5px;
     border: 1px solid #c4c4c4;
+}
+.repay-s-img {
+    width: 8%;
+    height: 50px;
+    float: left;
+    margin-left: 5%;
+    background: url("../img/other_icons/9-3-1.png") no-repeat;
+    background-position-y: 12px;
+}
+.repay-s-txt {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    margin-left: 2%;
+    font-weight: bold;
+    color: #757575;
+}
+.repay-s-num {
+    float: right;
+    color: #e67e22;
+    font-weight: bold;
+    height: 50px;
+    line-height: 50px;
+    margin-right: 4%;
+}
+.repay-s-btn {
+    width: 25px;
+    float: right;
+    background: url("../img/other_icons/collapse.png") no-repeat;
+    background-position-y: 12px;
+    height: 100%;
+    margin-right: 5%;
 }
 /************************** Repayment Page End *****************************/
 /************************** Loan Page Start *****************************/
@@ -588,6 +661,7 @@ hr{
     height: 25px;
     line-height: 25px;
     text-align: center;
+    color: white;
 }
 
 .c-board{
@@ -609,10 +683,6 @@ hr{
 .cp-word, .cc-word, .chs-word{
     float: left;
     margin-left: 5px;
-}
-
-.c-head{
-    color: white;
 }
 
 .c-board h3{
