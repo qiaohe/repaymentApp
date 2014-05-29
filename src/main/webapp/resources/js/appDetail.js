@@ -414,6 +414,19 @@
         $("#blockCode").val(member.blockCode);
         $("#blockTime").val($.formatDate(member.blockTime));
         $("#memberCreateTime").val($.formatDate(member.createTime));
+        if(member.mobile) {
+            $.ajax({
+                url: "../api/dict/mobileArea/"+member.mobile,
+                dataType: "json",
+                type: "GET",
+                contentType: "application/json",
+                success: function (json) {
+                    if (json) {
+                        $("#mobileCity").text(json);
+                    }
+                }
+            });
+        }
 
         var idCard = member.idCard;
         appDetail.idcard = idCard.idNo;
