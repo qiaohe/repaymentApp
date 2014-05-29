@@ -1160,6 +1160,10 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 });
 
 $(document).on("pagecreate", "#repayment-0", function () {
+    sliderPage();
+});
+
+function sliderPage() {
     var $items = $(".item");
     $items.current = $items[0];
 
@@ -1198,186 +1202,9 @@ $(document).on("pagecreate", "#repayment-0", function () {
         swipeleft: $items.next,
         swiperight: $items.prev
     });
-
     $(".item:first").on("swipeleft", $items.next);
-
     $(".item:last").on("swiperight", $items.prev);
-});
-
-//$(document).on("pagecreate", "#repayment-0", function(){
-//    $.ajax({
-//        url: config.api_path + "account/members/" + member.id,
-//        type: "GET",
-//        async: false,
-//        dataType:"json",
-//        success: function(json){
-//            member.loan = json;
-//        },
-//        error: function () {
-//            if (config.debug)
-//                alert(config.api_path + "account/members/" + member.id);
-//        }
-//    });
-//});
-
-// $(document).on("pageshow", "#repayment-0", function () {
-// var html_template = "<div class=\"c-head\">" +
-// "<div><span class=\"ch-time\"></span>借款&yen;<span class=\"ch-amount\"></span>入卡片<span class=\"ch-tail\"></span></div>" +
-// "</div>" +
-
-// "<div class=\"c-board\">" +
-// "<h3>最近应还金额:</h3>" +
-// "<div>&yen;<span class=\"cb-num\"></span></div>" +
-// "<p><span class=\"cb-date\"></span>到期</p>" +
-// "</div>" +
-
-// "<div class=\"c-paybacknow\">" +
-// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-2.png\"></div>" +
-// "<div class=\"cp-word\">现在就去还款</div>" +
-// "</div>" +
-
-// "<div class=\"c-checkspecific\">" +
-// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-3.png\"></div>" +
-// "<div class=\"cc-word\">查看借款详情</div>" +
-// "</div>" +
-
-// "<div class=\"c-history\">" +
-// "<div class=\"c-img\"><img src=\"resources/img/other_icons/9-3-4.png\"></div>" +
-// "<div class=\"chs-word\">历史还款记录</div>" +
-// "</div>";
-
-// generateCarousels(member.loan.loans, html_template);
-
-// generateLoanSum(member.loan);
-// });
-
-////////////////////////////////////////////////////////////////
-//$(document).on("pagecreate", "#repayment-0", function(){
-//    $.ajax({
-//        url: config.api_path + "account/members/" + member.id,
-//        type: "GET",
-//        async: false,
-//        dataType:"json",
-//        success: function(json){
-//            member.loan = json;
-//        },
-//        error: function () {
-//            if (config.debug)
-//                alert(config.api_path + "account/members/" + member.id);
-//        }
-//    });
-//
-//    generateSumPage(member.loan);
-//    generateRepaymentPages(member.loan);
-//    registerEvents(member.loan);
-//
-//    function generateSumPage(obj){
-//        $("#total-amount").html(obj.totalAmount);
-//        $("#total-times").html(obj.loanCount);
-//        $("#total-payback").html(obj.totalDueAmt);
-//        $("#total-saved").html(Math.round(obj.totalSavedCost + 100) / 100);
-//
-//        for(var i = 0; i < obj.loanCount; i++){
-//            var tmp = "<li><div class='sl' id='" + ("sl-" + (i + 1)) + "'></div><div class='sr' id='" + ("sr-" + (i + 1)) + "'></div></li>";
-//            $("#total-specific").append(tmp);
-//            $("#sl-" + (i + 1)).html(i + 1);
-//            var readable_date = getReadableDate(obj.loans[i].startDate);
-//            $("#sr-" + (i + 1)).append("借款日期: " + readable_date + "<br>借款金额: &yen" + obj.loans[i].amount + "<br>注入卡片: 尾号" + obj.loans[i].creditCardNo.slice(obj.loans[i].creditCardNo.length - 4, obj.loans[i].creditCardNo.length) + "<br>总计应还: &yen" + obj.loans[i].dueAmt + "<br>较信用卡最低还款额，约省&yen" + Math.round(obj.loans[i].savedCost * 100) / 100);
-//        }
-//    }
-//
-//    function generateRepaymentPages(obj){
-//        var loans = obj.loans;
-//        var templateHtml = $("#repayment-0").html();
-//        for(var i = 0; i < loans.length; i++){
-//            var id = "repayment-" + i;
-//            if(i){
-//                var tmp = $("<div data-role='page' id='" + id + "'>" + templateHtml + "</div>");
-//                tmp.appendTo($("body"));
-//                $.mobile.initializePage();
-//            }
-//            var loan = loans[i];
-//            var creditCardSuffix = loan.creditCardNo.slice(loan.creditCardNo.length - 4, loan.creditCardNo.length);
-//            $("#" + id + " .repay-s-time").html(getReadableDate(loan.startDate));
-//            $("#" + id + " .repay-s-info").html("借款&yen;"+loan.amount+"入卡片"+creditCardSuffix);
-//            $("#" + id + " .r-next").html(loan.dueAmt);
-//            var date = new Date(loan.startDate);
-//            var month = date.getMonth()+1;
-//            var duemonth = month + loan.paidTerm + 1;
-//            var day = date.getDate();
-//            if(duemonth > 12) {
-//                duemonth -= 12;
-//            }
-//            $("#" + id + " .r-deadline").html(duemonth + "月" + day + "日");
-//
-//            var loanInfo = [getReadableDate(loan.startDate),"尾号" + creditCardSuffix,loan.amount,
-//                obj.loanCount + "期(已还" + loan.paidTerm + "期)","每月" + day + "日",loan.principal,loan.restPrincipal];
-//            $("#"+id+" .r-popup .li-r").each(function(i,e){
-//                $(e).html(loanInfo[i]);
-//            });
-//
-//            for(var j = 0; j < loan.paidTerm; j++){
-//                if(j === 0)
-//                    $("#" + id + " ul:last-child").after("<li></li>");
-//                else
-//                    $("#" + id + " ul:last-child").before("<li></li>");
-//            }
-//        }
-//    }
-//
-//    function registerEvents(obj){
-//        if(obj.loans.length > 1){
-//            $("#repayment-0").on("swipeleft", function(){
-//                $.mobile.changePage("#repayment-1", {transition: "slide"});
-//            });
-//
-//            for(var i = 1; i < obj.loans.length - 1; i++){
-//                registerSlides(i);
-//            }
-//
-//            $("#repayment-" + (obj.loans.length - 1)).on("swiperight", function(){
-//                $.mobile.changePage("#repayment-" + (obj.loans.length - 2), {transition: "slide", reverse: true});
-//            });
-//        }
-//
-//        for(var j = 0; j < obj.loans.length; j++){
-//            popLoanSpecific(j);
-//        }
-//    }
-//
-//    function registerSlides(i) {
-//        $("#repayment-" + i).on("swipeleft", function(){
-//            $.mobile.changePage("#repayment-" + (i + 1), {transition: "slide"});
-//        });
-//
-//        $("#repayment-" + i).on("swiperight", function(){
-//            $.mobile.changePage("#repayment-" + (i - 1), {transition: "slide", reverse: true});
-//        });
-//    }
-//
-//    function popLoanSpecific(i){
-//        $("#repayment-" + i + " ul li:nth-child(2)").click(function(){
-//            $("#repayment-" + i + " .r-popup").popup("open");
-//        });
-//    }
-//
-//    function getReadableDate(million_seconds){
-//        var date = new Date(million_seconds);
-//        var month = date.getMonth()+1;
-//        var day = date.getDate();
-//        var year = date.getFullYear();
-//        return year + "-" + month + "-" + day;
-//    }
-//
-//
-//
-//
-//
-//
-//
-//});
-////////////////////////////////////////////////////////////////
-
+}
 
 $("a").on({
     vmousedown: function(){
@@ -1416,6 +1243,14 @@ $(document).on("pagecreate", "#patience", function () {
 });
 
 $(document).on("pagecreate", "#feedback", function () {
+    $("#fd-textarea").focus(function(){
+        $(this).next().hide();
+    }).blur(function(){
+        if($.trim($(this).val()) == "") {
+            $(this).next().show();
+        }
+    });
+
     $("#feedback a").tap(function () {
         var tmp = $("#textarea").val();
         $.ajax({
