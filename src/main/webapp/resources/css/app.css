@@ -638,6 +638,100 @@ span.loan-i-cont {
     color: #404040;
 }
 /************************** Loan Page End *****************************/
+/************************** Feedback Start *****************************/
+.fb-content {
+    background-color: #c4c4c4;
+    width: 90%;
+    height: 90px;
+    border-radius: 5px;
+    font-family: "黑体";
+    margin: 40px auto 0 auto;
+}
+.fb-content .fb-title {
+    width: 25%;
+    color: #ffffff;
+    height: 90px;
+    line-height: 70px;
+    float: left;
+    text-align: right;
+    border-radius: 5px 0 0 5px;
+    font-size: 20px;
+}
+.fb-content .fb-text {
+    float: left;
+    width: 75%;
+    border-radius: 0 5px 5px 0;
+    height: 90px;
+}
+.fb-content .fb-text-top {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 20px;
+}
+.fb-content .fb-text-bottom {
+    font-size: 12px;
+    color: #5a5a5a;
+    line-height: 20px;
+}
+.fb-answer {
+    width: 300px;
+    margin: 40px auto;
+    height: 200px;
+    background-size:260px 200px;
+    background: url("../img/other_icons/fb-cloud2.png") no-repeat center;
+    position: relative;
+}
+.fb-answer label {
+    position: absolute;
+    width: 140px;
+    height: 30px;
+    line-height: 30px;
+    left: 80px;
+    top: 100px;
+    font-family: "黑体";
+    font-size: 14px;
+    color: #c4c4c4;
+}
+#fd-textarea {
+    vertical-align: middle;
+    width: 160px;
+    height: 82px;
+    border: none;
+    position: absolute;
+    left: 60px;
+    top:70px;
+    overflow: hidden;
+}
+.fb-btn {
+    width: 70%;
+    margin: 40px auto 10px;
+}
+
+.tfb-title {
+    width: 80%;
+    text-align: center;
+    height: 140px;
+    line-height: 140px;
+    font-size: 20px;
+    font-family: "黑体";
+    color: #22292b;
+    background-size:180px 140px;
+    background: url("../img/other_icons/fb-cloud1.png") no-repeat center;
+    margin: 40px auto;
+}
+.tfb-img {
+    width: 80%;
+    height: 128px;
+    margin: 40px auto;
+    background-size:118px 128px;
+    background:url("../img/other_icons/fb-funny.png") no-repeat center;
+}
+.tfb-btn {
+    width: 60%;
+    margin: 40px auto;
+}
+/************************** Feedback End *****************************/
+
 hr{
     margin: 0;
     padding: 0;
