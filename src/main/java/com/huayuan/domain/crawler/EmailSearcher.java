@@ -62,7 +62,6 @@ public final class EmailSearcher {
         if (message.getContent() instanceof MimeMultipart) {
             MimeMultipart part = (MimeMultipart) message.getContent();
             for (int i = 0; i < part.getCount(); i++) {
-                System.out.println(part.getBodyPart(i).getContentType());
                 if (part.getBodyPart(i).getContentType().contains("text/html")) {
                     return part.getBodyPart(i).getContent().toString();
                 }
