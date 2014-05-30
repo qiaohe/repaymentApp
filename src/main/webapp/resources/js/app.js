@@ -1,4 +1,4 @@
-﻿﻿/* global $:false */
+﻿/* global $:false */
 /* global alert:false */
 /* global config:false */
 /* global member:false */
@@ -363,6 +363,21 @@ function addOptions(element_id, json) {
         tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
     }
     $("#" + element_id).append($(tmp)).selectmenu().selectmenu("refresh");
+}
+
+function formatDate(ms,type) {
+    var date = new Date(ms);
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day = date.getDay();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+
+    var result = "";
+    if(type == "2") {
+        result = (month+1)+"-"+day+" "+hour+":"+minute;
+    }
+    return result;
 }
 
 function getReadableDate(million_seconds){
@@ -1081,9 +1096,7 @@ $(document).on("pagecreate", "#repayment-0", function () {
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
-});
 
-$(document).on("pageshow", "#repayment-0", function () {
     generateCarousels(member.loan);
     generateLoanSum(member.loan);
 });
@@ -1120,6 +1133,9 @@ function generateCarousels(loanSummary) {
         });
         $aim.popup("open");
     });
+    $(".loan-d-close").off("tap").tap(function(){
+        $("#loan-specific").popup("close");
+    });
 
     $(".repay-item-history").each(function(){
         var $repayHistory = $(this).next();
@@ -1132,6 +1148,10 @@ function generateCarousels(loanSummary) {
                 $repayHistory.show();
             }
         });
+    });
+
+    $(".repay-footer-summary").off("tap").tap(function(){
+        $.mobile.changePage("#sum-loan");
     });
 }
 
@@ -1225,22 +1245,24 @@ function sliderPage() {
     };
 
     var $width = $(document).width();
+    $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
     $(".container").css("width", $items.length * $width);
-    $items.css("width", $width);
+    // set width of dialog
+    $("#loan-specific").css("width", $width*0.9);
 
     var tmp = "";
     for(var i = 0, len = $items.length; i < len; i++) {
         tmp += "<div class='spot'></div>";
     }
-    $("#spots").css("width", 26 * $items.length + "px").append(tmp);
+    $("#spots").css("width", 26 * $items.length + "px").html(tmp);
     $(".spot:eq(0)").addClass("spot-chosen");
 
-    $(".item:not(:first, :last)").on({
+    $(".repayment-item:not(:first, :last)").on({
         swipeleft: $items.next,
         swiperight: $items.prev
     });
-    $(".item:first").on("swipeleft", $items.next);
-    $(".item:last").on("swiperight", $items.prev);
+    $(".repayment-item:first").on("swipeleft", $items.next);
+    $(".repayment-item:last").on("swiperight", $items.prev);
 }
 
 function generateLoanSum(info) {
@@ -1318,7 +1340,7 @@ $(document).on("pagecreate", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-            $("#hours").html(text);
+            $("#hours").html(Math.round(parseFloat(text) * 48));
         },
         error: function() {
             if (config.debug)
@@ -1340,17 +1362,24 @@ $(document).on("pagecreate", "#feedback", function () {
         }
     });
 
+    $("#fd-textarea").next().tap(function(){
+        $(this).hide();
+        $(this).prev().focus();
+    });
+
     $("#feedback a").tap(function () {
-        var tmp = $("#textarea").val();
-        $.ajax({
-            url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
-            type: "POST",
-            success: function () {},
-            error: function () {
-                if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/feedback");
-            }
-        });
+        var tmp = $.trim($("#fd-textarea").val());
+        if(tmp) {
+            $.ajax({
+                url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
+                type: "POST",
+                success: function () {},
+                error: function () {
+                    if (config.debug)
+                        alert(config.api_path + "members/" + member.id + "/feedback");
+                }
+            });
+        }
     });
 });
 
