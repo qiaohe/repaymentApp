@@ -54,7 +54,7 @@ public class WeChatMessageController {
     private String feedbackTemplate;
 
 
-    @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
+    @RequestMapping(value = "/huayuan", method = RequestMethod.GET, produces = {"text/html;charset=UTF-8"})
     @ResponseBody
     public String init(@RequestParam String signature, @RequestParam String timestamp,
                        @RequestParam String nonce, @RequestParam String echostr) throws IOException {
@@ -68,7 +68,7 @@ public class WeChatMessageController {
         weChatService.sendHintMessage(memberId, status);
     }
 
-    @RequestMapping(value = "/huayuan158", method = RequestMethod.POST, produces = {"text/html;charset=UTF-8"})
+    @RequestMapping(value = "/huayuan", method = RequestMethod.POST, produces = {"text/html;charset=UTF-8"})
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Message message = (Message) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
         Member member = weChatService.getMemberBy(message.getFromUserName());
