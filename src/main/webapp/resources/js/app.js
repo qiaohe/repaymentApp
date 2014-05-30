@@ -1238,7 +1238,7 @@ function sliderPage() {
     };
 
     var $width = $(document).width();
-    $items.css({"width":$width*0.9,"margin-left":$width*0.05});
+    $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
     $(".container").css("width", $items.length * $width);
 //    $items.css("width", $width);
 
