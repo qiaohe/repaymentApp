@@ -1238,8 +1238,9 @@ function sliderPage() {
     };
 
     var $width = $(document).width();
+    $items.css({"width":$width*0.9,"margin-left":$width*0.05});
     $(".container").css("width", $items.length * $width);
-    $items.css("width", $width);
+//    $items.css("width", $width);
 
     var tmp = "";
     for(var i = 0, len = $items.length; i < len; i++) {
