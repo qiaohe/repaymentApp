@@ -23,6 +23,8 @@
         <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0 1px">先来啪啪啪吧~请参照上图横向、填满哦。</h1>
     </div>
 
+    <a href="#repayment-0" type="button" class="ui-btn custom-btn">To Repayment</a>
+
     <div class="custom-li" style="margin-top:20px">
         <label><img src="resources/img/2-1/id_front.png"
                     style="float:left; margin: 3px auto auto 6%; width:40px; height:28px"></label>
@@ -313,12 +315,12 @@
     </div>
 </div>
 
-<div style="position:absolute; top:20%; left:10%; width:80%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none"
+<div class="unselectable" style="position:absolute; top:22%; left:2.5%; width:95%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none"
      id="card-confirm-2">
 
     <img src="resources/img/other_icons/7-3-2.png" id="close-4" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
-    <h5 style="width:100%; text-align:center; font-size:1.4em; color: #333333; margin: 40px auto;">确认借款注入尾号<span id="num-tail"></span>的卡片?</h5>
+    <h5 style="width:100%; text-align:center; font-size:1.4em; color: silver; margin: 40px auto;">确认借款注入尾号<span id="num-tail"></span>的卡片?</h5>
 
     <div style="height:60px; margin-top:8px; background-color: white;">
         <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="N-2" style="height: 20px; line-height: 20px">返回</a></div>
@@ -326,7 +328,7 @@
     </div>
 </div>
 
-<div id="card-add-box-2" class="unselectable" style="position:absolute; top:20%; left:10%; width:80%; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px;">
+<div id="card-add-box-2" class="unselectable" style="position:absolute; top:22%; left:2.5%; width:95%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px;">
 
         <img src="resources/img/other_icons/7-3-2.png" id="close-2" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
@@ -419,10 +421,10 @@
 
         <p style="margin: 30px auto 0 10%">还清期数</p>
         <div style="width: 40%; margin: auto 30% 20px 30%">
-            <a href="#" class="ui-btn term-chose" disabled="disabled"><span id="term-shown">6</span>个月</a>
+            <a href="#" class="ui-btn term-chose" disabled><span id="term-shown">6</span>个月</a>
         </div>
         <p style="margin-left: 10%">每期需还: <span id="each-x" style="color: black">&yen;540.20</span></p>
-        <p style="margin: 15px auto auto 10%">相比信用卡, 总计约帮<span class="gender">官人</span>省下&yen<span id="saved-x">150</span></p>
+        <p style="margin: 15px auto auto 10%">相比信用卡, 总计约帮<span class="gender">官人</span>省下<span id="saved-x">&yen;150</span></p>
 
         <div style="margin: 40px auto 0 8%; height: 35px">
             <input data-role="none" type="checkbox" id="agree-cong" style="float:left; width:10%">
@@ -440,21 +442,19 @@
         <div style="width: 60%; margin: auto 20%"><a href="#" class="ui-btn custom-btn" style="background-color: #3ca0e6">知道了</a></div>
     </div>
 
-    <div data-role="popup" data-position-to="window" data-transition="pop" class="unselectable" id="cardlist" style="border: 1px solid silver; background-color: white; border-radius: 5px">
+    <div data-role="popup" data-position-to="window" data-transition="pop" class="unselectable" id="cardlist" style="border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px">
         <img src="resources/img/other_icons/7-3-2.png" id="close-0" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
-
-        <div class="card-container-0" style="line-height: 40px; background-color: #e7e7e7"><img src="resources/img/card_icon/card.png" class="card-in-list"><div style="float:right; line-height:40px; padding-right: 30px; font-size: 1.5em">4063651340421805</div></div><hr>
 
         <div id="add-another" style="text-align: center; border: none; font-size: 1.4em; line-height: 40px; height:40px; margin: 0">
             <a href="#card-add-box" style="background-color:white; color:#333333; margin: 0; font-size:1.1em !important"><img src="resources/img/other_icons/7-3-1.png" style="width:22px; height:22px; position: relative; top: 6px">添加其他信用卡</a>
         </div>
     </div>
 
-    <div class="unselectable" style="position:absolute; top:20%; left:10%; width:80%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none;"
+    <div class="unselectable" style="position:absolute; top:22%; left:2.5%; width:95%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none;"
         id="card-confirm">
 
         <img src="resources/img/other_icons/7-3-2.png" id="close-3" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
-        <h5 style="width:100%; text-align:center; font-size:1.4em; color: #333333; margin: 40px auto;">确认借款注入尾号<span id="num-tail-0">9950</span>的卡片?</h5>
+        <h5 style="width:100%; text-align:center; font-size:1.4em; color: silver;   margin: 40px auto;">确认借款注入尾号<span id="num-tail-0">9950</span>的卡片?</h5>
 
         <div style="height:60px; margin-top:8px; background-color: white;">
             <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="N" style="height: 20px; line-height: 20px">返回</a></div>
@@ -463,7 +463,7 @@
     </div>
 
     <div id="card-add-box" class="unselectable"
-         style="position:absolute; top:20%; left:10%; width:80%; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none">
+         style="position:absolute; top:22%; left:2.5%; width:95%; height:160px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px; display: none">
 
             <img src="resources/img/other_icons/7-3-2.png" id="close-1" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
@@ -517,7 +517,7 @@
         <div class="loan-d-close"></div>
     </div>
 
-    <div data-role="footer" data-position="fixed"  data-id="r-footer" class="footer repay-footer" style="height: 62px;">
+    <div data-role="footer" data-position="fixed"  data-id="r-footer" class="footer repay-footer" style="height: 120px;">
         <div class="repay-switch">
             <div id="spots" style="width: 78px;margin: auto;height: 100%;">
                 <div class="spot"></div>

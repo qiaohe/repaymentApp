@@ -4,7 +4,7 @@
 "use strict";
 
 var config = {};
-config.api_path = "http://180.168.35.37/repaymentApp/api/";
+config.api_path = "api/";
 config.debug = true;
 config.time = new Date();
 config.time = "?time=" + config.time.getTime();

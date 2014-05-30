@@ -1,4 +1,4 @@
-﻿/* global $:false */
+﻿﻿/* global $:false */
 /* global alert:false */
 /* global config:false */
 /* global member:false */
@@ -344,6 +344,7 @@ function loanToThisCard(card_num) {
 }
 
 function addCreditCard(new_card) {
+    new_card = new_card.replace(/ /g, "");
     return $.ajax({
         url: config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time,
         type: "POST",
@@ -448,9 +449,11 @@ function shareToRenren() {
 }
 
 // Actions
-if (member.gender == 1) {
-    $(".gender").html("娘子");
-}
+$(document).on("pagecreate", function() {
+    if (member.gender == 1) {
+        $(".gender").html("娘子");
+    }
+});
 
 $(document).on("pagecreate", "#limit", function () {
     if (!dict.bincode) {
@@ -945,7 +948,6 @@ $(document).on("pagebeforeshow", "#loan", function () {
 });
 
 $(document).on("tap", ".card-container", function () {
-    alert("card-container!");
     app.credit_card = $(this).children("div").html();
     $("#cardlist-2").popup("close");
     setTimeout(function () {
@@ -960,7 +962,7 @@ $(document).on("tap", ".card-container-0", function () {
     setTimeout(function () {
         $("#card-confirm").show();
     }, 200);
-    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
 $(document).on("pagebeforeshow", "#congratulation", function(){
@@ -977,8 +979,8 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         success: function (json) {
             $("#amt-x").html(numberWithCommas(json.amt));
             $("#term-shown").html(json.term);
-            $("#each-x").html(Math.round(json.repayPerTerm * 100)/100);
-            $("#saved-x").html(Math.round(json.saveCost * 100)/100);
+            $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css({"color": "black", "font-family": "avrial"});
+            $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css({"color": "black", "font-family": "avrial"})
         },
         error: function () {
             alert(config.api_path + "app/" + member.appNo + config.time);
@@ -1311,9 +1313,18 @@ $(document).on("pagecreate", "#suspension", function () {
 });
 
 $(document).on("pagecreate", "#patience", function () {
-//    $.ajax({
-//
-//    });
+    $.ajax({
+        url: config.api_path + "app/members/" + member.id + "/progress",
+        type: "GET",
+        dataType: "text",
+        success: function(text) {
+            $("#hours").html(text);
+        },
+        error: function() {
+            if (config.debug)
+                alert(config.api_path + "app/members/" + member.id + "/progress");
+        }
+    });
 
     $("#got-it-x").on("vclick", function () {
         WeixinJSBridge.call("closeWindow");
