@@ -365,6 +365,21 @@ function addOptions(element_id, json) {
     $("#" + element_id).append($(tmp)).selectmenu().selectmenu("refresh");
 }
 
+function formatDate(ms,type) {
+    var date = new Date(ms);
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day = date.getDay();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+
+    var result = "";
+    if(type == "2") {
+        result = (month+1)+"-"+day+" "+hour+":"+minute;
+    }
+    return result;
+}
+
 function getReadableDate(million_seconds){
     var date = new Date(million_seconds);
     var month = date.getMonth()+1;
@@ -1338,17 +1353,24 @@ $(document).on("pagecreate", "#feedback", function () {
         }
     });
 
+    $("#fd-textarea").next().tap(function(){
+        $(this).hide();
+        $(this).prev().focus();
+    });
+
     $("#feedback a").tap(function () {
-        var tmp = $("#textarea").val();
-        $.ajax({
-            url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
-            type: "POST",
-            success: function () {},
-            error: function () {
-                if (config.debug)
-                    alert(config.api_path + "members/" + member.id + "/feedback");
-            }
-        });
+        var tmp = $.trim($("#fd-textarea").val());
+        if(tmp) {
+            $.ajax({
+                url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
+                type: "POST",
+                success: function () {},
+                error: function () {
+                    if (config.debug)
+                        alert(config.api_path + "members/" + member.id + "/feedback");
+                }
+            });
+        }
     });
 });
 
