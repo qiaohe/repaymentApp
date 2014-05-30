@@ -3,6 +3,7 @@ import java.io.Serializable;
 
 public class WeChatUser implements Serializable {
     private static final long serialVersionUID = 8195479836500869759L;
+    private String unionid;
     private Integer subscribe;
     private String openid;
     private String nickname;
@@ -17,6 +18,14 @@ public class WeChatUser implements Serializable {
     private String errmsg;
 
     public WeChatUser() {
+    }
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
     }
 
     public String getErrmsg() {
