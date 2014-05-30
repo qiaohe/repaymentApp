@@ -1,4 +1,4 @@
-﻿﻿/* global $:false */
+﻿/* global $:false */
 /* global alert:false */
 /* global config:false */
 /* global member:false */
@@ -1081,9 +1081,7 @@ $(document).on("pagecreate", "#repayment-0", function () {
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
-});
 
-$(document).on("pageshow", "#repayment-0", function () {
     generateCarousels(member.loan);
     generateLoanSum(member.loan);
 });
@@ -1235,12 +1233,12 @@ function sliderPage() {
     $("#spots").css("width", 26 * $items.length + "px").append(tmp);
     $(".spot:eq(0)").addClass("spot-chosen");
 
-    $(".item:not(:first, :last)").on({
+    $(".repayment-item:not(:first, :last)").on({
         swipeleft: $items.next,
         swiperight: $items.prev
     });
-    $(".item:first").on("swipeleft", $items.next);
-    $(".item:last").on("swiperight", $items.prev);
+    $(".repayment-item:first").on("swipeleft", $items.next);
+    $(".repayment-item:last").on("swiperight", $items.prev);
 }
 
 function generateLoanSum(info) {
@@ -1318,7 +1316,7 @@ $(document).on("pagecreate", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-            $("#hours").html(text);
+            $("#hours").html(Math.round(parseFloat(text) * 48));
         },
         error: function() {
             if (config.debug)
