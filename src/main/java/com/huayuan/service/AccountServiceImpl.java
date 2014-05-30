@@ -8,11 +8,10 @@ import com.huayuan.domain.member.CreditCard;
 import com.huayuan.repository.account.*;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -239,11 +238,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     public Double getAmtWithinThisPeriod(Long memberId) {
         List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.nextMonth());
-        Double result = 0d;
-        for (RepayPlan plan : plans) {
-            result += plan.getDueAmt() + plan.getOverDue_Interest();
-        }
-        return result;
+        if (CollectionUtils.isNotEmpty(plans)) return plans.get(0).getDueAmt() + plans.get(0).getOverDue_Interest();
+        return null;
     }
 
     @Override
