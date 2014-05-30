@@ -1246,7 +1246,7 @@ function sliderPage() {
     for(var i = 0, len = $items.length; i < len; i++) {
         tmp += "<div class='spot'></div>";
     }
-    $("#spots").css("width", 26 * $items.length + "px").append(tmp);
+    $("#spots").css("width", 26 * $items.length + "px").html(tmp);
     $(".spot:eq(0)").addClass("spot-chosen");
 
     $(".repayment-item:not(:first, :last)").on({
