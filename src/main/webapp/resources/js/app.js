@@ -1000,8 +1000,10 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agreeConfig.attr("checkFlag")) {
             $agreeConfig.removeAttr("checkFlag");
+            $("#go-choose-card").addClass("bluebtn").attr("href", "#cardlist");
         } else {
             $agreeConfig.attr("checkFlag","1");
+            $("#go-choose-card").removeClass("bluebtn").attr("href", "#");
         }
     });
 
