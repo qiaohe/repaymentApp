@@ -86,10 +86,12 @@ public class LoanSummary {
         private Integer term;
         private Date startDate;
         private Double principal;
-        private Double dueAmt;
         private Double restPrincipal;
         private Integer paidTerm;
         private Double savedCost;
+        private Double dueAmt;
+        private Double curDueAmt;
+        private Double lastDueAmt;
         private boolean isOverDue;
         private Integer status;
         private List<RepayOffset> repayList;
@@ -99,7 +101,7 @@ public class LoanSummary {
 
         public LoanItem(Long loanId, Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate,
                         Double principal, Double restPrincipal, Integer paidTerm, Double savedCost,
-                        Double dueAmt, boolean isOverDue, Integer status,List<RepayOffset> repayList) {
+                        Double dueAmt,Double curDueAmt,Double lastDueAmt, boolean isOverDue, Integer status,List<RepayOffset> repayList) {
             this.loanId = loanId;
             this.applyDate = applyDate;
             this.creditCardNo = creditCardNo;
@@ -111,6 +113,8 @@ public class LoanSummary {
             this.paidTerm = paidTerm;
             this.savedCost = savedCost;
             this.dueAmt = dueAmt;
+            this.curDueAmt = curDueAmt;
+            this.lastDueAmt = lastDueAmt;
             this.isOverDue = isOverDue;
             this.status = status;
             this.repayList = repayList;
@@ -202,6 +206,22 @@ public class LoanSummary {
 
         public void setDueAmt(Double dueAmt) {
             this.dueAmt = dueAmt;
+        }
+
+        public Double getCurDueAmt() {
+            return curDueAmt;
+        }
+
+        public void setCurDueAmt(Double curDueAmt) {
+            this.curDueAmt = curDueAmt;
+        }
+
+        public Double getLastDueAmt() {
+            return lastDueAmt;
+        }
+
+        public void setLastDueAmt(Double lastDueAmt) {
+            this.lastDueAmt = lastDueAmt;
         }
 
         public boolean isOverDue() {

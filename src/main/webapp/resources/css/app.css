@@ -844,7 +844,7 @@ hr{
 
 .visible-area{
     width: 100%;
-    height: 500px;
+    /*height: 500px;*/
     background: silver;
     overflow-x: hidden;
 }

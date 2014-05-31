@@ -369,13 +369,13 @@ function formatDate(ms,type) {
     var date = new Date(ms);
     var year = date.getFullYear();
     var month = date.getMonth();
-    var day = date.getDay();
+    var day = date.getDate();
     var hour = date.getHours();
     var minute = date.getMinutes();
 
     var result = "";
     if(type == "2") {
-        result = (month+1)+"-"+day+" "+hour+":"+minute;
+        result = (month+1)+"月"+day+"日 "+hour+":"+minute;
     }
     return result;
 }
@@ -1107,6 +1107,7 @@ function generateCarousels(loanSummary) {
     if(!loanSummary) {
         return;
     }
+    $(".repay-s-num").html(loanSummary.loanCount+"笔");
     var loans = loanSummary.loans;
     var contentHtml = "";
     for (var i = 0, len = loans.length; i < len; i++) {
@@ -1117,17 +1118,18 @@ function generateCarousels(loanSummary) {
 
     sliderPage();
 
-    $(".repay-item-detail").off("tap").tap(function () {
+    $(".repay-item-detail").off("tap").tap(function (e) {
+        e.stopPropagation();
         var index = $(this).attr("index");
         var curLoan = loans[index];
         var detailInfo = [];
         detailInfo.push(getReadableDate(curLoan.startDate).join("-"));
         detailInfo.push("尾号" + curLoan.creditCardNo.slice(curLoan.creditCardNo.length - 4, curLoan.creditCardNo.length));
-        detailInfo.push(curLoan.amount);
+        detailInfo.push(numberWithCommas(curLoan.amount));
         detailInfo.push(curLoan.term + "期");
         detailInfo.push("每月" + getReadableDate(curLoan.startDate)[2] + "日");
-        detailInfo.push(curLoan.dueAmt);
-        detailInfo.push(curLoan.restPrincipal.toFixed(2));
+        detailInfo.push(numberWithCommas(curLoan.dueAmt.toFixed(2)));
+        detailInfo.push(numberWithCommas(curLoan.lastDueAmt.toFixed(2)));
 
         var $aim = $("#loan-specific");
         $("#loan-specific").find(".loan-d-r").each(function(i,item){
@@ -1168,7 +1170,7 @@ function generateItemLoan(loan,index) {
             "</div>\n"+
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
-            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+loan.dueAmt+"</span></div>\n"+
+            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.startDate)[1] + "月" + getReadableDate(loan.startDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1192,7 +1194,7 @@ function generateItemLoan(loan,index) {
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
-            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+loan.dueAmt+"</span></div>\n"+
+            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.startDate)[1] + "月" + getReadableDate(loan.startDate)[2] + "日"+"</span>到期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1269,10 +1271,10 @@ function sliderPage() {
 
 function generateLoanSum(info) {
     if(info) {
-        $("#total-amount").text(info.totalAmount);
+        $("#total-amount").text(numberWithCommas(info.totalAmount));
         $("#total-times").text(info.loanCount);
-        $("#total-payback").text(info.totalDueAmt);
-        $("#total-saved").text(info.totalSavedCost.toFixed(2));
+        $("#total-payback").text(numberWithCommas(info.totalDueAmt.toFixed(2)));
+        $("#total-saved").text(numberWithCommas(info.totalSavedCost.toFixed(0)));
     }
     if(info.loans) {
         var contentHtml = "";
@@ -1288,7 +1290,7 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+loan.amount+"</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+numberWithCommas(loan.amount)+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
@@ -1296,11 +1298,11 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">总计应还:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+loan.dueAmt+"</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+numberWithCommas(loan.dueAmt.toFixed(2))+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost.toFixed(2)+"</span>\n"+
+                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost.toFixed(0)+"</span>\n"+
                 "        </li>\n"+
                 "    </ul>\n"+
                 "</div>\n"+
@@ -1356,7 +1358,8 @@ $(document).on("pagecreate", "#patience", function () {
 });
 
 $(document).on("pagecreate", "#feedback", function () {
-    $("#fd-textarea").focus(function(){
+    $("#fd-textarea").focus(function(e){
+        e.stopPropagation();
         $(this).next().hide();
     }).blur(function(){
         if($.trim($(this).val()) == "") {

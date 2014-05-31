@@ -47,10 +47,12 @@ public class LoanSummaryBuilder {
                     loan.getTerm(),
                     loan.getStartDate(),
                     loan.getPrincipal(),
-                    loan.getPrincipal() - loan.getPaidPrincipal() + loan.getInterest(),
+                    loan.getPrincipal() - loan.getPaidPrincipal(),
                     loan.getPaidTerm(),
                     savedCost,
+                    loan.getPrincipal() + loan.getInterest(),
                     getAmtWithinThisPeriod(loan.getId()),
+                    loan.getAmt() + loan.getInterest() - loan.getPaidPrincipal() - loan.getPaidInterest(),
                     loan.isOverDue(),
                     loan.getStatus(),
                     repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
