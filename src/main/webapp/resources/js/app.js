@@ -1119,7 +1119,7 @@ function generateCarousels(loanSummary) {
     sliderPage();
 
     $(".repay-item-detail").off("tap").tap(function (e) {
-        e.stopPropagation();
+        e.preventDefault();
         var index = $(this).attr("index");
         var curLoan = loans[index];
         var detailInfo = [];
