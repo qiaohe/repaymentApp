@@ -734,6 +734,18 @@ span.loan-i-cont {
     margin: 40px auto;
 }
 /************************** Feedback End *****************************/
+.check-custom1 {
+    width:10%;
+    height: 18px;
+    float:left;
+    background:url("../img/public/checkbox-1.png") no-repeat center;
+}
+.check-custom2 {
+    width:10%;
+    height: 18px;
+    float:left;
+    background:url("../img/public/checkbox-2.png") no-repeat center;
+}
 
 hr{
     margin: 0;

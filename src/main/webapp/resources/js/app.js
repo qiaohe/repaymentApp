@@ -727,7 +727,7 @@ $(document).on("pagecreate", "#loan", function () {
     }
 
     $("#request").click(function(){
-        if($("#agree").is(":checked") && member.validate && app.term && app.amount){
+        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount){
             if (member.existingFlag == 2) {
                 $("#cardlist-2").popup("open");
             }
@@ -741,7 +741,14 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#agree").click(function () {
-        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+        var $agree = $(this);
+        $agree.toggleClass("check-custom1").toggleClass("check-custom2");
+        if($agree.attr("checkFlag")) {
+            $agree.removeAttr("checkFlag");
+        } else {
+            $agree.attr("checkFlag","1");
+        }
+        if($agree.attr("checkFlag") && member.validate && app.term && app.amount)
             requestAvilable();
     });
 
@@ -869,7 +876,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         $("#varifying-tips h4").html("您已输入有效的验证码!");
                         $("#varifying-tips").show();
                         member.validate = true;
-                        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+                        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
                             requestAvilable();
                     }
                     else {
@@ -908,7 +915,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             countPayback(app);
         }
 
-        if($("#agree").is(":checked") && member.validate && app.term && app.amount)
+        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
             requestAvilable();
     });
 
@@ -987,6 +994,16 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     if (!dict.bincode) {
         getBincode();
     }
+
+    $("#agree-config").click(function(){
+        var $agreeConfig = $(this);
+        $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
+        if($agreeConfig.attr("checkFlag")) {
+            $agreeConfig.removeAttr("checkFlag");
+        } else {
+            $agreeConfig.attr("checkFlag","1");
+        }
+    });
 
     $.ajax({
         url: config.api_path + "app/" + member.appNo + config.time,
