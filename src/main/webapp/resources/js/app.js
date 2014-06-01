@@ -817,6 +817,13 @@ $(document).on("pagecreate", "#loan", function () {
     $("#varifying-tips a").click(function () {
         $("#varifying-tips").hide();
     });
+
+    $("#amount").focusout(function() {
+        if (parseFloat($(this).val()) < 1000) {
+            $("#varifying-tips h4").html("抱歉，最小借款金额为￥1000!");
+            $("#varifying-tips").show();
+        }
+    });
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
@@ -837,6 +844,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
     else{
         $("#acquire-code").off("click").click(function(){
             var phone_num = $("#phone").val();
+            var i = 60;
             if(phone_num.length != 11) {
                 $("#varifying-tips h4").html("请输入正确的手机号码!");
                 $("#varifying-tips").show();
@@ -845,26 +853,28 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
                     if(text == "北京" || text == "上海" || text == "广州" || text == "深圳") {
                         member.phone = phone_num;
-                        sendVarificationCode(member.phone).success(function(){
-                            $("#varifying-tips h4").html("您的验证码已发送!");
-                            $("#varifying-tips").show();
-                            $(this).attr("disabled", "true");
-                            var i = 60;
-                            var refreshIntervalId = setInterval(function() {
-                                if (i > 0) {
-                                    $("#acquire-code").html(i);
-                                    i -= 1;
-                                }
-                                else {
-                                    $("#acquire-code").html("获取验证码");
-                                    clearInterval(refreshIntervalId);
-                                    $("#acquire-code").attr("disabled", "false");
-                                }
-                            }, 1000);
-                        }).error(function () {
-                            $("#varifying-tips h4").html("您的验证码发送失败!");
-                            $("#varifying-tips").show();
-                        });
+                        if (i == 60) {
+                            sendVarificationCode(member.phone).success(function(){
+                                $("#varifying-tips h4").html("您的验证码已发送!");
+                                $("#varifying-tips").show();
+                                $(this).attr("disabled", "true");
+                                var refreshIntervalId = setInterval(function() {
+                                    if (i > 0) {
+                                        $("#acquire-code").html(i);
+                                        i -= 1;
+                                    }
+                                    else {
+                                        $("#acquire-code").html("获取验证码");
+                                        clearInterval(refreshIntervalId);
+                                        $("#acquire-code").attr("disabled", "false");
+                                        i = 60;
+                                    }
+                                }, 1000);
+                            }).error(function () {
+                                $("#varifying-tips h4").html("您的验证码发送失败!");
+                                $("#varifying-tips").show();
+                            });
+                        }
                     }
                     else {
                         $("#out-of-area").show();
