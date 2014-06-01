@@ -693,7 +693,12 @@ $(document).on("pagebeforeshow", "#result", function(){
     $("#amt-shown").html(numberWithCommas(member.limit));
     $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
     if(member.limit > 4000){
-        $("#rank-cmt").html("，官人您是权贵啊！");
+        if (member.gender == 1) {
+            $("#rank-cmt").html("，娘子您是权贵啊！");
+        }
+        else {
+            $("#rank-cmt").html("，官人您是权贵啊！");
+        }
         $("#option-1").html("巨款啊！现在就去申请借款");
         $("#option-2").html("去跟小伙伴嘚瑟一下");
         $("#option-3").html("换张信用卡再试试");
@@ -1249,7 +1254,8 @@ function sliderPage() {
 
     $items.prev = function() {
         if ($items.current != $items[0]) {
-            $(".container").css("top", "0").animate({"left": "+=" + $width});
+            window.scrollTo(0, 0);
+            $(".container").animate({"left": "+=" + $width});
             var ind = $items.index($items.current);
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind - 1) + ")").addClass("spot-chosen");
@@ -1259,7 +1265,8 @@ function sliderPage() {
 
     $items.next = function() {
         if ($items.current != $items[$items.length - 1]) {
-            $(".container").css("top", "0").animate({"left": "-=" + $width});
+            window.scrollTo(0, 0);
+            $(".container").animate({"left": "-=" + $width});
             var ind = $items.index($items.current);
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind + 1) + ")").addClass("spot-chosen");
@@ -1409,7 +1416,7 @@ $(document).on("pagecreate", "#feedback", function () {
 
 window.onunload = function () {
     var print_status;
-    var pattern = /#\w+\?/;
+    var pattern = /#[\w-]+\?/;
     var hash = pattern.exec(window.location).toString();
     hash = hash.slice(0, hash.length - 1);
 
