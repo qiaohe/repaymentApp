@@ -1,11 +1,15 @@
 package com.huayuan.service;
 
+import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.repository.account.*;
+import com.huayuan.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,7 +24,7 @@ import java.util.List;
  */
 @Service(value = "accountService")
 @Transactional
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService, ApplicationEventPublisherAware {
     @Inject
     private AccountRepository accountRepository;
     @Inject
@@ -35,12 +39,17 @@ public class AccountServiceImpl implements AccountService {
     private LoanSummaryBuilder loanSummaryBuilder;
     @Value("${weChat.bindCreditCardSuccess}")
     private String bindCreditCardSuccess;
+    @Value("${weChat.bindCreditCardFail}")
+    private String bindCreditCardFail;
     @Value("${account.graceDay}")
     private String graceDay;
     @Value("${account.overdueRating}")
     private String overDueRating;
     @Inject
     private RepayOffsetRepository repayOffsetRepository;
+    @Inject
+    private MemberRepository memberRepository;
+    private ApplicationEventPublisher publisher;
 
     @Override
     public Account getAccount(Long accountId) {
@@ -145,6 +154,8 @@ public class AccountServiceImpl implements AccountService {
         loan.createRepayPlans();
         loan.setStatus(0);
         loanRepository.save(loan);
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, memberRepository.findOne(loan.getMember().getId()).getWcNo(), loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess);
+        publisher.publishEvent(event);
         return true;
     }
 
@@ -192,9 +203,15 @@ public class AccountServiceImpl implements AccountService {
         repayPlanRepository.save(plans);
     }
 
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
+    }
+
     public static void main(String[] args) {
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        accountService.offset(1l);
+        accountService.review(6l);
     }
+
 }
