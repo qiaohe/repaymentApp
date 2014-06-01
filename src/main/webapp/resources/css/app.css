@@ -69,6 +69,7 @@ input {
 
 .textinput {
     border: 1px solid #c0c0c0;
+    background-color: white;
     border-radius: 3px;
     width: 100%;
     height: 30px;
