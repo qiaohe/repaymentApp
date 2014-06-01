@@ -718,7 +718,7 @@ $(document).on("pagebeforeshow", "#result", function(){
         $("#option-1").attr("href", "#fail").css("background-color", "#3ca0e6");
     }
 
-    if (!(member.status == "5.1" || parseFloat(memebr.status) > 5.2)) {
+    if (!(member.status == "5.1" || parseFloat(member.status) > 5.2)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
         });
