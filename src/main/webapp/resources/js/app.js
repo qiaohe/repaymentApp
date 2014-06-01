@@ -58,7 +58,6 @@ function recongizeIdCard(form_data, url_path, datatype) {
 function getBincode() {
     $.getJSON(config.api_path + "dict/binCode", function (json) {
         dict.bincode = json;
-        alert("get the bincode!");
     });
 }
 
@@ -848,6 +847,21 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         sendVarificationCode(member.phone).success(function(){
                             $("#varifying-tips h4").html("您的验证码已发送!");
                             $("#varifying-tips").show();
+                            //countdown
+                            $(this).attr("disabled", "true");
+                            var i = 60;
+                            var refreshIntervalId = setInterval(function() {
+                                if (i > 0) {
+                                    $(this).html("获取验证码(" + i + ")");
+                                    i -= 1;
+                                }
+                                else {
+                                    $(this).html("获取验证码");
+                                    clearInterval(refreshIntervalId);
+                                    $(this).attr("disabled", "false");
+                                }
+                            }, 1000);
+
                         }).error(function () {
                             $("#varifying-tips h4").html("您的验证码发送失败!");
                             $("#varifying-tips").show();
