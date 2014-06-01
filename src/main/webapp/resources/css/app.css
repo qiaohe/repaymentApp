@@ -188,7 +188,7 @@ input {
 }
 
 .footer {
-    height: 120px;
+    height: 100px;
     border: none;
     background-color: white;
 }
@@ -799,5 +799,5 @@ hr{
 }
 
 #cardlist, #cardlist-2{
-
+    background-color: #e7e7e7;
 }
