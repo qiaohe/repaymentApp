@@ -718,7 +718,7 @@ $(document).on("pagebeforeshow", "#result", function(){
         $("#option-1").attr("href", "#fail").css("background-color", "#3ca0e6");
     }
 
-    if (!(member.status == "5.1" || parseFloat(member.status) > 5.2)) {
+    if (!(parseFloat(member.status) >= 4)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
         });
@@ -852,7 +852,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                             var i = 60;
                             var refreshIntervalId = setInterval(function() {
                                 if (i > 0) {
-                                    $("#acquire-code").html("获取验证码(" + i + ")");
+                                    $("#acquire-code").html(i);
                                     i -= 1;
                                 }
                                 else {
@@ -888,18 +888,17 @@ $(document).on("pagebeforeshow", "#loan", function () {
             else
                 $("#code-txt").show();
 
+            $("#vali-sign").attr("src", "resources/img/public/wrong.png");
             if(vcode.length == 6 && member.phone.length == 11){
                 matchVarificationCode(vcode, member.phone).success(function(text){
                     if("true" == text){
-                        $("#varifying-tips h4").html("您已输入有效的验证码!");
-                        $("#varifying-tips").show();
+                        $("#vali-sign").attr("src", "resources/img/public/correct.png");
                         member.validate = true;
                         if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
                             requestAvilable();
                     }
                     else {
-                        $("#varifying-tips h4").html("验证码错误!");
-                        $("#varifying-tips").show();
+                        $("#vali-sign").attr("src", "resources/img/public/wrong.png");
                     }
                 });
             }
@@ -928,7 +927,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
         if(parseInt(tmp, 10) > parseInt(member.avlcrl, 10))
             $(this).val(parseInt(member.avlcrl));
 
-        if ($(this).val().length > 3) {
+        if (parseFloat($(this).val()) > 1000) {
             app.amount = $(this).val();
             countPayback(app);
         }
