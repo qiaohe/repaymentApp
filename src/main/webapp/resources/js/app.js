@@ -492,7 +492,7 @@ $(document).on("pagecreate", "#limit", function () {
                 $("#front-upload").attr("disabled", true);
                 member.id_card = json.idNo;
                 member.gender = json.sex;
-                if (member.gender == 1) {
+                if (member.gender == "FEMALE") {
                     $(".gender").html("娘子");
                 }
             }).error(function () {
