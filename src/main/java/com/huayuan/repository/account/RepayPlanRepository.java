@@ -12,7 +12,7 @@ import java.util.List;
 public interface RepayPlanRepository extends JpaRepository<RepayPlan, Long> {
     public List<RepayPlan> findByLoanId(Long loanId);
 
-    public List<RepayPlan> findByMemberId(Long memberId);
+    public List<RepayPlan> findByMemberIdAndDueDateLessThan(Long memberId, Date dueDate);
 
     public List<RepayPlan> findByDueDate(Date dueDate);
 }

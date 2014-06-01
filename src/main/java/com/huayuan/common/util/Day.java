@@ -1,10 +1,10 @@
 package com.huayuan.common.util;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
+        import org.joda.time.DateTime;
+        import org.joda.time.Days;
+        import org.joda.time.Months;
 
-import java.util.Date;
+        import java.util.Date;
 
 /**
  * Created by Johnson on 4/8/14.
@@ -49,5 +49,9 @@ public final class Day {
 
     public Date plusDays(Integer days) {
         return new DateTime(date).plusDays(days).toDate();
+    }
+
+    public Date nextMonth() {
+        return new DateTime(date).plusMonths(1).toDate();
     }
 }

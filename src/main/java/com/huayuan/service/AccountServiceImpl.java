@@ -3,10 +3,7 @@ package com.huayuan.service;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.*;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.math.LongRange;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -89,9 +86,9 @@ public class AccountServiceImpl implements AccountService {
 
     public void offset(Long memberId) {
         Account account = accountRepository.findByMemberId(memberId);
-        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
+        List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.nextMonth());
         for (RepayPlan plan : plans) {
-            if (plan.getDueAmt() + plan.getOverDue_Interest() > account.getDebit_amt()) return;
+            if (plan.getDueTotalAmt() > account.getDebit_amt()) return;
             plan.setPaidPrincipal(plan.getDueAmt());
             plan.setPaidInterest(plan.getDueInterest());
             plan.setPaidOverDueInterest(plan.getOverDue_Interest());
@@ -100,16 +97,26 @@ public class AccountServiceImpl implements AccountService {
             plan.getLoan().setPaidInterest(plan.getPaidInterest() + plan.getLoan().getPaidInterest());
             plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
             plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
-            account.setDebit_amt(account.getDebit_amt() - plan.getPaidInterest() - plan.getPaidPrincipal() - plan.getOverDue_Interest());
-            accountRepository.save(account);
-            RepayOffset repayOffset = new RepayOffset();
-            repayOffset.setAmt(plan.getPaidInterest() + plan.getPaidPrincipal() + plan.getOverDue_Interest());
-            repayOffset.setLoan(plan.getLoan());
-            repayOffset.setTermNo(plan.getTermNo());
-            repayOffset.setLoan(plan.getLoan());
-            repayOffsetRepository.save(repayOffset);
             loanRepository.save(plan.getLoan());
+            updateAccountCrl(account, plan);
+            createOffsetByRepayPlan(plan);
         }
+    }
+
+    private void createOffsetByRepayPlan(RepayPlan plan) {
+        RepayOffset repayOffset = new RepayOffset();
+        repayOffset.setAmt(plan.getPaidAmt());
+        repayOffset.setLoan(plan.getLoan());
+        repayOffset.setTermNo(plan.getTermNo());
+        repayOffset.setLoan(plan.getLoan());
+        repayOffsetRepository.save(repayOffset);
+    }
+
+    private void updateAccountCrl(Account account, RepayPlan plan) {
+        account.setDebit_amt(account.getDebit_amt() - plan.getPaidAmt());
+        account.setCrlUsed(account.getCrlUsed() - plan.getPaidPrincipal());
+        account.setCrlAvl(account.getCrl() - account.getCrlUsed());
+        accountRepository.save(account);
     }
 
     @Override
@@ -161,7 +168,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Double getAmtWithinThisPeriod(Long memberId) {
-        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
+        List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.nextMonth());
         Double result = 0d;
         for (RepayPlan plan : plans) {
             result += plan.getDueAmt() + plan.getOverDue_Interest();
@@ -186,8 +193,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        accountService.updateOverDue();
+        accountService.offset(1l);
     }
 }

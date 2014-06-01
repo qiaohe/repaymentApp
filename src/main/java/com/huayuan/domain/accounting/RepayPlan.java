@@ -191,4 +191,14 @@ public class RepayPlan {
     public void setPaidOverDueInterest(Double paidOverDueInterest) {
         this.paidOverDueInterest = paidOverDueInterest;
     }
+
+    @Transient
+    public Double getPaidAmt() {
+        return paidPrincipal + paidInterest + paidOverDueInterest;
+    }
+
+    @Transient
+    public Double getDueTotalAmt() {
+        return dueAmt + overDue_Interest;
+    }
 }
