@@ -820,6 +820,7 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
+    member.phone = "";
     if (!member.avlcrl) {
         getAvlCrl();
     }
@@ -847,21 +848,19 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         sendVarificationCode(member.phone).success(function(){
                             $("#varifying-tips h4").html("您的验证码已发送!");
                             $("#varifying-tips").show();
-                            //countdown
                             $(this).attr("disabled", "true");
                             var i = 60;
                             var refreshIntervalId = setInterval(function() {
                                 if (i > 0) {
-                                    $(this).html("获取验证码(" + i + ")");
+                                    $("#acquire-code").html("获取验证码(" + i + ")");
                                     i -= 1;
                                 }
                                 else {
-                                    $(this).html("获取验证码");
+                                    $("#acquire-code").html("获取验证码");
                                     clearInterval(refreshIntervalId);
-                                    $(this).attr("disabled", "false");
+                                    $("#acquire-code").attr("disabled", "false");
                                 }
                             }, 1000);
-
                         }).error(function () {
                             $("#varifying-tips h4").html("您的验证码发送失败!");
                             $("#varifying-tips").show();
