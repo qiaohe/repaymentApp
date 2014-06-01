@@ -787,7 +787,7 @@ $(document).on("pagecreate", "#loan", function () {
                     $("#varifying-tips").show();
                     var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
 
-                    var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
 
                     $("#cardlist-2").prepend($(tmp));
                 }
@@ -972,7 +972,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist-2").prepend($(tmp));
@@ -1056,7 +1056,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container-0' style='line-height: 40px'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:0 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 30px 0 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist").prepend($(tmp));
@@ -1108,7 +1108,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
 
-                var tmp = "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
 
                 $("#cardlist-2").prepend($(tmp));
 
