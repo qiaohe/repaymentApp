@@ -1,6 +1,5 @@
 package com.huayuan.web;
 
-import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.LoanSummary;
 import com.huayuan.domain.accounting.RepayPlan;
 import com.huayuan.repository.account.AccountRepository;
@@ -39,20 +38,20 @@ public class AccountingController {
 
     @RequestMapping(value = "/loan/{loanId}/review/{payAmt}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean reviewLoan(@PathVariable Long loanId,@PathVariable Double payAmt) {
-        return accountService.review(loanId,payAmt);
+    public boolean reviewLoan(@PathVariable Long loanId, @PathVariable Double payAmt) {
+        return accountService.review(loanId, payAmt);
     }
 
     @RequestMapping(value = "/loan/{loanId}/handle/{payAmt}/msg/{msg}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean handleLoan(@PathVariable Long loanId,@PathVariable Double payAmt,@PathVariable String msg) {
+    public boolean handleLoan(@PathVariable Long loanId, @PathVariable Double payAmt, @PathVariable String msg) {
         return accountService.handleLoan(loanId, payAmt, msg);
     }
 
     @RequestMapping(value = "/loan/{loanId}/code/{transCode}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean transferLoan(@PathVariable Long loanId,@PathVariable String transCode) {
-        return accountService.transferLoan(loanId,transCode);
+    public boolean transferLoan(@PathVariable Long loanId, @PathVariable String transCode) {
+        return accountService.transferLoan(loanId, transCode);
     }
 
     @RequestMapping(value = "/loan/{loanId}/takeback", method = RequestMethod.GET)

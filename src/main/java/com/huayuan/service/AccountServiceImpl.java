@@ -142,12 +142,11 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-    public boolean review(Long loanId,Double payAmt) {
+    public boolean review(Long loanId, Double payAmt) {
         Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setConfirmDate(new Date());
         loan.getPay().setConfirmID("admin");
         loan.getPay().setConfirm(2);
-        //loan.getPay().setPayAmt(payAmt);
         loan.getPay().setPayAmt(loan.getAmt());
         loan.setStartDate(loan.getPay().getConfirmDate());
         loan.setAmt(loan.getPay().getPayAmt());
@@ -155,9 +154,15 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         loan.createRepayPlans();
         loan.setStatus(0);
         loanRepository.save(loan);
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, memberRepository.findOne(loan.getMember().getId()).getWcNo(), loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess);
-        publisher.publishEvent(event);
+        sendMessage(loan);
         return true;
+    }
+
+    private void sendMessage(Loan loan) {
+        final String wcNo = memberRepository.findOne(loan.getMember().getId()).getWcNo();
+        final String msg = loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess;
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, wcNo, msg);
+        publisher.publishEvent(event);
     }
 
     @Override
@@ -167,13 +172,12 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         loan.getPay().setCode(transCode);
         loan.getPay().setErrorMessage("");
         loan.getPay().setConfirm(1);
-//        loan.getPay().setStaff();
         loanRepository.save(loan);
         return true;
     }
 
     @Override
-    public boolean handleLoan(Long loanId,Double payAmt,String msg) {
+    public boolean handleLoan(Long loanId, Double payAmt, String msg) {
         Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setErrorMessage(msg);
         loan.getPay().setPayAmt(payAmt);
@@ -196,10 +200,12 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         Loan loan = loanRepository.findOne(loanId);
         Long memberId = loan.getApplication().getMember().getId();
         Account account = accountRepository.findByMemberId(memberId);
-        account.setCrlUsed(account.getCrlUsed()-loan.getAmt());
-        account.setCrlAvl(account.getCrl()-account.getCrlUsed());
+        account.setCrlUsed(account.getCrlUsed() - loan.getAmt());
+        account.setCrlAvl(account.getCrl() - account.getCrlUsed());
         accountRepository.save(account);
         loan.getPay().setConfirm(10);
+        loan.setStatus(10);
+        sendMessage(loan);
         loanRepository.save(loan);
         return true;
     }
@@ -256,7 +262,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public static void main(String[] args) {
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        accountService.review(6l,11.0);
+        accountService.review(6l, 11.0);
     }
 
 }
