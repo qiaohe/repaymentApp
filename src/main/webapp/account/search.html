@@ -11,52 +11,20 @@
         <div class="title-label">贷款编号</div>
         <div class="title-input"><input id="loanNo" type="text"></div>
         <div class="title-label">状态</div>
-        <div class="title-input"><select id="status">
+        <div class="title-input"><select id="status" style="width: 120px;">
             <option value="">全部</option>
-            <option>待处理</option>
-            <option>已转账</option>
-            <option>错误</option>
-            <option>取消</option>
+            <option value="0">待处理</option>
+            <option value="1">已转账</option>
+            <option value="2">完成</option>
+            <option value="9">错误</option>
+            <option value="10">取消</option>
         </select></div>
         <div class="title-label">转账日期</div>
-        <div class="title-input"><input id="transDate" type="text"></div>
+        <div class="title-input"><input id="transDate" type="text" maxlength="10" placeholder="2014-01-01"></div>
         <div class="title-label"><input type="button" id="search-btn" value="查询" style="width: 120px;"></div>
     </div>
     <div id="search-result">
-        <table id="search-table">
-            <tr>
-                <td style="width:6%;">贷款编号</td>
-                <td style="width:8%;">申请编号</td>
-                <td style="width:8%;">审核时间</td>
-                <td style="width:6%;">贷款人姓名</td>
-                <td style="width:10%;">信用卡卡号</td>
-                <td style="width:6%;">发卡行</td>
-                <td style="width:6%;">贷款金额</td>
-                <td style="width:6%;">已转金额</td>
-                <td style="width:8%;">转账流水号</td>
-                <td style="width:8%;">转账日期</td>
-                <td style="width:6%;">复核人</td>
-                <td style="width:8%;">复核时间</td>
-                <td style="width:8%;">错误描述</td>
-                <td style="width:4%;">状态</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        <table id="search-table"></table>
     </div>
 </div>
 <script type="text/javascript" src="../resources/js/jquery-1.11.0.min.js"></script>

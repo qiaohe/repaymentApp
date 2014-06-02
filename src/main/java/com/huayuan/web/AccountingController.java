@@ -37,16 +37,34 @@ public class AccountingController {
         return accountService.getRepayPlan(loanId);
     }
 
-    @RequestMapping(value = "/loans/{loanId}/review", method = RequestMethod.GET)
+    @RequestMapping(value = "/loan/{loanId}/review/{payAmt}", method = RequestMethod.GET)
     @ResponseBody
-    public boolean reviewLoan(@PathVariable Long loanId) {
-        return accountService.review(loanId);
+    public boolean reviewLoan(@PathVariable Long loanId,@PathVariable Double payAmt) {
+        return accountService.review(loanId,payAmt);
+    }
+
+    @RequestMapping(value = "/loan/{loanId}/handle/{payAmt}/msg/{msg}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean handleLoan(@PathVariable Long loanId,@PathVariable Double payAmt,@PathVariable String msg) {
+        return accountService.handleLoan(loanId, payAmt, msg);
     }
 
     @RequestMapping(value = "/loan/{loanId}/code/{transCode}", method = RequestMethod.GET)
     @ResponseBody
     public boolean transferLoan(@PathVariable Long loanId,@PathVariable String transCode) {
         return accountService.transferLoan(loanId,transCode);
+    }
+
+    @RequestMapping(value = "/loan/{loanId}/takeback", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean takeBackLoan(@PathVariable Long loanId) {
+        return accountService.takeBackLoan(loanId);
+    }
+
+    @RequestMapping(value = "/loan/{loanId}/cancel", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean cancelLoan(@PathVariable Long loanId) {
+        return accountService.cancelLoan(loanId);
     }
 
     @RequestMapping(value = "/loans/search", method = RequestMethod.GET)

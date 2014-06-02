@@ -51,7 +51,7 @@
             "<td style=\"width:4%;\"></td>"+
             "<td style=\"width:6%;\">会员编号</td>\n"+
             "<td style=\"width:6%;\">姓名</td>\n"+
-            "<td style=\"width:10%;\">贷款编号</td>\n"+
+            "<td style=\"width:6%;\">贷款编号</td>\n"+
             "<td style=\"width:8%;\">金额</td>\n"+
             "<td style=\"width:6%;\">APR(%)</td>\n"+
             "<td style=\"width:6%;\">期数</td>\n"+
@@ -59,7 +59,7 @@
             "<td style=\"width:12%;\">应还/已还本金</td>\n"+
             "<td style=\"width:12%;\">应还/已还利息</td>\n"+
             "<td style=\"width:8%;\">支付罚息</td>\n"+
-            "<td style=\"width:6%;\">逾期天数</td>\n"+
+            "<td style=\"width:8%;\">逾期/最大逾期</td>\n"+
             "<td style=\"width:8%;\">贷款状态</td>\n"+
             "</tr>");
         $.ajax({
@@ -81,9 +81,9 @@
                         "<td>"+(entity.apr*100).toFixed(2)+"</td>\n"+
                         "<td>"+entity.term+"</td>\n"+
                         "<td>"+ $.formatDate(entity.loanDate)+"</td>\n"+
-                        "<td>&yen;"+entity.prinaipal.toFixed(2)+"/&yen;"+entity.paidPrinaipal.toFixed(2)+"</td>\n"+
-                        "<td>&yen;"+entity.interest.toFixed(2)+"/&yen;"+entity.paidInterest.toFixed(2)+"</td>\n"+
-                        "<td>&yen;"+entity.paidOverdueInterest.toFixed(2)+"</td>\n"+
+                        "<td>&yen;"+(entity.prinaipal?entity.prinaipal.toFixed(2):"")+"/"+(entity.paidPrinaipal?"&yen;"+entity.paidPrinaipal.toFixed(2):"")+"</td>\n"+
+                        "<td>"+(entity.interest?"&yen;"+entity.interest.toFixed(2):"")+"/"+(entity.paidInterest?"&yen;"+entity.paidInterest.toFixed(2):"")+"</td>\n"+
+                        "<td>"+(entity.paidOverdueInterest?"&yen;"+entity.paidOverdueInterest.toFixed(2):"")+"</td>\n"+
                         "<td>"+entity.curDelq+"/"+entity.maxDelq+"</td>\n"+
                         "<td>"+loanStatus[entity.status]+"</td>\n"+
                         "</tr>";

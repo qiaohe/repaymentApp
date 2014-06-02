@@ -142,11 +142,12 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-    public boolean review(Long loanId) {
+    public boolean review(Long loanId,Double payAmt) {
         Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setConfirmDate(new Date());
-        loan.getPay().setTransferTime(new Date());
-        loan.getPay().setConfirm(1);
+        loan.getPay().setConfirmID("admin");
+        loan.getPay().setConfirm(2);
+        //loan.getPay().setPayAmt(payAmt);
         loan.getPay().setPayAmt(loan.getAmt());
         loan.setStartDate(loan.getPay().getConfirmDate());
         loan.setAmt(loan.getPay().getPayAmt());
@@ -164,8 +165,41 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         Loan loan = loanRepository.findOne(loanId);
         loan.getPay().setTransferTime(new Date());
         loan.getPay().setCode(transCode);
-//        loan.getPay().setStaff();
+        loan.getPay().setErrorMessage("");
         loan.getPay().setConfirm(1);
+//        loan.getPay().setStaff();
+        loanRepository.save(loan);
+        return true;
+    }
+
+    @Override
+    public boolean handleLoan(Long loanId,Double payAmt,String msg) {
+        Loan loan = loanRepository.findOne(loanId);
+        loan.getPay().setErrorMessage(msg);
+        loan.getPay().setPayAmt(payAmt);
+        loan.getPay().setConfirm(9);
+        loanRepository.save(loan);
+        return true;
+    }
+
+    @Override
+    public boolean takeBackLoan(Long loanId) {
+        Loan loan = loanRepository.findOne(loanId);
+        loan.getPay().setErrorMessage("");
+        loan.getPay().setConfirm(1);
+        loanRepository.save(loan);
+        return true;
+    }
+
+    @Override
+    public boolean cancelLoan(Long loanId) {
+        Loan loan = loanRepository.findOne(loanId);
+        Long memberId = loan.getApplication().getMember().getId();
+        Account account = accountRepository.findByMemberId(memberId);
+        account.setCrlUsed(account.getCrlUsed()-loan.getAmt());
+        account.setCrlAvl(account.getCrl()-account.getCrlUsed());
+        accountRepository.save(account);
+        loan.getPay().setConfirm(10);
         loanRepository.save(loan);
         return true;
     }
@@ -222,7 +256,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public static void main(String[] args) {
         ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-        accountService.review(6l);
+        accountService.review(6l,11.0);
     }
 
 }

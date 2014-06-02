@@ -32,9 +32,15 @@ public interface AccountService {
 
     public void repay(Long memberId, Double amount);
 
-    public boolean review(Long loanId);
+    public boolean review(Long loanId,Double payAmt);
 
     public boolean transferLoan(Long loanId,String transCode);
+
+    public boolean handleLoan(Long loanId,Double payAmt,String msg);
+
+    public boolean takeBackLoan(Long loanId);
+
+    public boolean cancelLoan(Long loanId);
 
     public LoanSummary getLoansSummary(Long memberId);
 
