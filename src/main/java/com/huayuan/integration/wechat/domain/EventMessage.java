@@ -106,6 +106,6 @@ public class EventMessage {
     }
 
     public boolean isTvMessage() {
-        return StringUtils.isNotEmpty(content) && content.contains("#");
+        return StringUtils.isNotEmpty(content) && (content.contains("#") || content.contains("＃"));
     }
 }

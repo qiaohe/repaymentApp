@@ -120,6 +120,17 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         onApplicationEvent(event);
     }
 
+    private  String toSBC(String source) {
+        char c[] = source.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == '\u3000') {
+                c[i] = ' ';
+            } else if (c[i] > '\uFF00' && c[i] < '\uFF5F') {
+                c[i] = (char) (c[i] - 65248);
+            }
+        }
+        return new String(c);
+    }
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.POST)
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -133,7 +144,7 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             }
             content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member.getId()) + "&&random=" + RandomStringUtils.randomNumeric(15));
         } else if (eventMessage.isTvMessage()) {
-            creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(), eventMessage.getContent());
+            creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(),toSBC(eventMessage.getContent()));
             content = tvReplyTemplate;
         } else {
             content = getContent(eventMessage);
