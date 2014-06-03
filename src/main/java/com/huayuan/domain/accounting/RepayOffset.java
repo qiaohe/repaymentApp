@@ -1,6 +1,7 @@
 package com.huayuan.domain.accounting;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Johnson on 4/23/14.
@@ -17,8 +18,10 @@ public class RepayOffset {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
     private Loan loan;
-    @Column(name = "AMT")
-    private Double amt;
+
+    @Column(name = "CREATE_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime = new Date();
 
     public Long getId() {
         return id;
@@ -50,5 +53,13 @@ public class RepayOffset {
 
     public void setAmt(Double amt) {
         this.amt = amt;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
