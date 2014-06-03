@@ -1427,7 +1427,9 @@ $(document).on("pagecreate", "#feedback", function () {
             $.ajax({
                 url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
                 type: "POST",
-                success: function () {},
+                success: function () {
+                    $("#fd-textarea").val("");
+                },
                 error: function () {
                     if (config.debug)
                         alert(config.api_path + "members/" + member.id + "/feedback");
