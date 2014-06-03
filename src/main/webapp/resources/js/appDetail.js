@@ -416,7 +416,7 @@
         $("#memberCreateTime").val($.formatDate(member.createTime));
         if(member.mobile) {
             $.ajax({
-                url: "../api/dict/mobileArea/"+member.mobile,
+                url: "api/dict/mobileArea/"+member.mobile,
                 dataType: "json",
                 type: "GET",
                 contentType: "application/json",
