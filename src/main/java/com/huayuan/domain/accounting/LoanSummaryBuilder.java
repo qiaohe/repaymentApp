@@ -29,7 +29,7 @@ public class LoanSummaryBuilder {
                     loan.getTerm(),
                     loan.getStartDate(),
                     loan.getPrincipal(),
-                    loan.getPrincipal() - loan.getPaidPrincipal(),
+                    loan.getPrincipal() - loan.getPaidPrincipal() + loan.getInterest(),
                     loan.getPaidTerm(),
                     savedCost,
                     loan.getAmt() + loan.getInterest(),
