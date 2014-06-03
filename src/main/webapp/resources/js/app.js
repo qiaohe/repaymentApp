@@ -1408,15 +1408,14 @@ $(document).on("pagecreate", "#patience", function () {
 $(document).on("pagecreate", "#feedback", function () {
     var $tip = $("#fd-tip"),$textarea = $("#fd-textarea");
     $textarea.focus(function(e){
-        e.stopPropagation();
         $tip.hide();
+        e.stopPropagation();
     }).blur(function(){
         if($.trim($(this).val()) == "") {
             $tip.show();
         }
     });
     $tip.off("tap").tap(function(){
-        $(this).hide();
         $textarea.focus();
     });
     $(".fb-btn a").off("tap").tap(function () {
@@ -1424,12 +1423,11 @@ $(document).on("pagecreate", "#feedback", function () {
         var $tag = $(this);
         if(tmp) {
             $tag.attr("href","#thanks-feedback");
+            $tag.trigger("tag");
             $.ajax({
                 url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
                 type: "POST",
-                success: function () {
-                    $("#fd-textarea").val("");
-                },
+                success: function () {},
                 error: function () {
                     if (config.debug)
                         alert(config.api_path + "members/" + member.id + "/feedback");

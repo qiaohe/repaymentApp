@@ -683,7 +683,7 @@ span.loan-i-cont {
     background: url("../img/other_icons/fb-cloud2.png") no-repeat center;
     position: relative;
 }
-.fb-answer label {
+.fb-answer span {
     position: absolute;
     width: 140px;
     height: 30px;
