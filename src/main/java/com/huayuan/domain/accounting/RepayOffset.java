@@ -1,5 +1,7 @@
 package com.huayuan.domain.accounting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,10 +18,8 @@ public class RepayOffset {
     @Column(name = "TERM_NO")
     private Integer termNo;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "REPAY_ID")
-    private Repay repay;
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
+    @JsonIgnore
     private Loan loan;
     @Column(name = "AMT")
     private Double amt;
@@ -41,14 +41,6 @@ public class RepayOffset {
 
     public void setTermNo(Integer termNo) {
         this.termNo = termNo;
-    }
-
-    public Repay getRepay() {
-        return repay;
-    }
-
-    public void setRepay(Repay repay) {
-        this.repay = repay;
     }
 
     public Loan getLoan() {
