@@ -91,11 +91,14 @@ public class LoanSummary {
         private Integer paidTerm;
         private Double savedCost;
         private boolean isOverDue;
+        private List<RepayOffset> repayList;
 
         public LoanItem() {
         }
 
-        public LoanItem(Long loanId,Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate, Double principal, Double restPrincipal, Integer paidTerm, Double savedCost, Double dueAmt, boolean isOverDue) {
+        public LoanItem(Long loanId, Date applyDate, String creditCardNo, Double amount, Integer term, Date startDate,
+                        Double principal, Double restPrincipal, Integer paidTerm, Double savedCost,
+                        Double dueAmt, boolean isOverDue, List<RepayOffset> repayList) {
             this.loanId = loanId;
             this.applyDate = applyDate;
             this.creditCardNo = creditCardNo;
@@ -108,6 +111,7 @@ public class LoanSummary {
             this.savedCost = savedCost;
             this.dueAmt = dueAmt;
             this.isOverDue = isOverDue;
+            this.repayList = repayList;
         }
 
         public Long getLoanId() {
@@ -204,6 +208,14 @@ public class LoanSummary {
 
         public void setOverDue(boolean isOverDue) {
             this.isOverDue = isOverDue;
+        }
+
+        public List<RepayOffset> getRepayList() {
+            return repayList;
+        }
+
+        public void setRepayList(List<RepayOffset> repayList) {
+            this.repayList = repayList;
         }
     }
 }

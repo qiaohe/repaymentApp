@@ -16,9 +16,13 @@ public class RepayOffset {
     @Column(name = "TERM_NO")
     private Integer termNo;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "REPAY_ID")
+    private Repay repay;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "BID")
     private Loan loan;
-
+    @Column(name = "AMT")
+    private Double amt;
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
@@ -37,6 +41,14 @@ public class RepayOffset {
 
     public void setTermNo(Integer termNo) {
         this.termNo = termNo;
+    }
+
+    public Repay getRepay() {
+        return repay;
+    }
+
+    public void setRepay(Repay repay) {
+        this.repay = repay;
     }
 
     public Loan getLoan() {
