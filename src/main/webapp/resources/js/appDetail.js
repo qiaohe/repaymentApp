@@ -422,7 +422,7 @@
                 contentType: "application/json",
                 success: function (json) {
                     if (json) {
-                        $("#mobileCity").text(json);
+                        $("#mobileCity").val(json);
                     }
                 }
             });
