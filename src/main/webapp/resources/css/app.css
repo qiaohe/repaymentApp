@@ -656,7 +656,7 @@ span.loan-i-cont {
     float: left;
     text-align: right;
     border-radius: 5px 0 0 5px;
-    font-size: 20px;
+    font-size: 18px;
 }
 .fb-content .fb-text {
     float: left;
@@ -691,7 +691,7 @@ span.loan-i-cont {
     left: 80px;
     top: 90px;
     font-family: "黑体";
-    font-size: 16px;
+    font-size: 14px;
     color: #c4c4c4;
 }
 #fd-textarea {

@@ -1406,21 +1406,20 @@ $(document).on("pagecreate", "#patience", function () {
 });
 
 $(document).on("pagecreate", "#feedback", function () {
-    $("#fd-textarea").focus(function(e){
+    var $tip = $("#fd-tip"),$textarea = $("#fd-textarea");
+    $textarea.focus(function(e){
         e.stopPropagation();
-        $(this).next().hide();
+        $tip.hide();
     }).blur(function(){
         if($.trim($(this).val()) == "") {
-            $(this).next().show();
+            $tip.show();
         }
     });
-
-    $("#fd-textarea").next().tap(function(){
+    $tip.off("tap").tap(function(){
         $(this).hide();
-        $(this).prev().focus();
+        $textarea.focus();
     });
-
-    $("#feedback a").tap(function () {
+    $(".fb-btn a").off("tap").tap(function () {
         var tmp = $.trim($("#fd-textarea").val());
         if(tmp) {
             $.ajax({
