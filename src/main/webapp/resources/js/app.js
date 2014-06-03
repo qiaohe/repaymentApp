@@ -1421,8 +1421,9 @@ $(document).on("pagecreate", "#feedback", function () {
     });
     $(".fb-btn a").off("tap").tap(function () {
         var tmp = $.trim($("#fd-textarea").val());
+        var $tag = $(this);
         if(tmp) {
-            $(this).attr("href","#thanks-feedback");
+            $tag.attr("href","#thanks-feedback");
             $.ajax({
                 url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
                 type: "POST",
@@ -1432,8 +1433,6 @@ $(document).on("pagecreate", "#feedback", function () {
                         alert(config.api_path + "members/" + member.id + "/feedback");
                 }
             });
-        } else {
-            $(this).attr("href","#");
         }
     });
 });
