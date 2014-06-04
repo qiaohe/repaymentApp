@@ -102,7 +102,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.nextMonth());
         for (RepayPlan plan : plans) {
             if (plan.getDueTotalAmt() > account.getDebit_amt()) return;
-            plan.setPaidPrincipal(plan.getDueAmt());
+            plan.setPaidPrincipal(plan.getDuePrincipal());
             plan.setPaidInterest(plan.getDueInterest());
             plan.setPaidOverDueInterest(plan.getOverDue_Interest());
             plan.getLoan().setCurDelq(0);

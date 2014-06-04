@@ -656,7 +656,7 @@ span.loan-i-cont {
     float: left;
     text-align: right;
     border-radius: 5px 0 0 5px;
-    font-size: 20px;
+    font-size: 18px;
 }
 .fb-content .fb-text {
     float: left;
@@ -683,7 +683,7 @@ span.loan-i-cont {
     background: url("../img/other_icons/fb-cloud2.png") no-repeat center;
     position: relative;
 }
-.fb-answer label {
+.fb-answer span {
     position: absolute;
     width: 140px;
     height: 30px;
@@ -691,7 +691,7 @@ span.loan-i-cont {
     left: 80px;
     top: 90px;
     font-family: "黑体";
-    font-size: 16px;
+    font-size: 14px;
     color: #c4c4c4;
 }
 #fd-textarea {
