@@ -564,7 +564,7 @@ $(document).on("pagecreate", "#limit", function () {
     }
 
     $("#limit-pop").tap(function() {
-
+        $(this)
     });
 });
 
