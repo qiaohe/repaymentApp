@@ -426,9 +426,7 @@ function shareToTimeline() {
         "desc": share.description,
         "title": share.title
     }, function(res) {
-        if (config.debug) {
-            alert(res);
-        }
+        console.log(res);
     });
 }
 
@@ -649,14 +647,6 @@ $(document).on("pagecreate", "#result", function(){
     share.title = "么么贷的title, 暂缺";
     share.appid = "";
 
-    $("#share-wechat").click(function () {
-        shareToChat();
-    });
-
-//    $("#share-circle").click(function () {
-//        shareToTimeline();
-//    });
-
     $("#share-sina").click(function () {
         shareToSina();
     });
@@ -715,7 +705,7 @@ $(document).on("pagebeforeshow", "#result", function(){
     if (!(parseFloat(member.status) >= 4)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
-        });
+        }).attr("href", "#limit").addClass("bluebtn");
     }
 });
 
@@ -1363,19 +1353,19 @@ $("a").on({
 });
 
 $(document).on("pagecreate", "#fail", function () {
-    $("#got-it-y").on("vclick", function () {
+    $("#got-it-y").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
 
 $(document).on("pagecreate", "#full", function () {
-    $("#got-it-z").on("vclick", function () {
+    $("#got-it-z").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
 
 $(document).on("pagecreate", "#suspension", function () {
-    $("#got-it").on("vclick", function () {
+    $("#got-it").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
@@ -1394,7 +1384,7 @@ $(document).on("pagecreate", "#patience", function () {
         }
     });
 
-    $("#got-it-x").on("vclick", function () {
+    $("#got-it-x").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
@@ -1493,6 +1483,14 @@ document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
     });
 
     WeixinJSBridge.on('menu:share:timeline', function(argv){
+        shareToTimeline();
+    });
+
+    $("#share-wechat").click(function () {
+        shareToChat();
+    });
+
+    $("#share-circle").click(function () {
         shareToTimeline();
     });
 }, false);
