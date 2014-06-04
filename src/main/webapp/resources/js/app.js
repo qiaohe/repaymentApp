@@ -413,9 +413,7 @@ function shareToChat() {
         "desc": share.description,
         "title": share.title
     }, function(res) {
-        if (config.debug) {
-            alert(res);
-        }
+        console.log(res);
     });
 }
 
@@ -440,14 +438,6 @@ function shareToSina() {
 }
 
 function shareToTencent() {
-//    WeixinJSBridge.invoke("shareWeibo",{
-//        "content": share.discription,
-//        "url": share.link,
-//    }, function(res) {
-//        if (config.debug) {
-//            alert(res);
-//        }
-//    });
     share_to('tqq');
     return false;
 }
@@ -574,6 +564,10 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
+
+    $("#limit-pop").tap(function() {
+
+    });
 });
 
 $(document).on("pageshow", "#limit", function(){
@@ -659,9 +653,9 @@ $(document).on("pagecreate", "#result", function(){
         shareToChat();
     });
 
-    $("#share-circle").click(function () {
-        shareToTimeline();
-    });
+//    $("#share-circle").click(function () {
+//        shareToTimeline();
+//    });
 
     $("#share-sina").click(function () {
         shareToSina();
@@ -998,22 +992,22 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 });
 
-$(document).on("tap", ".card-container", function () {
+$(document).on("tap", ".card-container-0", function () {
     app.credit_card = $(this).children("div").html();
     $("#cardlist-2").popup("close");
     setTimeout(function () {
         $("#card-confirm-2").show();
     }, 200);
-    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
-$(document).on("tap", ".card-container-0", function () {
+$(document).on("tap", ".card-container", function () {
     app.credit_card = $(this).children("div").html();
     $("#cardlist").popup("close");
     setTimeout(function () {
         $("#card-confirm").show();
     }, 200);
-    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
 $(document).on("pagebeforeshow", "#congratulation", function(){
@@ -1406,23 +1400,24 @@ $(document).on("pagecreate", "#patience", function () {
 });
 
 $(document).on("pagecreate", "#feedback", function () {
-    $("#fd-textarea").focus(function(e){
+    var $tip = $("#fd-tip"),$textarea = $("#fd-textarea");
+    $textarea.focus(function(e){
+        $tip.hide();
         e.stopPropagation();
-        $(this).next().hide();
     }).blur(function(){
         if($.trim($(this).val()) == "") {
-            $(this).next().show();
+            $tip.show();
         }
     });
-
-    $("#fd-textarea").next().tap(function(){
-        $(this).hide();
-        $(this).prev().focus();
+    $tip.off("tap").tap(function(){
+        $textarea.focus();
     });
-
-    $("#feedback a").tap(function () {
+    $(".fb-btn a").off("tap").tap(function () {
         var tmp = $.trim($("#fd-textarea").val());
+        var $tag = $(this);
         if(tmp) {
+            $tag.attr("href","#thanks-feedback");
+            $tag.trigger("tag");
             $.ajax({
                 url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
                 type: "POST",
@@ -1484,4 +1479,13 @@ window.onunload = function () {
     }
 };
 
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    WeixinJSBridge.on('menu:share:appmessage', function(argv){
+        shareToChat();
+    });
+
+    WeixinJSBridge.on('menu:share:timeline', function(argv){
+        shareToTimeline();
+    });
+}, false);
 console.log("END!");
