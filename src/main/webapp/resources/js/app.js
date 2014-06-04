@@ -998,22 +998,22 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 });
 
-$(document).on("tap", ".card-container", function () {
+$(document).on("tap", ".card-container-0", function () {
     app.credit_card = $(this).children("div").html();
     $("#cardlist-2").popup("close");
     setTimeout(function () {
         $("#card-confirm-2").show();
     }, 200);
-    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
-$(document).on("tap", ".card-container-0", function () {
+$(document).on("tap", ".card-container", function () {
     app.credit_card = $(this).children("div").html();
     $("#cardlist").popup("close");
     setTimeout(function () {
         $("#card-confirm").show();
     }, 200);
-    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
 $(document).on("pagebeforeshow", "#congratulation", function(){
