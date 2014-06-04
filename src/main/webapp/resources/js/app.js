@@ -1409,7 +1409,8 @@ $(document).on("pagecreate", "#feedback", function () {
             $tip.show();
         }
     });
-    $tip.off("tap").tap(function(){
+    $tip.focus(function(){
+        $tip.blur();
         $textarea.focus();
     });
     $(".fb-btn a").off("tap").tap(function () {
@@ -1428,6 +1429,13 @@ $(document).on("pagecreate", "#feedback", function () {
                 }
             });
         }
+    });
+});
+
+$(document).on("pagecreate", "#thanks-feedback", function () {
+    // Back to Weixin
+    $("#tfb-back").click(function(){
+        WeixinJSBridge.call("closeWindow");
     });
 });
 
