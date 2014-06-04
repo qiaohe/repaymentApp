@@ -574,6 +574,10 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
+
+    $("#limit-pop").tap(function() {
+
+    });
 });
 
 $(document).on("pageshow", "#limit", function(){
