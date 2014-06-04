@@ -119,7 +119,6 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private void createOffsetByRepayPlan(RepayPlan plan) {
         RepayOffset repayOffset = new RepayOffset();
         repayOffset.setAmt(plan.getPaidAmt());
-        repayOffset.setLoan(plan.getLoan());
         repayOffset.setTermNo(plan.getTermNo());
         repayOffset.setLoan(plan.getLoan());
         repayOffsetRepository.save(repayOffset);
