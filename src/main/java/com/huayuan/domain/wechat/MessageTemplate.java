@@ -59,7 +59,7 @@ public class MessageTemplate implements Serializable {
     }
 
     public boolean isApplicationNoNeeded() {
-        return getStatuses().equalsIgnoreCase("5.1,5.2");
+        return getStatuses().equalsIgnoreCase("5.1") || getStatuses().equalsIgnoreCase("5.2");
     }
 
     public boolean isUsedCrl() {
