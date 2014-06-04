@@ -413,9 +413,7 @@ function shareToChat() {
         "desc": share.description,
         "title": share.title
     }, function(res) {
-        if (config.debug) {
-            alert(res);
-        }
+        console.log(res);
     });
 }
 
@@ -440,14 +438,6 @@ function shareToSina() {
 }
 
 function shareToTencent() {
-//    WeixinJSBridge.invoke("shareWeibo",{
-//        "content": share.discription,
-//        "url": share.link,
-//    }, function(res) {
-//        if (config.debug) {
-//            alert(res);
-//        }
-//    });
     share_to('tqq');
     return false;
 }
@@ -663,9 +653,9 @@ $(document).on("pagecreate", "#result", function(){
         shareToChat();
     });
 
-    $("#share-circle").click(function () {
-        shareToTimeline();
-    });
+//    $("#share-circle").click(function () {
+//        shareToTimeline();
+//    });
 
     $("#share-sina").click(function () {
         shareToSina();
@@ -1489,4 +1479,13 @@ window.onunload = function () {
     }
 };
 
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    WeixinJSBridge.on('menu:share:appmessage', function(argv){
+        shareToChat();
+    });
+
+    WeixinJSBridge.on('menu:share:timeline', function(argv){
+        shareToTimeline();
+    });
+}, false);
 console.log("END!");
