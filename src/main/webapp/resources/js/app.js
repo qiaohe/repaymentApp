@@ -766,22 +766,16 @@ $(document).on("pagecreate", "#loan", function () {
     $("#addcard-2").click(function(){
         var card_num = $("#new-cardnum-2").val();
         if (validateCardNo(card_num)) {
-            addCreditCard($("#new-cardnum-2").val()).success(function(text){
-                if (text == "true") {
-                    $("#varifying-tips h4").html("您的信用卡添加成功!");
-                    $("#varifying-tips").show();
-                    var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-
-                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
-
-                    $("#cardlist-2").prepend($(tmp));
-                }
-                else {
-                    $("#varifying-tips h4").html("您的信用卡添加失败!");
-                    $("#varifying-tips").show();
-                }
+            addCreditCard($("#new-cardnum-2").val()).success(function(){
                 $("#card-add-box-2").hide();
-                member.creditcard = 0;
+                app.credit_card = card_num;
+                setTimeout(function () {
+                    $("#card-confirm-2").show();
+                }, 500);
+                $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+                var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
+                var tmp = "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                $("#cardlist-2").prepend($(tmp));
             }).error(function(){
                 $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
             });
@@ -1088,15 +1082,15 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         var card_num = $("#new-cardnum").val();
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum").val()).success(function(){
-                alert("您的信用卡添加成功!");
                 $("#card-add-box").hide();
-
+                app.credit_card = card_num;
+                setTimeout(function () {
+                    $("#card-confirm").show();
+                }, 500);
+                $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-
                 var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
-
-                $("#cardlist-2").prepend($(tmp));
-
+                $("#cardlist").prepend($(tmp));
             }).error(function(){
                 $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
             });
@@ -1288,8 +1282,10 @@ function sliderPage() {
     $("#loan-specific").css("width", $width*0.9);
 
     var tmp = "";
-    for(var i = 0, len = $items.length; i < len; i++) {
-        tmp += "<div class='spot'></div>";
+    if ($items.length > 1) {
+        for(var i = 0, len = $items.length; i < len; i++) {
+            tmp += "<div class='spot'></div>";
+        }
     }
     $("#spots").css("width", 26 * $items.length + "px").html(tmp);
     $(".spot:eq(0)").addClass("spot-chosen");
