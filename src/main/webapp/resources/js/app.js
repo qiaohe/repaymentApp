@@ -988,7 +988,7 @@ $(document).on("tap", ".card-container-0", function () {
     $("#cardlist-2").popup("close");
     setTimeout(function () {
         $("#card-confirm-2").show();
-    }, 200);
+    }, 500);
     $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
@@ -997,7 +997,7 @@ $(document).on("tap", ".card-container", function () {
     $("#cardlist").popup("close");
     setTimeout(function () {
         $("#card-confirm").show();
-    }, 200);
+    }, 500);
     $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
@@ -1093,7 +1093,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
 
-                var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
 
                 $("#cardlist-2").prepend($(tmp));
 
