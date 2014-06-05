@@ -2,7 +2,6 @@ package com.huayuan.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.common.event.MemberStatusChangeEvent;
-import com.huayuan.common.util.Constants;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.SexEnum;
 import com.huayuan.domain.wechat.*;
@@ -15,9 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -153,13 +150,15 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     @Override
     public String createReplyNews(Message inBoundMessage) {
         Message news = new Message();
-        news.setArticleCount(2);
+
         news.setFromUserName(inBoundMessage.getToUserName());
         news.setToUserName(inBoundMessage.getFromUserName());
         news.setMsgType("news");
         news.setCreateTime(new Date().getTime());
         Message.Articles articles = new Message.Articles();
-        for (FeedbackArticle fa : feedbackArticleRepository.findAll()) {
+        List<FeedbackArticle> articleList = feedbackArticleRepository.findAll();
+        news.setArticleCount(articleList.size());
+        for (FeedbackArticle fa : articleList) {
             articles.addArticle(new Message.Article(fa.getTitle(), fa.getDescription(), fa.getPicUrl(), fa.getUrl()));
         }
         news.setArticles(articles);
