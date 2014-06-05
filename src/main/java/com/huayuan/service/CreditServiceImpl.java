@@ -11,6 +11,7 @@ import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.*;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEnum;
+import com.huayuan.domain.member.WhiteList;
 import com.huayuan.domain.wechat.ReplyAnswer;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.repository.account.LoanRepository;
@@ -19,6 +20,7 @@ import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.applicationloan.TelephoneTvRepository;
 import com.huayuan.repository.credit.*;
 import com.huayuan.repository.member.MemberRepository;
+import com.huayuan.repository.member.WhiteListRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +73,8 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
     @Value("${weChat.baseUrl}")
     private String baseUrl;
     private ApplicationEventPublisher publisher;
-
+    @Inject
+    private WhiteListRepository whiteListRepository;
 
     @Override
     public void addCreditResult(CreditResult creditResult) {
@@ -136,6 +139,11 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         return accountRepository.save(account);
     }
 
+    private void removeWhiteListBy(Long memberId) {
+        WhiteList whiteList = whiteListRepository.findByMemberId(memberId);
+        if (whiteList != null) whiteListRepository.delete(whiteList);
+    }
+
     @Override
     public Approval approve(Approval approval) {
         final Application application = approval.getApplication();
@@ -145,8 +153,9 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         updateApplicationAsApproved(application);
         approval.setCreateTime(new Date());
         Approval result = approvalRepository.save(approval);
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this,application.getMember().getWcNo(), getApproveResultMessage(approval));
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, application.getMember().getWcNo(), getApproveResultMessage(approval));
         publisher.publishEvent(event);
+        removeWhiteListBy(application.getMember().getId());
         return result;
     }
 

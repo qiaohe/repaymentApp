@@ -3,8 +3,6 @@ package com.huayuan.domain.loanapplication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.domain.member.*;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.IntRange;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -233,11 +231,16 @@ public class Application {
 
     @Transient
     @JsonIgnore
-    public String getWeChatStatus() {
+    public String getWeChatStatus(List<WhiteList> whiteList) {
         if (status < 5 || status == 99) return "4";
         if (status == 5) {
             if (isApproved()) return "5.1";
-            if (isDeclined()) return "5.2";
+            if (isDeclined()) {
+                for (WhiteList w : whiteList) {
+                    if (w.getMemberId().equals(getMember().getId())) return "3.1";
+                }
+                return "5.2";
+            }
         }
         return String.valueOf(status);
     }

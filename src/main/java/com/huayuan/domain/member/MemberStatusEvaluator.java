@@ -7,6 +7,7 @@ import com.huayuan.repository.account.LoanRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.MemberRepository;
+import com.huayuan.repository.member.WhiteListRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,8 @@ public class MemberStatusEvaluator {
     private CreditResultRepository creditResultRepository;
     @Inject
     private LoanRepository loanRepository;
+    @Inject
+    private WhiteListRepository whiteListRepository;
 
     public MemberStatusEvaluator() {
     }
@@ -64,8 +67,9 @@ public class MemberStatusEvaluator {
         if (member.getPreCrl() == null || member.getPreCrl() == 0) return "1";
         Application application = getApprovingApplication(member.getId());
         if (application != null) {
-            final String status = application.getWeChatStatus();
-            if (application.getExistingFlag() == 2 || application.getStatus() == 7) return getStatusByLoans(member.getId());
+            final String status = application.getWeChatStatus(whiteListRepository.findAll());
+            if (application.getExistingFlag() == 2 || application.getStatus() == 7)
+                return getStatusByLoans(member.getId());
             return status;
         }
         return member.getPreCrl() > 1000 ? "3.1" : "3.2";

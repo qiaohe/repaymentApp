@@ -100,6 +100,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateIdCard(Member member, IdCard idCard) {
+        if (!idCardRepository.exists(member.getIdCard().getId())) {
+            addIdCard(member, idCard);
+            return;
+        }
         IdCard ic = idCardRepository.findOne(member.getIdCard().getId());
         ic.setIssuer(idCard.getIssuer());
         ic.setValidFrom(idCard.getValidFrom());
