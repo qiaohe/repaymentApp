@@ -374,7 +374,9 @@ function formatDate(ms,type) {
     var minute = date.getMinutes() < 10 ? "0"+date.getMinutes():date.getMinutes();
 
     var result = "";
-    if(type == "2") {
+    if(type == "1") {
+        result = year +"-"+ month +"-"+ day;
+    } else if(type == "2") {
         result = month+"月"+day+"日 "+hour+":"+minute;
     }
     return result;
@@ -1155,7 +1157,7 @@ function generateCarousels(loanSummary) {
         var index = $(this).attr("index");
         var curLoan = loans[index];
         var detailInfo = [];
-        detailInfo.push(getReadableDate(curLoan.startDate).join("-"));
+        detailInfo.push(formatDate(curLoan.startDate,"1"));
         detailInfo.push("尾号" + curLoan.creditCardNo.slice(curLoan.creditCardNo.length - 4, curLoan.creditCardNo.length));
         detailInfo.push(numberWithCommas(curLoan.amount));
         detailInfo.push(curLoan.term + "期");
@@ -1197,7 +1199,7 @@ function generateItemLoan(loan,index) {
     // summary
     if(status == 1) { // 逾期
         contentHtml = "<div class=\"repay-summary\">\n"+
-            "    <div class=\"repay-s-time\">"+getReadableDate(loan.startDate).join("-")+"</div>\n"+
+            "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
             "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount-delay\">\n"+
@@ -1210,7 +1212,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-item repay-item-history\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-2.png');\"></div><div class=\"repay-info\">历史还款记录</div><div class=\"replay-expand\"></div></div>\n";
     } else if(status == 9) { // 结清
         contentHtml = "<div class=\"repay-summary\">\n"+
-            "    <div class=\"repay-s-time\">"+getReadableDate(loan.startDate).join("-")+"</div>\n"+
+            "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
             "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
@@ -1221,7 +1223,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-item repay-item-history\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-2.png');\"></div><div class=\"repay-info\">历史还款记录</div><div class=\"replay-expand\"></div></div>\n";
     } else {
         contentHtml = "<div class=\"repay-summary\">\n"+
-            "    <div class=\"repay-s-time\">"+getReadableDate(loan.startDate).join("-")+"</div>\n"+
+            "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
             "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
