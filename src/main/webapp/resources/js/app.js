@@ -690,25 +690,29 @@ $(document).on("pagebeforeshow", "#result", function(){
     whetherLoanable();
     if (member.loanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.navigate("#loan");
+//            $.mobile.navigate("#loan");
+            $.changePage("#loan");
         });
     }
 
     if (member.status == "5.1") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.navigate("#congratulation");
+//            $.mobile.navigate("#congratulation");
+            $.mobile.changePage("#congratulation");
         });
     }
     else if (member.status == "5.2") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.navigate("#fail");
+//            $.mobile.navigate("#fail");
+            $.mobile.changePage("#fail");
         });
     }
 
     if (!(parseFloat(member.status) >= 4)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
-            $.mobile.navigate("#limit");
+//            $.mobile.navigate("#limit");
+            $.mobile.changePage("#limit");
         }).addClass("bluebtn");
     }
 });
