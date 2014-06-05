@@ -10,13 +10,12 @@ import java.util.Date;
 @Entity
 @Table(name = "WECHAT_FEEDBACK")
 public class Feedback implements Serializable {
-
     private static final long serialVersionUID = -5842515273392761533L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "member_Id")
+    @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column(name = "FEEDBACK")
