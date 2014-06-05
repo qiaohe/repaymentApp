@@ -211,7 +211,7 @@ function testLimit() {
 }
 
 function enableLimitTest(btn_id) {
-    if(member.credit_card && member.industry && member.education && member.email) {
+    if(member.credit_card && member.industry && member.education && member.email.length > 8) {
         $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
             testLimit();
         });
@@ -451,7 +451,7 @@ function shareToRenren() {
 }
 
 // Actions
-$(document).on("pagecreate", function() {
+$(document).on("pageshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");
     }
@@ -562,10 +562,6 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
-
-    $("#limit-pop").tap(function() {
-        $(this)
-    });
 });
 
 $(document).on("pageshow", "#limit", function(){
@@ -576,6 +572,7 @@ $(document).on("pageshow", "#limit", function(){
 
     if (member.isnew) {
         $("#pop-limit").popup("open");
+        member.isnew = 0;
     }
 });
 
@@ -689,23 +686,27 @@ $(document).on("pagebeforeshow", "#result", function(){
 
     whetherLoanable();
     if (member.loanable) {
-        $("#option-1").attr("href", "#loan").css("background-color", "#3ca0e6");
-    }
-    else {
-        $("#option-1").attr("href", "#");
+        $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
+            $.mobile.navigate("#loan");
+        });
     }
 
     if (member.status == "5.1") {
-        $("#option-1").attr("href", "#congratulation").css("background-color", "#3ca0e6");
+        $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
+            $.mobile.navigate("#congratulation");
+        });
     }
     else if (member.status == "5.2") {
-        $("#option-1").attr("href", "#fail").css("background-color", "#3ca0e6");
+        $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
+            $.mobile.navigate("#fail");
+        });
     }
 
     if (!(parseFloat(member.status) >= 4)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
-        }).attr("href", "#limit").addClass("bluebtn");
+            $.mobile.navigate("#limit");
+        }).addClass("bluebtn");
     }
 });
 
@@ -771,7 +772,7 @@ $(document).on("pagecreate", "#loan", function () {
                     $("#varifying-tips").show();
                     var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
 
-                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
 
                     $("#cardlist-2").prepend($(tmp));
                 }
@@ -882,7 +883,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             else
                 $("#code-txt").show();
 
-            $("#vali-sign").attr("src", "resources/img/public/wrong.png");
+            $("#vali-sign").attr("src", "resources/img/public/blank.png");
             if(vcode.length == 6 && member.phone.length == 11){
                 matchVarificationCode(vcode, member.phone).success(function(text){
                     if("true" == text){
@@ -956,7 +957,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding-right: 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist-2").prepend($(tmp));
@@ -1006,15 +1007,15 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         getBincode();
     }
 
-    $("#agree-config").click(function(){
+    $("#agree-cong").click(function(){
         var $agreeConfig = $(this);
         $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agreeConfig.attr("checkFlag")) {
             $agreeConfig.removeAttr("checkFlag");
-            $("#go-choose-card").addClass("bluebtn").attr("href", "#cardlist");
+            $("#go-choose-card").removeClass("bluebtn").attr("href", "#");
         } else {
             $agreeConfig.attr("checkFlag","1");
-            $("#go-choose-card").removeClass("bluebtn").attr("href", "#");
+            $("#go-choose-card").addClass("bluebtn").attr("href", "#cardlist");
         }
     });
 
@@ -1040,7 +1041,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 30px 0 30px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist").prepend($(tmp));
@@ -1352,20 +1353,20 @@ $("a").on({
     }
 });
 
-$(document).on("pagecreate", "#fail", function () {
-    $("#got-it-y").on("tap", function () {
+$(document).on("pageshow", "#fail", function () {
+    $("#got-it-y").off("tap").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
 
-$(document).on("pagecreate", "#full", function () {
-    $("#got-it-z").on("tap", function () {
+$(document).on("pageshow", "#full", function () {
+    $("#got-it-z").off("tap").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
 
-$(document).on("pagecreate", "#suspension", function () {
-    $("#got-it").on("tap", function () {
+$(document).on("pageshow", "#suspension", function () {
+    $("#got-it").off("tap").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
@@ -1376,15 +1377,17 @@ $(document).on("pagecreate", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-            $("#hours").html(Math.round(parseFloat(text) * 48));
+            $("#hours").html((1 - parseFloat(text)) * 48);
         },
         error: function() {
             if (config.debug)
                 alert(config.api_path + "app/members/" + member.id + "/progress");
         }
     });
+});
 
-    $("#got-it-x").on("tap", function () {
+$(document).on("pageshow", "#patience", function() {
+    $("#got-it-x").off("tap").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
