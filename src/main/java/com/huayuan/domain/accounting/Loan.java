@@ -46,13 +46,13 @@ public class Loan {
     @Column(name = "STARTDATE")
     private Date startDate;
     @Column(name = "PRINAIPAL")
-    private Double principal;
+    private Double principal = 0d;
     @Column(name = "INTEREST")
-    private Double interest;
+    private Double interest = 0d;
     @Column(name = "PAID_PRINAIPAL")
-    private Double paidPrincipal;
+    private Double paidPrincipal = 0d;
     @Column(name = "PAID_INTEREST")
-    private Double paidInterest;
+    private Double paidInterest = 0d;
     @Column(name = "CUR_DELQ")
     private Integer curDelq = 0;
     @Column(name = "MAX_DELQ")

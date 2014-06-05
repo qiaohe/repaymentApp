@@ -1198,7 +1198,7 @@ function generateItemLoan(loan,index) {
     if(status == 1) { // 逾期
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
@@ -1211,7 +1211,7 @@ function generateItemLoan(loan,index) {
     } else if(status == 9) { // 结清
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">该笔借款已还清，总额：</div>\n"+
@@ -1222,7 +1222,7 @@ function generateItemLoan(loan,index) {
     } else {
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+loan.amount+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
@@ -1253,13 +1253,16 @@ function generateItemLoan(loan,index) {
         }
         contentHtml += "</ul>";
     } else {
-        contentHtml += "<ul class=\"repay-history\"><li class=\"repay-h-item\"><div class=\"no-history\">暂无历史还款记录！</div></li></ul>";
+        contentHtml += "<ul class=\"repay-history\"><li class=\"repay-h-item\"><div class=\"no-history\">暂无记录！</div></li></ul>";
     }
     return contentHtml;
 }
 
 function sliderPage() {
     var $items = $(".repayment-item");
+    if($items.length <= 1) {
+        return;
+    }
     $items.current = $items[0];
 
     $items.prev = function() {

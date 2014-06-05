@@ -183,7 +183,7 @@ input {
     height: 10px;
     margin: 0 6px;
     border-radius: 10px;
-    background-color: transparent;
+    background-color: #c4c4c4;
     border: 1px solid silver;
 }
 
@@ -309,11 +309,11 @@ input {
     float: left;
 }
 .repay-summary {
-    height: 40px;
+    height: 30px;
     font-size: 14px;
     font-weight: bold;
-    font-family: "黑体";
-    line-height: 40px;
+    font-family: "Arial";
+    line-height: 30px;
     background-color: #c4c4c4;
     border-radius: 5px 5px 0 0;
     color: white;
@@ -354,6 +354,10 @@ input {
 }
 .r-next {
     font-size: 30px;
+    margin-left: 3px;
+}
+.r-deadline {
+    font-family: "Arial";
 }
 .repay-amt-limit {
     position: relative;
@@ -490,7 +494,7 @@ input {
     height: 30px;
     line-height: 30px;
     font-size: 14px;
-    font-family: "黑体";
+    font-family: "Arial";
     font-weight: bold;
     border-bottom: 1px solid #c0c0c0;
     padding-left: 8%;
@@ -551,6 +555,7 @@ input {
     height: 50px;
     line-height: 50px;
     margin-right: 4%;
+    font-family: "Arial";
 }
 .repay-s-btn {
     width: 25px;
@@ -791,7 +796,7 @@ hr{
 .visible-area{
     width: 100%;
     /*height: 500px;*/
-    background: white;
+    background: #f7f7f7;
     overflow-x: hidden;
 }
 
