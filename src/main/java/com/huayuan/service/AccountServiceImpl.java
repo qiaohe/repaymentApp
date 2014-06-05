@@ -242,7 +242,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * * ?")
     public void updateOverDue() {
         List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays((-1) * Integer.valueOf(graceDay)));
         for (RepayPlan plan : plans) {
