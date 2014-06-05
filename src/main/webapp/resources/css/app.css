@@ -183,7 +183,7 @@ input {
     height: 10px;
     margin: 0 6px;
     border-radius: 10px;
-    background-color: transparent;
+    background-color: #c4c4c4;
     border: 1px solid silver;
 }
 
@@ -309,11 +309,11 @@ input {
     float: left;
 }
 .repay-summary {
-    height: 40px;
+    height: 30px;
     font-size: 14px;
     font-weight: bold;
-    font-family: "黑体";
-    line-height: 40px;
+    font-family: "Arial";
+    line-height: 30px;
     background-color: #c4c4c4;
     border-radius: 5px 5px 0 0;
     color: white;
@@ -354,6 +354,10 @@ input {
 }
 .r-next {
     font-size: 30px;
+    margin-left: 3px;
+}
+.r-deadline {
+    font-family: "Arial";
 }
 .repay-amt-limit {
     position: relative;
@@ -394,7 +398,8 @@ input {
     height: 100%;
     width: 25px;
     background:url("../img/other_icons/collapse.png") no-repeat;
-    background-position-y:12px;
+    background-size: 16px 16px;
+    background-position-y:18px;
 }
 .replay-expand {
     float:right;
@@ -402,7 +407,8 @@ input {
     width: 25px;
     height: 100%;
     background:url("../img/other_icons/expand.png") no-repeat;
-    background-position-y:12px;
+    background-size: 16px 16px;
+    background-position-y:16px;
 }
 .repay-history {
     font-size:18px;
@@ -488,7 +494,7 @@ input {
     height: 30px;
     line-height: 30px;
     font-size: 14px;
-    font-family: "黑体";
+    font-family: "Arial";
     font-weight: bold;
     border-bottom: 1px solid #c0c0c0;
     padding-left: 8%;
@@ -537,6 +543,11 @@ input {
     font-weight: bold;
     color: #757575;
 }
+.no-history {
+    float: left;
+    margin-left: 15%;
+    line-height: 50px;
+}
 .repay-s-num {
     float: right;
     color: #e67e22;
@@ -544,12 +555,14 @@ input {
     height: 50px;
     line-height: 50px;
     margin-right: 4%;
+    font-family: "Arial";
 }
 .repay-s-btn {
     width: 25px;
     float: right;
     background: url("../img/other_icons/collapse.png") no-repeat;
-    background-position-y: 12px;
+    background-size: 16px 16px;
+    background-position-y: 16px;
     height: 100%;
     margin-right: 5%;
 }
@@ -756,7 +769,7 @@ hr{
 .card-in-list{
     height: 22px;
     width: 32px;
-    padding: 10px 10px 0 15px;
+    padding: 12px 10px 0 15px;
 }
 
 #share-tencen, #share-qzone, #share-renren{
@@ -783,7 +796,7 @@ hr{
 .visible-area{
     width: 100%;
     /*height: 500px;*/
-    background: silver;
+    background: #f7f7f7;
     overflow-x: hidden;
 }
 

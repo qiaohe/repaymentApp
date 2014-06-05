@@ -131,6 +131,17 @@ function navigateThruStatusNDes(status, destination) {
             $.mobile.navigate("#loan");
         }
     }
+    else if (/patience/.test(destination) || /suspension/.test(destination)) {
+        if (parseFloat(status) > 5.2) {
+            $.mobile.navigate("#loan");
+        }
+        else if (status == "5.1") {
+            $.mobile.navigate("#congratulation");
+        }
+        else if (status == "5.2") {
+            $.mobile.navigate("#fail");
+        }
+    }
 }
 
 // Actions
