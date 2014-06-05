@@ -2,9 +2,11 @@ package com.huayuan.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.common.event.MemberStatusChangeEvent;
+import com.huayuan.common.util.Constants;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.SexEnum;
 import com.huayuan.domain.wechat.*;
+import com.huayuan.repository.FeedbackArticleRepository;
 import com.huayuan.repository.integration.HintMessageRepository;
 import com.huayuan.repository.integration.MenuRepository;
 import com.huayuan.repository.member.MemberRepository;
@@ -26,7 +28,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.persistence.Transient;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -55,16 +56,14 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     private HintMessageRepository hintMessageRepository;
     @Inject
     private MemberRepository memberRepository;
-
+    @Inject
+    private FeedbackArticleRepository feedbackArticleRepository;
     @Value("${weChat.appSecret}")
     private String appSecret;
     @Value("${weChat.token}")
     private String appToken;
-
     @Value("${weChat.appId}")
     private String appId;
-
-
     private List<Menu> menus;
     private List<HintMessage> hintMessages;
 
@@ -78,7 +77,6 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
         return StringUtils.mid(token, 17, token.length() - 37);
     }
-
 
     public MessageTemplate getTemplate(String menu_Key, String status) {
         for (Menu menu : menus) {
@@ -161,8 +159,9 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         news.setMsgType("news");
         news.setCreateTime(new Date().getTime());
         Message.Articles articles = new Message.Articles();
-        articles.addArticle(new Message.Article("了解化缘", "Description", "180.168.35.37/repaymentApp/resources/img/5-2/cashin.png", ""));
-        articles.addArticle(new Message.Article("攻略详情", "Description", "180.168.35.37/repaymentApp/resources/img/card_icon/cgb.png", ""));
+        for (FeedbackArticle fa : feedbackArticleRepository.findAll()) {
+            articles.addArticle(new Message.Article(fa.getTitle(), fa.getDescription(), fa.getPicUrl(), fa.getUrl()));
+        }
         news.setArticles(articles);
         StringWriter sw = new StringWriter();
         try {
