@@ -181,14 +181,4 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         HttpEntity<String> entity = new HttpEntity<>(message, headers);
         restTemplate.postForEntity(SEND_MESSAGE_URL_PATTERN, entity, String.class, getAccessToken());
     }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
-        WeChatService weChatService = applicationContext.getBean("weChatService", WeChatService.class);
-        Message message = new Message();
-        message.setFromUserName("dd");
-        message.setToUserName("ddd");
-        System.out.println(weChatService.createReplyNews(message));
-
-    }
 }
