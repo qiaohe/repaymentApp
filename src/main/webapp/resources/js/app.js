@@ -367,14 +367,15 @@ function addOptions(element_id, json) {
 function formatDate(ms,type) {
     var date = new Date(ms);
     var year = date.getFullYear();
-    var month = date.getMonth();
-    var day = date.getDate();
-    var hour = date.getHours();
-    var minute = date.getMinutes();
+    var month = parseInt(date.getMonth(),10) + 1;
+    month = month < 10 ? "0" + month : month;
+    var day = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    var hour = date.getHours() < 10 ? "0"+date.getHours() : date.getHours();
+    var minute = date.getMinutes() < 10 ? "0"+date.getMinutes():date.getMinutes();
 
     var result = "";
     if(type == "2") {
-        result = (month+1)+"月"+day+"日 "+hour+":"+minute;
+        result = month+"月"+day+"日 "+hour+":"+minute;
     }
     return result;
 }
@@ -1202,7 +1203,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
-            "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.startDate)[1] + "月" + getReadableDate(loan.startDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
+            //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1226,7 +1227,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
-            "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.startDate)[1] + "月" + getReadableDate(loan.startDate)[2] + "日"+"</span>到期</div>\n"+
+            "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款</div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1251,6 +1252,8 @@ function generateItemLoan(loan,index) {
                 "</li>";
         }
         contentHtml += "</ul>";
+    } else {
+        contentHtml += "<ul class=\"repay-history\"><li class=\"repay-h-item\"><div class=\"no-history\">暂无历史还款记录！</div></li></ul>";
     }
     return contentHtml;
 }
@@ -1319,7 +1322,7 @@ function generateLoanSum(info) {
                 "    <ul class=\"sum-r-detail\">\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款日期:</span>\n"+
-                "            <span class=\"sum-r-r\">"+getReadableDate(loan.applyDate).join("-")+"</span>\n"+
+                "            <span class=\"sum-r-r\">"+getReadableDate(loan.startDate).join("-")+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+

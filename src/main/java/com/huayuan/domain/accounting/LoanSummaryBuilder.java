@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,19 +30,42 @@ public class LoanSummaryBuilder {
     }
 
     private Double getAmtWithinThisPeriod(Long loanId) {
-        List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndDueDateLessThan(loanId, Day.TODAY.nextMonth());
+        List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndDueDateLessThan(loanId);
+        if(plans == null || plans.isEmpty()) {
+           return 0d;
+        }
+        Date curDate = new Date();
         Double result = 0d;
-        for (RepayPlan plan : plans) {
-            result += plan.getDueAmt() + plan.getOverDue_Interest();
+        for(int i = 0; i < plans.size(); i++) {
+            RepayPlan plan = plans.get(i);
+            if(i == 0 || plan.getDueDate().compareTo(curDate) < 1) {
+                result += plan.getDueAmt() + plan.getOverDue_Interest();
+            }
         }
         return result;
+    }
+
+    private Date getLastRepayDate(Long loanId) {
+        List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndDueDateLessThan(loanId);
+        if(plans == null || plans.isEmpty()) {
+            return null;
+        }
+        Date curDate = new Date();
+        Date lastRepayDate = null;
+        for(int i = 0; i < plans.size(); i++) {
+            RepayPlan plan = plans.get(i);
+            if(i == 0 || plan.getDueDate().compareTo(curDate) < 1) {
+                lastRepayDate = plan.getDueDate();
+            }
+        }
+        return lastRepayDate;
     }
 
     public LoanSummary build(List<Loan> loans) {
         LoanSummary summary = new LoanSummary();
         for (Loan loan : loans) {
             final Double savedCost = getSavedCost(loan);
-            summary.addLoan(new LoanSummary.LoanItem(loan.getId(), loan.getStartDate(),
+            summary.addLoan(new LoanSummary.LoanItem(loan.getId(), getLastRepayDate(loan.getId()),
                     loan.getApplication().getCreditCard().getCardNo(),
                     loan.getAmt(),
                     loan.getTerm(),

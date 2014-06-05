@@ -40,7 +40,7 @@
         </query>
     </named-query>
     <named-query name="RepayPlan.findByLoanIdAndDueDateLessThan">
-        <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= ?2 and rp.paidPrincipal =0 and
+        <query>SELECT rp FROM RepayPlan rp WHERE rp.paidPrincipal =0 and
             rp.loan.id=?1 order by rp.dueDate, rp.dueAmt
         </query>
     </named-query>
