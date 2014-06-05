@@ -394,7 +394,8 @@ input {
     height: 100%;
     width: 25px;
     background:url("../img/other_icons/collapse.png") no-repeat;
-    background-position-y:12px;
+    background-size: 16px 16px;
+    background-position-y:18px;
 }
 .replay-expand {
     float:right;
@@ -402,7 +403,8 @@ input {
     width: 25px;
     height: 100%;
     background:url("../img/other_icons/expand.png") no-repeat;
-    background-position-y:12px;
+    background-size: 16px 16px;
+    background-position-y:16px;
 }
 .repay-history {
     font-size:18px;
@@ -537,6 +539,11 @@ input {
     font-weight: bold;
     color: #757575;
 }
+.no-history {
+    float: left;
+    margin-left: 15%;
+    line-height: 50px;
+}
 .repay-s-num {
     float: right;
     color: #e67e22;
@@ -549,7 +556,8 @@ input {
     width: 25px;
     float: right;
     background: url("../img/other_icons/collapse.png") no-repeat;
-    background-position-y: 12px;
+    background-size: 16px 16px;
+    background-position-y: 16px;
     height: 100%;
     margin-right: 5%;
 }
