@@ -31,7 +31,7 @@
     </named-query>
     <named-query name="RepayPlan.findByMemberIdAndDueDateLessThan">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.dueDate &lt;= ?2 and rp.paidPrincipal =0 and
-            rp.member.id=?1 order by rp.dueDate, rp.dueAmt
+            rp.member.id=?1 order by rp.dueDate asc
         </query>
     </named-query>
     <named-query name="RepayPlan.findByLoanIdAndDueDateLessThan">
