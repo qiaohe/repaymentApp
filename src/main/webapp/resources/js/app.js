@@ -366,6 +366,48 @@ function requestAvilable() {
 	$("#request").css("background-color", "#3ca0e6");
 }
 
+function generateLoanSum(info) {
+    if(info) {
+        $("#total-amount").text(loan.totalAmount);
+        $("#total-times").text(loan.loanCount);
+        $("#total-payback").text(loan.totalDueAmt);
+        $("#total-saved").text(loan.totalSavedCost);
+    }
+    if(info.loans) {
+        var contentHtml = "";
+        $.each(loan.loans,function(i,loan){
+            contentHtml += "<li class=\"sum-item\">\n"+
+                "<div class=\"sum-item-l\">"+(i+1)+"</div>\n"+
+                "<div class=\"sum-item-r\">\n"+
+                "    <ul class=\"sum-r-detail\">\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">借款日期:</span>\n"+
+                "            <span class=\"sum-r-r\">"+loan.applyDate+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">借款金额:</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+loan.amount+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
+                "            <span class=\"sum-r-r\">尾号"+loan.creditCardNo.substring(0,loan.creditCardNo.length - 4)+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">总计应还:</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+loan.dueAmt+"</span>\n"+
+                "        </li>\n"+
+                "        <li class=\"sum-r-item\">\n"+
+                "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
+                "            <span class=\"sum-r-r\">约省&yen;"+loan.savedCost+"</span>\n"+
+                "        </li>\n"+
+                "    </ul>\n"+
+                "</div>\n"+
+                "</li>";
+        });
+        $("#total-specific").html(contentHtml);
+    }
+}
+
 function generateCarousels(loans, template) {
     var tmp_items =[], tmp_spots = [];
     for (var i in loans) {
@@ -1143,6 +1185,8 @@ $(document).on("pageshow", "#repayment-0", function () {
     "</div>";
 
     generateCarousels(member.loan.loans, html_template);
+
+    generateLoanSum(member.loan);
 });
 
 $(document).on("pagecreate", "#sum-loan", function(){
