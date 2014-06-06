@@ -13,6 +13,11 @@
             and ma.sevenPrefix = substring(mem.mobile, 0 , 8) and (appl.status = 3 or appl.status = 99)
         </query>
     </named-query>
+    <named-query name="CreditCard.findByCardNo">
+        <query>
+           select c from CreditCard c where c.isValid=true and c.cardNo = ?1
+        </query>
+    </named-query>
 
     <named-query name="Application.findByMemberIdWithProfile">
         <query>
