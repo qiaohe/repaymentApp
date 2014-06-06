@@ -1,7 +1,9 @@
 package com.huayuan.domain.accounting;
 
+import com.huayuan.common.util.Day;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.account.RepayOffsetRepository;
+import com.huayuan.repository.account.RepayPlanRepository;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -16,10 +18,22 @@ public class LoanSummaryBuilder {
     private PricingRepository pricingRepository;
     @Inject
     private RepayOffsetRepository repayOffsetRepository;
+    @Inject
+    private RepayPlanRepository repayPlanRepository;
+
 
     private Double getSavedCost(Loan loan) {
         Pricing pricing = pricingRepository.findByRatingAndTerm(loan.getRating(), loan.getTerm());
         return pricing.getSavedPerOneHundred() * loan.getAmt() / 100;
+    }
+
+    private Double getAmtWithinThisPeriod(Long loanId) {
+        List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndDueDateLessThan(loanId, Day.TODAY.nextMonth());
+        Double result = 0d;
+        for (RepayPlan plan : plans) {
+            result += plan.getDueAmt() + plan.getOverDue_Interest();
+        }
+        return result;
     }
 
     public LoanSummary build(List<Loan> loans) {
@@ -35,7 +49,7 @@ public class LoanSummaryBuilder {
                     loan.getPrincipal() - loan.getPaidPrincipal() + loan.getInterest(),
                     loan.getPaidTerm(),
                     savedCost,
-                    loan.getAmt() + loan.getInterest(),
+                    getAmtWithinThisPeriod(loan.getId()),
                     loan.isOverDue(), repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
         }
         return summary;
