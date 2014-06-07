@@ -666,26 +666,25 @@ $(document).on("pagecreate", "#result", function(){
     whetherLoanable();
     if (member.loanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.changePage("#loan");
+            $.mobile.changePage("#loan", {transition: "none"});
         });
     }
 
     if (member.status == "5.1") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.changePage("#congratulation");
+            $.mobile.changePage("#congratulation", {transition: "none"});
         });
     }
     else if (member.status == "5.2") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.changePage("#fail");
+            $.mobile.changePage("#fail", {transition: "none"});
         });
     }
 
     if (!(parseFloat(member.status) >= 4)) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
-//            $.mobile.navigate("#limit");
-            $.mobile.changePage("#limit");
+            $.mobile.changePage("#limit", {transition: "none"});
         }).addClass("bluebtn");
     }
 });
@@ -820,6 +819,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
         $("#request").html("确认, 去选择信用卡");
     }
 
+    var i = 60;
     if(member.mobile_varified){
         $("#varifying").remove();
         member.validate = 1;
@@ -827,7 +827,6 @@ $(document).on("pagebeforeshow", "#loan", function () {
     else{
         $("#acquire-code").off("click").click(function(){
             var phone_num = $("#phone").val();
-            var i = 60;
             if(phone_num.length != 11) {
                 $("#varifying-tips h4").html("请输入正确的手机号码!");
                 $("#varifying-tips").show();
@@ -1184,7 +1183,7 @@ function generateCarousels(loanSummary) {
     });
 
     $(".repay-footer-summary").off("tap").tap(function(){
-        $.mobile.changePage("#sum-loan");
+        $.mobile.changePage("#sum-loan", {transition: "none"});
     });
 }
 
