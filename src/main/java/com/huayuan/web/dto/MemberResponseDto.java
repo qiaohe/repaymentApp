@@ -20,6 +20,7 @@ public class MemberResponseDto implements Serializable {
     private String email;
     private Integer existingFlag;
     private boolean hasMobilePhone;
+    private int sex;
 
     public MemberResponseDto() {
     }
@@ -96,6 +97,14 @@ public class MemberResponseDto implements Serializable {
         this.existingFlag = existingFlag;
     }
 
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     public static MemberResponseDto valueOf(Member member) {
         MemberResponseDto result = new MemberResponseDto();
         result.setMemberId(member.getId());
@@ -107,6 +116,7 @@ public class MemberResponseDto implements Serializable {
         result.setIndustry(member.getIndustry());
         result.setExistingFlag(member.getExistingFlag());
         result.setHasMobilePhone(StringUtils.isNotEmpty(member.getMobile()));
+        result.setSex(member.getSex().ordinal());
         return result;
     }
 }
