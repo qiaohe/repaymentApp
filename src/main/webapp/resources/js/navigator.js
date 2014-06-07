@@ -80,7 +80,7 @@ function whetherApplying() {
 
 function navigateThruStatusNDes(status, destination) {
     if (/limit/.test(destination)) {
-        if (status= "1") {
+        if (status == "1") {
             member.isnew = 1;
         }
         else if (parseInt(status) > 2) {
