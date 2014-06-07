@@ -454,7 +454,7 @@ function shareToRenren() {
 }
 
 // Actions
-$(document).on("pageshow", function() {
+$(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");
     }
@@ -982,19 +982,23 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
 $(document).on("tap", ".card-container-0", function () {
     app.credit_card = $(this).children("div").html();
+    $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
+        setTimeout(function () {
+            $("#card-confirm-2").show();
+        }, 500);
+    });
     $("#cardlist-2").popup("close");
-    setTimeout(function () {
-        $("#card-confirm-2").show();
-    }, 500);
     $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
 $(document).on("tap", ".card-container", function () {
     app.credit_card = $(this).children("div").html();
+    $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
+        setTimeout(function () {
+            $("#card-confirm").show();
+        }, 500);
+    });
     $("#cardlist").popup("close");
-    setTimeout(function () {
-        $("#card-confirm").show();
-    }, 500);
     $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
 });
 
@@ -1050,7 +1054,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         var tmp = $(this).val();
 
         if(tmp.length > 0)
-            $("#new-cardnum-placeholder").hide();
+            $("#new-cardnum-placeholder").hide().html("请输入").css("color", "#333333");
         else
             $("#new-cardnum-placeholder").show();
 
@@ -1064,25 +1068,29 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         }
     });
 
-    $("#Y").off("click").click(function(){
+    $("#Y").off("tap").tap(function(){
         loanToThisCard(app.credit_card).success(function(){});
     });
 
-    $("#N, #close-3").off("click").click(function(){
+    $("#N, #close-3").off("tap").tap(function(){
         $("#card-confirm").hide();
     });
 
-    $("#add-another").off("click").click(function(){
+    $("#add-another").off("tap").tap(function(){
+        $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
+            setTimeout(function() {
+                $("#card-add-box").show();
+            }, 500);
+        });
         $("#cardlist").popup("close");
-        $("#card-add-box").show();
     });
 
-    $("#return").off("click").click(function(){
+    $("#return").off("tap").tap(function(){
         $("#card-add-box").hide();
     });
 
-    $("#addcard").off("click").click(function(){
-        var card_num = $("#new-cardnum").val();
+    $("#addcard").off("tap").tap(function(){
+        var card_num = $("#new-cardnum").val().replace(/ /g, "");
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum").val()).success(function(){
                 $("#card-add-box").hide();
@@ -1092,22 +1100,24 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                 }, 500);
                 $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
                 $("#cardlist").prepend($(tmp));
             }).error(function(){
-                $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
+                $("#new-cardnum").val("");
+                $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
             });
         }
         else {
-            $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000");
+            $("#new-cardnum").val("");
+            $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
         }
     });
 
-    $("#close-0").off("click").click(function() {
+    $("#close-0").off("tap").tap(function() {
         $("#cardlist").popup("close");
     });
 
-    $("#close-1").off("click").click(function() {
+    $("#close-1").off("tap").tap(function() {
         $("#card-add-box").hide();
     });
 });
@@ -1186,7 +1196,7 @@ function generateCarousels(loanSummary) {
         $.mobile.changePage("#sum-loan", {transition: "none"});
     });
 }
- 
+
 function generateItemLoan(loan,index) {
     var contentHtml = "";
     var status = loan.status;
