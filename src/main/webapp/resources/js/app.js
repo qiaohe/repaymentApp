@@ -458,6 +458,8 @@ $(document).on("pageshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");
     }
+
+    $.mobile.pushStateEnabled = false;
 });
 
 $(document).on("pagecreate", "#limit", function () {
@@ -628,6 +630,7 @@ $(document).on("pagecreate", "#basic-info", function(){
 });
 
 $(document).on("pagecreate", "#result", function(){
+    alert("result create!");
     $("#option-2").click(function(e){
         $("#share").show();
     });
@@ -662,36 +665,13 @@ $(document).on("pagecreate", "#result", function(){
     $("#share-renren").click(function () {
         shareToRenren();
     });
-});
-
-$(document).on("pagebeforeshow", "#result", function(){
-    getCreditLimit();
-    getAvlCrl();
-
-    if (member.status == "11" || member.status == "12"){
-        member.limit = 0;
-        member.rank = 0;
-    }
-
-    $("#amt-shown").html(numberWithCommas(member.limit));
-    $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
-    if(member.limit > 4000){
-        if (member.gender == 1) {
-            $("#rank-cmt").html("，娘子您是权贵啊！");
-        }
-        else {
-            $("#rank-cmt").html("，官人您是权贵啊！");
-        }
-        $("#option-1").html("巨款啊！现在就去申请借款");
-        $("#option-2").html("去跟小伙伴嘚瑟一下");
-        $("#option-3").html("换张信用卡再试试");
-    }
 
     whetherLoanable();
     if (member.loanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
 //            $.mobile.navigate("#loan");
-            $.changePage("#loan");
+            alert("navigated!");
+            $.mobile.changePage("#loan/");
         });
     }
 
@@ -715,9 +695,37 @@ $(document).on("pagebeforeshow", "#result", function(){
             $.mobile.changePage("#limit");
         }).addClass("bluebtn");
     }
+    alert("result create ends!");
+});
+
+$(document).on("pagebeforeshow", "#result", function(){
+    alert("result beforeshow!");
+    getCreditLimit();
+    getAvlCrl();
+
+    if (member.status == "11" || member.status == "12"){
+        member.limit = 0;
+        member.rank = 0;
+    }
+
+    $("#amt-shown").html(numberWithCommas(member.limit));
+    $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
+    if(member.limit > 4000){
+        if (member.gender == 1) {
+            $("#rank-cmt").html("，娘子您是权贵啊！");
+        }
+        else {
+            $("#rank-cmt").html("，官人您是权贵啊！");
+        }
+        $("#option-1").html("巨款啊！现在就去申请借款");
+        $("#option-2").html("去跟小伙伴嘚瑟一下");
+        $("#option-3").html("换张信用卡再试试");
+    }
+    alert("result beforeshow ends!");
 });
 
 $(document).on("pagecreate", "#loan", function () {
+    alert("loan create!");
     if (!dict.bincode) {
         getBincode();
     }
@@ -810,9 +818,11 @@ $(document).on("pagecreate", "#loan", function () {
             $("#varifying-tips").show();
         }
     });
+    alert("loan create ends!");
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
+    alert("loan beforeshow!");
     member.phone = "";
     if (!member.avlcrl) {
         getAvlCrl();
@@ -982,6 +992,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $(this).val(tmp.slice(0, tmp.length - 1));
         }
     });
+    alert("loan beforeshow ends");
 });
 
 $(document).on("tap", ".card-container-0", function () {
