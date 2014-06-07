@@ -630,7 +630,6 @@ $(document).on("pagecreate", "#basic-info", function(){
 });
 
 $(document).on("pagecreate", "#result", function(){
-    alert("result create!");
     $("#option-2").click(function(e){
         $("#share").show();
     });
@@ -669,21 +668,17 @@ $(document).on("pagecreate", "#result", function(){
     whetherLoanable();
     if (member.loanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-//            $.mobile.navigate("#loan");
-            alert("navigated!");
-            $.mobile.changePage("#loan/");
+            $.mobile.changePage("#loan");
         });
     }
 
     if (member.status == "5.1") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-//            $.mobile.navigate("#congratulation");
             $.mobile.changePage("#congratulation");
         });
     }
     else if (member.status == "5.2") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-//            $.mobile.navigate("#fail");
             $.mobile.changePage("#fail");
         });
     }
@@ -695,11 +690,9 @@ $(document).on("pagecreate", "#result", function(){
             $.mobile.changePage("#limit");
         }).addClass("bluebtn");
     }
-    alert("result create ends!");
 });
 
 $(document).on("pagebeforeshow", "#result", function(){
-    alert("result beforeshow!");
     getCreditLimit();
     getAvlCrl();
 
@@ -721,11 +714,9 @@ $(document).on("pagebeforeshow", "#result", function(){
         $("#option-2").html("去跟小伙伴嘚瑟一下");
         $("#option-3").html("换张信用卡再试试");
     }
-    alert("result beforeshow ends!");
 });
 
 $(document).on("pagecreate", "#loan", function () {
-    alert("loan create!");
     if (!dict.bincode) {
         getBincode();
     }
@@ -818,11 +809,9 @@ $(document).on("pagecreate", "#loan", function () {
             $("#varifying-tips").show();
         }
     });
-    alert("loan create ends!");
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
-    alert("loan beforeshow!");
     member.phone = "";
     if (!member.avlcrl) {
         getAvlCrl();
@@ -992,7 +981,6 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $(this).val(tmp.slice(0, tmp.length - 1));
         }
     });
-    alert("loan beforeshow ends");
 });
 
 $(document).on("tap", ".card-container-0", function () {
