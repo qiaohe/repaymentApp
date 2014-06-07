@@ -458,8 +458,6 @@ $(document).on("pageshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");
     }
-
-    $.mobile.pushStateEnabled = false;
 });
 
 $(document).on("pagecreate", "#limit", function () {
