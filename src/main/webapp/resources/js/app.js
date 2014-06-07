@@ -1186,7 +1186,7 @@ function generateCarousels(loanSummary) {
         $.mobile.changePage("#sum-loan", {transition: "none"});
     });
 }
-
+ 
 function generateItemLoan(loan,index) {
     var contentHtml = "";
     var status = loan.status;
