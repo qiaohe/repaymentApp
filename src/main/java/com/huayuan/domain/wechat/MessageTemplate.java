@@ -67,7 +67,7 @@ public class MessageTemplate implements Serializable {
     }
 
     public boolean isRepay() {
-        return getStatuses().equalsIgnoreCase("8,9");
+        return menu != null && "M_003_REPAYMENT".equals(menu.getMenu_key());
     }
 
     public boolean isUrlNotNeeded() {
