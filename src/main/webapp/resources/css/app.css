@@ -746,6 +746,35 @@ span.loan-i-cont {
     margin: 40px auto;
 }
 /************************** Feedback End *****************************/
+/************************** NoRepayment Start *****************************/
+#no-repayment {
+    background: #f7f7f7;
+}
+.norepay-top {
+    width: 100%;
+    height: 52px;
+    text-align: center;
+    margin: 40px auto;
+}
+.norepay-top img {
+    width: 260px;
+    height: 52px;
+}
+.norepay-cont {
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    margin: 40px auto;
+}
+.norepay-cont img {
+    width: 200px;
+    height: 250px;
+}
+.norepay-btn {
+    margin: 40px auto;
+    width: 60%;
+}
+/************************** NoRepayment End *****************************/
 .check-custom1 {
     width:10%;
     height: 18px;

@@ -1136,7 +1136,11 @@ $(document).on("pagecreate", "#repayment-0", function () {
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
-    generateCarousels(member.loan);
+    if(member.loan && member.loan.loans) {
+        generateCarousels(member.loan);
+    } else {
+        $.mobile.changePage("#no-repayment",{transition:false});
+    }
 });
 
 function generateCarousels(loanSummary) {
@@ -1375,7 +1379,11 @@ $(window).on("orientationchange",function(event){
         $("#loan-specific").css("width", $width*0.9);
     }
 });
-
+$(document).on("pagecreate", "#no-repayment", function () {
+    $("#norepay-known").off("tap").on("tap", function () {
+        WeixinJSBridge.call("closeWindow");
+    });
+});
 $(document).on("pagecreate", "#sum-loan", function () {
     $.ajax({
         url: config.api_path + "account/members/" + member.id,
