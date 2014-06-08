@@ -33,7 +33,7 @@ function getStatus() {
 }
 
 function getDestination() {
-    var des_pattern = /#[\w-]+\?/;
+    var des_pattern = /#[\w-]+/;
     var des = des_pattern.exec(window.location).toString();
     des = des.slice(0, des.length - 1);
     return des;
@@ -80,7 +80,7 @@ function whetherApplying() {
 
 function navigateThruStatusNDes(status, destination) {
     if (/limit/.test(destination)) {
-        if (status= "1") {
+        if (status == "1") {
             member.isnew = 1;
         }
         else if (parseInt(status) > 2) {
