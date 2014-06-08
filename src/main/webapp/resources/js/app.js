@@ -1291,7 +1291,6 @@ function sliderPage() {
         return;
     }
     $items.current = $items[member.crnt_caro];
-    alert(typeof member.crnt_caro);
 
     $items.prev = function() {
         if ($items.current != $items[0]) {
