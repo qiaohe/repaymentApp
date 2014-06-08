@@ -1433,19 +1433,7 @@ $(document).on("pageshow", "#patience", function() {
 });
 
 $(document).on("pagecreate", "#feedback", function () {
-    var $tip = $("#fd-tip"),$textarea = $("#fd-textarea");
-    $textarea.focus(function(e){
-        $tip.hide();
-        e.stopPropagation();
-    }).blur(function(){
-        if($.trim($(this).val()) == "") {
-            $tip.show();
-        }
-    });
-    $tip.focus(function(){
-        $tip.blur();
-        $textarea.focus();
-    });
+    var $tip = $("#fd-tip");
     $(".fb-btn a").off("tap").tap(function () {
         var tmp = $.trim($("#fd-textarea").val());
         var $tag = $(this);
