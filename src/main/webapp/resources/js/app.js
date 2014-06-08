@@ -1136,9 +1136,7 @@ $(document).on("pagecreate", "#repayment-0", function () {
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
-
     generateCarousels(member.loan);
-    generateLoanSum(member.loan);
 });
 
 function generateCarousels(loanSummary) {
@@ -1365,6 +1363,34 @@ $("a").on({
     }, vmouseup: function(){
         $(this).css("box-shadow", "none");
     }
+});
+
+$(window).on("orientationchange",function(event){
+    if($("#repayment-0").is(":visible")) {
+        var $width = $(document).width();
+        var $items = $(".repayment-item");
+        $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
+        $(".container").css("width", $items.length * $width);
+        // set width of dialog
+        $("#loan-specific").css("width", $width*0.9);
+    }
+});
+
+$(document).on("pagecreate", "#sum-loan", function () {
+    $.ajax({
+        url: config.api_path + "account/members/" + member.id,
+        type: "GET",
+        async: false,
+        dataType:"json",
+        success: function(json){
+            member.loan = json;
+        },
+        error: function () {
+            if (config.debug)
+                alert(config.api_path + "account/members/" + member.id);
+        }
+    });
+    generateLoanSum(member.loan);
 });
 
 $(document).on("pageshow", "#fail", function () {
