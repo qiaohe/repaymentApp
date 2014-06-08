@@ -532,7 +532,7 @@ $(document).on("pagecreate", "#limit", function () {
         if(validateCardNo(num)) {
             if (whetherUsedCard(num)) {
                 $("#tip-credit").attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                $("#card-tip").show();
+                $("#card-tip").html("不可用的信用卡号!").show();
             }
             else {
                 if (!member.anothertest) {
@@ -549,6 +549,7 @@ $(document).on("pagecreate", "#limit", function () {
         }
         else {
             $("#next-step").attr("href", "#");
+            $("#card-tip").html("卡号错误!").show();
         }
 
         if (num.length % 5 == 4) {
@@ -636,33 +637,6 @@ $(document).on("pagecreate", "#result", function(){
         $("#share").hide();
     });
 
-    $("#option-3").click(function(){
-        $("#next-step").attr("href", "#");
-        member.anothertest = true;
-    });
-
-    share.img_url = "../img/8-1/sword.png";
-    share.link = window.location;
-    share.description = "么么贷的描述, 暂缺";
-    share.title = "么么贷的title, 暂缺";
-    share.appid = "";
-
-    $("#share-sina").click(function () {
-        shareToSina();
-    });
-
-    $("#share-tencent").click(function () {
-        shareToTencent();
-    });
-
-    $("#share-qzone").click(function () {
-        shareToQzone();
-    });
-
-    $("#share-renren").click(function () {
-        shareToRenren();
-    });
-
     whetherLoanable();
     if (member.loanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
@@ -711,6 +685,50 @@ $(document).on("pagebeforeshow", "#result", function(){
         $("#option-2").html("去跟小伙伴嘚瑟一下");
         $("#option-3").html("换张信用卡再试试");
     }
+});
+
+$(document).on("pageshow", "#result", function() {
+    share.img_url = "../img/8-1/sword.png";
+    share.link = window.location;
+    share.description = "么么贷的描述, 暂缺";
+    share.title = "么么贷的title, 暂缺";
+    share.appid = "";
+
+    WeixinJSBridge.on('menu:share:appmessage', function(argv){
+        shareToChat();
+    });
+
+    WeixinJSBridge.on('menu:share:timeline', function(argv){
+        shareToTimeline();
+    });
+
+    WeixinJSBridge.on('menu:share:weibo', function(argv){
+        shareToTencent();
+    });
+
+    $("#share-wechat").tap(function(){
+        shareToChat();
+    });
+
+    $("#share-timeline").tap(function(){
+        shareToTimeline();
+    });
+
+    $("#share-sina").tap(function () {
+        shareToSina();
+    });
+
+    $("#share-tencent").tap(function () {
+        shareToTencent();
+    });
+
+    $("#share-qzone").tap(function () {
+        shareToQzone();
+    });
+
+    $("#share-renren").tap(function () {
+        shareToRenren();
+    });
 });
 
 $(document).on("pagecreate", "#loan", function () {
@@ -1156,6 +1174,7 @@ function generateCarousels(loanSummary) {
     }
     $("#container").html(contentHtml);
 
+    member.crnt_caro = 0;
     sliderPage();
 
     $(".repay-item-detail").off("tap").tap(function (e) {
@@ -1271,7 +1290,8 @@ function sliderPage() {
     if($items.length <= 1) {
         return;
     }
-    $items.current = $items[0];
+    $items.current = $items[member.crnt_caro];
+    alert(typeof member.crnt_caro);
 
     $items.prev = function() {
         if ($items.current != $items[0]) {
@@ -1281,6 +1301,7 @@ function sliderPage() {
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind - 1) + ")").addClass("spot-chosen");
             $items.current = $items[ind - 1];
+            member.crnt_caro -= 1;
         }
     };
 
@@ -1292,12 +1313,17 @@ function sliderPage() {
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind + 1) + ")").addClass("spot-chosen");
             $items.current = $items[ind + 1];
+            member.crnt_caro += 1;
         }
     };
 
+    $(".repayment-item").off("swipeleft").off("swiperight");
     var $width = $(document).width();
     $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
-    $(".container").css("width", $items.length * $width);
+    $(".container").css({
+        "width": $items.length * $width,
+        "left": -($width * member.crnt_caro)
+    });
     // set width of dialog
     $("#loan-specific").css("width", $width*0.9);
 
@@ -1308,7 +1334,7 @@ function sliderPage() {
         }
     }
     $("#spots").css("width", 26 * $items.length + "px").html(tmp);
-    $(".spot:eq(0)").addClass("spot-chosen");
+    $(".spot:eq(" + member.crnt_caro + ")").addClass("spot-chosen");
 
     $(".repayment-item:not(:first, :last)").on({
         swipeleft: $items.next,
@@ -1371,12 +1397,7 @@ $("a").on({
 
 $(window).on("orientationchange",function(event){
     if($("#repayment-0").is(":visible")) {
-        var $width = $(document).width();
-        var $items = $(".repayment-item");
-        $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
-        $(".container").css("width", $items.length * $width);
-        // set width of dialog
-        $("#loan-specific").css("width", $width*0.9);
+        sliderPage();
     }
 });
 $(document).on("pagecreate", "#no-repayment", function () {
@@ -1515,22 +1536,4 @@ window.onunload = function () {
         localStorage.clear();
     }
 };
-
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-    WeixinJSBridge.on('menu:share:appmessage', function(argv){
-        shareToChat();
-    });
-
-    WeixinJSBridge.on('menu:share:timeline', function(argv){
-        shareToTimeline();
-    });
-
-    $("#share-wechat").click(function () {
-        shareToChat();
-    });
-
-    $("#share-circle").click(function () {
-        shareToTimeline();
-    });
-}, false);
 console.log("END!");
