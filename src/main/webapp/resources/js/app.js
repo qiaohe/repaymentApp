@@ -549,7 +549,10 @@ $(document).on("pagecreate", "#limit", function () {
         }
         else {
             $("#next-step").attr("href", "#");
-            $("#card-tip").html("卡号错误!").show();
+            if (num.replace(/ /g, "").length == 16 || num.replace(/ /g, "").length == 18)
+                $("#card-tip").html("卡号错误!").show();
+            else
+                $("#card-tip").hide();
         }
 
         if (num.length % 5 == 4) {
