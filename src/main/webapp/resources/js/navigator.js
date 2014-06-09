@@ -5,7 +5,7 @@
 
 var config = {};
 config.api_path = "api/";
-config.debug = false;
+config.debug = true;
 config.time = new Date();
 config.time = "?time=" + config.time.getTime();
 

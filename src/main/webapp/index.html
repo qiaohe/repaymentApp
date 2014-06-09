@@ -9,6 +9,11 @@
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
     <link type="text/css" rel="stylesheet" href="resources/css/app.css">
     <script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).on("mobileinit", function(){
+            $.mobile.pushStateEnabled = false;
+        });
+    </script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
     <script type="text/javascript" src="resources/js/navigator.js?v=0.1"></script>
      <!--<script>localStorage.clear();</script>-->
