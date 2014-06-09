@@ -1160,7 +1160,7 @@ $(document).on("pagecreate", "#repayment-0", function () {
     if(!!member.loan && !!member.loan.loans) {
         generateCarousels(member.loan);
     } else {
-        $.mobile.changePage("#no-repayment",{transition:false});
+        $.mobile.changePage("#no-repayment");
     }
 });
 
