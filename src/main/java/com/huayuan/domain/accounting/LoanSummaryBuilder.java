@@ -7,6 +7,7 @@ import com.huayuan.repository.account.RepayPlanRepository;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,8 +51,13 @@ public class LoanSummaryBuilder {
                     loan.getPaidTerm(),
                     savedCost,
                     getAmtWithinThisPeriod(loan.getId()),
-                    loan.isOverDue(), repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
+                    loan.isOverDue(),
+                    loan.getStatus(),
+                    repayOffsetRepository.findByLoan_IdOrderByTermNoDesc(loan.getId())));
         }
+        List<LoanSummary.LoanItem> loanItemList = summary.getLoans();
+        Collections.sort(loanItemList,new LoanComparator());
+        summary.setLoans(loanItemList);
         return summary;
     }
 }
