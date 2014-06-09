@@ -106,6 +106,9 @@ public class WeChatMessageController {
             return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
                     accountService.getAmtWithinThisPeriod(member.getId()));
         }
+        if (tp.isNoRepay()) {
+            return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status);
+        }
         if (tp.isApplicationNoNeeded()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
                     memberStatusEvaluator.getApprovingApplication(member.getId()).getApplicationNo());

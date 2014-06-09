@@ -1157,10 +1157,10 @@ $(document).on("pagecreate", "#repayment-0", function () {
                 alert(config.api_path + "account/members/" + member.id);
         }
     });
-    if(member.loan && member.loan.loans) {
+    if(!!member.loan && !!member.loan.loans) {
         generateCarousels(member.loan);
     } else {
-        $.mobile.changePage("#no-repayment",{transition:false});
+        $.mobile.changePage("#no-repayment");
     }
 });
 
