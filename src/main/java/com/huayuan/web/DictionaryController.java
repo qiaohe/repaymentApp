@@ -2,6 +2,7 @@ package com.huayuan.web;
 
 import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
+import com.huayuan.domain.dictionary.ValueMobileArea;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.ValueMobileAreaRepository;
@@ -47,6 +48,7 @@ public class DictionaryController {
     @ResponseBody
     public String getCityByMobilePhone(@PathVariable String mobilePhone) {
         final String sevenOfMobilePhone = StringUtils.substring(mobilePhone, 0, 7);
-        return valueMobileAreaRepository.findBySevenPrefix(sevenOfMobilePhone).getCity();
+        ValueMobileArea area = valueMobileAreaRepository.findBySevenPrefix(sevenOfMobilePhone);
+        return area != null ? area.getCity() : "";
     }
 }
