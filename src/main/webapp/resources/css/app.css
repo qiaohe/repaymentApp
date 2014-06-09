@@ -652,6 +652,16 @@ span.loan-i-cont {
 }
 /************************** Loan Page End *****************************/
 /************************** Feedback Start *****************************/
+.fb-top {
+    width: 100%;
+    height: 63px;
+    text-align: center;
+    margin: 40px auto;
+}
+.fb-top img {
+    width: 240px;
+    height: 63px;
+}
 .fb-content {
     background-color: #c4c4c4;
     width: 90%;
@@ -688,38 +698,28 @@ span.loan-i-cont {
     line-height: 20px;
 }
 .fb-answer {
-    width: 300px;
-    margin: 40px auto;
-    height: 200px;
-    background-size:260px 200px;
-    background: url("../img/other_icons/fb-cloud2.png") no-repeat center;
+    width: 260px;
+    margin: 60px auto 40px auto;
+    height: 188px;
+    background-size:260px 188px;
+    background: url("../img/other_icons/fb-bg.png") no-repeat center;
     position: relative;
 }
-.fb-answer span {
-    position: absolute;
-    width: 140px;
-    height: 30px;
-    line-height: 30px;
-    left: 80px;
-    top: 90px;
-    font-family: "黑体";
-    font-size: 14px;
-    color: #c4c4c4;
-}
+
 #fd-textarea {
     vertical-align: middle;
-    width: 160px;
-    height: 82px;
+    width: 240px;
+    height: 180px;
     border: none;
     position: absolute;
-    left: 60px;
-    top:70px;
+    left: 10px;
+    top:3px;
     font-size: 14px;
     overflow: hidden;
 }
 .fb-btn {
-    width: 70%;
-    margin: 40px auto 10px;
+    width: 60%;
+    margin: 60px auto 10px;
 }
 
 .tfb-title {
