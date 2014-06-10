@@ -697,17 +697,19 @@ $(document).on("pageshow", "#result", function() {
     share.title = "么么贷的title, 暂缺";
     share.appid = "";
 
-    WeixinJSBridge.on('menu:share:appmessage', function(argv){
-        shareToChat();
-    });
+    if(typeof WeixinJSBridge !== "undefined") {
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            shareToChat();
+        });
 
-    WeixinJSBridge.on('menu:share:timeline', function(argv){
-        shareToTimeline();
-    });
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+            shareToTimeline();
+        });
 
-    WeixinJSBridge.on('menu:share:weibo', function(argv){
-        shareToTencent();
-    });
+        WeixinJSBridge.on('menu:share:weibo', function(argv){
+            shareToTencent();
+        });
+    }
 
     $("#share-wechat").tap(function(){
         shareToChat();
