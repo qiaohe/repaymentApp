@@ -147,7 +147,7 @@ function navigateThruStatusNDes(status, destination) {
 var member = {};
 member.id = config.member_id;
 
-$(function () {
+//$(function () {
     config.status = getStatus();
     member.status = config.status;
     config.destination = getDestination();
@@ -157,4 +157,4 @@ $(function () {
         localStorage.clear();
     }
     navigateThruStatusNDes(member.status, config.destination);
-});
+//});
