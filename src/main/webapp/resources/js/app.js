@@ -637,12 +637,13 @@ $(document).on("pagecreate", "#basic-info", function(){
 
 $(document).on("pagecreate", "#result", function(){
     $("#option-2").click(function(e){
-        $("#share").show();
+        $("#share").popup("open");
     });
 
-    $("#share-close").click(function () {
-        $("#share").hide();
-    });
+    var width = $(window).width() * 0.9;
+    var height = width * 160 / 300;
+    $("#share").css({"width":width,"height":height,"background-size":width +"px " +height+ "px"});
+    $("#share img").css({"width":width*0.1,"height":width*0.1});
 
     whetherLoanable();
     if (member.loanable) {
@@ -714,14 +715,6 @@ $(document).on("pageshow", "#result", function() {
             shareToTencent();
         });
     }
-
-    $("#share-wechat").tap(function(){
-        shareToChat();
-    });
-
-    $("#share-timeline").tap(function(){
-        shareToTimeline();
-    });
 
     $("#share-sina").tap(function () {
         shareToSina();
@@ -1297,11 +1290,7 @@ function generateItemLoan(loan,index) {
 
 function sliderPage() {
     var $items = $(".repayment-item");
-    if($items.length <= 1) {
-        return;
-    }
     $items.current = $items[member.crnt_caro];
-
     $items.prev = function() {
         if ($items.current != $items[0]) {
             window.scrollTo(0, 0);
@@ -1313,7 +1302,6 @@ function sliderPage() {
             member.crnt_caro -= 1;
         }
     };
-
     $items.next = function() {
         if ($items.current != $items[$items.length - 1]) {
             window.scrollTo(0, 0);
