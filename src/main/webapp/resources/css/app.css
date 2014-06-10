@@ -161,9 +161,8 @@ input {
 .grid23 {
     float: left;
     width: 25%;
-    height: 12%;
     text-align: center;
-    color: white;
+    color: #404040;
     font-size: 1.4em;
     margin-bottom: 30px;
 }
