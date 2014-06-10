@@ -1219,7 +1219,7 @@ function generateCarousels(loanSummary) {
     });
 
     $(".repay-footer-summary").off("tap").tap(function(){
-        $.mobile.changePage("#sum-loan", {transition: "none"});
+        $.mobile.changePage("#sum-loan");
     });
 }
 
@@ -1267,13 +1267,14 @@ function generateItemLoan(loan,index) {
     }
     // history
     var repayList = loan.repayList;
+    var termMap = {"1":"一","2":"二","3":"三","4":"四","5":"五","6":"六"};
     if(repayList && repayList.length != 0) {
         contentHtml += "<ul class=\"repay-history\">";
         for(var i = 0,len = repayList.length;i < len; i++) {
             var repayItem = repayList[i];
             contentHtml += "<li class=\"repay-h-item\">\n"+
                 "<div class=\"repay-h-term\">\n"+
-                "    <div class=\"repay-h-index\">第"+repayItem.termNo+"期还款</div>\n"+
+                "    <div class=\"repay-h-index\">第"+termMap[repayItem.termNo]+"期还款</div>\n"+
                 "    <div class=\"repay-h-time\">"+formatDate(repayItem.createTime,"2")+"</div>\n"+
                 "</div>\n"+
                 "<div class=\"repay-h-status\">\n"+
