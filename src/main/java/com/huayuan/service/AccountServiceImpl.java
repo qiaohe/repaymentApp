@@ -33,6 +33,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Inject
     private LoanRepository loanRepository;
     @Inject
+    private LoanRepositoryCustom loanRepositoryCustom;
+    @Inject
     private PayRepository payRepository;
     @Inject
     private RePayRepository rePayRepository;
@@ -93,7 +95,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
 
     @Override
     public List<Loan> getLoansBy(Long memberId) {
-        return loanRepository.findByMember_Id(memberId);
+        return loanRepositoryCustom.findEffectiveLoansBy(memberId);
     }
 
     @Override

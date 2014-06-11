@@ -54,6 +54,12 @@
         <query>SELECT card FROM CreditCard card WHERE card.member.id = ?1 and isValid = true
         </query>
     </named-query>
+
+    <named-query name="Loan.findEffectiveLoansBy">
+        <query>SELECT l FROM Loan l WHERE l.status != 10 and l.member.id=?1
+        </query>
+    </named-query>
+
     <named-query name="RepayPlan.findByLoanId">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.loan.id =?1 order by rp.dueDate asc
         </query>
