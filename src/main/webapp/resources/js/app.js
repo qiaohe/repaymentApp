@@ -1489,7 +1489,12 @@ window.onunload = function () {
     hash = hash.slice(0, hash.length - 1);
 
     if (member.status == "1" && (hash == "#limit" || hash == "#basic-info")) {
-        print_status = "0";
+        if (member.id || member.credit_card || member.valid_thru) {
+            print_status = "0";
+        }
+        else {
+            print_status = "-1";
+        }
     }
     else if (hash == "#result" && status == "3.1") {
         print_status = "1";
@@ -1503,6 +1508,7 @@ window.onunload = function () {
 
     if (print_status != "-9")
         returnFootPrint(member.id, print_status);
+    alert("footprint" + " " + print_status);
 
     if ((member.status == "1" || member.status == "2") && (hash == "#limit" || hash == "#basic-info")) {
         if (member.id_card) {
