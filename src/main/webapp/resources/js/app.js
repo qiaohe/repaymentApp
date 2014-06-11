@@ -699,9 +699,9 @@ $(document).on("pageshow", "#result", function() {
     share.appid = "";
 
     if(typeof WeixinJSBridge !== "undefined") {
-        WeixinJSBridge.on('menu:share:appmessage', function(argv){
-            shareToChat();
-        });
+//        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+//            shareToChat();
+//        });
 
         WeixinJSBridge.on('menu:share:timeline', function(argv){
             shareToTimeline();
