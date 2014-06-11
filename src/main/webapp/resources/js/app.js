@@ -454,6 +454,12 @@ function shareToRenren() {
 }
 
 // Actions
+//$(document).on("pagecreate", function() {
+//    if (member.id == "130") {
+//        $.mobile.navigate("#limit");
+//    }
+//});
+
 $(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");

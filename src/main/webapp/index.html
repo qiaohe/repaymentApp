@@ -89,31 +89,15 @@
     </div>
 
     <div data-role="popup" data-transition="pop" data-overlay-theme="b" class="r-popup" id="pop-limit" style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">
-        <div class="cover" style="height: 130px; padding-top: 10px; font-size: 1.4em; color: white;">
-            <p>目前化缘仅能服务北上广深的<br>用户。其他地区的用户可以先做信用评<br>估，但暂时无法申请借款。</p>
-
-            <p>我们会尽快开放到更多地区。感<br>谢您！</p>
+        <div id="area-tip">
+            <div style="font-weight: bold; color: #303030">么么贷暂时仅能服务北上广深用户。</div>
+            <div>其他地区的用户可以先信用评估，</div>
+            <div>但暂时无法申请借款。</div>
         </div>
 
-        <div style="width: 90%; margin: 20px auto auto auto; text-align: center">
-            <img src="resources/img/2-1/beijing.png" style="width: 40px; height: 60px; margin: 5px">
-            <img src="resources/img/2-1/shanghai.png" style="width: 40px; height: 60px; margin: 5px">
-            <img src="resources/img/2-1/guangzhou.png" style="width: 40px; height: 60px; margin: 5px">
-            <img src="resources/img/2-1/shenzhen.png" style="width: 40px; height: 60px; margin: 5px">
-        </div>
+        <div style="margin: 30px 10% 40px 10%; text-align: center"><img src="resources/img/additional/pop-limit.png" style="width: 224px; height: 141px"></div>
 
-        <div id="cities" style="width: 100%"><span style="padding-left: 7.5%">北京</span><span
-                style="padding-left: 6%">上海</span><span style="padding-left: 6%">广州</span><span
-                style="padding-left: 6%">深圳</span></div>
-
-        <div style="width: 100%">
-            <img src="resources/img/public/correct.png" class="avl-sign" style="padding-left: 8.5%">
-            <img src="resources/img/public/correct.png" class="avl-sign" style="padding-left: 6.5%">
-            <img src="resources/img/public/correct.png" class="avl-sign" style="padding-left: 6.5%">
-            <img src="resources/img/public/correct.png" class="avl-sign" style="padding-left: 6.5%">
-        </div>
-
-        <div style="width:60%; margin-left:20%">
+        <div style="width:80%; margin: 20px 10%">
             <a href="#limit" class="custom-btn ui-btn bluebtn" id="limit-pop">知道了</a>
         </div>
     </div>
@@ -140,7 +124,7 @@
                 <option></option>
             </select></div>
             <img src="resources/img/other_icons/down.png" id="tip-industry"
-                 style="position:absolute; right:5px; top:5px; width:22px; height:22px">
+                 style="position:absolute; right:5px; top:5px; width:22px; height:18px">
         </div>
     </div>
     <br>
@@ -185,7 +169,7 @@
 <div data-role="page" id="result" data-title="信用评估">
     <img src="resources/img/4-1/battery.png" style="width:70px; height:130px; float: left; margin: 10% 0 0 10%">
 
-    <h1 style="margin: 15% 0 0 38%; font-size: 2.4em">&yen <span id="amt-shown"
+    <h1 style="margin: 15% 0 0 38%; font-size: 2.4em; font-family: Avrial">&yen <span id="amt-shown"
                                                                  style="font-family: Arial; font-size: 2.3em; color: #404040"></span>
     </h1>
     <h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown"

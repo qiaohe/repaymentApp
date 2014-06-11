@@ -1,5 +1,6 @@
 body {
     font-size: 62.5%;
+    font-family: "黑体";
 }
 
 a {
@@ -880,4 +881,11 @@ hr{
     border-color:           #454545 /*{b-page-border}*/;
     color:                  #fff /*{b-page-color}*/;
     text-shadow: 0 /*{b-page-shadow-x}*/ 1px /*{b-page-shadow-y}*/ 0 /*{b-page-shadow-radius}*/     #111 /*{b-page-shadow-color}*/;
+}
+
+#area-tip{
+    text-align: center;
+    font-size: 1.4em;
+    margin: 35px 30px auto 30px;
+    color: gray;
 }
