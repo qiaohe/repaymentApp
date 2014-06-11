@@ -399,6 +399,9 @@ function returnFootPrint(id, status) {
         url: config.api_path + "members/" + id + "/status/" + status,
         type: "GET",
         async: false,
+        success : function (res) {
+            console.log(res);
+        },
         error: function () {
             if (config.debug)
                 alert(config.api_path + "members/" + id + "/status/" + status);
