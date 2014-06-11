@@ -147,14 +147,12 @@ function navigateThruStatusNDes(status, destination) {
 var member = {};
 member.id = config.member_id;
 
-//$(function () {
-    config.status = getStatus();
-    member.status = config.status;
-    config.destination = getDestination();
-    if (parseInt(config.status) > 2) {
-        getMemberInfo();
-        whetherApplying();
-        localStorage.clear();
-    }
-    navigateThruStatusNDes(member.status, config.destination);
-//});
+config.status = getStatus();
+member.status = config.status;
+config.destination = getDestination();
+if (parseInt(config.status) > 2) {
+    getMemberInfo();
+    whetherApplying();
+    localStorage.clear();
+}
+navigateThruStatusNDes(member.status, config.destination);

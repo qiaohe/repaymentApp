@@ -569,10 +569,6 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
-
-    $("#limit-pop").tap(function() {
-        returnFootPrint(member.id, "-1");
-    });
 });
 
 $(document).on("pageshow", "#limit", function(){
@@ -1492,7 +1488,7 @@ window.onunload = function () {
     var hash = pattern.exec(window.location).toString();
     hash = hash.slice(0, hash.length - 1);
 
-    if (member.status == "0" && (hash == "#limit" || hash == "#basic-info")) {
+    if (member.status == "1" && (hash == "#limit" || hash == "#basic-info")) {
         print_status = "0";
     }
     else if (hash == "#result" && status == "3.1") {
