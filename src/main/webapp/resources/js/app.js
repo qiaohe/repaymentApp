@@ -459,7 +459,7 @@ function shareToRenren() {
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
-        $.mobile.navigate("#suspension");
+        $.mobile.navigate("#congratulation");
     }
 });
 
@@ -668,7 +668,7 @@ $(document).on("pagecreate", "#result", function(){
         });
     }
 
-    if (!(parseFloat(member.status) >= 4)) {
+    if (parseFloat(member.status) < 4) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
             $.mobile.changePage("#limit");
@@ -1054,7 +1054,10 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             $("#amt-x").html(numberWithCommas(json.amt));
             $("#term-shown").html(json.term);
             $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css({"color": "black", "font-family": "avrial"});
-            $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css({"color": "black", "font-family": "avrial"})
+            $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css({"color": "black", "font-family": "avrial"});
+            if (!json.isFullyApproved) {
+                $("#cong-discription").html("抱歉, 只能先借这么多给您...");
+            }
         },
         error: function () {
             alert(config.api_path + "app/" + member.appNo + config.time);
