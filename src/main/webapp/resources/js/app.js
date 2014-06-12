@@ -459,7 +459,10 @@ function shareToRenren() {
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
-        $.mobile.navigate("#congratulation");
+        $.mobile.navigate("#loan");
+        $("#request").on("click", function() {
+            $("#cardlist-2").popup("open");
+        });
     }
 });
 
