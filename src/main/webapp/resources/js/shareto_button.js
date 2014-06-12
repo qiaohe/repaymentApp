@@ -211,7 +211,17 @@
 			sharetoBtnContain.disappear, false);
 	document.write('<script src="http://snsanalytics.sinaapp.com/analytics.js"></script>');
 }();
-function share_to(m) {
+function share_to(m,config) {
+    var options = {
+        title : encodeURIComponent(config.title || document.title),
+        desc : encodeURIComponent(config.desc || ""),
+        url : encodeURIComponent(config.url || document.location.href),
+        img : config.img || "",
+        width : config.width || 600,
+        height : config.height || 450,
+        left : config.left || 0,
+        top : config.top || 0
+    };
 	if (m == "baidu") {
 		window
 				.open('http://cang.baidu.com/do/add?it='
@@ -225,8 +235,8 @@ function share_to(m) {
 		window
 				.open(
 						'http://shuqian.qq.com/post?from=3&title='
-								+ encodeURIComponent(document.title) + '&uri='
-								+ encodeURIComponent(document.location.href)
+								+ options.title + '&uri='
+								+ options.url
 								+ '&jumpback=2&noui=1',
 						'favit',
 						'width=930,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes,status=yes,resizable=yes,left='
@@ -238,7 +248,7 @@ function share_to(m) {
 			} catch (e) {
 			}
 			var f = 'http://v.t.sina.com.cn/share/share.php?', u = d.location.href, p = [
-					'url=', e(u), '&title=', e(d.title), '&appkey=330242870' ]
+					'url=', options.url, '&title=', options.title, '&appkey=330242870' ]
 					.join('');
 			function a() {
 				if (!window
@@ -246,9 +256,9 @@ function share_to(m) {
 								[ f, p ].join(''),
 								'mb',
 								[
-										'toolbar=0,status=0,resizable=1,width=620,height=450,left=',
-										(s.width - 620) / 2, ',top=',
-										(s.height - 450) / 2 ].join('')))
+										'toolbar=0,status=0,resizable=1,width='+options.width+',height='+options.height+',left=',
+										options.left, ',top=',
+                                        options.top ].join('')))
 					u.href = [ f, p ].join('');
 			}
 			;
@@ -305,7 +315,7 @@ function share_to(m) {
 		 if (/renren\.com/.test(d.location))
 		 return;
 		 var f = 'http://share.renren.com/share/buttonshare.do?link=', u =
-		 d.location, l = d.title, p = [
+		 options.url, l = options.title, p = [
 		 e(u), '&title=', e(l) ].join('');
 		 function a() {
 		 if (!window
@@ -313,9 +323,9 @@ function share_to(m) {
 		 [ f, p ].join(''),
 		 'xnshare',
 		 [
-		 'toolbar=0,status=0,resizable=1,width=626,height=436,left=',
-		 (s.width - 626) / 2, ',top=',
-		 (s.height - 436) / 2 ].join('')))
+		 'toolbar=0,status=0,resizable=1,width='+options.width+',height='+options.height+',left=',
+         options.left, ',top=',
+		 options.top].join('')))
 		 u.href = [ f, p ].join('');
 		 }
 		 ;
@@ -507,10 +517,10 @@ function share_to(m) {
 	} else if (m == "qzone") {// 未开放分享
 		window.open(
 				"http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="
-						+ encodeURIComponent(document.location), 'qzone',
-				'toolbar=0,status=0,width=900,height=760,left='
-						+ (screen.width - 900) / 2 + ',top='
-						+ (screen.height - 760) / 2);
+						+ options.url, 'qzone',
+				'toolbar=0,status=0,width='+options.width+',height='+options.height+',left='
+						+ options.left + ',top='
+						+ options.top);
 	} else if (m == "live") {
 		window
 				.open(
@@ -762,13 +772,13 @@ function share_to(m) {
 						+ (screen.width - 590) / 2 + ',top='
 						+ (screen.height - 200) / 2));
 	} else if (m == "tqq") {
-		var _t = encodeURI(document.title);
-		var _url = encodeURIComponent(document.location);
+		var _t = options.title;
+		var _url = options.url;
 		var _appkey = encodeURI("appkey");//你从腾讯获得的appkey
-		var _pic = encodeURI('');//（例如：var _pic='图片url1|图片url2|图片url3....）
+		var _pic = encodeURI(options.img);//（例如：var _pic='图片url1|图片url2|图片url3....）
 		var _site = '';//你的网站地址
 		var _u = 'http://v.t.qq.com/share/share.php?url='+_url+'&appkey='+_appkey+'&site='+_site+'&pic='+_pic+'&title='+_t;
-		window.open( _u,'', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );
+		window.open( _u,'', 'width='+options.width+', height='+options.height+', top='+options.top+', left='+options.left+', toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );
 	} else if (m == "huaban") {
 		void (function() {
 			var a = window, b = document, c = encodeURIComponent, d = a

@@ -439,26 +439,6 @@ function shareToTimeline() {
     });
 }
 
-function shareToSina() {
-    share_to('tsina');
-    return false;
-}
-
-function shareToTencent() {
-    share_to('tqq');
-    return false;
-}
-
-function shareToQzone() {
-    share_to('qzone');
-    return false;
-}
-
-function shareToRenren() {
-    share_to('renren');
-    return false;
-}
-
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
@@ -725,20 +705,37 @@ $(document).on("pageshow", "#result", function() {
     }
 
     $("#share-sina").tap(function () {
-        shareToSina();
+        share_to('tsina',getShareConfig());
+        return false;
     });
 
     $("#share-tencent").tap(function () {
-        shareToTencent();
+        share_to('tqq',getShareConfig());
+        return false;
     });
 
     $("#share-qzone").tap(function () {
-        shareToQzone();
+        share_to('qzone',getShareConfig());
+        return false;
     });
 
     $("#share-renren").tap(function () {
-        shareToRenren();
+        share_to('renren',getShareConfig());
+        return false;
     });
+
+    function getShareConfig() {
+        return {
+            title : "么么贷的title, 暂缺",
+            desc : "么么贷的描述, 暂缺",
+            url : document.location.href,
+            img : "../img/8-1/sword.png",
+            width : screen.width,
+            height : screen.height,
+            left : 0,
+            top : 0
+        };
+    }
 });
 
 $(document).on("pagecreate", "#loan", function () {
