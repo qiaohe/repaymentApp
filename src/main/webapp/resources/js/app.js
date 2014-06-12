@@ -216,6 +216,8 @@ function enableLimitTest(btn_id) {
         $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
             testLimit();
         });
+    } else {
+        $("#" + btn_id).css("background-color", "silver");
     }
 }
 
