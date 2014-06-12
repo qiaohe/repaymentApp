@@ -794,8 +794,8 @@ $(document).on("pagecreate", "#loan", function () {
         $("#card-add-box-2").hide();
     });
 
-    $("#addcard-2").click(function(){
-        var card_num = $("#new-cardnum-2").val();
+    $("#addcard-2").off("tap").tap(function(){
+        var card_num = $("#new-cardnum-2").val().replace(/ /g, "");
         if (validateCardNo(card_num)) {
             addCreditCard($("#new-cardnum-2").val()).success(function(){
                 $("#card-add-box-2").hide();
@@ -805,14 +805,16 @@ $(document).on("pagecreate", "#loan", function () {
                 }, 500);
                 $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
                 var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container-0' style='line-height: 40px'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
                 $("#cardlist-2").prepend($(tmp));
             }).error(function(){
-                $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000");
+                $("#new-cardnum-2").val("");
+                $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
             });
         }
         else {
-            $("#new-cardnum-2-placeholder").html("错误的信用卡号!").css("color", "#cc0000");
+            $("#new-cardnum-2").val("");
+            $("#new-cardnum-2-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
         }
     });
 
@@ -874,9 +876,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
                                         i -= 1;
                                     }
                                     else {
-                                        $("#acquire-code").html("获取验证码");
+                                        $("#acquire-code").html("重新获取");
                                         clearInterval(refreshIntervalId);
-                                        $("#acquire-code").attr("disabled", "false");
                                         i = 60;
                                     }
                                 }, 1000);
@@ -908,17 +909,20 @@ $(document).on("pagebeforeshow", "#loan", function () {
             else
                 $("#code-txt").show();
 
-            $("#vali-sign").attr("src", "resources/img/public/blank.png");
+            $("#code-tip").attr("src", "../img/public/keyboard.png");
             if(vcode.length == 6 && member.phone.length == 11){
                 matchVarificationCode(vcode, member.phone).success(function(text){
                     if("true" == text){
-                        $("#vali-sign").attr("src", "resources/img/public/correct.png");
+                        $("#code-tip").attr("src", "resources/img/public/correct.png");
                         member.validate = true;
+                        if (typeof refreshIntervalId != "undefined") {
+                            clearInterval(refreshIntervalId);
+                        }
                         if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
                             requestAvilable();
                     }
                     else {
-                        $("#vali-sign").attr("src", "resources/img/public/wrong.png");
+                        $("#code-tip").attr("src", "resources/img/public/wrong.png");
                     }
                 });
             }
