@@ -457,11 +457,11 @@ function shareToRenren() {
 }
 
 // Actions
-//$(document).on("pagecreate", function() {
-//    if (member.id == "130") {
-//        $.mobile.navigate("#limit");
-//    }
-//});
+$(document).on("pagecreate", function() {
+    if (member.id == "130") {
+        $.mobile.navigate("#basic-info");
+    }
+});
 
 $(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
