@@ -457,11 +457,11 @@ function shareToRenren() {
 }
 
 // Actions
-//$(document).on("pagecreate", function() {
-//    if (member.id == "130") {
-//        $.mobile.navigate("#limit");
-//    }
-//});
+$(document).on("pagecreate", function() {
+    if (member.id == "130") {
+        $.mobile.navigate("#suspension");
+    }
+});
 
 $(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
@@ -1449,6 +1449,7 @@ $(document).on("pagecreate", "#patience", function () {
         dataType: "text",
         success: function(text) {
             $("#hours").html((1 - parseFloat(text)) * 48);
+            $("#bar-inner").css("width", 100 * parseFloat(text) + "%");
         },
         error: function() {
             if (config.debug)

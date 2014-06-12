@@ -138,7 +138,7 @@ input {
 
 /* suspension */
 #suspension li {
-    list-style-type: square;
+    list-style-type: circle;
     margin: auto 6%;
 }
 
@@ -791,9 +791,9 @@ span.loan-i-cont {
 }
 
 #share {
-/*    width: 300px;
-    height: 160px;
-    background-size: 300px 160px;*/
+    /*    width: 300px;
+        height: 160px;
+        background-size: 300px 160px;*/
     background: url("../img/other_icons/share_bg.png") no-repeat;
     position: relative;
 }
@@ -817,7 +817,7 @@ span.loan-i-cont {
 hr{
     margin: 0;
     padding: 0;
-	background-color: #c0c0c0;
+    background-color: #c0c0c0;
 }
 
 .card-in-list{
