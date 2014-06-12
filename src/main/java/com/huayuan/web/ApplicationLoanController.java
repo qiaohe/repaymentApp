@@ -122,6 +122,7 @@ public class ApplicationLoanController {
         SavedCostDto sc = getSavedCost(new LoanRequestDto(application.getMember().getId(), application.getAmt(), application.getTerm()));
         result.setRepayPerTerm(sc.getPayBackEachTerm());
         result.setSaveCost(sc.getSavedCost());
+        result.setIsFullyApproved(application.isFullyApproved());
         return result;
     }
 

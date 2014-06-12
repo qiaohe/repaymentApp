@@ -9,9 +9,10 @@ public class LoanApplicationDto {
     private Double amt;
     private String appNo;
     private Double saveCost;
+    private Boolean isFullyApproved;
 
     public LoanApplicationDto() {
-
+        isFullyApproved = false;
     }
 
     public int getTerm() {
@@ -52,5 +53,13 @@ public class LoanApplicationDto {
 
     public void setSaveCost(Double saveCost) {
         this.saveCost = saveCost;
+    }
+
+    public Boolean getIsFullyApproved() {
+        return isFullyApproved;
+    }
+
+    public void setIsFullyApproved(Boolean isFullyApproved) {
+        this.isFullyApproved = isFullyApproved;
     }
 }

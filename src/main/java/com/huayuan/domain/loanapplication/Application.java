@@ -222,11 +222,11 @@ public class Application {
     }
 
     public boolean isApproved() {
-        return getApproval().getDecision().equals("A");
+        return approval != null && getApproval().getDecision().equals("A");
     }
 
     public boolean isDeclined() {
-        return getApproval().getDecision().equals("D");
+        return approval != null && getApproval().getDecision().equals("D");
     }
 
     @Transient
@@ -243,5 +243,9 @@ public class Application {
             }
         }
         return String.valueOf(status);
+    }
+
+    public  boolean isFullyApproved() {
+        return isApproved() && getApproval().getAmt().equals(getAmt());
     }
 }
