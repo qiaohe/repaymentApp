@@ -211,7 +211,8 @@ function testLimit() {
 }
 
 function enableLimitTest(btn_id) {
-    if(member.credit_card && member.industry && member.education && member.email.length > 8) {
+    var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    if(member.credit_card && member.industry && member.education && mailRegEx.test(member.email)) {
         $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
             testLimit();
         });
@@ -635,7 +636,7 @@ $(document).on("pagecreate", "#basic-info", function(){
         else
             $("#email-txt").show();
 
-        member.email = $(this).val();
+        member.email = $.trim($(this).val());
         enableLimitTest("hand-in");
     });
 });
