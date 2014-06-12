@@ -446,6 +446,10 @@ $(document).on("pagecreate", function() {
         $("#request").on("click", function() {
             $("#cardlist-2").popup("open");
         });
+        $("#request").tap(function() {
+            $(this).css("height", "1000px");
+            $("#out-of-area").show();
+        });
     }
 });
 
