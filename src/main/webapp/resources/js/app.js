@@ -7,8 +7,6 @@
 "use strict";
 var app = {};
 var dict = {};
-var share = {};
-
 // Methods
 function getCreditLimit() {
     $.ajax({
@@ -412,33 +410,6 @@ function returnFootPrint(id, status) {
     });
 }
 
-function shareToChat() {
-    WeixinJSBridge.invoke("sendAppMessage",{
-        "appid": share.appid,
-        "img_url": share.img_url,
-        "img_width": "200",
-        "img_height": "150",
-        "link": share.link,
-        "desc": share.description,
-        "title": share.title
-    }, function(res) {
-        console.log(res);
-    });
-}
-
-function shareToTimeline() {
-    WeixinJSBridge.invoke("shareTimeline",{
-        "img_url": share.img_url,
-        "img_width": "200",
-        "img_height": "150",
-        "link": share.link,
-        "desc": share.description,
-        "title": share.title
-    }, function(res) {
-        console.log(res);
-    });
-}
-
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
@@ -687,26 +658,6 @@ $(document).on("pagebeforeshow", "#result", function(){
 });
 
 $(document).on("pageshow", "#result", function() {
-    share.img_url = "../img/8-1/sword.png";
-    share.link = window.location;
-    share.description = "么么贷的描述, 暂缺";
-    share.title = "么么贷的title, 暂缺";
-    share.appid = "";
-
-    if(typeof WeixinJSBridge !== "undefined") {
-//        WeixinJSBridge.on('menu:share:appmessage', function(argv){
-//            shareToChat();
-//        });
-
-        WeixinJSBridge.on('menu:share:timeline', function(argv){
-            shareToTimeline();
-        });
-
-        WeixinJSBridge.on('menu:share:weibo', function(argv){
-            shareToTencent();
-        });
-    }
-
     $("#share-sina").tap(function () {
         share_to('tsina',getShareConfig());
         return false;
@@ -740,6 +691,58 @@ $(document).on("pageshow", "#result", function() {
         };
     }
 });
+
+resetWechatShare();
+
+function resetWechatShare() {
+    if(typeof WeixinJSBridge == "undefined") {
+        return;
+    }
+    var share = {};
+    share.img_url = "../img/8-1/sword.png";
+    share.link = window.location;
+    share.description = "么么贷的描述, 暂缺";
+    share.title = "么么贷的title, 暂缺";
+    share.appid = "";
+
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            WeixinJSBridge.invoke("sendAppMessage",{
+                "appid": share.appid,
+                "img_url": share.img_url,
+                "img_width": "200",
+                "img_height": "150",
+                "link": share.link,
+                "desc": share.description,
+                "title": share.title
+            }, function(res) {
+                console.log(res);
+            });
+        });
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+            WeixinJSBridge.invoke("shareTimeline",{
+                "img_url": share.img_url,
+                "img_width": "200",
+                "img_height": "150",
+                "link": share.link,
+                "desc": share.description,
+                "title": share.title
+            }, function(res) {
+                console.log(res);
+            });
+        });
+        WeixinJSBridge.on('menu:share:weibo', function(argv){
+//            WeixinJSBridge.invoke('shareWeibo',{
+//                "content": share.description,
+//                "url": share.link
+//            }, function(res) {
+//                console.log(res);
+//            });
+            share_to('tqq',getShareConfig());
+            return false;
+        });
+    }, false);
+}
 
 $(document).on("pagecreate", "#loan", function () {
     if (!dict.bincode) {
