@@ -211,10 +211,13 @@ function testLimit() {
 }
 
 function enableLimitTest(btn_id) {
-    if(member.credit_card && member.industry && member.education && member.email.length > 8) {
+    var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    if(member.credit_card && member.industry && member.education && mailRegEx.test(member.email)) {
         $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
             testLimit();
         });
+    } else {
+        $("#" + btn_id).css("background-color", "silver");
     }
 }
 
@@ -436,26 +439,6 @@ function shareToTimeline() {
     });
 }
 
-function shareToSina() {
-    share_to('tsina');
-    return false;
-}
-
-function shareToTencent() {
-    share_to('tqq');
-    return false;
-}
-
-function shareToQzone() {
-    share_to('qzone');
-    return false;
-}
-
-function shareToRenren() {
-    share_to('renren');
-    return false;
-}
-
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
@@ -638,7 +621,7 @@ $(document).on("pagecreate", "#basic-info", function(){
         else
             $("#email-txt").show();
 
-        member.email = $(this).val();
+        member.email = $.trim($(this).val());
         enableLimitTest("hand-in");
     });
 });
@@ -725,20 +708,37 @@ $(document).on("pageshow", "#result", function() {
     }
 
     $("#share-sina").tap(function () {
-        shareToSina();
+        share_to('tsina',getShareConfig());
+        return false;
     });
 
     $("#share-tencent").tap(function () {
-        shareToTencent();
+        share_to('tqq',getShareConfig());
+        return false;
     });
 
     $("#share-qzone").tap(function () {
-        shareToQzone();
+        share_to('qzone',getShareConfig());
+        return false;
     });
 
     $("#share-renren").tap(function () {
-        shareToRenren();
+        share_to('renren',getShareConfig());
+        return false;
     });
+
+    function getShareConfig() {
+        return {
+            title : "么么贷的title, 暂缺",
+            desc : "么么贷的描述, 暂缺",
+            url : document.location.href,
+            img : "../img/8-1/sword.png",
+            width : screen.width,
+            height : screen.height,
+            left : 0,
+            top : 0
+        };
+    }
 });
 
 $(document).on("pagecreate", "#loan", function () {
