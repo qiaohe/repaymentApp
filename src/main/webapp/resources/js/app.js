@@ -1537,8 +1537,8 @@ window.onunload = function () {
         if (member.valid_thru) {
             localStorage.setItem("valid_thru", member.valid_thru);
         }
-        if (member.credit_card) {
-            localStorage.setItem("credit_card", member.credit_card);
+        if ($("#credit-card").val()) {
+            localStorage.setItem("credit_card", $("#credit-card").val());
             localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
         }
         if (member.education) {
