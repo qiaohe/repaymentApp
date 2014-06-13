@@ -168,124 +168,125 @@
         if(checkInputVal) {
             alert(checkInputVal);
             return;
+        } else {
+            $.ajax({
+                url: info.path + 'pboc/' + info.id,
+                type: "POST",
+                async: false,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    id: info.id,
+                    name: $('#name').val(),
+                    newName: $('#modified-name').val(),
+                    reportCreateTime: $('#report-time').val(),
+                    certNo: $('#id').val(),
+                    newCertNo: $('#modified-id').val(),
+                    newReportCreateTime: $('#modified-report-time').val(),
+                    maritalState: $('#marriage').val(),
+                    mobile: $('#mobile').val(),
+                    mobileCity: $('#num-district').val(),
+                    officeTelephoneNo: $('#phone-at-work').val(),
+                    homeTelephoneNo: $('#phone-home').val(),
+                    eduDegree: $('#education').val(),
+                    idImage: $('#show-id').val(),
+                    partnerName: $('#spouse-name').val(),
+                    partnerCertNo: $('#spouse-id').val(),
+                    partnerTelephoneNo: $('#spouse-phone').val(),
+                    homeCity: $('#livein').val(),
+                    homeAddress: $('#address').val(),
+                    homeResidenceType: $('#living-state').val(),
+                    addressGetTime: $('#update-date').val(),
+                    employer: $('#work-at').val(),
+                    employerCity: $('#work-in').val(),
+                    employerAddress: $('#work-address').val(),
+                    occupation: $('#profession').val(),
+                    industry: $('#industry').val(),
+                    industryAddress: $('#industry-catography').val(),
+                    duty: $('#position').val(),
+                    title: $('#level').val(),
+                    startYear: $('#since').val(),
+                    industryYear: $('#working-age').val(),
+                    employerGetTime: $('#update-date-1').val(),
+                    hisGetting: $('#works-since').val(),
+                    yRegisterDate: $('#pension-date').val(),
+                    yWorkDate: $('#month-in-work').val(),
+                    yOwnBasicMoney: $('#base').val(),
+                    yState: $('#pension-state').val(),
+                    yMoney: $('#amount-each-2').val(),
+                    yOrganName: info.yOrganName,
+                    registeredAddress: info.registeredAddress,
+                    pauseReason: $('#reason-suspension').val(),
+                    yGetTime: $('#update-date-2').val(),
+                    registerDate: $('#fund-date').val(),
+                    firstMonth: $('#fund-since').val(),
+                    toMonth: $('#fund-to').val(),
+                    state: $('#fund-state').val(),
+                    pay: $('#amount-each-3').val(),
+                    organName: info.organName,
+                    getTime: $('#update-date-3').val(),
+                    firstLoanMonth: $('#earlist-credit').val(),
+                    loanCount: $('#num-delayed').val(),
+                    loanHighestOverdueAmountPerMon: $('#amount-delayed').val(),
+                    loanMaxDuration: $('#time-delayed').val(),
+                    cardCount: $('#account-num').val(),
+                    cardOverDueNum: $('#delayed-current').val(),
+                    cardOverDuePerYear: $('#time-delayed-2').val(),
+                    cardHighestOverdueAmountPerMon: $('#amount-delayed-2').val(),
+                    cardMaxDuration: $('#time-delayed-3').val(),
+                    semiCardCount: $('#account-num-3').val(),
+                    semiCardHighestOverdueAmountPerMon: $('#overdraft-amount').val(),
+                    semiCardMaxDuration: $('#overdraft-time').val(),
+                    loanAccountCount: $('#num-loan').val(),
+                    loanCreditLimit: $('#amount-loan').val(),
+                    loanBalance: $('#amount-remaining').val(),
+                    loanLatest6MonthUsedAvgAmount: $('#payback-average').val(),
+                    cardOrg: $('#num-corp').val(),
+                    cardQueryLatest6Month: $('#search-time').val(),
+                    cardAccountCount: $('#num-accounts').val(),
+                    cardCreditLimit: $('#amount-credit').val(),
+                    cardAvgCreditLimit: $('#credit-average').val(),
+                    cardMaxCreditLimitPerOrg: $('#credit-max').val(),
+                    cardUsedCreditLimit: $('#credit-used').val(),
+                    cardLatest6MonthUsedAvgAmount: $('#used-average').val(),
+                    semiCardOrg: $('#num-corp-3').val(),
+                    semiCardAccountCount: $('#num-accounts-3').val(),
+                    semicardCreditLimit: $('#amount-credit-3').val(),
+                    semiCardAvgCreditlimit: $('#credit-average-3').val(),
+                    semiCardMaxCreditLimitPerOrg: $('#credit-max-3').val(),
+                    semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
+                    semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
+                    semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
+                    cardMinCreditLimitPerOrg: $('#credit-min').val(),
+                    rh_1: info.rh_1,
+                    rh_2: info.rh_2,
+                    rh_3: info.rh_3,
+                    rh_4: info.rh_4,
+                    rh_5: info.rh_5,
+                    rh_6: info.rh_6,
+                    rh_7: info.rh_7,
+                    rh_8: info.rh_8,
+                    rh_9: info.rh_9,
+                    rh_10: info.rh_10,
+                    rh_11: info.rh_11,
+                    rh_12: info.rh_12,
+                    rh_13: info.rh_13,
+                    rh_14: info.rh_14,
+                    keyiner: info.keyiner,
+                    createTime: info.createTime,
+                    rh_crl: info.rh_crl,
+                    flag: info.flag,
+                    risk: info.risk,
+                    status: info.status
+                }),
+                dataType: "text",
+                success: function(text){
+                    window.close();
+                },
+                error: function(){
+                    alert("error");
+                }
+            });
         }
-        $.ajax({
-            url: info.path + 'pboc/' + info.id,
-            type: "POST",
-            async: false,
-            contentType: "application/json",
-            data: JSON.stringify({
-                id: info.id,
-                name: $('#name').val(),
-                newName: $('#modified-name').val(),
-                reportCreateTime: $('#report-time').val(),
-                certNo: $('#id').val(),
-                newCertNo: $('#modified-id').val(),
-                newReportCreateTime: $('#modified-report-time').val(),
-                maritalState: $('#marriage').val(),
-                mobile: $('#mobile').val(),
-                mobileCity: /[^\"\w]+/.exec($('#num-district').val()).toString(),
-                officeTelephoneNo: $('#phone-at-work').val(),
-                homeTelephoneNo: $('#phone-home').val(),
-                eduDegree: $('#education').val(),
-                idImage: $('#show-id').val(),
-                partnerName: $('#spouse-name').val(),
-                partnerCertNo: $('#spouse-id').val(),
-                partnerTelephoneNo: $('#spouse-phone').val(),
-                homeCity: $('#livein').val(),
-                homeAddress: $('#address').val(),
-                homeResidenceType: $('#living-state').val(),
-                addressGetTime: $('#update-date').val(),
-                employer: $('#work-at').val(),
-                employerCity: $('#work-in').val(),
-                employerAddress: $('#work-address').val(),
-                occupation: $('#profession').val(),
-                industry: $('#industry').val(),
-                industryAddress: $('#industry-catography').val(),
-                duty: $('#position').val(),
-                title: $('#level').val(),
-                startYear: $('#since').val(),
-                industryYear: $('#working-age').val(),
-                employerGetTime: $('#update-date-1').val(),
-                hisGetting: $('#works-since').val(),
-                yRegisterDate: $('#pension-date').val(),
-                yWorkDate: $('#month-in-work').val(),
-                yOwnBasicMoney: $('#base').val(),
-                yState: $('#pension-state').val(),
-                yMoney: $('#amount-each-2').val(),
-                yOrganName: info.yOrganName,
-                registeredAddress: info.registeredAddress,
-                pauseReason: $('#reason-suspension').val(),
-                yGetTime: $('#update-date-2').val(),
-                registerDate: $('#fund-date').val(),
-                firstMonth: $('#fund-since').val(),
-                toMonth: $('#fund-to').val(),
-                state: $('#fund-state').val(),
-                pay: $('#amount-each-3').val(),
-                organName: info.organName,
-                getTime: $('#update-date-3').val(),
-                firstLoanMonth: $('#earlist-credit').val(),
-                loanCount: $('#num-delayed').val(),
-                loanHighestOverdueAmountPerMon: $('#amount-delayed').val(),
-                loanMaxDuration: $('#time-delayed').val(),
-                cardCount: $('#account-num').val(),
-                cardOverDueNum: $('#delayed-current').val(),
-                cardOverDuePerYear: $('#time-delayed-2').val(),
-                cardHighestOverdueAmountPerMon: $('#amount-delayed-2').val(),
-                cardMaxDuration: $('#time-delayed-3').val(),
-                semiCardCount: $('#account-num-3').val(),
-                semiCardHighestOverdueAmountPerMon: $('#overdraft-amount').val(),
-                semiCardMaxDuration: $('#overdraft-time').val(),
-                loanAccountCount: $('#num-loan').val(),
-                loanCreditLimit: $('#amount-loan').val(),
-                loanBalance: $('#amount-remaining').val(),
-                loanLatest6MonthUsedAvgAmount: $('#payback-average').val(),
-                cardOrg: $('#num-corp').val(),
-                cardQueryLatest6Month: $('#search-time').val(),
-                cardAccountCount: $('#num-accounts').val(),
-                cardCreditLimit: $('#amount-credit').val(),
-                cardAvgCreditLimit: $('#credit-average').val(),
-                cardMaxCreditLimitPerOrg: $('#credit-max').val(),
-                cardUsedCreditLimit: $('#credit-used').val(),
-                cardLatest6MonthUsedAvgAmount: $('#used-average').val(),
-                semiCardOrg: $('#num-corp-3').val(),
-                semiCardAccountCount: $('#num-accounts-3').val(),
-                semicardCreditLimit: $('#amount-credit-3').val(),
-                semiCardAvgCreditlimit: $('#credit-average-3').val(),
-                semiCardMaxCreditLimitPerOrg: $('#credit-max-3').val(),
-                semicardMinCreditLimitPerOrg: $('#credit-min-3').val(),
-                semiCardLatest6MonthUsedAvgAmount: $('#overdraft-average').val(),
-                semiCardUsedCreditLimit: $('#overdraft-remaining').val(),
-                cardMinCreditLimitPerOrg: $('#credit-min').val(),
-                rh_1: info.rh_1,
-                rh_2: info.rh_2,
-                rh_3: info.rh_3,
-                rh_4: info.rh_4,
-                rh_5: info.rh_5,
-                rh_6: info.rh_6,
-                rh_7: info.rh_7,
-                rh_8: info.rh_8,
-                rh_9: info.rh_9,
-                rh_10: info.rh_10,
-                rh_11: info.rh_11,
-                rh_12: info.rh_12,
-                rh_13: info.rh_13,
-                rh_14: info.rh_14,
-                keyiner: info.keyiner,
-                createTime: info.createTime,
-                rh_crl: info.rh_crl,
-                flag: info.flag,
-                risk: info.risk,
-                status: info.status
-            }),
-            dataType: "text",
-            success: function(text){
-                console.log(text);
-            },
-            error: function(){
-                alert("error");
-            }
-        });
     }
 
     function checkboxes(){
@@ -317,14 +318,12 @@
         info.status = 3;
         checkboxes();
         update();
-        window.close();
     });
 
     $('#finish').click(function(){
         info.status = 4;
         checkboxes();
         update();
-        window.close();
     });
 
     $('#no-record').click(function(){
@@ -332,7 +331,6 @@
         info.risk = 1;
         checkboxes();
         update();
-        window.close();
     });
 
     $('#id-modify').click(function(){
@@ -343,7 +341,6 @@
             info.status = 5;
             checkboxes();
             update();
-            window.close();
         }
     });
 
@@ -352,7 +349,7 @@
             $.ajax({
                 url:info.path + "dict/mobileArea/" + $(this).val(),
                 type: "GET",
-                dataType: "text",
+                dataType: "JSON",
                 success: function (text) {
                     if (text.length) {
                         $("#num-district").val(text);
@@ -373,7 +370,7 @@
         if(update1 != "" && update1.length != 8) {
             return "居住信息中'信息更新日期'只能输入8位有效时间！";
         }
-        var update2 = $.trim($("#works-since").val());
+        var update2 = $.trim($("#update-date-1").val());
         if(update2 != "" && update2.length != 8) {
             return "工作信息中'信息更新日期'只能输入8位有效时间！";
         }
@@ -382,7 +379,7 @@
             return "养老金缴纳记录中'信息更新日期'只能输入8位有效时间！";
         }
         var update4 = $.trim($("#update-date-3").val());
-        if(update4 != "" && update3.length != 8) {
+        if(update4 != "" && update4.length != 8) {
             return "公积金缴纳记录中'信息更新日期'只能输入8位有效时间！";
         }
         var update5 = $.trim($("#earlist-credit").val());
