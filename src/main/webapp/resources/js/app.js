@@ -8,6 +8,13 @@
 var app = {};
 var dict = {};
 // Methods
+function getAndroidVersion() {
+    var ua = navigator.userAgent;
+    if( ua.indexOf("Android") >= 0 )
+        var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
+    return androidversion;
+};
+
 function getCreditLimit() {
     $.ajax({
         url: config.api_path + "members/" + member.id + "/crl" + config.time,
@@ -412,9 +419,9 @@ function returnFootPrint(id, status) {
 
 // Actions
 $(document).on("pagecreate", function() {
-    if (member.id == "130") {
-        member.mobile_varified = 0;
-        $.mobile.navigate("#loan");
+    var android_varsion = parseFloat(getAndroidVersion());
+    if (android_varsion <= 2.3) {
+        $.mobile.navigate("#testpage");
     }
 });
 
@@ -1558,4 +1565,26 @@ window.onunload = function () {
         localStorage.clear();
     }
 };
+
+$(document).on("pagecreate", "#testpage", function() {
+    $("#testinput").change(function(e) {
+        var file = e.target.files[0]
+
+        if(typeof FormData == "undefined"){
+            var data = [];
+            data.push("files[]", file);
+        }
+        else{
+            var data = new FormData();
+            data.append("files[]", file);
+        }
+
+        recongizeIdCard(data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+            alert(json);
+        }).error(function () {
+            alert(json);
+        });
+
+    });
+});
 console.log("END!");
