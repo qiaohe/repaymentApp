@@ -1202,6 +1202,10 @@ function generateCarousels(loanSummary) {
     member.crnt_caro = 0;
     sliderPage();
 
+    $(".repay-item-pay").off("tap").tap(function(e){
+        $.mobile.changePage("#pay-success");
+    });
+
     $(".repay-item-detail").off("tap").tap(function (e) {
         e.preventDefault();
         var index = $(this).attr("index");
@@ -1257,7 +1261,7 @@ function generateItemLoan(loan,index) {
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
-            "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
+            "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-history\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-2.png');\"></div><div class=\"repay-info\">历史还款记录</div><div class=\"replay-collapse\"></div></div>\n";
     } else if(status == 9) { // 结清
@@ -1281,7 +1285,7 @@ function generateItemLoan(loan,index) {
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期</div>\n"+
             "</div>\n"+
-            "<div class=\"repay-item\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款</div><div class=\"replay-collapse\"></div></div>\n"+
+            "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款</div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-history\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-2.png');\"></div><div class=\"repay-info\">历史还款记录</div><div class=\"replay-collapse\"></div></div>\n";
     }
@@ -1481,6 +1485,18 @@ $(document).on("pagecreate", "#patience", function () {
 
 $(document).on("pageshow", "#patience", function() {
     $("#got-it-x").off("tap").on("tap", function () {
+        WeixinJSBridge.call("closeWindow");
+    });
+});
+
+$(document).on("pagecreate", "#pay-success", function () {
+    $("#pays-known").off("tap").on("tap", function () {
+        WeixinJSBridge.call("closeWindow");
+    });
+});
+
+$(document).on("pagecreate", "#pay-fail", function () {
+    $("#payf-known").off("tap").on("tap", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
