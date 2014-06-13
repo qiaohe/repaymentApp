@@ -1532,7 +1532,6 @@ window.onunload = function () {
 
     if (print_status != "-9")
         returnFootPrint(member.id, print_status);
-    alert("footprint" + " " + print_status);
 
     if ((member.status == "1" || member.status == "2") && (hash == "#limit" || hash == "#basic-info")) {
         if (member.id_card) {
