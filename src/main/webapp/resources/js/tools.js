@@ -41,7 +41,12 @@
             return ms ? new Date(ms).format("yyyyMMdd") : "";
         },
         formatDate1:function(ms){
-            return ms ? new Date(ms).format("yyyy-MM-dd") : "";
+            if(!ms) return;
+            if(/^\d+$/.test(ms)) {
+                return ms ? new Date(ms).format("yyyy-MM-dd") : "";
+            } else {
+                return ms.substring(0,10);
+            }
         },
         mustache : function (template, view, partials) {
             return Mustache.render(template, view, partials);

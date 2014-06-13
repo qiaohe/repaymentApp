@@ -1215,7 +1215,12 @@ function generateCarousels(loanSummary) {
         detailInfo.push("尾号" + curLoan.creditCardNo.slice(curLoan.creditCardNo.length - 4, curLoan.creditCardNo.length));
         detailInfo.push(numberWithCommas(curLoan.amount));
         detailInfo.push(curLoan.term + "期");
-        detailInfo.push("每月" + getReadableDate(curLoan.startDate)[2] + "日");
+        var perDay = getReadableDate(curLoan.startDate)[2];
+        if(perDay > 28) {
+            detailInfo.push("每月" + perDay + "日 （无"+perDay+"日则提前）");
+        } else {
+            detailInfo.push("每月" + perDay + "日");
+        }
         detailInfo.push(numberWithCommas(curLoan.dueAmt.toFixed(2)));
         detailInfo.push(numberWithCommas(curLoan.lastDueAmt.toFixed(2)));
 
