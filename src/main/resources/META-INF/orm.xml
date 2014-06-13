@@ -56,7 +56,7 @@
     </named-query>
 
     <named-query name="Loan.findEffectiveLoansBy">
-        <query>SELECT l FROM Loan l WHERE l.status != 10 and l.member.id=?1
+        <query>SELECT l FROM Loan l WHERE l.status != 10 and l.status != 8 and l.member.id=?1
         </query>
     </named-query>
 

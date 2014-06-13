@@ -610,7 +610,7 @@ $(document).on("pagecreate", "#result", function(){
     var width = $(window).width() * 0.9;
     var height = width * 160 / 300;
     $("#share").css({"width":width,"height":height,"background-size":width +"px " +height+ "px"});
-    $("#share img").css({"width":width*0.14,"height":width*0.14});
+    $("#share img").css({"width":width*0.16,"height":width*0.16});
 
     whetherLoanable();
     if (member.loanable) {
