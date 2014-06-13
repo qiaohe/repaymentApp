@@ -41,7 +41,7 @@
             return ms ? new Date(ms).format("yyyyMMdd") : "";
         },
         formatDate1:function(ms){
-            if(!ms) return;
+            if(!ms) return "";
             if(/^\d+$/.test(ms)) {
                 return ms ? new Date(ms).format("yyyy-MM-dd") : "";
             } else {
