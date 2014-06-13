@@ -272,7 +272,7 @@ input {
 
 #fail-content {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
     line-height: 24px;
     height: 48px;
 }
@@ -659,6 +659,21 @@ span.loan-i-cont {
     height: 63px;
     text-align: center;
     margin: 40px auto;
+    color: #404040;
+    font-family: "黑体";
+}
+.fb-top1 {
+    width: 100%;
+    height: 33px;
+    line-height: 33px;
+    font-size: 28px;
+    font-weight: bold;
+}
+.fb-top2 {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 18px;
 }
 .fb-top img {
     width: 240px;
@@ -754,13 +769,13 @@ span.loan-i-cont {
 }
 .norepay-top {
     width: 100%;
-    height: 52px;
+    line-height: 28px;
+    font-size: 28px;
+    font-weight: bold;
+    height: 40px;
     text-align: center;
     margin: 40px auto;
-}
-.norepay-top img {
-    width: 260px;
-    height: 52px;
+    color: #404040;
 }
 .norepay-cont {
     width: 100%;
