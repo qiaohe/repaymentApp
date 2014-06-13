@@ -1461,8 +1461,8 @@ $(document).on("pagecreate", "#patience", function () {
         success: function(text) {
             var process = parseFloat(text);
             $("#hours").html((1 - process) * 48);
-            if(process < 0.05)
-                process = 0.05;
+            if(process < 0.15)
+                process = 0.15;
             $("#bar-inner").css("width", 100 * process + "%");
         },
         error: function() {
