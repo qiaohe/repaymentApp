@@ -413,14 +413,8 @@ function returnFootPrint(id, status) {
 // Actions
 $(document).on("pagecreate", function() {
     if (member.id == "130") {
+        member.mobile_varified = 0;
         $.mobile.navigate("#loan");
-        $("#request").on("click", function() {
-            $("#cardlist-2").popup("open");
-        });
-        $("#request").tap(function() {
-            $(this).css("height", "1000px");
-            $("#out-of-area").show();
-        });
     }
 });
 
@@ -1465,8 +1459,11 @@ $(document).on("pagecreate", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-            $("#hours").html((1 - parseFloat(text)) * 48);
-            $("#bar-inner").css("width", 100 * parseFloat(text) + "%");
+            var process = parseFloat(text);
+            $("#hours").html((1 - process) * 48);
+            if(process < 0.05)
+                process = 0.05;
+            $("#bar-inner").css("width", 100 * process + "%");
         },
         error: function() {
             if (config.debug)
