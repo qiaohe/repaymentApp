@@ -164,9 +164,9 @@
     });
 
     function update(){
-        var checkInput = checkInput();
-        if(checkInput) {
-            alert(checkInput);
+        var checkInputVal = checkInput();
+        if(checkInputVal) {
+            alert(checkInputVal);
             return;
         }
         $.ajax({
