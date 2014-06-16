@@ -12,10 +12,10 @@
     <script type="text/javascript">
         $(document).on("mobileinit", function(){
             $.mobile.pushStateEnabled = false;
-        });
+        })
     </script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
-    <script type="text/javascript" src="resources/js/navigator.js?v=0.1"></script>
+    <!--<script type="text/javascript" src="resources/js/navigator.js?v=0.1"></script>-->
     <!--<script>localStorage.clear();</script>-->
 </head>
 <body>
@@ -97,8 +97,9 @@
 
         <div style="margin: 30px 10% 40px 10%; text-align: center"><img src="resources/img/additional/pop-limit.png" style="width: 224px; height: 141px"></div>
 
-        <div style="width:80%; margin: 20px 10%">
-            <a href="#limit" class="custom-btn ui-btn bluebtn" id="limit-pop">知道了</a>
+        <div style="height:63px; margin-top:8px; background-color: white;; border-radius: 0 0 5px 5px">
+            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="quit" style="height: 20px; line-height: 20px">退出</a></div>
+            <div style="width:35%; margin-right:10%; float:right"><a href="#full" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>
         </div>
     </div>
 </div>
@@ -199,7 +200,7 @@
 <!-- result -->
 
 <!-- loan -->
-<div data-role="page" id="loan" data-title="信用评估" style="background-color:#f7f7f7">
+<div data-role="page" id="loan" data-title="申请借款" style="background-color:#f7f7f7">
     <div class="cover" style="height:125px">
         <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">可用额度:</div>
         <div style="font-family: Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:35px"><span style="font-size: 1.5em">&yen; </span><span
@@ -651,7 +652,7 @@
     <ul data-role="listview" style="width: 80%; height: 80%; margin: 10% auto">
         <li style="background-color: silver; height: 150px"></li>
         <li style="background-color: gray; color: white">了解化缘</li>
-        <li>化缘如何帮我省钱?</li>a
+        <li>化缘如何帮我省钱?</li>
         <li>化缘总共分几步?</li>
     </ul>
 </div>
@@ -660,7 +661,7 @@
     <input type="file" accept="image/jpg, image/jpeg" id="testinput">
 </div>
 
-<script type="text/javascript" src="resources/js/app.js?v=0.13"></script>
+<script type="text/javascript" src="resources/js/test.js?v=0.13"></script>
 <script type="text/javascript" src="resources/js/shareto_button.js?v=0.1"></script>
 </body>
 </html>

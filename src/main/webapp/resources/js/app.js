@@ -48,7 +48,7 @@ function getAvlCrl() {
     });
 }
 
-function recongizeIdCard(form_data, url_path, datatype) {
+function recognizeIdCard(form_data, url_path, datatype) {
     return $.ajax({
         url: url_path,
         type: "POST",
@@ -418,13 +418,6 @@ function returnFootPrint(id, status) {
 }
 
 // Actions
-$(document).on("pagecreate", function() {
-    var android_varsion = parseFloat(getAndroidVersion());
-    if (android_varsion <= 2.3) {
-        $.mobile.navigate("#testpage");
-    }
-});
-
 $(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
         $(".gender").html("娘子");
@@ -445,9 +438,18 @@ $(document).on("pagecreate", "#limit", function () {
         $("#front-upload").change(function (e) {
             //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
             $("#front-num").html("正在识别...").css("color", "#222222");
-            var form_data = new FormData();
+
+//            if (parseFloat(getAndroidVersion()) <= 2.3) {
+//                var form_data = new FormDataCompatibility();
+//            }
+//            else {
+                var form_data = new FormData();
+//            }
+//            var form_data = new FormDataCompatibility();
+
+
             form_data.append("idCardFrontFile", e.target.files[0]);
-            recongizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
                 $("#front-num").html(json.idNo).css("color", "#222222");
                 $("label[for='front-upload']").css("border-color", "#c0c0c0");
                 $("#tip-front").attr("src", "resources/img/public/correct.png");
@@ -475,7 +477,7 @@ $(document).on("pagecreate", "#limit", function () {
             $("#back-num").html("正在识别...").css("color", "#222222");
             var form_data = new FormData();
             form_data.append("idCardBackFile", e.target.files[0]);
-            recongizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
+            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
                 $("#back-num").html("有效期至" + text).css("color", "#222222");
                 $("label[for='back-upload']").css("border-color", "#c0c0c0");
                 $("#tip-back").attr("src", "resources/img/public/correct.png");
@@ -543,6 +545,15 @@ $(document).on("pagecreate", "#limit", function () {
 });
 
 $(document).on("pageshow", "#limit", function(){
+    $("#quit").tap(function() {
+        returnFootPrint(member.id, "-1");
+        WeixinJSBridge.call("closeWindow");
+    });
+
+    $("#continue").tap(function() {
+        $("#pop-limit").popup("close");
+    });
+
     if (member.anothertest) {
         $("#credit-card").val("").focus().trigger("tap");
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
@@ -555,7 +566,7 @@ $(document).on("pageshow", "#limit", function(){
 });
 
 $(document).on("pagecreate", "#basic-info", function(){
-    if(!dict.industry){
+    if (!dict.industry){
         $.getJSON(config.api_path + "dict/industry", function(json){
             addOptions("industry-select", json);
             dict.industry = json;
@@ -959,7 +970,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
         if(parseInt(tmp, 10) > parseInt(member.avlcrl, 10))
             $(this).val(parseInt(member.avlcrl));
 
-        if (parseFloat($(this).val()) > 1000) {
+        if (parseFloat($(this).val()) >= 1000) {
             app.amount = $(this).val();
             countPayback(app);
         }
@@ -1536,9 +1547,8 @@ $(document).on("pagecreate", "#thanks-feedback", function () {
 
 window.onunload = function () {
     var print_status;
-    var pattern = /#[\w-]+\?/;
+    var pattern = /#[\w-]+/;
     var hash = pattern.exec(window.location).toString();
-    hash = hash.slice(0, hash.length - 1);
 
     if (member.status == "1" && (hash == "#limit" || hash == "#basic-info")) {
         if (member.id || member.credit_card || member.valid_thru) {
@@ -1586,26 +1596,83 @@ window.onunload = function () {
         localStorage.clear();
     }
 };
+////////////////////////////////////////////////////////////////////
+window.FormDataCompatibility = (function() {
 
-$(document).on("pagecreate", "#testpage", function() {
-    $("#testinput").change(function(e) {
-        var file = e.target.files[0]
+    function FormDataCompatibility(form) {
+        this.fields = {};
+        this.boundary = this.generateBoundary();
+        this.contentType = "multipart/form-data; boundary=" + this.boundary;
+        this.CRLF = "\r\n";
 
-        if(typeof FormData == "undefined"){
-            var data = [];
-            data.push("files[]", file);
+        if (typeof form !== 'undefined') {
+            for (var i = 0; i < form.elements.length; i++) {
+                var e = form.elements[i];
+// If not set, the element's name is auto-generated
+                var name = (e.name !== null && e.name !== '') ? e.name : this.getElementNameByIndex(i);
+                this.append(name, e);
+            }
         }
-        else{
-            var data = new FormData();
-            data.append("files[]", file);
+    }
+
+    FormDataCompatibility.prototype.getElementNameByIndex = function(index) {
+        return '___form_element__' + index; // Strange enough to avoid collision with user-defined names
+    }
+
+    FormDataCompatibility.prototype.append = function(key, value) {
+        return this.fields[key] = value;
+    };
+
+    FormDataCompatibility.prototype.setContentTypeHeader = function(xhr) {
+        return xhr.setRequestHeader("Content-Type", this.contentType);
+    };
+
+    FormDataCompatibility.prototype.getContentType = function() {
+        return this.contentType;
+    };
+
+    FormDataCompatibility.prototype.generateBoundary = function() {
+        return "AJAX--------------" + ((new Date).getTime());
+    };
+
+    FormDataCompatibility.prototype.buildBody = function() {
+        var body, key, parts, value, _ref;
+        parts = [];
+        _ref = this.fields;
+        for (key in _ref) {
+            value = _ref[key];
+            parts.push(this.buildPart(key, value));
         }
+        body = "--" + this.boundary + this.CRLF;
+        body += parts.join("--" + this.boundary + this.CRLF);
+        body += "--" + this.boundary + "--" + this.CRLF;
+        return body;
+    };
 
-        recongizeIdCard(data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
-            alert(json);
-        }).error(function () {
-            alert(json);
-        });
+    FormDataCompatibility.prototype.buildPart = function(key, value) {
+        var part;
+        if (typeof value === "string") {
+            part = "Content-Disposition: form-data; name=\"" + key + "\"" + this.CRLF;
+            part += "Content-Type: text/plain; charset=utf-8" + this.CRLF + this.CRLF;
+            part += unescape(encodeURIComponent(value)) + this.CRLF;    // UTF-8 encoded like in real FormData
+        } else if (typeof value === typeof File) {
+            part = "Content-Disposition: form-data; name=\"" + key + "\"; filename=\"" + value.fileName + "\"" + this.CRLF;
+            part += "Content-Type: " + value.type + this.CRLF + this.CRLF;
+            part += value.getAsBinary() + this.CRLF;
+        } else if (typeof value === typeof HTMLInputElement) {
+            if (value.type == 'file') {
+                // Unsupported
+            } else {
+                part = "Content-Disposition: form-data; name=\"" + key + "\"" + this.CRLF;
+                part += "Content-Type: text/plain; charset=utf-8" + this.CRLF + this.CRLF;
+                part += unescape(encodeURIComponent(value.value)) + this.CRLF;  // UTF-8 encoded like in real FormData
+            }
+        }
+        return part;
+    };
 
-    });
-});
+    return FormDataCompatibility;
+
+})();
+////////////////////////////////////////////////////////////////////
 console.log("END!");
