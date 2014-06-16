@@ -25,7 +25,7 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public List<PbocSummary> search(Integer curPage,String query) {
-        return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where " + query).setMaxResults(CommonDef.PER_PAGE).setFirstResult((curPage-1)*CommonDef.PER_PAGE).getResultList();
+        return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where " + query+" order by pb.create_Time ASC").setMaxResults(CommonDef.PER_PAGE).setFirstResult((curPage-1)*CommonDef.PER_PAGE).getResultList();
     }
 
     public String getIdCardImage(Long id) {

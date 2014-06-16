@@ -21,7 +21,8 @@
                 $all.attr("checkFlag","1");
             }
         });
-        $("input.check").click(function(){
+        $("input.check").click(function(e){
+            e.preventDefault();
             var $btn = $(this).parent().prev();
             $btn.prop("checked",!$btn.prop("checked"));
         });
