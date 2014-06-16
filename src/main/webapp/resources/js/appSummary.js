@@ -42,7 +42,7 @@
     };
     appSummary.loadData = function (json) {
         // head of table
-        var contentHtml = '<tr>' +
+        var contentHtml = '<tr style="background: #ffff00;">' +
             '<td style="width: 4%;text-align: center">序号</td>' +
             '<td>申请编号</td>' +
             '<td>姓名</td>' +
