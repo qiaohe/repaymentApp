@@ -1,5 +1,6 @@
 package com.huayuan.repository.credit;
 
+import com.huayuan.common.CommonDef;
 import com.huayuan.domain.credit.PbocOut;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
@@ -23,8 +24,8 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<PbocSummary> search(String query) {
-        return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where " + query).getResultList();
+    public List<PbocSummary> search(Integer curPage,String query) {
+        return em.createNativeQuery("SELECT pb.id as id, pb.certNo as certNo, pb.name as name, pb.create_Time as createTime,pb.keyiner as keyiner, pb.risk as risk, pb.status as status FROM Pboc pb where " + query).setMaxResults(CommonDef.PER_PAGE).setFirstResult((curPage-1)*CommonDef.PER_PAGE).getResultList();
     }
 
     public String getIdCardImage(Long id) {
