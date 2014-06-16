@@ -280,7 +280,17 @@
                 }),
                 dataType: "text",
                 success: function(text){
-                    window.close();
+                    var idNos = $.cookie("idNos");
+                    var certNos = $.cookie("certNos");
+                    idNos = new RegExp(info.id+",") ? idNos.replace(info.id+",","") : idNos.replace(info.id,'');
+                    certNos = new RegExp(info.cert+",") ? certNos.replace(info.cert+",","") : certNos.replace(info.cert,'');
+                    if($.trim(idNos)) {
+                        $.cookie("idNos",idNos);
+                        $.cookie("certNos",certNos);
+                        window.location.href = "credit.html?id="+idNos.split(",")[0]+"&certNo="+certNos.split(",")[0];
+                    } else {
+                        window.location.href = "pboc.html";
+                    }
                 },
                 error: function(){
                     alert("error");

@@ -384,8 +384,8 @@
             success: function (json) {
                 alert("提交成功！");
                 var appNos = $.cookie("appNos");
-                appNos = appNos.replace(appDetail.appNo,"").replace(",,",',');
-                if($.trim(appNos) && $.trim(appNos) != ",") {
+                appNos = new RegExp(appDetail.appNo+",").test(appNos) ? appNos.replace(appDetail.appNo+",","") : appNos.replace(appDetail.appNo,"");
+                if($.trim(appNos)) {
                     $.cookie("appNos",appNos);
                     window.location.href = "appDetail.html?appNo="+appNos.split(",")[0];
                 } else {

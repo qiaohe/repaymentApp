@@ -1,22 +1,22 @@
 ﻿$(function () {
 // START   
-    var path = "api/";
+    var path = "api/",initFlag = 0;
 
     function getNshow(path) {
         $('#table').html('<div class="grid ylo">序号</div><div class="grid ylo">身份证号</div><div class="grid ylo">姓名</div><div class="grid ylo">时间</div><div class="grid ylo">员工编号</div><div class="grid ylo">无此人</div><div class="grid ylo">状态</div>');
 
         $.get(path, function (json) {
+            var idNos = [],certNos = [];
             for (var i = 0, l = json.length; i < l; i++) {
                 for (var j = 0, k = json[i].length; j < k; j++) {
-                    if(j == 3)
+                    if(j == 3) {
                         $('#table').append('<div class="grid">' + json[i][j].slice(0, 10) + '</div>');
-                    else if(j == 5){
+                    } else if(j == 5){
                         if(json[i][j])
                             $('#table').append('<div class="grid">Y</div>');
                         else
                             $('#table').append('<div class="grid"></div>');
-                    }
-                    else if(j == 6){
+                    } else if(j == 6){
                         var tmp;
                         if(json[i][j] == '1')
                             tmp="待建档";
@@ -30,12 +30,27 @@
                             tmp="修改id";
                         $('#table').append('<div class="grid">' + tmp + '</div>');
                     } else if(j == 1) {
+                        if(initFlag == 0) {
+                            certNos.push(json[i][j]);
+                        }
                         $('#table').append('<div class="grid" style="cursor: pointer;">' + json[i][j] + '</div>');
                     } else {
+                        if(initFlag == 0 && j == 0) {
+                            idNos.push(json[i][j]);
+                        }
                         $('#table').append('<div class="grid">' + json[i][j] + '</div>');
                     }
                 }
             }
+
+            if(idNos && idNos.length != 0) {
+                $.cookie("idNos",idNos.join(","));
+            }
+            if(certNos && certNos.length != 0) {
+                $.cookie("certNos",certNos.join(","));
+            }
+            initFlag = 1;
+
             // set table height
             if(json && json.length != 0) {
                 $('#table').height(27*json.length+27);
@@ -63,6 +78,11 @@
             $("#chooseboxes input:checkbox").prop("checked",true);
             $all.attr("checkFlag","1");
         }
+    });
+
+    $("input.check").click(function(){
+        var $btn = $(this).parent().prev();
+        $btn.prop("checked",!$btn.prop("checked"));
     });
 
     $('#search').click(function () {
