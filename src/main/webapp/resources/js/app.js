@@ -550,7 +550,7 @@ $(document).on("pageshow", "#limit", function(){
         WeixinJSBridge.call("closeWindow");
     });
 
-    $("#continue").tao(function() {
+    $("#continue").tap(function() {
         $("#pop-limit").popup("close");
     });
 
