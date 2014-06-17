@@ -26,6 +26,11 @@
             var $btn = $(this).parent().prev();
             $btn.prop("checked",!$btn.prop("checked"));
         });
+        $("#forNone").click(function(e){
+            e.preventDefault();
+            var $none = $(this).prev();
+            $none.prop("checked",!$none.prop("checked"));
+        });
         $('#search').click(function () {
             var q = pboc.getParameter() || "q=pb.status in (2, 3)";
             pboc.getNshow(path + "pboc/search?curPage=1&" + q);
