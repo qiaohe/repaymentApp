@@ -153,9 +153,13 @@
 
     jQuery.ajaxSetup({async:true});
 
-//photo and pdf
-//$('#pdf').attr('src', info.path.slice(0, info.path.length - 4) + 'resources/pboc/' + info.cert + '.pdf');
-    $('#pdf').attr('src', info.path + 'resources/pboc/' + info.cert + '.pdf');
+    // photo and pdf
+    // $('#pdf').attr('src', info.path + 'resources/pboc/' + info.cert + '.pdf');
+
+    var pdfUrl = info.path + 'resources/pboc/' + info.cert + '.pdf';
+    var contentHtml = "<iframe id=\"pdf\" style=\"width:45%; height:100%; position:fixed; top:10px ; left:10px\" src=\"resources/plugin/pdf/web/viewer.html?pdfUrl="+pdfUrl+"\"></iframe>";
+    $("#pdfContent").html(contentHtml);
+
     $('#show-idimg').click(function(){
         $('#img').show();
     });
