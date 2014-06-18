@@ -33,6 +33,14 @@
                 appSummary.loadData(json);
             });
         });
+        $("#forSystem").click(function(){
+            var $system = $(this).prev();
+            $system.prop("checked",!$system.prop("checked"))
+        });
+        $("#forTv").click(function(){
+            var $tv = $(this).prev();
+            $tv.prop("checked",!$tv.prop("checked"));
+        });
         $("#prev").on("click", function () {
 
         });
