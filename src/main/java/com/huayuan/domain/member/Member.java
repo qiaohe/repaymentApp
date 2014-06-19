@@ -2,6 +2,7 @@ package com.huayuan.domain.member;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.common.util.Constants;
 import com.huayuan.domain.loanapplication.CreditResult;
 import org.apache.commons.lang.StringUtils;
 
@@ -15,8 +16,8 @@ import java.util.*;
 @Entity
 @Table(name = "MEMBER")
 public class Member implements Serializable {
-    public static final List<String> REJECT_BLOCK_CODES = Arrays.asList("D102","D108","D801","D100","D109","D101","D105");
-
+    public static final List<String> REJECT_BLOCK_CODES = Arrays.asList("D102", "D108", "D801", "D100", "D109", "D101", "D105");
+    public static final List<String> BLOCK_CODE_IND = Arrays.asList("", "B", "C", "D", "E", "F", "G");
     private static final long serialVersionUID = 4541559421896160856L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -275,6 +276,7 @@ public class Member implements Serializable {
 
     public void setBlockCode(String blockCode) {
         this.blockCode = blockCode;
+        blockTime = new Date();
     }
 
     public Date getCreateTime() {
@@ -405,5 +407,25 @@ public class Member implements Serializable {
     @JsonIgnore
     public boolean isDeclined() {
         return "X".equalsIgnoreCase(blockCode) || creditResult.isDeclined();
+    }
+
+    @JsonIgnore
+    @Transient
+    public String getBlockCodeBy(final int overDueDays) {
+        final String code = Constants.getBlockCode(overDueDays);
+        if (BLOCK_CODE_IND.indexOf(code) > BLOCK_CODE_IND.indexOf(blockCode)) return code;
+        return blockCode;
+    }
+
+    public boolean blockCodeChangeIfNeeded() {
+        return blockCode.equals("D") || blockCode.equals("E");
+    }
+
+    @JsonIgnore
+    @Transient
+    public String getBlockCodeAfterRepayment() {
+        if (blockCode.equals("D")) return "B";
+        if (blockCode.equals("E")) return "C";
+        return blockCode;
     }
 }

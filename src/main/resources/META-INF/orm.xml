@@ -120,6 +120,22 @@
          </query>
     </named-native-query>
 
+    <named-native-query name="PBOC.searchPbocOutList" result-set-mapping="pbocOutMapping">
+        <query>
+            select out.ID,out.ID_NO,out.NAME,out.CREATE_TIME,card.IMAGE_FRONT,card.IMAGE_BACK from PBOC_OUT out
+            inner join ID_CARD card on card.ID_NO = out.ID_NO :q
+        </query>
+    </named-native-query>
+
+    <sql-result-set-mapping name="pbocOutMapping">
+        <column-result name="ID"/>
+        <column-result name="ID_NO"/>
+        <column-result name="NAME"/>
+        <column-result name="CREATE_TIME"/>
+        <column-result name="IMAGE_FRONT"/>
+        <column-result name="IMAGE_BACK"/>
+    </sql-result-set-mapping>
+
     <sql-result-set-mapping name="loanTransMapping">
         <column-result name="BID"/>
         <column-result name="APPL_NO"/>

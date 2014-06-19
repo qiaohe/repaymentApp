@@ -5,6 +5,7 @@ import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.CreditCard;
+import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.*;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
@@ -113,6 +114,10 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
             plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
             loanRepository.save(plan.getLoan());
+            if (plan.getMember().blockCodeChangeIfNeeded()) {
+                plan.getMember().setBlockCode(plan.getMember().getBlockCodeAfterRepayment());
+                memberRepository.save(plan.getMember());
+            }
             updateAccountCrl(account, plan);
             createOffsetByRepayPlan(plan);
         }
@@ -243,6 +248,14 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         return null;
     }
 
+    private void updateBlockCode(Member member, Integer overDueDays) {
+        final String blockCode = member.getBlockCodeBy(overDueDays);
+        if (!blockCode.equals(member.getBlockCode())) {
+            member.setBlockCode(blockCode);
+            memberRepository.save(member);
+        }
+    }
+
     @Override
     @Scheduled(cron = "0 0 * * * ?")
     public void updateOverDue() {
@@ -254,7 +267,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.setOverDue_Interest(overDueDays * plan.getOverDueAmt() * Double.valueOf(overDueRating));
             plan.getLoan().setStatus(1);
             plan.getLoan().setMaxDelq(Math.max(plan.getLoan().getMaxDelq(), overDueDays));
-            plan.getLoan().setCurDelq(overDueDays);
+            plan.getLoan().setCurDelq(Math.max(plan.getLoan().getCurDelq(), overDueDays));
+            updateBlockCode(plan.getLoan().getMember(), plan.getLoan().getCurDelq());
         }
         repayPlanRepository.save(plans);
     }

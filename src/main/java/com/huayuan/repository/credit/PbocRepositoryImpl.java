@@ -1,9 +1,10 @@
 package com.huayuan.repository.credit;
 
 import com.huayuan.common.CommonDef;
-import com.huayuan.domain.credit.PbocOut;
+import com.huayuan.common.util.JpaSqlResultMapper;
 import com.huayuan.domain.credit.PbocSummary;
-import com.huayuan.domain.member.IdCard;
+import com.huayuan.web.dto.PbocOutDto;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,5 +31,14 @@ public class PbocRepositoryImpl implements PbocRepositoryCustom {
 
     public String getIdCardImage(Long id) {
         return em.createNativeQuery("select IMAGE_FRONT from ID_CARD a , Pboc pb where a.ID_NO = pb.certNo and pb.id=?").setParameter(1, id).getSingleResult().toString();
+    }
+
+    @Override
+    public List<PbocOutDto> searchPbocOutList(String query) {
+        String q = em.createNamedQuery("PBOC.searchPbocOutList")
+                .unwrap(org.hibernate.Query.class)
+                .getQueryString();
+        q = StringUtils.isNotEmpty(query) ? q.replace(":q","where "+query) : q.replace(":q","");
+        return JpaSqlResultMapper.list(em.createNativeQuery(q), PbocOutDto.class);
     }
 }

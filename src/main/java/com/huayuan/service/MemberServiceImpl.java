@@ -108,6 +108,7 @@ public class MemberServiceImpl implements MemberService {
         ic.setIssuer(idCard.getIssuer());
         ic.setValidFrom(idCard.getValidFrom());
         ic.setValidThru(idCard.getValidThru());
+        ic.setImageBack(idCard.getImageBack());
         idCardRepository.save(ic);
     }
 

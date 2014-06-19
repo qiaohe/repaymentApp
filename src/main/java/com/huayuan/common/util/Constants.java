@@ -1,5 +1,7 @@
 package com.huayuan.common.util;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Created by Johnson on 6/26/14.
  */
@@ -115,5 +117,13 @@ public class Constants {
             }
         }
         return bTrue;
+    }
+
+    public static String getBlockCode(final Integer overDays) {
+        if (overDays < 31) return "D";
+        if (overDays < 91) return "E";
+        if (overDays < 181) return "F";
+        if (overDays < Integer.MAX_VALUE) return "G";
+        return StringUtils.EMPTY;
     }
 }
