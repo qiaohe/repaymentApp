@@ -73,8 +73,8 @@ public class PbocController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<PbocSummary> search(@RequestParam("q") String query) {
-        return pbocRepository.search(query);
+    public List<PbocSummary> search(@RequestParam("curPage") Integer curPage,@RequestParam("q") String query) {
+        return pbocRepository.search(curPage,query);
     }
 
     @RequestMapping(value = "/{idCardNo}/phone/{type}", method = RequestMethod.GET)

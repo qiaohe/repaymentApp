@@ -117,3 +117,27 @@ input{
     line-height: 26px;
     float:left;
 }
+
+/************************ PBOC OUT Start *************************/
+#out-top {
+    width: 20%;
+    margin: auto;
+    text-align: center;
+    min-width: 160px;
+}
+#pboc-table {
+    width: 80%;
+    margin: auto;
+    min-width: 960px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 18px;
+    text-align: center;
+}
+#pboc-table td {
+    border: 1px solid #000000;
+}
+#out-operation {
+    margin:30px 0 0 10%;
+}
+/************************ PBOC OUT End *************************/

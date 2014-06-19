@@ -59,11 +59,11 @@
     </div>
 
     <div style="clear:both; padding-top:30px">
-        <div class="itembox" style="margin-left:0;">系统处理</div>
         <input type="checkbox" id="systemFlag">
+        <input type="button" id="forSystem" value="系统处理">
 
-        <div class="itembox">电话照会</div>
         <input type="checkbox" id="tvFlag">
+        <input type="button" id="forTv" value="电话照会">
 
         <div class="itembox">状态</div>
         <select id="status">
@@ -92,7 +92,7 @@
 
     <div id="table-wrap" style="width:100%;">
         <table id="data-table">
-            <tr>
+            <tr style="background: #ffff00;">
                 <td style="width: 4%;">序号</td>
                 <td>申请编号</td>
                 <td>姓名</td>
