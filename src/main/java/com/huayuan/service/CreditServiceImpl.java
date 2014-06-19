@@ -104,7 +104,6 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
             member.setStatus(MemberStatusEnum.REJECTED);
             if (approval.isBlockXNeeded()) {
                 member.setBlockCode("X");
-                member.setBlockTime(new Date());
             }
             member.setCreateTime(new Date());
         }
