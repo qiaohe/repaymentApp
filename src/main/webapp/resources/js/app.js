@@ -155,10 +155,13 @@ function whetherUsedCard(card_num) {
         success: function (text) {
             taken = text == "true";
         },
-        error: function () {
-            if (config.debug) {
-                alert (config.api_path + "members/" + member.id + "/creditCard/" + card_num + config.time);
-            }
+//        error: function () {
+//            if (config.debug) {
+//                alert (config.api_path + "members/" + member.id + "/creditCard/" + card_num + config.time);
+//            }
+//        }
+        error: function(xhr, status, err) {
+            alert(err + " " + status + " " + err);
         }
     });
     return taken;
@@ -417,6 +420,68 @@ function returnFootPrint(id, status) {
     });
 }
 
+function fileUpload(form, action_url) {
+    // Create the iframe...
+    var iframe = $("iframe");
+    iframe.attr({
+        "id": "upload_iframe",
+        "name": "upload_iframe"
+    }).css({
+        "width": "0",
+        "height": "0",
+        "border": "0"
+    });
+
+    // Add to document...
+    form.parent().append(iframe);
+    var iframeId = document.getElementById("upload_iframe"), content;
+
+    // Add event...
+    var eventHandler = function () {
+        // Message from server...
+//        if (iframeId.contentDocument) {
+        if (member.whichside == "front") content = $.parseJSON(iframeId.contentDocument.body.children[0].innerHTML);
+        else if (member.whichside == "back") content = iframeId.contentDocument.body.innerHTML;
+//        } else if (iframeId.contentWindow) {
+//            content = iframeId.contentWindow.document.body.innerHTML;
+//        } else if (iframeId.document) {
+//            content = iframeId.document.body.innerHTML;
+//        }
+
+        // Del the iframe...
+//        setTimeout(function(){
+//            $("#" + $(iframeId).attr("id")).remove();
+//        }, 250);
+
+        if (member.whichside == "front") {
+//            $("#front-num").html(content.idNo).css("color", "#222222");
+            $("#front-num").html("callback!").css("color", "#222222");
+            $("#front-form").remove();
+            alert(content.idNo);
+            $("#front-num").html("callback ends!").css("color", "red");
+        }
+        else if(member.whichside == "back") {
+            $("#back-num").html("有效期至" + content).css("color", "#222222");
+            $("#back-form").remove();
+            alert(content);
+        }
+    }
+
+    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+
+    // Set properties of form...
+    form.attr({
+        "target": "upload_iframe",
+        "action": action_url,
+        "method": "post",
+        "enctype": "multipart/form-data",
+        "encoding": "multipart/form-data"
+    });
+
+    // Submit the form...
+    form.submit();
+}
 // Actions
 $(document).on("pagebeforeshow", function() {
     if (member.gender == 1) {
@@ -429,67 +494,96 @@ $(document).on("pagecreate", "#limit", function () {
         getBincode();
     }
 
-    if (member.id_card) {
-        $("#front-num").html(member.id_card).css("color", "#222222");
-        $("#front-upload").attr("disabled", true);
-        $("#tip-front").attr("src", "resources/img/public/correct.png");
+    var android_version = getAndroidVersion();
+//    if (parseFloat(android_version) <= 2.3) {
+    if (1 <= 2.3) {
+        $("#front-upload").replaceWith("<form id='front-form' style='z-index:9; opacity: 0' method='post' action='api/members/" + member.id + "/idCardFront' data-ajax='false' enctype='multipart/form-data'>" +
+            "<input data-role='none' type='file' name='idCardFrontFile' accept='image/jpg, image/jpeg' id='front-upload' capture='camera'>" +
+        "</form>");
+
+        if (member.id_card) {
+            $("#front-num").html(member.id_card).css("color", "#222222");
+            $("#front-upload").attr("disabled", true);
+            $("#tip-front").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#front-upload").on("change", function() {
+                member.whichside = "front";
+                fileUpload($("#front-form"), "api/members/" + member.id + "/idCardFront");
+            });
+        }
+
+        $("#back-upload").replaceWith("<form id='back-form' style='z-index:9; opacity: 0' method='post' action='api/members/" + member.id + "/idCardBack' data-ajax='false' enctype='multipart/form-data'>" +
+            "<input data-role='none' type='file' name='idCardBackFile' accept='image/jpg, image/jpeg' id='back-upload' capture='camera'>" +
+        "</form>");
+
+        if (member.valid_thru) {
+            $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
+            $("#back-upload").attr("disabled", true);
+            $("#tip-back").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#back-upload").on("change", function() {
+                member.whichside = "back";
+                fileUpload($("#back-form"), "api/members/" + member.id + "/idCardBack");
+            });
+        }
     }
     else {
-        $("#front-upload").change(function (e) {
-            //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
-            $("#front-num").html("正在识别...").css("color", "#222222");
-
-//            if (parseFloat(getAndroidVersion()) <= 2.3) {
-//                var form_data = new FormDataCompatibility();
-//            }
-//            else {
+        if (member.id_card) {
+            $("#front-num").html(member.id_card).css("color", "#222222");
+            $("#front-upload").attr("disabled", true);
+            $("#tip-front").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#front-upload").change(function (e) {
+                //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                $("#front-num").html("正在识别...").css("color", "#222222");
                 var form_data = new FormData();
-//            }
-//            var form_data = new FormDataCompatibility();
-
-
-            form_data.append("idCardFrontFile", e.target.files[0]);
-            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
-                $("#front-num").html(json.idNo).css("color", "#222222");
-                $("label[for='front-upload']").css("border-color", "#c0c0c0");
-                $("#tip-front").attr("src", "resources/img/public/correct.png");
-                $("#front-upload").attr("disabled", true);
-                member.id_card = json.idNo;
-                member.gender = json.sex;
-                if (member.gender == "FEMALE") {
-                    $(".gender").html("娘子");
-                }
-            }).error(function () {
-                $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-                $("label[for='front-upload']").css("border-color", "#cc0000");
-                $("#tip-front").attr("src", "resources/img/public/wrong.png");
+                form_data.append("idCardFrontFile", e.target.files[0]);
+                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+                    $("#front-num").html(json.idNo).css("color", "#222222");
+                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
+                    $("#tip-front").attr("src", "resources/img/public/correct.png");
+                    $("#front-upload").attr("disabled", true);
+                    member.id_card = json.idNo;
+                    member.gender = json.sex;
+                    if (member.gender == "FEMALE") {
+                        $(".gender").html("娘子");
+                    }
+                }).error(function () {
+                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                    $("label[for='front-upload']").css("border-color", "#cc0000");
+                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
+                });
             });
-        });
+        }
+
+        if (member.valid_thru) {
+            $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
+            $("#back-upload").attr("disabled", true);
+            $("#tip-back").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#back-upload").change(function (e) {
+                $("#back-num").html("正在识别...").css("color", "#222222");
+                var form_data = new FormData();
+                form_data.append("idCardBackFile", e.target.files[0]);
+                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
+                    $("#back-num").html("有效期至" + text).css("color", "#222222");
+                    $("label[for='back-upload']").css("border-color", "#c0c0c0");
+                    $("#tip-back").attr("src", "resources/img/public/correct.png");
+                    $("#back-upload").attr("disabled", true);
+                    member.valid_thru = text;
+                }).error(function () {
+                    $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                    $("label[for='back-upload']").css("border-color", "#cc0000");
+                    $("#tip-back").attr("src", "resources/img/public/wrong.png");
+                });
+            });
+        }
     }
 
-    if (member.valid_thru) {
-        $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
-        $("#back-upload").attr("disabled", true);
-        $("#tip-back").attr("src", "resources/img/public/correct.png");
-    }
-    else {
-        $("#back-upload").change(function (e) {
-            $("#back-num").html("正在识别...").css("color", "#222222");
-            var form_data = new FormData();
-            form_data.append("idCardBackFile", e.target.files[0]);
-            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
-                $("#back-num").html("有效期至" + text).css("color", "#222222");
-                $("label[for='back-upload']").css("border-color", "#c0c0c0");
-                $("#tip-back").attr("src", "resources/img/public/correct.png");
-                $("#back-upload").attr("disabled", true);
-                member.valid_thru = text;
-            }).error(function () {
-                $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-                $("label[for='back-upload']").css("border-color", "#cc0000");
-                $("#tip-back").attr("src", "resources/img/public/wrong.png");
-            });
-        });
-    }
 
     $("#credit-card").on("keyup", function (e) {
         $("#card-tip").hide();
@@ -1550,15 +1644,7 @@ window.onunload = function () {
     var pattern = /#[\w-]+/;
     var hash = pattern.exec(window.location).toString();
 
-    if (member.status == "1" && (hash == "#limit" || hash == "#basic-info")) {
-        if (member.id || member.credit_card || member.valid_thru) {
-            print_status = "0";
-        }
-        else {
-            print_status = "-1";
-        }
-    }
-    else if (hash == "#result" && status == "3.1") {
+    if (hash == "#result" && status == "3.1") {
         print_status = "1";
     }
     else if (hash == "#congratulation" && (!app.credit_card)) {
@@ -1596,83 +1682,4 @@ window.onunload = function () {
         localStorage.clear();
     }
 };
-////////////////////////////////////////////////////////////////////
-window.FormDataCompatibility = (function() {
-
-    function FormDataCompatibility(form) {
-        this.fields = {};
-        this.boundary = this.generateBoundary();
-        this.contentType = "multipart/form-data; boundary=" + this.boundary;
-        this.CRLF = "\r\n";
-
-        if (typeof form !== 'undefined') {
-            for (var i = 0; i < form.elements.length; i++) {
-                var e = form.elements[i];
-// If not set, the element's name is auto-generated
-                var name = (e.name !== null && e.name !== '') ? e.name : this.getElementNameByIndex(i);
-                this.append(name, e);
-            }
-        }
-    }
-
-    FormDataCompatibility.prototype.getElementNameByIndex = function(index) {
-        return '___form_element__' + index; // Strange enough to avoid collision with user-defined names
-    }
-
-    FormDataCompatibility.prototype.append = function(key, value) {
-        return this.fields[key] = value;
-    };
-
-    FormDataCompatibility.prototype.setContentTypeHeader = function(xhr) {
-        return xhr.setRequestHeader("Content-Type", this.contentType);
-    };
-
-    FormDataCompatibility.prototype.getContentType = function() {
-        return this.contentType;
-    };
-
-    FormDataCompatibility.prototype.generateBoundary = function() {
-        return "AJAX--------------" + ((new Date).getTime());
-    };
-
-    FormDataCompatibility.prototype.buildBody = function() {
-        var body, key, parts, value, _ref;
-        parts = [];
-        _ref = this.fields;
-        for (key in _ref) {
-            value = _ref[key];
-            parts.push(this.buildPart(key, value));
-        }
-        body = "--" + this.boundary + this.CRLF;
-        body += parts.join("--" + this.boundary + this.CRLF);
-        body += "--" + this.boundary + "--" + this.CRLF;
-        return body;
-    };
-
-    FormDataCompatibility.prototype.buildPart = function(key, value) {
-        var part;
-        if (typeof value === "string") {
-            part = "Content-Disposition: form-data; name=\"" + key + "\"" + this.CRLF;
-            part += "Content-Type: text/plain; charset=utf-8" + this.CRLF + this.CRLF;
-            part += unescape(encodeURIComponent(value)) + this.CRLF;    // UTF-8 encoded like in real FormData
-        } else if (typeof value === typeof File) {
-            part = "Content-Disposition: form-data; name=\"" + key + "\"; filename=\"" + value.fileName + "\"" + this.CRLF;
-            part += "Content-Type: " + value.type + this.CRLF + this.CRLF;
-            part += value.getAsBinary() + this.CRLF;
-        } else if (typeof value === typeof HTMLInputElement) {
-            if (value.type == 'file') {
-                // Unsupported
-            } else {
-                part = "Content-Disposition: form-data; name=\"" + key + "\"" + this.CRLF;
-                part += "Content-Type: text/plain; charset=utf-8" + this.CRLF + this.CRLF;
-                part += unescape(encodeURIComponent(value.value)) + this.CRLF;  // UTF-8 encoded like in real FormData
-            }
-        }
-        return part;
-    };
-
-    return FormDataCompatibility;
-
-})();
-////////////////////////////////////////////////////////////////////
 console.log("END!");

@@ -15,7 +15,7 @@
         })
     </script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
-    <!--<script type="text/javascript" src="resources/js/navigator.js?v=0.1"></script>-->
+    <script type="text/javascript" src="resources/js/navigator.js?v=0.10"></script>
     <!--<script>localStorage.clear();</script>-->
 </head>
 <body>
@@ -23,19 +23,17 @@
 <div data-role="page" id="limit" data-title="信用评估">
     <div class="cover">
         <img src="resources/img/2-1/mobile.png" class="cover-img" style="margin-top: 20px; width: 140px; height: 70px">
-
-        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0 1px">先来啪啪啪吧~请参照上图横向、填满哦。</h1>
+        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0 1px;">先来啪啪啪吧~请参照上图横向、填满哦。</h1>
     </div>
 
     <div class="custom-li" style="margin-top:20px">
-        <label><img src="resources/img/2-1/id_front.png"
-                    style="float:left; margin: 3px auto auto 6%; width:40px; height:28px"></label>
+        <label><img src="resources/img/2-1/id_front.png" style="float:left; margin: 3px auto auto 6%; width:40px; height:28px;"></label>
 
         <div class="id-card-container" style="float:left; width:70%">
             <label for="front-upload" class="textinput"
                    style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                     class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
-            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" style="opacity: 0"
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" style="opacity: 0; z-index: 99"
                    capture="camera">
             <img src="resources/img/public/blank.png" id="tip-front"
                  style="position:absolute; left:5px; top:5px; width:22px; height:22px">
@@ -47,7 +45,7 @@
 
     <div class="custom-li" style="margin-top:-15px">
         <label><img src="resources/img/2-1/id_back.png"
-                    style="float:left; margin: 2px auto auto 6%; width:40px; height:28px"></label>
+                    style="float:left; margin: 2px auto auto 6%; width:40px; height:28px;"></label>
 
         <div class="id-card-container" style="float:left; width:70%">
             <label for="back-upload" class="textinput"
@@ -97,9 +95,9 @@
 
         <div style="margin: 30px 10% 40px 10%; text-align: center"><img src="resources/img/additional/pop-limit.png" style="width: 224px; height: 141px"></div>
 
-        <div style="height:63px; margin-top:8px; background-color: white;; border-radius: 0 0 5px 5px">
-            <div style="width:35%; margin-left:10%; float:left"><a href="#" class="ui-btn custom-btn" id="quit" style="height: 20px; line-height: 20px">退出</a></div>
-            <div style="width:35%; margin-right:10%; float:right"><a href="#full" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>
+        <div style="height:63px; margin-top:8px; background-color: white; border-radius: 0 0 5px 5px">
+            <div style="width:40%; margin-left:5%; float:left"><a href="#" class="ui-btn custom-btn" id="quit" style="height: 20px; line-height: 20px">退出</a></div>
+            <div style="width:40%; margin-right:5%; float:right"><a href="#" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>
         </div>
     </div>
 </div>
@@ -217,9 +215,8 @@
                    style="border:none; padding-left:5px; font-size:1.4em; width: 96%; height: 26px">
             <label for="amount"><img src="resources/img/public/keyboard.png"
                                      style="float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
-        </div>
-    </div><br>
-
+        </d
+    </div><br>``
     <div style="width:100%; height: 65px">
         <p style="margin-top:-25px"><span class="gender">官人</span>想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
 
@@ -287,8 +284,8 @@
 
         <div style="margin-left: 9%; font-size:1.2em">
             <div class="check-custom1" id="agree" style="position: relative; top: 5px"></div>
-            <label style="margin-top:5px; padding-top:6px">我同意<span
-                    style="color:blue">《么么贷借款协议》</span></label>
+            <label style="margin-top:5px; padding-top:6px">我同意<a href="protocol-1"><span
+                    style="color:blue">《么么贷借款协议》</span></a></label>
         </div>
 
         <div style="width:100%; clear:both">
@@ -443,8 +440,8 @@
 
         <div style="margin: 40px auto 0 8%; height: 35px">
             <div class="check-custom1" id="agree-cong" style="position: relative; top: 5px"></div>
-            <label style="margin-top:5px; padding-top:6px">我同意<span
-                    style="color:blue">《化缘个人借款协议》</span></label>
+            <label style="margin-top:5px; padding-top:6px">我同意<a href="#protocol-2"><span
+                    style="color:blue">《么么贷个人借款协议》</span></a></label>
         </div>
 
         <div style="width:80%; margin-left: 10%">
@@ -602,7 +599,7 @@
         <img src="resources/img/7-3/revive.png" style="width: 100%; height: 100%; margin-top: -5%">
     </div>
 
-    <div style="text-align:center; margin-top: 5%; font-size: 1.6em; color: #404040;height: 20px;width: 100%;">您的信用卡将在1个工作日内收到借款！</div>
+    <div style="text-align:center; margin-top: 5%; font-size: 1.6em; color: #404040;height: 20px;width: 100%">您的信用卡将在1个工作日内收到借款！</div>
 
     <div style="margin: 30% auto auto auto; width:80%">
         <a href="#" class="ui-btn custom-btn bluebtn" id="got-it-z">知道了</a>
@@ -639,7 +636,7 @@
     <div class="fb-answer">
         <textarea data-role="none" name="textarea" id="fd-textarea" maxlength="140" placeholder="请在此温柔吐槽……"></textarea>
     </div>
-    <div class="fb-btn"><a href="#" class="ui-btn custom-btn" style="background-color: #3ca0e6;">提交</a></div>
+    <div class="fb-btn"><a href="#" class="ui-btn custom-btn" style="background-color: #3ca0e6">提交</a></div>
 </div>
 
 <div data-role="page" id="thanks-feedback" data-title="我要吐槽">
@@ -661,7 +658,145 @@
     <input type="file" accept="image/jpg, image/jpeg" id="testinput">
 </div>
 
-<script type="text/javascript" src="resources/js/test.js?v=0.13"></script>
+<div data-role="page" id="#protocol-1">
+    么么贷个人借款协议
+    协议编号:
+    借款人：账户名：
+    出借人：账户名：
+    账户名：
+    居间服务人：上海米么金融信息服务有限责任公司
+    签订日期：    年     月     日
+    签订地：上海市浦东新区
+    鉴于：
+    1.居间服务人是一家在中国上海市合法成立并有效存续的有限责任公司，拥有微信服务号”么么贷”（以下简称“服务号”，本协议中凡提及该服务号，所指向的权利义务主体均系居间服务人）的经营权，向服务号注册用户提供信用咨询及金融信息服务。
+    2.借款人和出借人均已在服务号注册，本协议使用借款人和出借人事先已充分阅读并认可的服务号提供的借款协议样本。
+    3.借款人和出借人均已承诺其提供给居间服务人的信息真实、完整、有效。
+    4.借款人具有合法的借款需求，出借人自愿以其自有的合法资金向借款人提供借款。出借人以本协议为依据与借款人形成真实、合法、有效的债权。
+    借款人和出借人基于平等自愿原则，经居间服务人的居间介绍，就有关借款事项达成如下协议，以兹共守：
+    第一条	借款基本信息
+    借款开始日：出借人指定账户划付本协议项下借款之日
+    借款到期日：借款开始后的第[       ]个自然月的借款开始日当日，节假日不顺延(如当月不存在该借款开始日的，则应为当月的最后一日)
+    还款方式：□ 等额本息     □ 按月付息，按期还本
+    还款日：自第二个月起每个自然月的借款开始日当日，节假日不顺延(如当月不存在该借款开始日的，则应为当月的最后一日)
+    借款人（会员号）	借款金额	借款期限（月）	借款开始日	借款到期日	月截止还款日	年利率
+
+
+    出借人（会员号）	借款金额	借款期限（月）	借款开始日	借款到期日	月截止还款日	年利率
+
+
+    第二条 借款的支付
+    2.1出借人在同意向借款人出借相应款项时，已委托服务号在本协议生效时将本协议项下的借款直接划付至借款人账户。
+    2.2借款人已委托服务号将还款直接划付至出借人账户。
+    2.3借款人和出借人均同意上述服务号接受委托的行为所产生的法律后果均由相应委托方承担。
+    第三条 借款的偿还
+    3.1借款人承诺按照本协议第一条约定的时间和金额按期足额向出借人还款。
+    3.2借款人将主动根据本协议规定之还款日及还款数额按月还款至服务号指定账户并委托服务号划付至出借人账户。
+    3.3借款人的最后一期还款必须包含全部剩余本金、利息及所有根据本协议产生的其他费用等。
+    3.4如借款人还款不足以偿还约定的本金、利息及违约金的，在根据本协议第六条规定扣除账户管理费用后，出借人同意各自按照其借出款项比例收取还款及利息。
+    第四条 通知
+    4.1本协议任何一方因履行本协议做出的通知和/或文件均应以书面形式做出，通过专人送达、挂号邮递、特快专递、短信及邮件等方式传送。
+    4.2通知在下列日期视为送达：
+    （1）专人递送的通知，在专人递送之交付对方日为有效送达；
+    （2）以挂号信（付清邮资）发出的通知，在寄出（以邮戳为凭）后的五个工作日内为有效送达；
+    （3）以特快专递（付清邮资）发出的通知，在寄出（以邮戳为凭）后的三个工作日内为有效送达；
+    （4）以短信方式发出的通知，短信成功发出即为有效送达；
+    （5）以邮件方式发出的通知，邮件发送成功时即为有效送达。
+    4.3各方在本协议中填写的联系信息即为其有效的通讯方式。各方联系信息如下：
+    借款人通信地址：                                        （家庭）
+    邮箱地址：
+    移动电话：
+
+    出借人通信地址：                                        （家庭）
+    邮箱地址：
+    移动电话：
+    4.4协议各方有权在任何时候更改其联系信息，但应按本协议约定的送达方式在变更后三个工作日内向其他方送达通知。否则变更方应当承担由此造成的送达不能产生的法律风险及责任。
+    第五条 逾期还款
+    5.1借款人应严格履行还款义务，借款人未于借款协议规定的还款日前足额还款、但于还款日之次日起算的4天内足额还款的，无需支付逾期罚息。若借款人在还款日之次日起算的4天内未足额还款的，则应按照下列公式计算并向出借人支付逾期罚息。逾期罚息与借款利息不同时计算，即借款人还清全部本金、利息、罚息之前，逾期本金的正常利息停止计算。
+    罚息总额 = 逾期本息总额×对应罚息利率×逾期天数；
+    逾期天数	自还款日之次日起算
+    罚息利率	千分之一
+    5.2若借款人逾期支付任何一期还款超过90天或借款人在逾期后出现逃避、拒绝沟通或拒绝承认欠款事实等恶意行为，服务号有权将借款人的逾期记录计入服务号黑名单或相关合作方的信用记录以及国家和地方的公民征信系统；一切相关法律责任及后果概由借款人自负，与出借人及服务号无涉。
+    5.3若借款人逾期支付任何一期还款超过90天或借款人在逾期后出现逃避、拒绝沟通或拒绝承认欠款事实等恶意行为，经居间服务人确认，本协议项下的全部借款本息视同提前到期，借款人应立即清偿本协议项下尚未偿付的全部本金、利息、罚息及根据本协议产生的其他全部费用。
+    5.4若借款人逾期支付任何一期还款超过90天，或借款人在逾期后出现逃避、拒绝沟通或拒绝承认欠款事实等恶意行为，经居间服务人确认，出借人与居间服务人均可将借款人违约失信的相关信息及借款人其他信息向微博等媒体、用人单位、公安机关、检查机关、法律机关等披露，并有权将借款人提交或居间服务人自行收集的借款人的个人资料和信息与任何第三方进行数据共享，以便出借人、居间服务人和第三方催收逾期借款及对用户的其他申请进行审核之用，由此造成的损失，出借人与居间服务人不承担任何责任。
+    5.5为集中维护各出借人权利，如借款人出现逾期还款90天，或借款人在逾期后出现逃避、拒绝沟通或拒绝承认欠款事实等恶意行为的，全体出借人一致同意将本协议项下债权无偿转让给居间服务人，由居间服务人统一向借款人追索。但因借款人失踪或还款能力丧失等原因导致债权的追索不能实现或部分不能实现的，本协议项下债权经居间服务人书面通知出借人后重新转让还给出借人。出借人收到居间服务人书面通知后有权自行向借款人进行债权的追索，居间服务人应当配合提供出借人为实现债权所需文件。出借人应当承担因债权无法追索产生的一切法律责任及结果。若因在债务追索过程中居间服务人本人的重大过失导致出借人的利益无法实现的，居间服务人将对上述损失承担赔偿责任。
+    5.6当借款人出现本协议5.5陈述的恶意行为时，如居间服务人认定借款人系疑似欺诈，且居间服务人同意先行支付本金给出借人的，出借人同意将债权不可撤销地转让给居间服务人。
+    5.7出借人一致同意，经追索实现的债权款项应当全额支付至居间服务人指定的账户，并在扣除为实现债权支付的相关费用，包括但不限于诉讼保全费用，律师费用及诉讼费用后，由居间服务人负责向借款人进行支付。如经追索实现的债权不足以偿还本协议项下约定的本金、利息及违约金的，在扣除为实现债权支付的相关费用，包括但不限于诉讼保全费用，律师费用及诉讼费用及本协议第四条规定扣除账户管理费用后，出借人同意各自按照其借出款项比例收取本金、利息及罚息。
+    5.8借款人的个人信息或工作情况发生重大变动，可能影响借款人按时还款的，借款人应于发生前述变更后的五个工作日内书面通知出借人与居间服务人该种逾期可能。
+    第六条 违约责任
+    6.1本协议各方均应严格履行协议义务，任何一方违约，违约方应承担因违约使其他各方产生的费用和损失，包括但不限于调查费、诉讼费、律师费等。
+    6.2各方同意，若出现如下任何一种情况，本协议项下的全部借款本息自动提前到期，借款人应立即清偿本协议项下尚未偿付的全部本金、利息、罚息及根据本协议产生的其他全部费用：
+    （1）借款人因任何原因逾期30天支付任何一期还款的；
+    （2）借款人个人信息或工作情况发生重大变动后的五个工作日内未书面通知出借人与居间服务人的；
+    （3）借款人在逾期偿还借款后出现逃避、拒绝沟通或拒绝承认欠款事实等恶意行为的；
+    （4）借款人违反本协议第十条规定的。
+    6.3若借款人逾期90天支付任何一期还款的，借款人应当按照借款余额的20%支付违约金。
+    6.4借款人的每期还款均应按照如下顺序清偿：
+    （1）根据本协议产生的除本款（2）-（6）项之外的其他全部费用；
+    （2）罚息；
+    （3）拖欠的利息；
+    （4）拖欠的本金；
+    （5）正常的利息；
+    （6）正常的本金。
+    第七条 承诺条款
+    7.1借款人承诺借款用途为：[    信用卡还款    ] 。未经居间服务人与全部出借人的一致同意，借款人不得以任何理由和任何形式将获得的借款用于前述借款用途之外的任何其他用途。借款人擅自改变借款用途将承担违约责任。借款人不得将所借款项用于任何违法活动（包括但不限于赌博、吸毒、贩毒、卖淫嫖娼等）及生产经营和消费以外的范畴（包括但不限于股票、基金、期货等金融产品的投资、房地产及房地产信托投资、二次借贷、彩票等）。否则，一经发现，出借人有权提前收回全部借款，并立即向公安等司法机关举报，追究借款人的刑事责任。
+    7.2借款人承诺向出借人提交的一切文本、图文、个人信息等资料等均为真实、有效。
+    7.3出借人承诺对本协议所涉的借款具有完全的支配能力，且为出借人的合法收入。
+    7.4借款人和出借人承诺任何发自于借款人和出借人注册时提供的邮箱、手机的电子邮件与短信均为借款人和出借人的真实意思表示。
+    第八条 适用法律及争议解决
+    8.1本协议的履行地为居间服务人实际营业地上海市浦东新区。
+    8.2本协议的签订、履行、终止、解释均适用中华人民共和国法律，并由协议履行地浦东新区人民法院管辖。
+    第九条 其他
+    9.1本协议采用电子文本形式制成，并在居间服务人服务号上保留存档，各方均认可该形式协议的法律效力。
+    9.2借款人及出借人同意居间服务人根据具体情况对本借款协议进行更新。
+    9.3如果本协议中的任何一条或多条违反适用的法律法规，则该条将被视为无效，但该无效条款并不影响本协议其他条款的效力。
+    9.4出借人通过该借款协议所获得的收益应自行申报并缴纳税款。
+    9.5居间服务人接受借款人和出借人的委托所产生的法律后果由相应委托方承担。如因借款人或出借人或其他第三方（包括但不限于技术问题）造成的延误或错误，居间服务人不承担任何责任。
+    9.6本协议自文本最终生成之日起生效。
+
+    本协议最后更新版本：2014年5月
+
+
+</div>
+
+<div data-role="page" id="protocol-2">
+    个人借款申请协议
+    申请人么么贷用户名
+    本人在“么么贷”（微信公众服务号）的用户名为：__________________。本人确认并承诺，该用户名项下的一切操作及行为（包括但不限于操作该用户名项下么么贷账户、通过么么贷以网络在线点击确认方式达成《个人借款申请协议》等）均为本人亲自所为，因此产生的一切后果务均由本人承担。
+
+    借款流程
+    本人了解并确认本人通过下列流程达成的借款合同对本人有约束力：
+    第一步：以微信用户名注册成为么么贷用户；
+    第二步：签署并提交本申请协议；
+    第三步：在对各项条款（包括但不限于还款、逾期、借款人义务、违约责任等）完全阅读、理解并接受的前提下，使用本人么么贷用户名，以网络在线点击确认的方式接受《个人借款申请协议》中的所有约定；
+    第四步：出借人在发布期内通过么么贷以网络在线点击确认的方式对本人上述要约进行确认（承诺）后，《个人借款协议》即时成立，并通过么么贷放款；
+    第五步：本人么么贷名项下指定信用卡收到出借人的放款。
+
+    居间服务公司的权利
+    本人确认并不可撤销地授权居间服务公司：
+    1、通过向任何征信机构、银行、财务机构等查阅、收集本人信息并索取有关信用报告等方式，对本人提交的申请协议及其他资料中的所有内容进行调查、核实，并可向前述机构、银行或其他资料来源方透露、交换本申请协议及其他所需资料中的所有内容；
+    2、将本人提交的申请协议及其他资料的内容、信息用于与本次个人借款申请及将来的与居间服务公司有关的所有业务中；
+    3、独立作出是否为本人借款提供放款的决定，而无须出示任何理由，亦无须退还本人提供的所有资料；
+    4、将本人与居间服务公司的与借款有关的电话沟通进行录音以及与借款有关的微信往来进行记录，并作为有证明力的证据留存或向相关机构提供；
+    5、将本人提供的信息提供给米么金融使用。除法律另有规定外，对该信息及本人享受米么金融服务产生的信息，可用于米么金融为本人提供的服务及推荐的产品。
+
+    承诺及保证
+    本人承诺及保证如下：
+    1、本人提供的一切资料和信息均真实、正确及完整；
+    2、本人通过微信和电话确认的借款明细系本人的真实意思表示，一经确认不可撤销或变更；
+    3、通过本人微信和电话确认并经么么贷所发布的“借款明细”及本人以网络在线点击确认的方式接受的《个人借款协议》对本人有约束力；
+    4、借款资金不用于本申请协议中列明的不得用于的用途。根据国家法规、政策有相关规定，本人应及时并如实提供借款用途证明；
+    借款资金不得用于以下用途：
+    A.以任何形式进入证券市场或用于股本权益性投资
+    B.用于房地产项目开发
+    C.用于国家明令禁止或限制的经营活动。
+    5、本申请协议于本人确认勾选后生效；本申请协议项下的所有内容一经发出不可撤销；
+    6、本申请协议是一份独立、有效的文件，不受本人是否成功借款的影响；
+    7、本人违反本申请协议规定及“申请人承诺、声明及授权”的，本人将承担因此引起的一切后果，并赔偿受影响方的一切损失；
+    8、本人确认：如申请借款成功，则本申请协议属于《个人借款协议》的补充组成部分。
+
+</div>
+
+<script type="text/javascript" src="resources/js/app.js?v=0.28"></script>
 <script type="text/javascript" src="resources/js/shareto_button.js?v=0.1"></script>
 </body>
 </html>
