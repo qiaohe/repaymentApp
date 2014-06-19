@@ -422,8 +422,15 @@ function returnFootPrint(id, status) {
 
 function fileUpload(form, action_url) {
     // Create the iframe...
-    var iframe = $("iframe");
-    iframe.attr({
+    alert("file upload starts!");
+
+    var iframe = document.createElement("IFRAME");
+    iframe.onerror = function() {
+        alert("iframe error!");
+    };
+
+    $(iframe).attr({
+        "src": "http://192.168.0.185:8080/repayment/index.html#limit?t=" + config.time,
         "id": "upload_iframe",
         "name": "upload_iframe"
     }).css({
@@ -432,43 +439,42 @@ function fileUpload(form, action_url) {
         "border": "0"
     });
 
+    alert("iframe created!");
     // Add to document...
-    form.parent().append(iframe);
-    var iframeId = document.getElementById("upload_iframe"), content;
+    form.after($(iframe));
+    var content;
 
     // Add event...
     var eventHandler = function () {
         // Message from server...
-//        if (iframeId.contentDocument) {
-        if (member.whichside == "front") content = $.parseJSON(iframeId.contentDocument.body.children[0].innerHTML);
-        else if (member.whichside == "back") content = iframeId.contentDocument.body.innerHTML;
-//        } else if (iframeId.contentWindow) {
-//            content = iframeId.contentWindow.document.body.innerHTML;
-//        } else if (iframeId.document) {
-//            content = iframeId.document.body.innerHTML;
-//        }
-
-        // Del the iframe...
-//        setTimeout(function(){
-//            $("#" + $(iframeId).attr("id")).remove();
-//        }, 250);
+        alert("eventHandler in!");
+        alert("member.whichside = " + member.whichside);
+        alert(iframe.contentDocument.body.innerHTML);
+        if (member.whichside == "front") content = $.parseJSON(iframe.contentDocument.body.children[0].innerHTML);
+        else if (member.whichside == "back") content = iframe.contentDocument.body.innerHTML;
 
         if (member.whichside == "front") {
-//            $("#front-num").html(content.idNo).css("color", "#222222");
-            $("#front-num").html("callback!").css("color", "#222222");
+            $("#front-num").html(content.idNo).css("color", "#222222");
             $("#front-form").remove();
             alert(content.idNo);
-            $("#front-num").html("callback ends!").css("color", "red");
         }
         else if(member.whichside == "back") {
             $("#back-num").html("有效期至" + content).css("color", "#222222");
             $("#back-form").remove();
             alert(content);
         }
+
+        // Del the iframe...
+        $("iframe").remove();
     }
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    alert("binding eventlistener!");
+//    $(iframe).off("load").load(eventHandler).error(function() {
+    $(iframe).off("load").load(eventHandler).each(function(){
+        if(this.complete) {
+            $(this).trigger('load');
+        }
+    });
 
     // Set properties of form...
     form.attr({
@@ -480,7 +486,9 @@ function fileUpload(form, action_url) {
     });
 
     // Submit the form...
+    alert(typeof $(iframe).load);
     form.submit();
+    alert("form submitted!");
 }
 // Actions
 $(document).on("pagebeforeshow", function() {
