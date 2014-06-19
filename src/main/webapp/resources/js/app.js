@@ -492,7 +492,6 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     if (!dict.bincode) {
         getBincode();
-        //
     }
 
     var android_version = getAndroidVersion();
