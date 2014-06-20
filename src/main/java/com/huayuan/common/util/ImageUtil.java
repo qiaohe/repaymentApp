@@ -6,9 +6,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,26 +18,6 @@ import java.util.Iterator;
 public final class ImageUtil {
 
     public static void cropImage(String srcPath,String destPath,int x,int y,int width,int height) {
-        try {
-            BufferedImage original = ImageIO.read(new File(srcPath));
-            ImageFilter cropFilter = new CropImageFilter(x,y,width,height);
-
-            Image image = original.getScaledInstance(original.getWidth(),original.getHeight(),Image.SCALE_DEFAULT);
-            Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(image.getSource(), cropFilter));
-
-            BufferedImage tag = new BufferedImage(x, y,BufferedImage.TYPE_INT_RGB); // error ?
-            Graphics g = tag.getGraphics();
-            // 绘制缩小后的图
-            g.drawImage(img, 0, 0, null);
-            g.dispose();
-            // 输出为文件
-            ImageIO.write(tag, "JPEG", new File(destPath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void cropImage2(String srcPath,String destPath,int x,int y,int width,int height) {
         FileInputStream inputStream = null;
         ImageInputStream imageInputStream = null;
         try {

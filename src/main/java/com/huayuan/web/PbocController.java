@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -136,15 +138,19 @@ public class PbocController {
 
     @RequestMapping(value = "/export/{idNo}", method = RequestMethod.GET)
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public void exportIdCardAsPdf(@PathVariable String idNo) {
+    public String exportIdCardAsPdf(@PathVariable String idNo,HttpServletRequest request,HttpServletResponse response) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        for (IdCard idCard : idCards) {
-            final String front = path + idCard.getImageFront();
-            final String back = path + idCard.getImageBack();
-            exportToPdf(path + idCard.getIdNo() + ".pdf", new String[]{front, back});
+        if(idCards == null || idCards.isEmpty()) {
+            return "0";
         }
+        IdCard idCard = idCards.get(0);
+        String pdfName = "";
+        final String front = path + idCard.getImageFront();
+        final String back = path + idCard.getImageBack();
+        pdfName = idCard.getIdNo() + ".pdf";
+        exportToPdf(path + pdfName, new String[]{front, back});
+        return "1";
     }
 
     @RequestMapping(value = "/crop/{idNo}", method = RequestMethod.POST)
@@ -152,28 +158,31 @@ public class PbocController {
     public String cropIdCardImage(@PathVariable String idNo,@RequestBody ImageCropDto imageCropDto) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        for (IdCard idCard : idCards) {
-            String imagePath = "";
-            if("1".equals(imageCropDto.getType())) {
-                imagePath = path + idCard.getImageFront();
-            } else if("2".equals(imageCropDto.getType())) {
-                imagePath = path + idCard.getImageBack();
-            }
-            cropImageWrap(imagePath,imageCropDto);
+        if(idCards == null || idCards.isEmpty()) {
+            return "0";
         }
+        IdCard idCard = idCards.get(0);
+        String imageName = "";
+        if("1".equals(imageCropDto.getType())) { // Front IdCard Image
+            imageName = idCard.getImageFront();
+        } else if("2".equals(imageCropDto.getType())) { // Back IdCard Image
+            imageName = idCard.getImageBack();
+        }
+        cropImageWrap(path,imageName,imageCropDto);
         return "1";
     }
 
-    private void cropImageWrap(String imagePath, ImageCropDto imageCropDto) {
+    private void cropImageWrap(String imagePath,String imageName,ImageCropDto imageCropDto) {
         try {
-            BufferedImage original = ImageIO.read(new File(imagePath));
+            String srcPath = imagePath+imageName;
+            BufferedImage original = ImageIO.read(new File(srcPath));
             double scaleX = ((double)original.getWidth())/imageCropDto.getFixedWidth();
             double scaleY = ((double)original.getHeight())/imageCropDto.getFixedHeight();
             int x = (int) (imageCropDto.getX() * scaleX);
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
-            ImageUtil.cropImage2(imagePath, imagePath, x,y,width,height);
+            ImageUtil.cropImage(srcPath, srcPath, x, y, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
