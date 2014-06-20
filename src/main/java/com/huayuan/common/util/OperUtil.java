@@ -6,16 +6,15 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by Richard Xue on 14-6-18.
  */
-public final class ImageUtil {
+public final class OperUtil {
 
     public static void cropImage(String srcPath,String destPath,int x,int y,int width,int height) {
         FileInputStream inputStream = null;
@@ -38,6 +37,41 @@ public final class ImageUtil {
             BufferedImage bi = reader.read(0,param);
             //保存新图片
             ImageIO.write(bi, "jpg", new File(destPath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void packageToZip(File[] srcFiles,String destPath,String zipName) {
+        File tempFile = new File(destPath);
+        if(!tempFile.exists() || !tempFile.isDirectory()) {
+            tempFile.mkdirs();
+        }
+        FileOutputStream dest = null;
+        ZipOutputStream out = null;
+        BufferedInputStream origin = null;
+        try {
+            destPath = destPath +"/"+ zipName;
+            dest = new FileOutputStream(destPath);
+            out = new ZipOutputStream(new BufferedOutputStream(dest));
+
+            for(File file : srcFiles) {
+                FileInputStream fi = new FileInputStream(file);
+                origin = new BufferedInputStream(fi);
+                ZipEntry entry = new ZipEntry(file.getName());
+                out.putNextEntry(entry);
+
+                int count = 0;
+                byte data[] = new byte[2048];
+                while ((count = origin.read(data, 0, 2048)) != -1) {
+                    out.write(data, 0, count);
+                    out.flush();
+                }
+                origin.close();
+            }
+            out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

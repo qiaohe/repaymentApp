@@ -1,7 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.common.App;
-import com.huayuan.common.util.ImageUtil;
+import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
@@ -14,6 +14,7 @@ import com.huayuan.web.dto.PbocOutDto;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by dell on 14-4-28.
@@ -138,7 +140,7 @@ public class PbocController {
 
     @RequestMapping(value = "/export/{idNo}", method = RequestMethod.GET)
     @ResponseBody
-    public String exportIdCardAsPdf(@PathVariable String idNo,HttpServletRequest request,HttpServletResponse response) {
+    public String exportIdCardToPdf(@PathVariable String idNo,HttpServletRequest request,HttpServletResponse response) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
         if(idCards == null || idCards.isEmpty()) {
@@ -151,6 +153,43 @@ public class PbocController {
         pdfName = idCard.getIdNo() + ".pdf";
         exportToPdf(path + pdfName, new String[]{front, back});
         return "1";
+    }
+
+    @RequestMapping(value = "/export/list/{idNos}", method = RequestMethod.GET)
+    @ResponseBody
+    public String exportIdCardToZip(@PathVariable String idNos,HttpServletRequest request,HttpServletResponse response) {
+        String query = "";
+        if(StringUtils.isNotEmpty(idNos)) {
+            query = idNos.substring(0,idNos.length()-1);
+        } else {
+            return "";
+        }
+        query = "'"+query.replaceAll(",","','")+"'";
+
+        List<IdCard> idCards = idCardRepository.findByIdNos(query);
+        if(idCards == null || idCards.isEmpty()) {
+            return "";
+        }
+        final String path = App.getInstance().getIdCardImageBase() + "/";
+        for(IdCard idCard : idCards) {
+            String pdfName = "";
+            final String front = path + idCard.getImageFront();
+            final String back = path + idCard.getImageBack();
+            pdfName = idCard.getIdNo() + ".pdf";
+            exportToPdf(path + pdfName, new String[]{front, back});
+        }
+        return packagePdfToZip(path, idNos);
+    }
+
+    private String packagePdfToZip(String path,String idNos) {
+        String[] pdfNames = idNos.split(",");
+        File[] files = new File[pdfNames.length];
+        for(int i = 0; i < pdfNames.length; i++) {
+            files[i] = new File(path+pdfNames[i]+".pdf");
+        }
+        String name = UUID.randomUUID().toString() +".zip";
+        OperUtil.packageToZip(files,path+"temp",name);
+        return name;
     }
 
     @RequestMapping(value = "/crop/{idNo}", method = RequestMethod.POST)
@@ -182,7 +221,7 @@ public class PbocController {
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
-            ImageUtil.cropImage(srcPath, srcPath, x, y, width, height);
+            OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }

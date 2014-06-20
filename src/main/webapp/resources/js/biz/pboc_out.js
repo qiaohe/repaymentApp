@@ -28,7 +28,7 @@ $(function(){
                 var contentHtml = "";
                 $.each(data,function(i,entity){
                     contentHtml += "<tr>\n"+
-                        "<td><input type=\"checkbox\" class=\"check-item\" style=\"margin-left: 40%;\"></td>\n"+
+                        "<td><input type=\"checkbox\" class=\"check-item\" style=\"margin-left: 40%;\" idNo=\""+entity.idNo+"\"></td>\n"+
                         "<td>"+(i+1)+"</td>\n"+
                         // "<td>"+entity.id+"</td>\n"+
                         "<td>"+entity.name+"</td>\n"+
@@ -62,6 +62,32 @@ $(function(){
                 }
             });
             $("#checkAll").prop("checked",checkAll);
+        });
+        $("#download").on("click",function(){
+            var idNos = "";
+            $("input.check-item:checked").each(function(){
+                idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
+            });
+            if(!idNos) {
+                alert("请选择要打包下载的行！");
+                return;
+            }
+            $.ajax({
+                url: "api/pboc/export/list/"+idNos,
+                dataType: "JSON",
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    if(data) {
+                        window.open("api/resources/idcard/temp/"+data);
+                    } else {
+                        alert("请稍后重试！");
+                    }
+                },
+                error: function(data) {
+                    alert("请求异常！");
+                }
+            });
         });
         $("#pboc-table").on("click",".idCardPdf",function(){
             var idNo = $(this).attr("idNo");
