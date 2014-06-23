@@ -79,7 +79,7 @@ $(function(){
                 contentType: "application/json",
                 success: function (data) {
                     if(data) {
-                        window.open("api/resources/idcard/temp/"+data);
+                        window.open("api/resources/idcard/temp/"+data,"_blank");
                     } else {
                         alert("请稍后重试！");
                     }

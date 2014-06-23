@@ -16,6 +16,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -190,6 +191,12 @@ public class PbocController {
         String name = UUID.randomUUID().toString() +".zip";
         OperUtil.packageToZip(files,path+"temp",name);
         return name;
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public static void removePdfZipTemp() {
+        String path = App.getInstance().getIdCardImageBase() + "/temp";
+        OperUtil.deleteDirectory(path);
     }
 
     @RequestMapping(value = "/crop/{idNo}", method = RequestMethod.POST)
