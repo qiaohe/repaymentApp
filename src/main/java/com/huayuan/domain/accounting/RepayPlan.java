@@ -35,8 +35,10 @@ public class RepayPlan {
     private Double dueAmt;
     @Column(name = "DUE_PRINCIPAL")
     private Double duePrincipal;
+
     @Column(name = "DUE_INTEREST")
     private Double dueInterest;
+
     @Column(name = "REST_PRINCIPAL")
     private Double restPrincipal;
     @Column(name = "PAID_INTEREST")
