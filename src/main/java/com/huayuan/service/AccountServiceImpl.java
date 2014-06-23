@@ -3,8 +3,13 @@ package com.huayuan.service;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.*;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.LongRange;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,24 +85,38 @@ public class AccountServiceImpl implements AccountService {
         return loanRepository.findByMember_Id(memberId);
     }
 
+    public void offset(Long memberId) {
+        Account account = accountRepository.findByMemberId(memberId);
+        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
+        for (RepayPlan plan : plans) {
+            if (plan.getDueAmt() + plan.getOverDue_Interest() > account.getDebit_amt()) return;
+            plan.setPaidPrincipal(plan.getDueAmt());
+            plan.setPaidInterest(plan.getDueInterest());
+            plan.setPaidOverDueInterest(plan.getOverDue_Interest());
+            plan.getLoan().setCurDelq(0);
+            plan.getLoan().setStatus(0);
+            plan.getLoan().setPaidInterest(plan.getPaidInterest() + plan.getLoan().getPaidInterest());
+            plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
+            account.setDebit_amt(account.getDebit_amt() - plan.getPaidInterest() - plan.getPaidPrincipal() - plan.getOverDue_Interest());
+            RepayOffset repayOffset = new RepayOffset();
+            repayOffset.setAmt(plan.getPaidInterest() + plan.getPaidPrincipal() + plan.getOverDue_Interest());
+            repayOffset.setLoan(plan.getLoan());
+            repayOffset.setTermNo(plan.getTermNo());
+            loanRepository.save(plan.getLoan());
+        }
+    }
+
     @Override
-    public void rePay(Long memberId, Double amount) {
+    public void repay(Long memberId, Double amount) {
         Repay repay = new Repay();
         repay.setAmt(amount);
         repay.setSource(1);
+//        repay.isSuccess(2);
         repay.setRepayDate(new Date());
-        repay.setRefNo("");
         repay.setMemberId(memberId);
-        rePayRepository.save(repay);
         Account account = accountRepository.findByMemberId(memberId);
         account.setDebit_amt(account.getDebit_amt() + amount);
-        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
-        for (RepayPlan plan : plans) {
-            if (plan.getDueAmt() + plan.getOverDueAmt() > account.getDebit_amt()) return;
-            plan.setPaidPrincipal(plan.getDuePrincipal());
-            plan.setPaidInterest(plan.getDueInterest());
-            account.setDebit_amt(account.getDebit_amt() - plan.getPaidInterest() - plan.getPaidPrincipal() - plan.getOverDue_Interest());
-        }
+        rePayRepository.save(repay);
     }
 
     @Override
@@ -106,18 +125,13 @@ public class AccountServiceImpl implements AccountService {
         loan.getPay().setConfirmDate(new Date());
         loan.getPay().setTransferTime(new Date());
         loan.getPay().setConfirm(1);
-        loan.getPay().setCode("T1000001");
+        loan.getPay().setPayAmt(loan.getAmt());
         loan.setStartDate(loan.getPay().getConfirmDate());
         loan.setAmt(loan.getPay().getPayAmt());
         loan.setPrincipal(loan.getPay().getPayAmt());
-        List<RepayPlan> plans = loan.createRepayPlan();
-        Double sumInterest = 0d;
-        for (RepayPlan plan : plans) {
-            sumInterest += plan.getDueInterest();
-        }
-        loan.setInterest(sumInterest);
+        loan.createRepayPlans();
+        loan.setStatus(0);
         loanRepository.save(loan);
-        repayPlanRepository.save(plans);
         return true;
     }
 
@@ -140,9 +154,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 * * * ?")
+    public Double getAmtWithinThisPeriod(Long memberId) {
+        List<RepayPlan> plans = repayPlanRepository.findByMemberId(memberId);
+        Double result = 0d;
+        for (RepayPlan plan : plans) {
+            result += plan.getDueAmt() + plan.getOverDue_Interest();
+        }
+        return result;
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateOverDue() {
-        List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays(Integer.valueOf(graceDay)));
+        List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays((-1) * Integer.valueOf(graceDay)));
         for (RepayPlan plan : plans) {
             plan.setOverDueAmt(plan.getDuePrincipal());
             int overDueDays = Day.TODAY.escapeDays(plan.getDueDate());
@@ -153,5 +177,11 @@ public class AccountServiceImpl implements AccountService {
             plan.getLoan().setCurDelq(overDueDays);
         }
         repayPlanRepository.save(plans);
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("src/main/resources/applicationContext.xml");
+        AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
+        accountService.updateOverDue();
     }
 }
