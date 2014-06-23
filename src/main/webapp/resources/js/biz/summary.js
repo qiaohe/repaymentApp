@@ -105,8 +105,14 @@ $(function(){
             window.open("detail1.html?memberNo="+memberNo,"_blank");
         });
         $("#summary-table").on("click",".summary-count",function(){
-            var memberNo = $.trim($(this).prev(".summary-mem").text());
-            window.open("detail2.html?memberNo="+memberNo,"_blank");
+            var count = $.trim($(this).text());
+            if(!count || count == "0") {
+                return;
+            }
+            var memberNo = $.trim($(this).prevAll(".summary-mem").text());
+            if(memberNo) {
+                window.open("detail2.html?memberNo="+memberNo,"_blank");
+            }
         });
     };
     summary.init();

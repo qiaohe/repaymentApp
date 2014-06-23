@@ -105,8 +105,8 @@ $(function(){
         }
         $("#register").text($.formatDate(member.createTime));
         $("#last-rating").text(creditResult.lastRating);
-        $("#limitAmt").text(member.preCrl);
-        $("#forecastAmt").text(account.crl);
+        $("#limitAmt").text(account.crl);
+        $("#forecastAmt").text(member.preCrl);
         $("#avlAmt").text(account.crlAvl);
         $("#cashAmt").text(account.debit_amt);
         // 申请记录
