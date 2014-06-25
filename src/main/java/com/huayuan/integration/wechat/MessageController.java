@@ -12,7 +12,6 @@ import com.huayuan.service.AccountService;
 import com.huayuan.service.CreditService;
 import com.huayuan.service.MemberService;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +111,17 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return null;
     }
 
+    private boolean checkSignaturePass(String signature, String timestamp, String nonce) {
+        String[] arr = new String[]{appToken, timestamp, nonce};
+        Arrays.sort(arr);
+        StringBuilder content = new StringBuilder();
+        for (String s : arr) {
+            content.append(s);
+        }
+        final String checkedSignature = DigestUtils.shaHex(content.toString());
+        return StringUtils.isNotEmpty(checkedSignature) && checkedSignature.equals(signature.toUpperCase());
+    }
+
     @RequestMapping(value = "/members/{memberId}/status/{status}", method = RequestMethod.GET)
     @ResponseBody
     public void sendHintMessage(@PathVariable Long memberId, @PathVariable Integer status) throws IOException {
@@ -136,28 +146,26 @@ public class MessageController implements ApplicationListener<MemberStatusChange
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
+        Member member = memberService.findMemberBy(eventMessage.getFromUserName());
+        if (member == null) {
+           member = addMember(getUser(eventMessage.getFromUserName()));
+        }
         String content;
         if (eventMessage.isSubscribeEvent()) {
-            Member member = memberService.findMemberBy(eventMessage.getFromUserName());
-            if (member == null) {
-                addMember(getUser(eventMessage.getFromUserName()));
-            }
-            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member.getId()) + "&&random=" + RandomStringUtils.randomNumeric(15));
+            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member.getId()));
         } else if (eventMessage.isTvMessage()) {
-            creditService.replyTv(memberService.findMemberBy(eventMessage.getFromUserName()).getId(),toSBC(eventMessage.getContent()));
+            creditService.replyTv(member.getId(),toSBC(eventMessage.getContent()));
             content = tvReplyTemplate;
         } else {
-            content = getContent(eventMessage);
+            content = getContent(member.getId(), eventMessage).replace("<a href", "\n<a href");
         }
         final String rm = getReplyMessage(eventMessage, content);
         response.getWriter().println(rm);
     }
 
-    private String getContent(EventMessage message) {
-        final Long memberId = memberService.findMemberBy(message.getFromUserName()).getId();
+    private String getContent(Long memberId, EventMessage message) {
         String status = memberStatusEvaluator.evaluate(memberId);
         MessageTemplate tp = getTemplates(message.getEventKey(), status);
-        status += "&&random=" + RandomStringUtils.randomNumeric(15);
         if (tp.isCreditLimit()) {
             return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId));
         }
@@ -193,14 +201,14 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return null;
     }
 
-    private void addMember(User user) {
+    private Member addMember(User user) {
         Member member = new Member(user.getOpenid());
         member.setSex(user.getSex() == 1 ? SexEnum.MALE : SexEnum.FEMALE);
         member.setWcProvince(user.getProvince());
         member.setWcCity(user.getCity());
         member.setWcSignature(user.getNickname());
         member.setWcUserName(user.getNickname());
-        memberService.update(member);
+        return  memberService.update(member);
     }
 
     public String getAccessToken() {
@@ -216,18 +224,6 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             LOGGER.error(e.getMessage());
         }
         return null;
-    }
-
-
-    private boolean checkSignaturePass(String signature, String timestamp, String nonce) {
-        String[] arr = new String[]{appToken, timestamp, nonce};
-        Arrays.sort(arr);
-        StringBuilder content = new StringBuilder();
-        for (String s : arr) {
-            content.append(s);
-        }
-        final String checkedSignature = DigestUtils.shaHex(content.toString());
-        return StringUtils.isNotEmpty(checkedSignature) && checkedSignature.equals(signature.toUpperCase());
     }
 
     @Override
