@@ -1,7 +1,7 @@
-﻿﻿<!doctype html>
-<html manifest="cache.manifest">
+﻿<!doctype html>
+<html>
 <head>
-    <meta chareset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
@@ -55,8 +55,7 @@
                    capture="camera">
             <img src="resources/img/public/blank.png" id="tip-back"
                  style="position:absolute; left:5px; top:5px; width:22px; height:22px">
-            <label for="back-upload"><img src="resources/img/public/camera.png"
-                                          style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px;  width:22px; height:16px"></label>
+            <label for="back-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px;  width:22px; height:16px"></label>
         </div>
     </div>
     <br>
@@ -100,6 +99,10 @@
             <div style="width:40%; margin-right:5%; float:right"><a href="#" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>
         </div>
     </div>
+
+    <form id="front-form" method="post" data-ajax="false" encoding="multipart/form-data" enctype="multipart/form-data">
+        <input data-role="none" type="file" name="idCardFrontFile" accept="image/jpg, image/jpeg" id="front-upload-2" capture="camera">
+    </form>
 </div>
 <!-- limit -->
 
@@ -652,10 +655,6 @@
         <li>化缘如何帮我省钱?</li>
         <li>化缘总共分几步?</li>
     </ul>
-</div>
-
-<div data-role="page" id="testpage">
-    <input type="file" accept="image/jpg, image/jpeg" id="testinput">
 </div>
 
 <div data-role="page" id="#protocol-1">
