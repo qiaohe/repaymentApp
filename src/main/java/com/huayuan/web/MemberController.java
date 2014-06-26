@@ -151,7 +151,7 @@ public class MemberController {
     @RequestMapping(value = "/{memberId}/status", method = RequestMethod.GET)
     @ResponseBody
     public String getStatus(@PathVariable Long memberId) {
-        return memberStatusEvaluator.evaluate(memberId);
+        return memberStatusEvaluator.evaluate(memberRepository.findOne(memberId));
     }
 
     @RequestMapping(value = "/{memberId}/profile", method = RequestMethod.GET)

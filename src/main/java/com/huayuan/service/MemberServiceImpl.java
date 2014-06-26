@@ -8,6 +8,7 @@ import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
+import com.huayuan.integration.wechat.domain.WeChatUser;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
@@ -90,10 +91,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member createMemberFromWeChat(Member member) {
-        Member mb = memberRepository.findByWcNo(member.getWcNo());
-        if (mb == null) return update(member);
-        return mb;
+    public Member findMemberByWeChatUser(WeChatUser weChatUser) {
+        Member member = memberRepository.findByWcNo(weChatUser.getOpenid());
+        if (member != null) return member;
+        member = new Member(weChatUser.getOpenid());
+        member.setSex(weChatUser.getSex() == 1 ? SexEnum.MALE : SexEnum.FEMALE);
+        member.setWcProvince(weChatUser.getProvince());
+        member.setWcCity(weChatUser.getCity());
+        member.setWcSignature(weChatUser.getNickname());
+        member.setWcUserName(weChatUser.getNickname());
+        return update(member);
     }
 
     @Override
