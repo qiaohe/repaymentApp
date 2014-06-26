@@ -119,6 +119,11 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return StringUtils.isNotEmpty(checkedSignature) && checkedSignature.equals(signature.toUpperCase());
     }
 
+    public String getAccessToken() {
+        String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
+        return StringUtils.mid(token, 17, token.length() - 37);
+    }
+
     @RequestMapping(value = "/members/{memberId}/status/{status}", method = RequestMethod.GET)
     @ResponseBody
     public void sendHintMessage(@PathVariable Long memberId, @PathVariable Integer status) throws IOException {
@@ -184,11 +189,6 @@ public class MessageController implements ApplicationListener<MemberStatusChange
             LOGGER.error(e.getLocalizedMessage());
         }
         return null;
-    }
-
-    public String getAccessToken() {
-        String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
-        return StringUtils.mid(token, 17, token.length() - 37);
     }
 
     public WeChatUser getUser(final String openId) {
