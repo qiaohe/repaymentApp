@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
-import com.huayuan.domain.member.SexEnum;
 import com.huayuan.integration.wechat.domain.*;
 import com.huayuan.repository.integration.HintMessageRepository;
 import com.huayuan.repository.integration.MenuRepository;
@@ -39,18 +38,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.huayuan.common.util.Constants.*;
+
 /**
  * Created by Johnson on 4/14/14.
  */
 @Controller(value = "messageController")
 public class MessageController implements ApplicationListener<MemberStatusChangeEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
-    private static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
-    private static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";
-    private static final String SEND_MESSAGE_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={accessToken}";
-    final String CUSTOM_MESSAGE_TEMPLATE = "'{'\"touser\":\"{0}\",\"msgtype\":\"text\",\"text\":'{'\"content\":\"{1}\"'}}'";
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Inject
     private MemberService memberService;
     @Inject
@@ -130,57 +127,45 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         onApplicationEvent(event);
     }
 
-    private  String toSBC(String source) {
-        char c[] = source.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (c[i] == '\u3000') {
-                c[i] = ' ';
-            } else if (c[i] > '\uFF00' && c[i] < '\uFF5F') {
-                c[i] = (char) (c[i] - 65248);
-            }
-        }
-        return new String(c);
-    }
-
-    @RequestMapping(value = "/huayuan158", method = RequestMethod.POST)
+    @RequestMapping(value = "/huayuan158", method = RequestMethod.POST, produces = {"text/html;charset=UTF-8"})
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
         EventMessage eventMessage = (EventMessage) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
-        Member member = memberService.findMemberBy(eventMessage.getFromUserName());
-        if (member == null) {
-           member = addMember(getUser(eventMessage.getFromUserName()));
-        }
+        Member member = memberService.findMemberByWeChatUser(getUser(eventMessage.getFromUserName()));
         String content;
         if (eventMessage.isSubscribeEvent()) {
-            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member.getId()));
+            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), memberStatusEvaluator.evaluate(member));
         } else if (eventMessage.isTvMessage()) {
-            creditService.replyTv(member.getId(),toSBC(eventMessage.getContent()));
+            creditService.replyTv(member.getId(), toSBC(eventMessage.getContent()));
             content = tvReplyTemplate;
         } else {
-            content = getContent(member.getId(), eventMessage).replace("<a href", "\n<a href");
+            content = getContent(member, eventMessage).replace("<a href", "\n<a href");
         }
         final String rm = getReplyMessage(eventMessage, content);
         response.getWriter().println(rm);
     }
 
-    private String getContent(Long memberId, EventMessage message) {
-        String status = memberStatusEvaluator.evaluate(memberId);
+    private String getContent(Member member, EventMessage message) {
+        String status = memberStatusEvaluator.evaluate(member);
         MessageTemplate tp = getTemplates(message.getEventKey(), status);
         if (tp.isCreditLimit()) {
-            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getCrl(memberId));
+            return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
+                    memberService.getCrl(member.getId()));
         }
         if (tp.isUsedCrl()) {
-            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId));
+            return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
+                    memberService.getAvlCrl(member.getId()));
         }
         if (tp.isRepay()) {
-            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status, memberService.getAvlCrl(memberId), accountService.getAmtWithinThisPeriod(memberId));
+            return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
+                    memberService.getAvlCrl(member.getId()),
+                    accountService.getAmtWithinThisPeriod(member.getId()));
         }
         if (tp.isApplicationNoNeeded()) {
-            return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status,
-                    memberStatusEvaluator.getApprovingApplication(memberId).getApplicationNo());
+            return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status,
+                    memberStatusEvaluator.getApprovingApplication(member.getId()).getApplicationNo());
         }
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
-        return MessageFormat.format(tp.getTemplate(), baseUrl, memberId, status);
+        return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status);
     }
 
     private String getReplyMessage(EventMessage eventMessage, String content) {
@@ -201,25 +186,15 @@ public class MessageController implements ApplicationListener<MemberStatusChange
         return null;
     }
 
-    private Member addMember(User user) {
-        Member member = new Member(user.getOpenid());
-        member.setSex(user.getSex() == 1 ? SexEnum.MALE : SexEnum.FEMALE);
-        member.setWcProvince(user.getProvince());
-        member.setWcCity(user.getCity());
-        member.setWcSignature(user.getNickname());
-        member.setWcUserName(user.getNickname());
-        return  memberService.update(member);
-    }
-
     public String getAccessToken() {
         String token = restTemplate.getForObject(ACCESS_TOKEN_URL_PATTERN, String.class, appId, appSecret);
         return StringUtils.mid(token, 17, token.length() - 37);
     }
 
-    public User getUser(final String openId) {
+    public WeChatUser getUser(final String openId) {
         String userResponseJson = restTemplate.getForObject(GET_USER_URL_PATTERN, String.class, getAccessToken(), openId);
         try {
-            return MAPPER.readValue(userResponseJson, User.class);
+            return MAPPER.readValue(userResponseJson, WeChatUser.class);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
