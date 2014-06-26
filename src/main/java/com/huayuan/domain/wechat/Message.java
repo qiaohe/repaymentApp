@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.*;
 @XmlType(name = "eventMessage")
 @XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EventMessage {
+public class Message {
     private static final String SUBSCRIBE_EVENT = "subscribe";
     @XmlElement(name = "ToUserName")
     private String toUserName;
@@ -29,7 +29,7 @@ public class EventMessage {
     @XmlElement(name = "FuncFlag")
     private String funcFlag;
 
-    public EventMessage() {
+    public Message() {
 
     }
 
@@ -97,7 +97,7 @@ public class EventMessage {
         this.content = content;
     }
 
-    public boolean isSubscribeEvent() {
+    public boolean isSubscribe() {
         return StringUtils.isNotEmpty(event) && event.equalsIgnoreCase(SUBSCRIBE_EVENT);
     }
 
@@ -105,7 +105,7 @@ public class EventMessage {
         return StringUtils.isNotEmpty(event) && (event.equals("VIEW") || event.equals("CLICK"));
     }
 
-    public boolean isTvMessage() {
+    public boolean isTelephoneVerification() {
         return StringUtils.isNotEmpty(content) && (content.contains("#") || content.contains("＃"));
     }
 }
