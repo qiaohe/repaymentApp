@@ -44,8 +44,8 @@ import static com.huayuan.common.util.Constants.*;
  * Created by Johnson on 4/14/14.
  */
 @Controller(value = "messageController")
-public class MessageController implements ApplicationListener<MemberStatusChangeEvent> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
+public class WeChatMessageController implements ApplicationListener<MemberStatusChangeEvent> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeChatMessageController.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Inject
