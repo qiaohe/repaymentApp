@@ -3,7 +3,7 @@ package com.huayuan.service;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.member.*;
-import com.huayuan.integration.wechat.domain.WeChatUser;
+import com.huayuan.domain.wechat.WeChatUser;
 import com.huayuan.web.dto.MemberDto;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import com.huayuan.domain.dictionary.Dictionary;
 import com.huayuan.domain.dictionary.ValueBin;
 import com.huayuan.domain.loanapplication.CreditResult;
 import com.huayuan.domain.member.*;
-import com.huayuan.integration.wechat.domain.WeChatUser;
+import com.huayuan.domain.wechat.WeChatUser;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;

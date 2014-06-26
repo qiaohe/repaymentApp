@@ -1,6 +1,6 @@
 package com.huayuan.repository.integration;
 
-import com.huayuan.integration.wechat.domain.HintMessage;
+import com.huayuan.domain.wechat.HintMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

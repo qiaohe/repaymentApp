@@ -1,10 +1,10 @@
-package com.huayuan.integration.wechat;
+package com.huayuan.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
-import com.huayuan.integration.wechat.domain.*;
+import com.huayuan.domain.wechat.*;
 import com.huayuan.repository.integration.HintMessageRepository;
 import com.huayuan.repository.integration.MenuRepository;
 import com.huayuan.service.AccountService;
