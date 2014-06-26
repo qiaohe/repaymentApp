@@ -28,12 +28,12 @@ $(function(){
                 var contentHtml = "";
                 $.each(data,function(i,entity){
                     contentHtml += "<tr>\n"+
-                        "<td><input type=\"checkbox\" class=\"check-item\" style=\"margin-left: 40%;\"></td>\n"+
+                        "<td><input type=\"checkbox\" class=\"check-item\" style=\"margin-left: 40%;\" idNo=\""+entity.idNo+"\"></td>\n"+
                         "<td>"+(i+1)+"</td>\n"+
                         // "<td>"+entity.id+"</td>\n"+
                         "<td>"+entity.name+"</td>\n"+
                         "<td>"+entity.idNo+"</td>\n"+
-                        "<td><input type=\"button\" class=\"idCardPdf\" value=\"下载\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;'></td>\n"+
+                        "<td><input type=\"button\" class=\"idCardPdf\" value=\"打开\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' idNo=\""+entity.idNo+"\"></td>\n"+
                         "<td>\n"+
                         "    <input type=\"button\" class=\"idCardFront\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageFront+"\" idNo=\""+entity.idNo+"\">\n"+
                         "</td>\n"+
@@ -63,23 +63,56 @@ $(function(){
             });
             $("#checkAll").prop("checked",checkAll);
         });
-        $("#pboc-table").on("click",".idCardPdf",function(){
+        $("#download").on("click",function(){
+            var idNos = "";
+            $("input.check-item:checked").each(function(){
+                idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
+            });
+            if(!idNos) {
+                alert("请选择要打包下载的行！");
+                return;
+            }
             $.ajax({
-                url: "api/pboc/out",
-                dataType: "json",
+                url: "api/pboc/export/list/"+idNos,
+                dataType: "JSON",
                 type: "GET",
                 contentType: "application/json",
-                success: function (json) {
-                    alert("---->");
+                success: function (data) {
+                    if(data) {
+                        window.open("api/resources/idcard/temp/"+data,"_blank");
+                    } else {
+                        alert("请稍后重试！");
+                    }
                 },
                 error: function(data) {
+                    alert("请求异常！");
+                }
+            });
+        });
+        $("#pboc-table").on("click",".idCardPdf",function(){
+            var idNo = $(this).attr("idNo");
+            $.ajax({
+                url: "api/pboc/export/"+idNo,
+                dataType: "JSON",
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    if(data && data == "1") {
+                        var url = "resources/plugin/pdf/web/viewer.html?pdfUrl=api/resources/idcard/"+idNo+".pdf";
+                        window.open(url,"_blank");
+                    } else {
+                        alert("请重新生成PDF文件！");
+                    }
+                },
+                error: function(data) {
+                    alert("请求异常！");
                 }
             });
         });
         $("#pboc-table").on("click",".idCardFront",function(){
             var param = {
                 imgName : $(this).attr("imgName"),
-                idCard : $(this).attr("idNo"),
+                idNo : $(this).attr("idNo"),
                 frontOrBack : "1"
             };
             window.showModalDialog("idcard.html",param,"dialogWidth=1000px;dialogHeight=800px");
@@ -88,7 +121,7 @@ $(function(){
         $("#pboc-table").on("click",".idCardBack",function(){
             var param = {
                 imgName : $(this).attr("imgName"),
-                idCard : $(this).attr("idNo"),
+                idNo : $(this).attr("idNo"),
                 frontOrBack : "2"
             };
             window.showModalDialog("idcard.html",param,"dialogWidth=1000px;dialogHeight=800px");

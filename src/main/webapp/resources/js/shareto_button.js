@@ -517,7 +517,7 @@ function share_to(m,config) {
 	} else if (m == "qzone") {// 未开放分享
 		window.open(
 				"http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="
-						+ options.url, 'qzone',
+						+ options.url+'&pics='+options.img+'&title='+options.title+'&desc='+options.desc, 'qzone',
 				'toolbar=0,status=0,width='+options.width+',height='+options.height+',left='
 						+ options.left + ',top='
 						+ options.top);

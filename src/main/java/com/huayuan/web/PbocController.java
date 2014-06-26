@@ -1,7 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.common.App;
-import com.huayuan.common.util.ImageUtil;
+import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
@@ -14,17 +14,22 @@ import com.huayuan.web.dto.PbocOutDto;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by dell on 14-4-28.
@@ -136,15 +141,62 @@ public class PbocController {
 
     @RequestMapping(value = "/export/{idNo}", method = RequestMethod.GET)
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public void exportIdCardAsPdf(@PathVariable String idNo) {
+    public String exportIdCardToPdf(@PathVariable String idNo,HttpServletRequest request,HttpServletResponse response) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        for (IdCard idCard : idCards) {
+        if(idCards == null || idCards.isEmpty()) {
+            return "0";
+        }
+        IdCard idCard = idCards.get(0);
+        String pdfName = "";
+        final String front = path + idCard.getImageFront();
+        final String back = path + idCard.getImageBack();
+        pdfName = idCard.getIdNo() + ".pdf";
+        exportToPdf(path + pdfName, new String[]{front, back});
+        return "1";
+    }
+
+    @RequestMapping(value = "/export/list/{idNos}", method = RequestMethod.GET)
+    @ResponseBody
+    public String exportIdCardToZip(@PathVariable String idNos,HttpServletRequest request,HttpServletResponse response) {
+        String query = "";
+        if(StringUtils.isNotEmpty(idNos)) {
+            query = idNos.substring(0,idNos.length()-1);
+        } else {
+            return "";
+        }
+        query = "'"+query.replaceAll(",","','")+"'";
+
+        List<IdCard> idCards = idCardRepository.findByIdNos(query);
+        if(idCards == null || idCards.isEmpty()) {
+            return "";
+        }
+        final String path = App.getInstance().getIdCardImageBase() + "/";
+        for(IdCard idCard : idCards) {
+            String pdfName = "";
             final String front = path + idCard.getImageFront();
             final String back = path + idCard.getImageBack();
-            exportToPdf(path + idCard.getIdNo() + ".pdf", new String[]{front, back});
+            pdfName = idCard.getIdNo() + ".pdf";
+            exportToPdf(path + pdfName, new String[]{front, back});
         }
+        return packagePdfToZip(path, idNos);
+    }
+
+    private String packagePdfToZip(String path,String idNos) {
+        String[] pdfNames = idNos.split(",");
+        File[] files = new File[pdfNames.length];
+        for(int i = 0; i < pdfNames.length; i++) {
+            files[i] = new File(path+pdfNames[i]+".pdf");
+        }
+        String name = UUID.randomUUID().toString() +".zip";
+        OperUtil.packageToZip(files,path+"temp",name);
+        return name;
+    }
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public static void removePdfZipTemp() {
+        String path = App.getInstance().getIdCardImageBase() + "/temp";
+        OperUtil.deleteDirectory(path);
     }
 
     @RequestMapping(value = "/crop/{idNo}", method = RequestMethod.POST)
@@ -152,28 +204,31 @@ public class PbocController {
     public String cropIdCardImage(@PathVariable String idNo,@RequestBody ImageCropDto imageCropDto) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        for (IdCard idCard : idCards) {
-            String imagePath = "";
-            if("1".equals(imageCropDto.getType())) {
-                imagePath = path + idCard.getImageFront();
-            } else if("2".equals(imageCropDto.getType())) {
-                imagePath = path + idCard.getImageBack();
-            }
-            cropImageWrap(imagePath,imageCropDto);
+        if(idCards == null || idCards.isEmpty()) {
+            return "0";
         }
+        IdCard idCard = idCards.get(0);
+        String imageName = "";
+        if("1".equals(imageCropDto.getType())) { // Front IdCard Image
+            imageName = idCard.getImageFront();
+        } else if("2".equals(imageCropDto.getType())) { // Back IdCard Image
+            imageName = idCard.getImageBack();
+        }
+        cropImageWrap(path,imageName,imageCropDto);
         return "1";
     }
 
-    private void cropImageWrap(String imagePath, ImageCropDto imageCropDto) {
+    private void cropImageWrap(String imagePath,String imageName,ImageCropDto imageCropDto) {
         try {
-            BufferedImage original = ImageIO.read(new File(imagePath));
+            String srcPath = imagePath+imageName;
+            BufferedImage original = ImageIO.read(new File(srcPath));
             double scaleX = ((double)original.getWidth())/imageCropDto.getFixedWidth();
             double scaleY = ((double)original.getHeight())/imageCropDto.getFixedHeight();
             int x = (int) (imageCropDto.getX() * scaleX);
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
-            ImageUtil.cropImage2(imagePath, imagePath, x,y,width,height);
+            OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }

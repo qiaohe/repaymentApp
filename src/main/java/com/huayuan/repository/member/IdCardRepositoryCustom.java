@@ -13,6 +13,8 @@ public interface IdCardRepositoryCustom {
 
     public List<IdCard> findFromPbocOut();
 
+    public List<IdCard> findByIdNos(String query);
+
     public List<MemberLoanSummaryDto> findMembersWithLoanSummary();
 
     public List<MemberLoanSummaryDto> findMembersWithLoanSummary(String query);

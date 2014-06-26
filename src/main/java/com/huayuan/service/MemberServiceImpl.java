@@ -134,6 +134,15 @@ public class MemberServiceImpl implements MemberService {
         if (member.getIdCard() != null) {
             return member.getIdCard();
         }
+        if(StringUtils.isNotEmpty(idCard.getIdNo())) {
+            List<IdCard> idCardList = idCardRepository.findByIdNo(idCard.getIdNo());
+            if(idCardList != null && !idCardList.isEmpty()) {
+                if(idCard.getId() != null) {
+                    idCardRepository.delete(idCard.getId());
+                }
+                return null;
+            }
+        }
         idCard.setMember(member);
         IdCard card = idCardRepository.save(idCard);
         idCardRepository.execute(card);

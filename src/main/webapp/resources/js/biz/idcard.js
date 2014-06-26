@@ -6,7 +6,9 @@ $(function(){
     idcard.init = function() {
         if(typeof window.dialogArguments != "undefined") {
             var data = window.dialogArguments;
-            $("#target").attr("src","api/resources/idcard/"+data.imgName);
+            idcard.idNo = data.idNo;
+            idcard.type = data.frontOrBack;
+            $("#target").attr("src","api/resources/idcard/"+data.imgName+"?r="+new Date().getTime());
         }
         idcard.initCrop();
         idcard.initEvent();
@@ -24,18 +26,22 @@ $(function(){
                 y : $('#y1').val(),
                 width : $('#w').val(),
                 height : $('#h').val(),
-                type : "1"
+                type : idcard.type
             };
-            var idNo = "362326197805010018";
             $.ajax({
-                url: "api/pboc/crop/"+idNo,
+                url: "api/pboc/crop/"+idcard.idNo,
                 dataType: "json",
                 data : JSON.stringify(data),
                 type: "POST",
                 contentType: "application/json",
                 success: function (json) {
-                    alert("裁剪成功！");
-                    window.close();
+                    if(json && json == "1") {
+                        alert("裁剪成功！");
+                        window.close();
+                    } else {
+                        alert("裁剪失败！");
+                        window.close();
+                    }
                 },
                 error: function(data) {
                     alert("请求异常！");

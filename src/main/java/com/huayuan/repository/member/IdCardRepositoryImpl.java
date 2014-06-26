@@ -33,6 +33,12 @@ public class IdCardRepositoryImpl implements IdCardRepositoryCustom {
 
     @Override
     @SuppressWarnings("unchecked")
+    public List<IdCard> findByIdNos(String query) {
+        return em.createNativeQuery("select * from ID_CARD where ID_NO in ("+query+")",IdCard.class).getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public List<MemberLoanSummaryDto> findMembersWithLoanSummary() {
         Query q = em.createNamedQuery("Member.findMembersWithLoanSummary");
         return JpaSqlResultMapper.list(q, MemberLoanSummaryDto.class);
