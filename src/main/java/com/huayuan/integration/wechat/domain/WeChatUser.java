@@ -1,7 +1,7 @@
 package com.huayuan.integration.wechat.domain;
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class WeChatUser implements Serializable {
     private static final long serialVersionUID = 8195479836500869759L;
     private Integer subscribe;
     private String openid;
@@ -16,7 +16,7 @@ public class User implements Serializable {
     private Integer errcode;
     private String errmsg;
 
-    public User() {
+    public WeChatUser() {
     }
 
     public String getErrmsg() {
