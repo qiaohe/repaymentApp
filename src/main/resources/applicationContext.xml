@@ -45,7 +45,7 @@
     <oxm:jaxb2-marshaller id="jaxbMarshaller">
         <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinition"/>
         <oxm:class-to-be-bound name="com.huayuan.domain.crawler.BillDefinitions"/>
-        <oxm:class-to-be-bound name="com.huayuan.domain.wechat.EventMessage"/>
+        <oxm:class-to-be-bound name="com.huayuan.domain.wechat.Message"/>
     </oxm:jaxb2-marshaller>
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters">
