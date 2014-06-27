@@ -18,8 +18,6 @@ import com.huayuan.repository.member.*;
 import com.huayuan.web.dto.MemberDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -244,14 +242,5 @@ public class MemberServiceImpl implements MemberService {
         return new MemberProfile.Builder().account(accountRepository.findByMemberId(memberId))
                 .applications(applicationRepository.findApplicationsProfile(memberId))
                 .member(member).build();
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-        MemberService service = applicationContext.getBean("memberService", MemberService.class);
-        Member member = service.findMemberBy("ofR7Kt8gvfx-hYNd9t9JIsAt2EDU");
-        System.out.println(member.toString());
-
-
     }
 }
