@@ -45,6 +45,8 @@ public class WeChatMessageController {
     private String welcomeTemplate;
     @Value("${weChat.tvReplyTemplate}")
     private String tvReplyTemplate;
+    @Value("${weChat.feedback}")
+    private String feedbackTemplate;
 
 
     @RequestMapping(value = "/huayuan158", method = RequestMethod.GET)
@@ -69,6 +71,11 @@ public class WeChatMessageController {
         String content;
         if (message.isSubscribe()) {
             content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), status);
+        } else if (message.isFeedback()) {
+            content = MessageFormat.format(feedbackTemplate, baseUrl, member.getId());
+        } else if (message.isAbout()) {
+            response.getWriter().println(weChatService.createReplyNews(message));
+            return;
         } else if (message.isTelephoneVerification()) {
             creditService.replyTv(member.getId(), toSBC(message.getContent()));
             content = tvReplyTemplate;
@@ -102,5 +109,4 @@ public class WeChatMessageController {
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
         return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status);
     }
-
 }
