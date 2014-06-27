@@ -314,9 +314,9 @@ function share_to(m,config) {
 		 void ((function(s, d, e) {
 		 if (/renren\.com/.test(d.location))
 		 return;
-		 var f = 'http://share.renren.com/share/buttonshare.do?link=', u =
+		 var f = 'http://widget.renren.com/dialog/share?resourceUrl=', u =
 		 options.url, l = options.title, p = [
-		 e(u), '&title=', e(l) ].join('');
+		 u,'&title=', l,'&description=',options.desc,'&pic=',options.img ].join('');
 		 function a() {
 		 if (!window
 		 .open(
