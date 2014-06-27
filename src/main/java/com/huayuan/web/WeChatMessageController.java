@@ -2,13 +2,16 @@ package com.huayuan.web;
 
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEvaluator;
+import com.huayuan.domain.wechat.Feedback;
 import com.huayuan.domain.wechat.Message;
 import com.huayuan.domain.wechat.MessageTemplate;
+import com.huayuan.repository.FeedbackRepository;
 import com.huayuan.service.AccountService;
 import com.huayuan.service.CreditService;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.WeChatService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +40,8 @@ public class WeChatMessageController {
     private CreditService creditService;
     @Inject
     private WeChatService weChatService;
+    @Inject
+    private FeedbackRepository feedbackRepository;
     @Inject
     private MemberStatusEvaluator memberStatusEvaluator;
     @Value("${weChat.baseUrl}")
@@ -108,5 +113,15 @@ public class WeChatMessageController {
         }
         if (tp.isUrlNotNeeded()) return tp.getTemplate();
         return MessageFormat.format(tp.getTemplate(), baseUrl, member.getId(), status);
+    }
+
+    @RequestMapping(value = "/members/{memberId}/feedback", method = RequestMethod.POST)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public void addCreditCard(@PathVariable Long memberId, @RequestParam("f") String feedback) {
+        Feedback fb = new Feedback();
+        fb.setMemberId(memberId);
+        fb.setFeedback(feedback);
+        feedbackRepository.save(fb);
     }
 }
