@@ -77,7 +77,7 @@ var config = {
         member.whetherApplying = function() {
             var $this = this;
             $.ajax({
-                url: config.api_path + "app/members/" + this.id + config.time,
+                url: config.api_path + "app/members/" + this.id + config.time_stamp,
                 type: "GET",
                 dataType: "text",
                 async: false,
@@ -85,7 +85,7 @@ var config = {
                     $this.isapplying = ("true" === text);
                 },
                 error: function () {
-                    config.alert_url(config.api_path + "app/members/{memberId}" + config.time);
+                    config.alert_url(config.api_path + "app/members/{memberId}" + config.time_stamp);
                 }
             });
         };
@@ -166,7 +166,11 @@ var config = {
     member.getId();
     member.getStatus();
     member.getDestPage();
+    member.whetherApplying();
     member.setDestPage();
+    if (Number(member.status) > 2) {
+        member.getBasicInfo();
+    }
     $.mobile.navigate(member.dest_page);
 })();
 
