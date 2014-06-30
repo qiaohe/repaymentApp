@@ -1,12 +1,14 @@
 package com.huayuan.web;
 
 import com.huayuan.common.App;
+import com.huayuan.common.CommonDef;
 import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.repository.credit.PbocRepository;
+import com.huayuan.repository.integration.MatlabIdCardPreProcessor;
 import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.ImageCropDto;
@@ -141,7 +143,7 @@ public class PbocController {
 
     @RequestMapping(value = "/export/{idNo}", method = RequestMethod.GET)
     @ResponseBody
-    public String exportIdCardToPdf(@PathVariable String idNo,HttpServletRequest request,HttpServletResponse response) {
+    public String exportIdCardToPdf(@PathVariable String idNo) {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
         if(idCards == null || idCards.isEmpty()) {
@@ -149,8 +151,8 @@ public class PbocController {
         }
         IdCard idCard = idCards.get(0);
         String pdfName = "";
-        final String front = path + idCard.getImageFront();
-        final String back = path + idCard.getImageBack();
+        final String front = path + CommonDef.IDCARD_PROCESS_DIR + idCard.getImageFront();
+        final String back = path + CommonDef.IDCARD_PROCESS_DIR + idCard.getImageBack();
         pdfName = idCard.getIdNo() + ".pdf";
         exportToPdf(path + pdfName, new String[]{front, back});
         return "1";
@@ -158,7 +160,7 @@ public class PbocController {
 
     @RequestMapping(value = "/export/list/{idNos}", method = RequestMethod.GET)
     @ResponseBody
-    public String exportIdCardToZip(@PathVariable String idNos,HttpServletRequest request,HttpServletResponse response) {
+    public String exportIdCardToZip(@PathVariable String idNos) {
         String query = "";
         if(StringUtils.isNotEmpty(idNos)) {
             query = idNos.substring(0,idNos.length()-1);
@@ -174,8 +176,8 @@ public class PbocController {
         final String path = App.getInstance().getIdCardImageBase() + "/";
         for(IdCard idCard : idCards) {
             String pdfName = "";
-            final String front = path + idCard.getImageFront();
-            final String back = path + idCard.getImageBack();
+            final String front = path +CommonDef.IDCARD_PROCESS_DIR+ idCard.getImageFront();
+            final String back = path +CommonDef.IDCARD_PROCESS_DIR+ idCard.getImageBack();
             pdfName = idCard.getIdNo() + ".pdf";
             exportToPdf(path + pdfName, new String[]{front, back});
         }
@@ -191,6 +193,40 @@ public class PbocController {
         String name = UUID.randomUUID().toString() +".zip";
         OperUtil.packageToZip(files,path+"temp",name);
         return name;
+    }
+
+    @RequestMapping(value = "/process/all", method = RequestMethod.GET)
+    @ResponseBody
+    public String processIdcardAll() {
+        final String path = App.getInstance().getIdCardImageBase() + "/";
+        final String destPath = path + CommonDef.IDCARD_PROCESS_DIR;
+        File destDir = new File(destPath);
+        if(!destDir.exists() || !destDir.isDirectory()) {
+            destDir.mkdirs();
+        }
+        MatlabIdCardPreProcessor processor = new MatlabIdCardPreProcessor();
+        boolean result = processor.batchPreProcessingImage(path,destPath);
+        return result ? "1" : "0";
+    }
+
+    @RequestMapping(value = "/process/batch/{idNos}", method = RequestMethod.GET)
+    @ResponseBody
+    public String processIdcardBatch(@PathVariable String idNos) {
+        final String path = App.getInstance().getIdCardImageBase() + "/";
+        String[] idNoArr = idNos.split(",");
+        MatlabIdCardPreProcessor processor = new MatlabIdCardPreProcessor();
+        for(String idNo : idNoArr) {
+            List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
+            if(idCards == null || idCards.isEmpty()) {
+                continue;
+            }
+            IdCard idCard = idCards.get(0);
+            if(idCard != null) {
+                processor.preProcessingImage(idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR);
+                processor.preProcessingImage(idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR);
+            }
+        }
+        return "1";
     }
 
     @Scheduled(cron = "0 0 * * * ?")
@@ -228,7 +264,12 @@ public class PbocController {
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
-            OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
+            String destPath = imagePath + CommonDef.IDCARD_PROCESS_DIR;
+            File destDir = new File(destPath);
+            if(!destDir.exists() || !destDir.isDirectory()) {
+                destDir.mkdirs();
+            }
+            OperUtil.cropImage(srcPath, destPath+imageName, x, y, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }

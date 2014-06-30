@@ -6,6 +6,7 @@ $(function(){
     pboc_out.init = function(){
         pboc_out.loadData("api/pboc/out/list");
         pboc_out.initEvent();
+        pboc_out.processImage("1");
     };
     pboc_out.loadData = function(url) {
         $("#pboc-table").html("<tr style=\"background: #ffff00;\">\n"+
@@ -49,6 +50,28 @@ $(function(){
             }
         });
     };
+    pboc_out.processImage = function(flag){
+        $.ajax({
+            url: "api/pboc/process/all",
+            dataType: "JSON",
+            type: "GET",
+            contentType: "application/json",
+            success: function (data) {
+                if(data && data == "1") {
+                    if(flag == "1") {
+                        console.log("处理成功");
+                    } else {
+                        alert("处理成功");
+                    }
+                } else {
+                    alert("请稍后重试！");
+                }
+            },
+            error: function(data) {
+                alert("请求异常！");
+            }
+        });
+    };
     pboc_out.initEvent = function(){
         $("#pboc-table").on("click","#checkAll",function(){
             $(".check-item").prop("checked",$(this).prop("checked"));
@@ -62,6 +85,35 @@ $(function(){
                 }
             });
             $("#checkAll").prop("checked",checkAll);
+        });
+        $("#processAll").on("click",function(){
+            pboc_out.processImage();
+        });
+        $("#processBatch").on("click",function(){
+            var idNos = "";
+            $("input.check-item:checked").each(function(){
+                idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
+            });
+            if(!idNos) {
+                alert("请选择要处理身份证的项！");
+                return;
+            }
+            $.ajax({
+                url: "api/pboc/process/batch/"+idNos,
+                dataType: "JSON",
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    if(data) {
+                        window.open("api/resources/idcard/temp/"+data,"_blank");
+                    } else {
+                        alert("请稍后重试！");
+                    }
+                },
+                error: function(data) {
+                    alert("请求异常！");
+                }
+            });
         });
         $("#download").on("click",function(){
             var idNos = "";

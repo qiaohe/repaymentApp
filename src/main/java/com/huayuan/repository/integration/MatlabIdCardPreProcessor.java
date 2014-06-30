@@ -2,6 +2,7 @@ package com.huayuan.repository.integration;
 
 import com.mathworks.toolbox.javabuilder.MWCharArray;
 import com.mathworks.toolbox.javabuilder.MWException;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import processor.ImageProcessor;
 
 /**
@@ -18,7 +19,7 @@ public class MatlabIdCardPreProcessor {
         }
     }
 
-    public static boolean batchPreProcessingImage(String sourceDir, String destinationDir) {
+    public boolean batchPreProcessingImage(String sourceDir, String destinationDir) {
         MWCharArray source = new MWCharArray(sourceDir);
         MWCharArray destination = new MWCharArray(destinationDir);
         try {
@@ -29,7 +30,7 @@ public class MatlabIdCardPreProcessor {
         }
     }
 
-    public static boolean preProcessingImage(String fileName, String destinationDir) {
+    public boolean preProcessingImage(String fileName, String destinationDir) {
         MWCharArray fName = new MWCharArray(fileName);
         MWCharArray destination = new MWCharArray(destinationDir);
         try {
@@ -38,6 +39,12 @@ public class MatlabIdCardPreProcessor {
         } catch (MWException e) {
             throw new IllegalStateException("Can not init MatLab function preProcessingImage");
         }
+    }
+
+    public static void main(String[] args) {
+        MatlabIdCardPreProcessor matlabIdCardPreProcessor = new MatlabIdCardPreProcessor();
+        System.out.println(matlabIdCardPreProcessor.toString());
+
     }
 
 }

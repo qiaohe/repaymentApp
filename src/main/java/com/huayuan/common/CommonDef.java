@@ -5,4 +5,8 @@ package com.huayuan.common;
  */
 public interface CommonDef {
     int PER_PAGE = 15;
+
+    String IDCARD_TEMP = "temp";
+
+    String IDCARD_PROCESS_DIR = "processed/";
 }
