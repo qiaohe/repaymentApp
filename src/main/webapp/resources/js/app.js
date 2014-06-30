@@ -1,19 +1,18 @@
-﻿/* global $:false */
-/* global alert:false */
+﻿/* global alert:false */
 /* global config:false */
-/* global member:false */
 /* global WeixinJSBridge:false */
-/* global console:false */
 "use strict";
+ config.time = "?time=" + (new Date()).getTime();
 var app = {};
 var dict = {};
 // Methods
 function getAndroidVersion() {
-    var ua = navigator.userAgent;
-    if( ua.indexOf("Android") >= 0 )
-        var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
+    var ua = navigator.userAgent, androidversion;
+    if( ua.indexOf("Android") >= 0 ) {
+        androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
+    }
     return androidversion;
-};
+}
 
 function getCreditLimit() {
     $.ajax({
@@ -42,8 +41,9 @@ function getAvlCrl() {
             member.avlcrl = text;
         },
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "members/" + member.id + "/avlCrl" + config.time);
+            }
         }
     });
 }
@@ -140,8 +140,9 @@ function validateCardNo(num) {
         }
         return sum % 10 === 0;
     }
-    else
+    else {
         return false;
+    }
 }
 
 function whetherUsedCard(card_num) {
@@ -181,7 +182,7 @@ function setCardIcon(img_id, num) {
     }
     else if (num.length > 6) {
         $.each(dict.bincode, function (i, value) {
-            if (value.binNo == num.replace(/ /g, "").slice(0, 6)) {
+            if (value.binNo === num.replace(/ /g, "").slice(0, 6)) {
                 var icon_scr = getCardIconSrc(dict.bincode[i].bankNo);
                 $("#" + img_id).attr("src", icon_scr);
             }
@@ -269,8 +270,9 @@ function sendVarificationCode(phone_num) {
         type: "GET",
         dataType: "text",
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "sms/" + phone_num);
+            }
         }
     });
 }
@@ -286,8 +288,9 @@ function matchVarificationCode(vcode, phone_num) {
         }),
         dataType: "text",
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode + config.time);
+            }
         }
     });
 }
@@ -308,8 +311,9 @@ function countPayback(obj) {
             $("#saved").html(Math.round(json.savedCost * 100) / 100);
         },
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "app/saveCost" + config.time);
+            }
         }
     });
 }
@@ -327,8 +331,9 @@ function applyLoan(obj) {
         }),
         dataType: "text",
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "app" + config.time);
+            }
         }
     });
 }
@@ -361,8 +366,9 @@ function addCreditCard(new_card) {
         async: false,
         dataType: "text",
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time);
+            }
         }
     });
 }
@@ -370,7 +376,9 @@ function addCreditCard(new_card) {
 function addOptions(element_id, json) {
     var tmp = [];
     for (var i in json) {
-        tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
+        if(json.hasOwnProperty(i)) {
+            tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
+        }
     }
     $("#" + element_id).append($(tmp)).selectmenu().selectmenu("refresh");
 }
@@ -385,9 +393,9 @@ function formatDate(ms,type) {
     var minute = date.getMinutes() < 10 ? "0"+date.getMinutes():date.getMinutes();
 
     var result = "";
-    if(type == "1") {
+    if(type === "1") {
         result = year +"-"+ month +"-"+ day;
-    } else if(type == "2") {
+    } else if(type === "2") {
         result = month+"月"+day+"日 "+hour+":"+minute;
     }
     return result;
@@ -414,15 +422,16 @@ function returnFootPrint(id, status) {
             console.log(res);
         },
         error: function () {
-            if (config.debug)
+            if (config.debug) {
                 alert(config.api_path + "members/" + id + "/status/" + status);
+            }
         }
     });
 }
 
 // Actions
 $(document).on("pagebeforeshow", function() {
-    if (member.gender == 1) {
+    if (member.gender === 1) {
         $(".gender").html("娘子");
     }
 });
@@ -433,8 +442,8 @@ $(document).on("pagecreate", "#limit", function () {
     }
 
 //    var android_version = getAndroidVersion();
-    if(android_version <= 2.3) {
-//    if(1 <= 2.3) {
+//    if(android_version <= 2.3) {
+    if(1 <= 2.3) {
         $("#front-upload-2").change(function() {
             var iframe = $("<iframe></iframe>");
             member.whichside = "front";
@@ -444,19 +453,8 @@ $(document).on("pagecreate", "#limit", function () {
                 "name": "for-upload",
                 "id": "for-upload"
             }).css({
-                "width": "300px",
-                "height": "100px"
-            }).off("load").load(function() {
-                 alert("load event triggered! iframe.src=" + iframe.attr("src"));
-                if (member.whichside == "front") {
-                    member.tmp = $.parseJSON(document.getElementById("for-upload").contentWindow.document.body.children[0].innerHTML);
-                    alert(member.tmp);
-                }
-                else if (member.whichside == "back") {
-                    member.tmp = iframe[0].contentDocument.body.innerHTML;
-                }
-                alert(member.tmp.idNo);
-                iframe.remove();
+                "width": "0",
+                "height": "0"
             });
 
             $("#front-form").attr({
@@ -472,70 +470,73 @@ $(document).on("pagecreate", "#limit", function () {
                 $.ajax({
                     url: config.api_path + "members/" + member.id + "/idCard",
                     type: "GET",
-                    success: function() {},
+                    success: function(json) {
+                        alert(json.idNo);
+                    },
                     error: function() {
                         if (config.debug) {
                             alert(config.api_path + "members/" + member.id + "/idCard");
                         }
                     }
                 });
-                alert(member.id_card);
-            }, 10000);
+                iframe.remove();
+            }, 4000);
         });
     }
+    else {
+        if (member.id_card) {
+            $("#front-num").html(member.id_card).css("color", "#222222");
+            $("#front-upload").attr("disabled", true);
+            $("#tip-front").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#front-upload").change(function (e) {
+                //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                $("#front-num").html("正在识别...").css("color", "#222222");
+                var form_data = new FormData();
+                form_data.append("idCardFrontFile", e.target.files[0]);
+                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+                    $("#front-num").html(json.idNo).css("color", "#222222");
+                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
+                    $("#tip-front").attr("src", "resources/img/public/correct.png");
+                    $("#front-upload").attr("disabled", true);
+                    member.id_card = json.idNo;
+                    member.gender = json.sex;
+                    if (member.gender == "FEMALE") {
+                        $(".gender").html("娘子");
+                    }
+                }).error(function () {
+                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                    $("label[for='front-upload']").css("border-color", "#cc0000");
+                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
+                });
+            });
+        }
 
-//    if (member.id_card) {
-//        $("#front-num").html(member.id_card).css("color", "#222222");
-//        $("#front-upload").attr("disabled", true);
-//        $("#tip-front").attr("src", "resources/img/public/correct.png");
-//    }
-//    else {
-//        $("#front-upload").change(function (e) {
-//            //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
-//            $("#front-num").html("正在识别...").css("color", "#222222");
-//            var form_data = new FormData();
-//            form_data.append("idCardFrontFile", e.target.files[0]);
-//            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
-//                $("#front-num").html(json.idNo).css("color", "#222222");
-//                $("label[for='front-upload']").css("border-color", "#c0c0c0");
-//                $("#tip-front").attr("src", "resources/img/public/correct.png");
-//                $("#front-upload").attr("disabled", true);
-//                member.id_card = json.idNo;
-//                member.gender = json.sex;
-//                if (member.gender == "FEMALE") {
-//                    $(".gender").html("娘子");
-//                }
-//            }).error(function () {
-//                $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-//                $("label[for='front-upload']").css("border-color", "#cc0000");
-//                $("#tip-front").attr("src", "resources/img/public/wrong.png");
-//            });
-//        });
-//    }
-//
-//    if (member.valid_thru) {
-//        $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
-//        $("#back-upload").attr("disabled", true);
-//        $("#tip-back").attr("src", "resources/img/public/correct.png");
-//    }
-//    else {
-//        $("#back-upload").change(function (e) {
-//            $("#back-num").html("正在识别...").css("color", "#222222");
-//            var form_data = new FormData();
-//            form_data.append("idCardBackFile", e.target.files[0]);
-//            recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
-//                $("#back-num").html("有效期至" + text).css("color", "#222222");
-//                $("label[for='back-upload']").css("border-color", "#c0c0c0");
-//                $("#tip-back").attr("src", "resources/img/public/correct.png");
-//                $("#back-upload").attr("disabled", true);
-//                member.valid_thru = text;
-//            }).error(function () {
-//                $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-//                $("label[for='back-upload']").css("border-color", "#cc0000");
-//                $("#tip-back").attr("src", "resources/img/public/wrong.png");
-//            });
-//        });
-//    }
+        if (member.valid_thru) {
+            $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
+            $("#back-upload").attr("disabled", true);
+            $("#tip-back").attr("src", "resources/img/public/correct.png");
+        }
+        else {
+            $("#back-upload").change(function (e) {
+                $("#back-num").html("正在识别...").css("color", "#222222");
+                var form_data = new FormData();
+                form_data.append("idCardBackFile", e.target.files[0]);
+                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
+                    $("#back-num").html("有效期至" + text).css("color", "#222222");
+                    $("label[for='back-upload']").css("border-color", "#c0c0c0");
+                    $("#tip-back").attr("src", "resources/img/public/correct.png");
+                    $("#back-upload").attr("disabled", true);
+                    member.valid_thru = text;
+                }).error(function () {
+                    $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                    $("label[for='back-upload']").css("border-color", "#cc0000");
+                    $("#tip-back").attr("src", "resources/img/public/wrong.png");
+                });
+            });
+        }
+    }
 
     $("#credit-card").on("keyup", function (e) {
         $("#card-tip").hide();
@@ -935,17 +936,6 @@ $(document).on("pagebeforeshow", "#loan", function () {
                                 $("#varifying-tips h4").html("您的验证码已发送!");
                                 $("#varifying-tips").show();
                                 $(this).attr("disabled", "true");
-                                var refreshIntervalId = setInterval(function() {
-                                    if (i > 0) {
-                                        $("#acquire-code").html(i);
-                                        i -= 1;
-                                    }
-                                    else {
-                                        $("#acquire-code").html("重新获取");
-                                        clearInterval(refreshIntervalId);
-                                        i = 60;
-                                    }
-                                }, 1000);
                             }).error(function () {
                                 $("#varifying-tips h4").html("您的验证码发送失败!");
                                 $("#varifying-tips").show();
@@ -1592,26 +1582,22 @@ $(document).on("pagecreate", "#thanks-feedback", function () {
 });
 
 window.onunload = function () {
-    var print_status;
-    var pattern = /#[\w-]+/;
-    var hash = pattern.exec(window.location).toString();
+    var print_status,
+        ptn = /#(\w+)/,
+        hash = ptn.exec(window.location)[1];
 
-    if (hash == "#result" && status == "3.1") {
+    if (hash == "#result" && member.status == "3.1") {
         print_status = "1";
+        returnFootPrint(member.id, print_status);
     }
     else if (hash == "#congratulation" && (!app.credit_card)) {
         print_status = "2";
-    }
-    else {
-        print_status = "-9";
-    }
-
-    if (print_status != "-9")
         returnFootPrint(member.id, print_status);
+    }
 
     if ((member.status == "1" || member.status == "2") && (hash == "#limit" || hash == "#basic-info")) {
         if (member.id_card) {
-            localStorage.setItem("idcard_front", member.id_card);
+            localStorage.setItem("id_card", member.id_card);
         }
         if (member.valid_thru) {
             localStorage.setItem("valid_thru", member.valid_thru);
