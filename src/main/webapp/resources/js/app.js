@@ -746,6 +746,7 @@ function getShareConfig() {
     return {
         title : "么么贷的title, 暂缺",
         desc : "么么贷的描述, 暂缺",
+        summary : "么么贷的描述, 暂缺",
         url : document.location.href,
         img : "../img/8-1/sword.png",
         width : screen.width,

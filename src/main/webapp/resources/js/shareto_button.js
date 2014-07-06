@@ -215,6 +215,7 @@ function share_to(m,config) {
     var options = {
         title : encodeURIComponent(config.title || document.title),
         desc : encodeURIComponent(config.desc || ""),
+        summary:encodeURIComponent(config.summary || ""),
         url : encodeURIComponent(config.url || document.location.href),
         img : config.img || "",
         width : config.width || 600,
@@ -316,7 +317,7 @@ function share_to(m,config) {
 		 return;
 		 var f = 'http://widget.renren.com/dialog/share?resourceUrl=', u =
 		 options.url, l = options.title, p = [
-		 u,'&title=', l,'&description=',options.desc,'&pic=',options.img ].join('');
+		 u,'&title=', l,'&description=',options.desc,'&message=',options.summary,'&pic=',options.img ].join('');
 		 function a() {
 		 if (!window
 		 .open(
@@ -517,7 +518,7 @@ function share_to(m,config) {
 	} else if (m == "qzone") {// 未开放分享
 		window.open(
 				"http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="
-						+ options.url+'&pics='+options.img+'&title='+options.title+'&desc='+options.desc, 'qzone',
+						+ options.url+'&pics='+options.img+'&title='+options.title+'&desc='+options.desc+'&summary='+options.summary, 'qzone',
 				'toolbar=0,status=0,width='+options.width+',height='+options.height+',left='
 						+ options.left + ',top='
 						+ options.top);
