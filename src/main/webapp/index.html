@@ -100,9 +100,15 @@
         </div>
     </div>
 
-    <form id="front-form" method="post" data-ajax="false" encoding="multipart/form-data" enctype="multipart/form-data">
-        <input data-role="none" type="file" name="idCardFrontFile" accept="image/jpg, image/jpeg" id="front-upload-2" capture="camera">
-    </form>
+    <div style="width: 0; height: 0; overflow: hidden">
+        <form id="front-form" method="post" data-ajax="false" encoding="multipart/form-data" enctype="multipart/form-data">
+            <input data-role="none" type="file" name="idCardFrontFile" accept="image/jpg, image/jpeg" id="front-upload-2" capture="camera">
+        </form>
+
+        <form id="back-form" method="post" data-ajax="false" encoding="multipart/form-data" enctype="multipart/form-data">
+            <input data-role="none" type="file" name="idCardBackFile" accept="image/jpg, image/jpeg" id="back-upload-2" capture="camera">
+        </form>
+    </div>
 </div>
 <!-- limit -->
 
@@ -121,10 +127,9 @@
             <div class="textinput"
                  style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%">
                 <span class="placeholder" id="industry-txt">请选择</span></div>
-            <div style="position:absolute; top:-10px; width:100%"><select id="industry-select"
-                                                                          style="width:100%; opacity:0">
-                <option></option>
-            </select></div>
+            <div style="position:absolute; top:-10px; width:100%">
+                <select id="industry-select" style="width:100%; opacity:0"><option></option></select>
+            </div>
             <img src="resources/img/other_icons/down.png" id="tip-industry"
                  style="position:absolute; right:5px; top:10px; width:16px; height:14px">
         </div>
@@ -218,8 +223,8 @@
                    style="border:none; padding-left:5px; font-size:1.4em; width: 96%; height: 26px">
             <label for="amount"><img src="resources/img/public/keyboard.png"
                                      style="float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
-        </d
-    </div><br>``
+        </div>
+    </div><br>
     <div style="width:100%; height: 65px">
         <p style="margin-top:-25px"><span class="gender">官人</span>想分几期来还清？<span style="color:#c0c0c0; font-size:0.9em">(一个月还一期)</span></p>
 
@@ -235,15 +240,15 @@
     </div>
 
     <div style="width: 100%; height: 70px">
-        <div class="ui-grid-a" style="width:80%; margin:10px auto auto auto; clear:both">
-            <div class="ui-block-a">
+        <div style="width:80%; margin:10px auto auto auto; clear:both">
+            <div style="width:45%; float:left">
                 <p>您每期需要还款</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
                     <span style="color: #333333"><br> &yen;</span><span id="each-term"></span>
                 </div>
             </div>
 
-            <div class="ui-block-b">
+            <div style="float:left; width: 55%">
                 <p>相比信用卡最高可省</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
                     <span style="color: #333333"><br> &yen;</span><span id="saved"></span>
@@ -276,7 +281,7 @@
                             class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
                     <input data-role="none" type="tel" id="code"
                            style="border:none; padding-left:5px; font-size:1.4em; width: 94%; height: 26px">
-                    <label for="code"><img src="resources/img/public/keyboard.png" id="code-tip" style="z-index: 0; float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
+                    <label for="code"><img src="resources/img/public/keyboard.png" id="code-tip" style="z-index: 0; float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:22px"></label>
                 </div>
                 <div style="float:left; margin-left:5%">
                     <a href="#" class="ui-btn custom-btn" id="acquire-code"

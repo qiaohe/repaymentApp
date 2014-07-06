@@ -2,11 +2,11 @@
 "use strict";
 
 var config = {
-        api_path: "api/",
+        apiPath: "api/",
         debug: true,
-        time_stamp: "?time=" + (new Date()).getTime(),
-        alert_url: function(url) {
-            if(config.debug) {
+        timeStamp: "?time=" + (new Date()).getTime(),
+        alertUrl: function(url) {
+            if(this.debug) {
                 alert(url);
             }
         }
@@ -16,9 +16,9 @@ var config = {
         var member = {};
 
         member.getId = function() {
-            var id_ptn = /memberId=(\d+)/;
+            var idPtn = /memberId=(\d+)/;
             try {
-                this.id = id_ptn.exec(window.location)[1];
+                this.id = idPtn.exec(window.location)[1];
             }
             catch (e) {
                 alert("Exception: can not get memberId from url!");
@@ -28,7 +28,7 @@ var config = {
         member.getStatus = function() {
             var $this = this;
             $.ajax({
-                url: config.api_path + "members/" + this.id + "/status" + config.time_stamp,
+                url: config.apiPath + "members/" + this.id + "/status" + config.timeStamp,
                 type: "GET",
                 async: false,
                 dataType: "text",
@@ -36,15 +36,15 @@ var config = {
                     $this.status = text;
                 },
                 error: function() {
-                    config.alert_url(config.api_path + "members/{memberId}/status" + config.time_stamp);
+                    config.alertUrl(config.apiPath + "members/" + $this.id + "/status" + config.timeStamp);
                 }
             });
         };
 
         member.getDestPage = function() {
-            var dest_ptn = /#(\w+)/;
+            var destPtn = /#(\w+)/;
             try {
-                this.dest_page = dest_ptn.exec(window.location)[1];
+                this.destPage = destPtn.exec(window.location)[1];
             }
             catch (e) {
                 alert("Exception: can not get destPage from url!");
@@ -54,22 +54,22 @@ var config = {
         member.getBasicInfo = function() {
             var $this = this;
             $.ajax({
-                url: config.api_path + "members/" + this.id + config.time_stamp,
+                url: config.apiPath + "members/" + this.id + config.timeStamp,
                 type: "GET",
                 dataType: "json",
                 async: false,
                 success: function (json) {
-                    $this.id_card = json.idCardNo;
-                    $this.valid_thru = json.validThru;
+                    $this.idCard = json.idCardNo;
+                    $this.validThru = json.validThru;
                     $this.industry = json.industry;
                     $this.education = json.education;
                     $this.email = json.email;
-                    $this.mobile_varified = json.hasMobilePhone;
+                    $this.mobileVarified = json.hasMobilePhone;
                     $this.existingFlag = json.existingFlag;
                     $this.gender = json.sex;
                 },
                 error: function () {
-                    config.alert_url(config.api_path + "members/{memberId}" + config.time_stamp);
+                    config.alertUrl(config.apiPath + "members/" + $this.id + config.timeStamp);
                 }
             });
         };
@@ -77,7 +77,7 @@ var config = {
         member.whetherApplying = function() {
             var $this = this;
             $.ajax({
-                url: config.api_path + "app/members/" + this.id + config.time_stamp,
+                url: config.apiPath + "app/members/" + this.id + config.timeStamp,
                 type: "GET",
                 dataType: "text",
                 async: false,
@@ -85,37 +85,37 @@ var config = {
                     $this.isapplying = ("true" === text);
                 },
                 error: function () {
-                    config.alert_url(config.api_path + "app/members/{memberId}" + config.time_stamp);
+                    config.alertUrl(config.apiPath + "app/members/" + $this.id + config.timeStamp);
                 }
             });
         };
 
         member.setDestPage = function() {
             var status = this.status,
-                dest_page = this.dest_page;
-            if (/limit/.test(dest_page)) {
+                destPage = this.destPage;
+            if (/limit/.test(destPage)) {
                 if (status === "1") {
                     this.isnew = 1;
-                    this.dest_page = "#limit";
+                    this.destPage = "#limit";
                 }
                 else if (Number(status) > 2) {
-                    this.dest_page = "#result";
+                    this.destPage = "#result";
                 }
                 else{
-                    this.dest_page = "#limit";
+                    this.destPage = "#limit";
                     var tmp = localStorage.getItem("id_card");
                     if (tmp) {
-                        member.id_card = tmp;
+                        member.idCard = tmp;
                     }
 
                     tmp = localStorage.getItem("valid_thru");
                     if (tmp) {
-                        member.valid_thru = tmp;
+                        member.validThru = tmp;
                     }
 
                     tmp = localStorage.getItem("credit_card");
                     if (tmp) {
-                        member.credit_card = tmp;
+                        member.creditCard = tmp;
                     }
 
                     tmp = localStorage.getItem("industry");
@@ -134,28 +134,28 @@ var config = {
                     }
                 }
             }
-            else if (/loan/.test(dest_page)) {
+            else if (/loan/.test(destPage)) {
                 if (member.isapplying) {
-                    this.dest_page = "#patience";
+                    this.destPage = "#patience";
                 }
             }
-            else if (/congratulation/.test(dest_page)) {
+            else if (/congratulation/.test(destPage)) {
                 if (status === "5.2") {
-                    this.dest_page = "#fail";
+                    this.destPage = "#fail";
                 }
                 else if (status !== "5.1") {
-                    this.dest_page = "#loan";
+                    this.destPage = "#loan";
                 }
             }
-            else if (/patience/.test(dest_page) || /suspension/.test(dest_page)) {
+            else if (/patience/.test(destPage) || /suspension/.test(destPage)) {
                 if (Number(status) > 5.2) {
-                    this.dest_page = "#loan";
+                    this.destPage = "#loan";
                 }
                 else if (status === "5.1") {
-                    this.dest_page = "#congratulation";
+                    this.destPage = "#congratulation";
                 }
                 else if (status === "5.2") {
-                    this.dest_page = "#fail";
+                    this.destPage = "#fail";
                 }
             }
         };
@@ -171,7 +171,7 @@ var config = {
     if (Number(member.status) > 2) {
         member.getBasicInfo();
     }
-    $.mobile.navigate(member.dest_page);
+    $.mobile.navigate(member.destPage);
 })();
 
 console.log("navigation ends!");

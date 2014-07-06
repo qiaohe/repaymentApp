@@ -1,435 +1,411 @@
 ﻿/* global alert:false */
 /* global config:false */
+/* global member:false */
+/* global json:false */
 /* global WeixinJSBridge:false */
 "use strict";
- config.time = "?time=" + (new Date()).getTime();
-var app = {};
-var dict = {};
-// Methods
-function getAndroidVersion() {
-    var ua = navigator.userAgent, androidversion;
-    if( ua.indexOf("Android") >= 0 ) {
-        androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
-    }
-    return androidversion;
+
+if (!config || !member) {
+    alert("Config or member is undefined!");
 }
 
-function getCreditLimit() {
-    $.ajax({
-        url: config.api_path + "members/" + member.id + "/crl" + config.time,
-        type: "GET",
-        dataType: "json",
-        async: false,
-        success: function (json) {
-            member.limit = json.creditLimit;
-            member.rank = json.rankOfLimit;
-        },
-        error: function () {
-            if (config.debug)
-                alert(config.api_path + "members/" + member.id + "/crl" + config.time);
+var device = {
+    getUserAgent: function() {
+        this.userAgent = navigator.userAgent.toLowerCase();
+    },
+
+    getAndroidVersion: function() {
+        if(this.userAgent.search("android") !== -1) {
+            this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8);
         }
-    });
-}
-
-function getAvlCrl() {
-    $.ajax({
-        url: config.api_path + "members/" + member.id + "/avlCrl" + config.time,
-        type: "GET",
-        dataType: "text",
-        async: false,
-        success: function (text) {
-            member.avlcrl = text;
+    }
+},
+    dict = {
+        getBincode: function() {
+            var $this = this;
+            $.getJSON(config.apiPath + "dict/binCode", function (json) {
+                $this.bincode = json;
+            });
         },
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "members/" + member.id + "/avlCrl" + config.time);
+
+        getCardIconSrc: function(bankNo) {
+            var iconPath = "resources/img/card_icon/", icon;
+            switch(bankNo){
+                case 1:
+                    icon = "icbc.png";
+                    break;
+                case 2:
+                    icon = "abc.png";
+                    break;
+                case 3:
+                    icon = "bc.png";
+                    break;
+                case 4:
+                    icon = "cbc.png";
+                    break;
+                case 5:
+                    icon = "ctb.png";
+                    break;
+                case 6:
+                    icon = "ceb.png";
+                    break;
+                case 7:
+                    icon = "cgb.png";
+                    break;
+                case 8:
+                    icon = "hxb.png";
+                    break;
+                case 9:
+                    icon = "cmsb.png";
+                    break;
+                case 10:
+                    icon = "pingan.png";
+                    break;
+                case 11:
+                    icon = "cib.png";
+                    break;
+                case 12:
+                    icon = "cmb.png";
+                    break;
+                case 13:
+                    icon = "spdb.png";
+                    break;
+                case 14:
+                    icon = "citic.png";
+                    break;
+                case 15:
+                    icon = "psbc.png";
+                    break;
+                default:
+                    icon = "card.png";
             }
-        }
-    });
-}
+            return iconPath += icon;
+        },
 
-function recognizeIdCard(form_data, url_path, datatype) {
-    return $.ajax({
-        url: url_path,
-        type: "POST",
-        data: form_data,
-        cache: false,
-        processData: false,
-        contentType: false,
-        dataType: datatype
-    });
-}
-
-function getBincode() {
-    $.getJSON(config.api_path + "dict/binCode", function (json) {
-        dict.bincode = json;
-    });
-}
-
-function getCardIconSrc(bankNo) {
-    var icon_path = "resources/img/card_icon/", icon;
-    switch(bankNo){
-        case 1:
-            icon = "icbc.png";
-            break;
-        case 2:
-            icon = "abc.png";
-            break;
-        case 3:
-            icon = "bc.png";
-            break;
-        case 4:
-            icon = "cbc.png";
-            break;
-        case 5:
-            icon = "ctb.png";
-            break;
-        case 6:
-            icon = "ceb.png";
-            break;
-        case 7:
-            icon = "cgb.png";
-            break;
-        case 8:
-            icon = "hxb.png";
-            break;
-        case 9:
-            icon = "cmsb.png";
-            break;
-        case 10:
-            icon = "pingan.png";
-            break;
-        case 11:
-            icon = "cib.png";
-            break;
-        case 12:
-            icon = "cmb.png";
-            break;
-        case 13:
-            icon = "spdb.png";
-            break;
-        case 14:
-            icon = "citic.png";
-            break;
-        case 15:
-            icon = "psbc.png";
-            break;
-        default:
-            icon = "card.png";
-    }
-    return icon_path += icon;
-}
-
-function validateCardNo(num) {
-    num = num.replace(/ /g, "");
-    var sum = 0, l = num.length;
-    if (l > 15) {
-        for (var i = 0; i < l; i++) {
-            var tmp = parseInt(num[i], 10);
-            if ((i % 2) === 0) {
-                if (2 * tmp > 9) {
-                    sum += (2 * tmp - 9);
+        validateCardNo: function(cardNum) {
+            cardNum = cardNum.replace(/ /g, "");
+            var sum = 0,
+                l = cardNum.length;
+            if (l > 15) {
+                for (var i = 0; i < l; i++) {
+                    var tmp = Number(cardNum[i], 10);
+                    if ((i % 2) === 0) {
+                        if (2 * tmp > 9) {
+                            sum += (2 * tmp - 9);
+                        }
+                        else {
+                            sum += 2 * tmp;
+                        }
+                    }
+                    else {
+                        sum += tmp;
+                    }
                 }
-                else {
-                    sum += 2 * tmp;
-                }
+                return sum % 10 === 0;
             }
             else {
-                sum += tmp;
+                return false;
             }
-        }
-        return sum % 10 === 0;
-    }
-    else {
-        return false;
-    }
-}
-
-function whetherUsedCard(card_num) {
-    card_num = card_num.replace(/ /g, "");
-    var taken;
-    $.ajax({
-        url: config.api_path + "members/" + member.id + "/creditCard/" + card_num + config.time,
-        type: "GET",
-        async: false,
-        dataType: "text",
-        success: function (text) {
-            taken = text == "true";
         },
-//        error: function () {
-//            if (config.debug) {
-//                alert (config.api_path + "members/" + member.id + "/creditCard/" + card_num + config.time);
-//            }
-//        }
-        error: function(xhr, status, err) {
-            alert(err + " " + status + " " + err);
-        }
-    });
-    return taken;
-}
 
-function setCardIcon(img_id, num) {
-    if (num.length < 2) {
-        $("#" + img_id).attr("src", "resources/img/card_icon/card.png");
-    }
-    else if (num.length <= 6) {
-        if (num[0] == "4") {
-            $("#" + img_id).attr("src", "resources/img/card_icon/visa.png");
+        setCardIcon: function(imgId, num) {
+            if (num.length < 2) {
+                $("#" + imgId).attr("src", "resources/img/card_icon/card.png");
+            }
+            else if (num.length <= 6) {
+                if (num[0] === "4") {
+                    $("#" + imgId).attr("src", "resources/img/card_icon/visa.png");
+                }
+                else if (num[0] === "5") {
+                    $("#" + imgId).attr("src", "resources/img/card_icon/master.png");
+                }
+            }
+            else if (num.length > 6) {
+                var $this = this;
+                $.each(this.bincode, function (i, value) {
+                    if (value.binNo === num.replace(/ /g, "").slice(0, 6)) {
+                        var iconSrc = $this.getCardIconSrc($this.bincode[i].bankNo);
+                        $("#" + imgId).attr("src", iconSrc);
+                    }
+                });
+            }
+        },
+
+        numberWithCommas: function(x) {
+            x = x.toString();
+            var pattern = /(-?\d+)(\d{3})/;
+            while (pattern.test(x)) {
+                x = x.replace(pattern, "$1,$2");
+            }
+            return x;
+        },
+
+        getformatDate: function(ms, type) {
+            var date = new Date(ms),
+                year = date.getFullYear(),
+                month = +date.getMonth() + 1,
+                day = +date.getDate() < 10 ? "0"+date.getDate() : date.getDate(),
+                hour = +date.getHours() < 10 ? "0"+date.getHours() : date.getHours(),
+                minute = +date.getMinutes() < 10 ? "0"+date.getMinutes():date.getMinutes(),
+                result;
+            month = month < 10 ? "0" + month : month;
+            if(type === "1") {
+                result = year +"-"+ month +"-"+ day;
+            } else if(type === "2") {
+                result = month+"月"+day+"日 "+hour+":"+minute;
+            }
+            return result;
+        },
+
+        getReadableDate: function(ms) {
+            var date = new Date(ms),
+                month = date.getMonth()+ 1,
+                day = date.getDate(),
+                year = date.getFullYear();
+            return [year, month, day];
         }
-        else if (num[0] == "5") {
-            $("#" + img_id).attr("src", "resources/img/card_icon/master.png");
-        }
-    }
-    else if (num.length > 6) {
-        $.each(dict.bincode, function (i, value) {
-            if (value.binNo === num.replace(/ /g, "").slice(0, 6)) {
-                var icon_scr = getCardIconSrc(dict.bincode[i].bankNo);
-                $("#" + img_id).attr("src", icon_scr);
+    };
+
+member = (function(member) {
+    member.whetherUsedCard = function(cardNum) {
+        cardNum = cardNum.replace(/ /g, "");
+        var taken,
+            $this = this;
+        $.ajax({
+            url: config.apiPath + "members/" + this.id + "/creditCard/" + cardNum + config.timeStamp,
+            type: "GET",
+            async: false,
+            dataType: "text",
+            success: function (text) {
+                taken = text === "true";
+            },
+            error: function() {
+                config.alertUrl(config.apiPath + "members/" + $this.id + "/creditCard/" + cardNum + config.timeStamp);
             }
         });
-    }
-}
+        return taken;
+    };
 
-function testLimit() {
-    $.ajax({
-        url: config.api_path + "members/" + member.id + config.time,
-        type: "POST",
-        async: false,
-        contentType: "application/json",
-        data: JSON.stringify({
-            creditCarNo: member.credit_card.replace(/ /g, ""),
-            industry: member.industry,
-            education: member.education,
-            email: member.email,
-            billEmail: "",
-            billPassword: ""
-        }),
-        dataType: "json",
-        success: function (json) {
-            member.limit = json.creditLimit;
-            member.rank = json.rankOfLimit;
-            member.anothertest = 0;
-            localStorage.clear();
-            $.mobile.navigate("#result");
-        },
-        error: function () {
-            if (config.debug)
-                alert(config.api_path + "members/" + member.id);
-        }
-    });
-}
-
-function enableLimitTest(btn_id) {
-    var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    if(member.credit_card && member.industry && member.education && mailRegEx.test(member.email)) {
-        $("#" + btn_id).css("background-color", "#3ca0e6").tap(function () {
-            testLimit();
+    member.getCreditLimit = function() {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "members/" + this.id + "/crl" + config.timeStamp,
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (json) {
+                $this.limit = json.creditLimit;
+                $this.rank = json.rankOfLimit;
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "members/" + $this.id + "/status" + config.timeStamp);
+            }
         });
-    } else {
-        $("#" + btn_id).css("background-color", "silver");
-    }
-}
+    };
 
-function getAppNo() {
-    $.ajax({
-        url: config.api_path + "app/members/" + member.id + "/appNo" + config.time,
-        type: "GET",
-        async: false,
-        dataType: "text",
-        success: function (text) {
-            member.appNo = text;
-        },
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "app/members/" + member.id + "/appNo" + config.time);
+    member.getAvlCrl = function() {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "members/" + this.id + "/avlCrl" + config.timeStamp,
+            type: "GET",
+            dataType: "text",
+            async: false,
+            success: function (text) {
+                $this.avlCrl = text;
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "members/" + $this.id + "/avlCrl" + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function whetherLoanable() {
-    $.ajax({
-        url: config.api_path + "app/members/" + member.id + "/loanable" + config.time,
-        type: "POST",
-        async: false,
-        dataType: "text",
-        success: function (text) {
-            member.loanable = (text == "true");
-        },
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "app/members/" + member.id + "/loanable" + config.time);
+    member.recognizeIdCard = function(formData, urlPath, dataType) {
+        return $.ajax({
+            url: urlPath,
+            type: "POST",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: dataType
+        });
+    };
+
+    member.testLimit = function() {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "members/" + this.id + config.timeStamp,
+            type: "POST",
+            async: false,
+            contentType: "application/json",
+            data: JSON.stringify({
+                creditCarNo: this.creditCard.replace(/ /g, ""),
+                industry: this.industry,
+                education: this.education,
+                email: this.email,
+                billEmail: "",
+                billPassword: ""
+            }),
+            dataType: "json",
+            success: function (json) {
+                $this.limit = json.creditLimit;
+                $this.rank = json.rankOfLimit;
+                $this.anothertest = 0;
+                localStorage.clear();
+                $.mobile.navigate("#result");
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "members/" + $this.id + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function sendVarificationCode(phone_num) {
-    return $.ajax({
-        url: config.api_path + "sms/" + phone_num + config.time,
-        type: "GET",
-        dataType: "text",
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "sms/" + phone_num);
+    member.getFirstLoanAppNo = function() {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "app/members/" + this.id + "/appNo" + config.timeStamp,
+            type: "GET",
+            async: false,
+            dataType: "text",
+            success: function (text) {
+                $this.firstLoanAppNo = text;
+            },
+            error: function () {
+                    config.alertUrl(config.apiPath + "app/members/" + $this.id + "/appNo" + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function matchVarificationCode(vcode, phone_num) {
-    return $.ajax({
-        url: config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode + config.time,
-        type: "POST",
-        async: false,
-        data: JSON.stringify({
-            mobilePhone: phone_num,
-            code: vcode
-        }),
-        dataType: "text",
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "members/" + member.id + "/" + phone_num + "/" + vcode + config.time);
+    member.whetherLoanable = function() {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "app/members/" + this.id + "/loanable" + config.timeStamp,
+            type: "POST",
+            async: false,
+            dataType: "text",
+            success: function (text) {
+                $this.isLoanable = (text === "true");
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "app/members/" + $this.id + "/loanable" + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function countPayback(obj) {
-    $.ajax({
-        url: config.api_path + "app/saveCost" + config.time,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-            term: obj.term,
-            amt: obj.amount,
-            memberId: member.id
-        }),
-        dataType: "json",
-        success: function (json) {
-            $("#each-term").html(json.payBackEachTerm);
-            $("#saved").html(Math.round(json.savedCost * 100) / 100);
-        },
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "app/saveCost" + config.time);
+    member.acquireVerificationCode = function(phoneNum) {
+        var $this = this;
+        return $.ajax({
+            url: config.apiPath + "sms/" + phoneNum + config.timeStamp,
+            type: "GET",
+            dataType: "text",
+            error: function () {
+                config.alertUrl(config.apiPath + "sms/" + phoneNum);
             }
-        }
-    });
-}
+        });
+    };
 
-function applyLoan(obj) {
-    return $.ajax({
-        url: config.api_path + "app" + config.time,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-            term: obj.term,
-            amt: obj.amount,
-            memberId: member.id,
-            creditCarNo: obj.credit_card
-        }),
-        dataType: "text",
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "app" + config.time);
+    member.matchVerificationCode = function(code, phoneNum) {
+        var $this = this;
+        return $.ajax({
+            url: config.apiPath + "members/" + this.id + "/" + phoneNum + "/" + code + config.timeStamp,
+            type: "POST",
+            async: false,
+            data: JSON.stringify({
+                mobilePhone: phoneNum,
+                code: code
+            }),
+            dataType: "text",
+            error: function () {
+                config.alertUrl(config.apiPath + "members/" + $this.id + "/" + phoneNum + "/" + code + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function numberWithCommas(x) {
-    x = x.toString();
-    var pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x))
-        x = x.replace(pattern, "$1,$2");
-    return x;
-}
-
-function loanToThisCard(card_num) {
-    return $.ajax({
-        url: config.api_path + "app/members/" + member.id + "/creditCard/" + card_num + config.time,
-        type: "POST",
-        data: card_num,
-        dataType: "text",
-        error: function () {
-            alert(config.api_path + "app/members/" + member.id + "/creditCard/" + card_num + config.time);
-        }
-    });
-}
-
-function addCreditCard(new_card) {
-    new_card = new_card.replace(/ /g, "");
-    return $.ajax({
-        url: config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time,
-        type: "POST",
-        async: false,
-        dataType: "text",
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "members/" + member.id + "/creditCards/" + new_card + config.time);
+    member.countPaybackEachTerm = function(obj) {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "app/saveCost" + config.timeStamp,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                term: obj.term,
+                amt: obj.amount,
+                memberId: this.id
+            }),
+            dataType: "json",
+            success: function(json) {
+                $("#each-term").html(json.payBackEachTerm);
+                $("#saved").html(Math.round(json.savedCost * 100) / 100);
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "app/saveCost" + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-function addOptions(element_id, json) {
-    var tmp = [];
-    for (var i in json) {
-        if(json.hasOwnProperty(i)) {
-            tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
-        }
-    }
-    $("#" + element_id).append($(tmp)).selectmenu().selectmenu("refresh");
-}
-
-function formatDate(ms,type) {
-    var date = new Date(ms);
-    var year = date.getFullYear();
-    var month = parseInt(date.getMonth(),10) + 1;
-    month = month < 10 ? "0" + month : month;
-    var day = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
-    var hour = date.getHours() < 10 ? "0"+date.getHours() : date.getHours();
-    var minute = date.getMinutes() < 10 ? "0"+date.getMinutes():date.getMinutes();
-
-    var result = "";
-    if(type === "1") {
-        result = year +"-"+ month +"-"+ day;
-    } else if(type === "2") {
-        result = month+"月"+day+"日 "+hour+":"+minute;
-    }
-    return result;
-}
-
-function getReadableDate(million_seconds){
-    var date = new Date(million_seconds);
-    var month = date.getMonth()+1;
-    var day = date.getDate();
-    var year = date.getFullYear();
-    return [year, month, day];
-}
-
-function requestAvilable() {
-    $("#request").css("background-color", "#3ca0e6");
-}
-
-function returnFootPrint(id, status) {
-    $.ajax({
-        url: config.api_path + "members/" + id + "/status/" + status,
-        type: "GET",
-        async: false,
-        success : function (res) {
-            console.log(res);
-        },
-        error: function () {
-            if (config.debug) {
-                alert(config.api_path + "members/" + id + "/status/" + status);
+    member.applyLoan = function(loanApplication) {
+        return $.ajax({
+            url: config.apiPath + "app" + config.timeStamp,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                term: loanApplication.term,
+                amt: loanApplication.amount,
+                memberId: member.id,
+                creditCarNo: loanApplication.creditCard
+            }),
+            dataType: "text",
+            error: function () {
+                config.alertUrl(config.apiPath + "app" + config.timeStamp);
             }
-        }
-    });
-}
+        });
+    };
 
-// Actions
+    member.loanToCard = function(cardNum) {
+        var $this = this;
+        return $.ajax({
+            url: config.apiPath + "app/members/" + this.id + "/creditCard/" + cardNum + config.timeStamp,
+            type: "POST",
+            data: cardNum,
+            dataType: "text",
+            error: function () {
+                config.alertUrl(config.apiPath + "app/members/" + $this.id + "/creditCard/" + cardNum + config.timeStamp);
+            }
+        });
+    };
+
+    member.addCreditCard = function(cardNum) {
+        cardNum = cardNum.replace(/ /g, "");
+        var $this = this;
+        return $.ajax({
+            url: config.apiPath + "members/" + this.id + "/creditCards/" + cardNum + config.timeStamp,
+            type: "POST",
+            async: false,
+            dataType: "text",
+            error: function () {
+                config.alertUrl(config.apiPath + "members/" + $this.id + "/creditCards/" + cardNum + config.timeStamp);
+            }
+        });
+    };
+
+    member.returnFootPrint = function(id, status) {
+        var $this = this;
+        $.ajax({
+            url: config.apiPath + "members/" + id + "/status/" + status,
+            type: "GET",
+            async: false,
+            success : function (res) {
+                console.log(res);
+            },
+            error: function () {
+                    config.alertUrl(config.apiPath + "members/" + id + "/status/" + status);
+            }
+        });
+    };
+
+    return member;
+})(member);
+
 $(document).on("pagebeforeshow", function() {
     if (member.gender === 1) {
         $(".gender").html("娘子");
@@ -437,19 +413,29 @@ $(document).on("pagebeforeshow", function() {
 });
 
 $(document).on("pagecreate", "#limit", function () {
-    if (!dict.bincode) {
-        getBincode();
-    }
-
-//    var android_version = getAndroidVersion();
-//    if(android_version <= 2.3) {
+    device.getUserAgent();
+    device.getAndroidVersion();
+//    if(device.androidVersion <= 2.3) {
     if(1 <= 2.3) {
-        $("#front-upload-2").change(function() {
-            var iframe = $("<iframe></iframe>");
-            member.whichside = "front";
+        $("#front-upload, #back-upload").remove();
+        $("label[for='front-upload']").attr("for", "front-upload-2");
+        $("label[for='back-upload']").attr("for", "back-upload-2");
 
+        $("#front-upload-2, #back-upload-2").change(function() {
+            var whichSide;
+            if($(this).attr("id").search("front") !== -1) {
+                whichSide = "front";
+            }
+            else if($(this).attr("id").search("back") !== -1) {
+                whichSide = "back";
+            }
+            else {
+                alert("The parameter whichSide is undefined!");
+            }
+
+            var iframe = $("<iframe></iframe>");
             iframe.attr({
-                "src": "http://192.168.0.185:8080/repayment/index.html#limit?t=" + config.time,
+                "src": "http://192.168.0.185:8080/repayment/index.html#limit?t=" + config.timeStamp,
                 "name": "for-upload",
                 "id": "for-upload"
             }).css({
@@ -457,35 +443,56 @@ $(document).on("pagecreate", "#limit", function () {
                 "height": "0"
             });
 
-            $("#front-form").attr({
+            $("#" + whichSide + "-form").attr({
                 "target": "for-upload",
-                "action": "api/members/" + member.id + "/idCardFront",
+                "action": "api/members/" + member.id + "/idCard" + whichSide[0].toUpperCase() + whichSide.slice(1),
                 "method": "post",
                 "enctype": "multipart/form-data",
                 "encoding": "multipart/form-data",
-                "file": $("#front-upload-2").val()
+                "file": $("#" + whichSide + "-upload-2").val()
             }).after(iframe).submit();
+
+            $("#" + whichSide + "-num").html("正在识别...");
 
             setTimeout(function() {
                 $.ajax({
-                    url: config.api_path + "members/" + member.id + "/idCard",
+                    url: config.apiPath + "members/" + member.id + "/idCard",
                     type: "GET",
                     success: function(json) {
-                        alert(json.idNo);
+                        if(typeof member.idCard === "undefined" && json.idNo) {
+                            member.idCard = json.idNo;
+                            $("#front-num").html(member.idCard).css("color", "#222222");
+                            $("#front-upload-2").attr("disabled", true);
+                            $("#tip-front").attr("src", "resources/img/public/correct.png");
+                        }
+
+                        if(typeof member.gender === "undefined" && json.sex) {
+                            member.gender = json.sex;
+                            if (member.gender === "FEMALE") {
+                                $(".gender").html("娘子");
+                            }
+                        }
+
+                        if(typeof member.validThru === "undefined" && json.validThru) {
+                            member.validThru = dict.getReadableDate(json.validThru).join(".");
+                            $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
+                            $("#back-upload-2").attr("disabled", true);
+                            $("#tip-back").attr("src", "resources/img/public/correct.png");
+                        }
                     },
                     error: function() {
-                        if (config.debug) {
-                            alert(config.api_path + "members/" + member.id + "/idCard");
-                        }
+                        $("#" + whichSide + "-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                        $("label[for='front-upload-2']").css("border-color", "#cc0000");
+                        $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
                     }
                 });
                 iframe.remove();
-            }, 4000);
+            }, 7000);
         });
     }
     else {
-        if (member.id_card) {
-            $("#front-num").html(member.id_card).css("color", "#222222");
+        if (member.idCard) {
+            $("#front-num").html(member.idCard).css("color", "#222222");
             $("#front-upload").attr("disabled", true);
             $("#tip-front").attr("src", "resources/img/public/correct.png");
         }
@@ -493,16 +500,16 @@ $(document).on("pagecreate", "#limit", function () {
             $("#front-upload").change(function (e) {
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
                 $("#front-num").html("正在识别...").css("color", "#222222");
-                var form_data = new FormData();
-                form_data.append("idCardFrontFile", e.target.files[0]);
-                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+                var formData = new FormData();
+                formData.append("idCardFrontFile", e.target.files[0]);
+                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
                     $("#front-num").html(json.idNo).css("color", "#222222");
                     $("label[for='front-upload']").css("border-color", "#c0c0c0");
                     $("#tip-front").attr("src", "resources/img/public/correct.png");
                     $("#front-upload").attr("disabled", true);
-                    member.id_card = json.idNo;
+                    member.idCard = json.idNo;
                     member.gender = json.sex;
-                    if (member.gender == "FEMALE") {
+                    if (member.gender === "FEMALE") {
                         $(".gender").html("娘子");
                     }
                 }).error(function () {
@@ -513,22 +520,22 @@ $(document).on("pagecreate", "#limit", function () {
             });
         }
 
-        if (member.valid_thru) {
-            $("#back-num").html("有效期至" + member.valid_thru).css("color", "#222222");
+        if (member.validThru) {
+            $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
             $("#back-upload").attr("disabled", true);
             $("#tip-back").attr("src", "resources/img/public/correct.png");
         }
         else {
             $("#back-upload").change(function (e) {
                 $("#back-num").html("正在识别...").css("color", "#222222");
-                var form_data = new FormData();
-                form_data.append("idCardBackFile", e.target.files[0]);
-                recognizeIdCard(form_data, config.api_path + "members/" + member.id + "/idCardBack", "text").success(function (text) {
+                var formData = new FormData();
+                formData.append("idCardBackFile", e.target.files[0]);
+                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardBack", "text").success(function (text) {
                     $("#back-num").html("有效期至" + text).css("color", "#222222");
                     $("label[for='back-upload']").css("border-color", "#c0c0c0");
                     $("#tip-back").attr("src", "resources/img/public/correct.png");
                     $("#back-upload").attr("disabled", true);
-                    member.valid_thru = text;
+                    member.validThru = text;
                 }).error(function () {
                     $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
                     $("label[for='back-upload']").css("border-color", "#cc0000");
@@ -539,20 +546,18 @@ $(document).on("pagecreate", "#limit", function () {
     }
 
     $("#credit-card").on("keyup", function (e) {
-        $("#card-tip").hide();
-        $("#tip-credit").css({"height": "22px", "width": "32px"});
+        var $cardTip = $("#card-tip"),
+            $tipCredit = $("#tip-credit");
+
+        $cardTip.hide();
+        $tipCredit.css({"height": "22px", "width": "32px"});
         var num = $(this).val();
-        if (num)
-            $("#credit-num").hide();
-        else
-            $("#credit-num").show();
+        dict.setCardIcon("tip-credit", num);
 
-        setCardIcon("tip-credit", num);
-
-        if(validateCardNo(num)) {
-            if (whetherUsedCard(num)) {
-                $("#tip-credit").attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                $("#card-tip").html("不可用的信用卡号!").show();
+        if(dict.validateCardNo(num)) {
+            if (member.whetherUsedCard(num)) {
+                $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
+                $cardTip.html("不可用的信用卡号!").show();
             }
             else {
                 if (!member.anothertest) {
@@ -560,31 +565,42 @@ $(document).on("pagecreate", "#limit", function () {
                 }
                 else{
                     $("#next-step").attr("href", "#result").css("background-color", "#3ca0e6").off("click").click(function () {
-                        member.credit_card = num;
-                        testLimit();
+                        member.creditCard = num;
+                        member.testLimit();
                     });
                 }
-                member.credit_card = num.replace(/ /g, "");
+                member.creditCard = num.replace(/ /g, "");
             }
         }
         else {
             $("#next-step").attr("href", "#");
-            if (num.replace(/ /g, "").length == 16 || num.replace(/ /g, "").length == 18)
-                $("#card-tip").html("卡号错误!").show();
-            else
-                $("#card-tip").hide();
+            if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
+                $cardTip.html("卡号错误!").show();
+                $("#next-step").removeClass("blue-btn").attr("href", "#");
+            }
+            else {
+                $cardTip.hide();
+            }
         }
 
-        if (num.length % 5 == 4) {
-            if (e.keyCode != 8)
+        if (num.length % 5 === 4) {
+            if (e.keyCode !== 8) {
                 $(this).val(num + " ");
-            else
+            }
+            else {
                 $(this).val(num.slice(0, num.length - 1));
+            }
+        }
+    }).focusin(function() {
+        $("#credit-num").hide();
+    }).focusout(function() {
+        if(!$(this).val()) {
+            $("#credit-num").show();
         }
     });
 
-    if (member.credit_card) {
-        $("#credit-card").val(member.credit_card);
+    if (member.creditCard) {
+        $(this).val(member.creditCard);
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
@@ -592,8 +608,12 @@ $(document).on("pagecreate", "#limit", function () {
 });
 
 $(document).on("pageshow", "#limit", function(){
-    $("#quit").tap(function() {
-        returnFootPrint(member.id, "-1");
+    if(typeof dict.bincode === "undefined") {
+        dict.getBincode();
+    }
+
+    $("#quit").off("tap").tap(function() {
+        member.returnFootPrint(member.id, "-1");
         WeixinJSBridge.call("closeWindow");
     });
 
@@ -613,22 +633,48 @@ $(document).on("pageshow", "#limit", function(){
 });
 
 $(document).on("pagecreate", "#basic-info", function(){
-    if (!dict.industry){
-        $.getJSON(config.api_path + "dict/industry", function(json){
+    function addOptions(elementId, json) {
+        var tmp = [],
+            $element = $("#" + elementId);
+        for (var i in json) {
+            if(json.hasOwnProperty(i)) {
+                tmp += "<option value=" + json[i].key + ">" + json[i].value + "</option>";
+            }
+        }
+        $element.append($(tmp)).selectmenu().selectmenu("refresh");
+    }
+
+    function enableLimitTest(btnId) {
+        var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if(member.creditCard && member.industry && member.education && mailRegEx.test(member.email)) {
+            $("#" + btnId).css("background-color", "#3ca0e6").tap(function () {
+                member.testLimit();
+            });
+        } else {
+            $("#" + btnId).css("background-color", "silver");
+        }
+    }
+
+    if (typeof dict.industry === "undefined"){
+        $.getJSON(config.apiPath + "dict/industry", function(json){
             addOptions("industry-select", json);
             dict.industry = json;
         });
     }
 
-    if(!dict.education){
-        $.getJSON(config.api_path + "dict/education", function(json){
+    if(typeof dict.education === "undefined"){
+        $.getJSON(config.apiPath + "dict/education", function(json){
             addOptions("education-select", json);
             dict.education = json;
         });
     }
 
     if (member.industry) {
-        $("#industry-select option[value='" + member.industry + "']").attr("selected", "selected");
+        $("#industry-select:nth-child(" + (member.industry + 1) + ")").attr("selected", "selected");
+    }
+
+    if (member.education) {
+        $("#education-select:nth-child(" + (member.education + 1) + ")").attr("selected", "selected");
     }
 
     $("#industry-select").change(function () {
@@ -638,10 +684,6 @@ $(document).on("pagecreate", "#basic-info", function(){
         enableLimitTest("hand-in");
     });
 
-    if (member.education) {
-        $("#education-select option[value='" + member.education + "']").attr("selected", "selected");
-    }
-
     $("#education-select").change(function () {
         $("#education-txt").hide();
         member.education = $(this).val();
@@ -650,13 +692,14 @@ $(document).on("pagecreate", "#basic-info", function(){
     });
 
     $("#email").keyup(function(){
-        if($(this).val().length)
-            $("#email-txt").hide();
-        else
-            $("#email-txt").show();
-
         member.email = $.trim($(this).val());
         enableLimitTest("hand-in");
+    }).focusin(function() {
+        $("#email-txt").hide();
+    }).focusout(function() {
+        if(!$(this).val()) {
+            $("#email-txt").show();
+        }
     });
 });
 
@@ -665,30 +708,30 @@ $(document).on("pagecreate", "#result", function(){
         $("#share").popup("open");
     });
 
-    var width = $(window).width() * 0.9;
-    var height = width * 160 / 300;
+    var width = $(window).width() * 0.9,
+        height = width * 160 / 300;
     $("#share").css({"width":width,"height":height,"background-size":width +"px " +height+ "px"});
     $("#share img").css({"width":width*0.16,"height":width*0.16});
 
-    whetherLoanable();
-    if (member.loanable) {
+    member.whetherLoanable();
+    if(member.isLoanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
             $.mobile.changePage("#loan");
         });
     }
 
-    if (member.status == "5.1") {
+    if(member.status === "5.1") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
             $.mobile.changePage("#congratulation");
         });
     }
-    else if (member.status == "5.2") {
+    else if(member.status === "5.2") {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
             $.mobile.changePage("#fail");
         });
     }
 
-    if (parseFloat(member.status) < 4) {
+    if(+member.status < 4) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
             $.mobile.changePage("#limit");
@@ -697,18 +740,23 @@ $(document).on("pagecreate", "#result", function(){
 });
 
 $(document).on("pagebeforeshow", "#result", function(){
-    getCreditLimit();
-    getAvlCrl();
+    if(typeof member.limit === "undefined") {
+        member.getCreditLimit();
+    }
 
-    if (member.status == "11" || member.status == "12"){
+    if(typeof member.avlCrl === "undefined") {
+        member.getAvlCrl();
+    }
+
+    if (member.status === "11" || member.status === "12"){
         member.limit = 0;
         member.rank = 0;
     }
 
-    $("#amt-shown").html(numberWithCommas(member.limit));
+    $("#amt-shown").html(dict.numberWithCommas(member.limit));
     $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
     if(member.limit > 4000){
-        if (member.gender == 1) {
+        if (member.gender === 1) {
             $("#rank-cmt").html("，娘子您是权贵啊！");
         }
         else {
@@ -746,7 +794,6 @@ function getShareConfig() {
     return {
         title : "么么贷的title, 暂缺",
         desc : "么么贷的描述, 暂缺",
-        summary : "么么贷的描述, 暂缺",
         url : document.location.href,
         img : "../img/8-1/sword.png",
         width : screen.width,
@@ -759,7 +806,7 @@ function getShareConfig() {
 resetWechatShare();
 
 function resetWechatShare() {
-    if(typeof WeixinJSBridge == "undefined") {
+    if(typeof WeixinJSBridge === "undefined") {
         return;
     }
     var share = {};
@@ -808,26 +855,30 @@ function resetWechatShare() {
     }, false);
 }
 
+function requestAvailable() {
+    $("#request").addClass("blue-btn");
+}
+
 $(document).on("pagecreate", "#loan", function () {
-    if (!dict.bincode) {
-        getBincode();
-    }
+    member.loanApplication = {};
+    var $newCardnum2 = $("#new-cardnum-2"),
+        $verifyingTips = $("#varifying-tips");
 
     $("#request").click(function(){
-        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount){
-            if (member.existingFlag == 2) {
+        if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount){
+            if (member.existingFlag === 2) {
                 $("#cardlist-2").popup("open");
             }
             else {
-                app.credit_card = "";
-                applyLoan(app);
+                member.loanApplication.creditCard = "";
+                member.applyLoan(member.loanApplication);
                 $.mobile.navigate("#suspension");
                 $(this).off("click");
             }
         }
     });
 
-    $("#agree").click(function () {
+    $("#agree").off("click").click(function () {
         var $agree = $(this);
         $agree.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agree.attr("checkFlag")) {
@@ -835,8 +886,11 @@ $(document).on("pagecreate", "#loan", function () {
         } else {
             $agree.attr("checkFlag","1");
         }
-        if($agree.attr("checkFlag") && member.validate && app.term && app.amount)
-            requestAvilable();
+        if($agree.attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
+            requestAvailable();
+        } else {
+            $("#request").removeClass("blue-btn");
+        }
     });
 
     $("#ok").click(function() {
@@ -845,7 +899,7 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#Y-2").click(function(){
-        applyLoan(app);
+        member.applyLoan(member.loanApplication);
     });
 
     $("#N-2, #close-4").click(function(){
@@ -862,25 +916,25 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#addcard-2").off("tap").tap(function(){
-        var card_num = $("#new-cardnum-2").val().replace(/ /g, "");
-        if (validateCardNo(card_num)) {
-            addCreditCard($("#new-cardnum-2").val()).success(function(){
+        var cardNum = $newCardnum2.val().replace(/ /g, "");
+        if (dict.validateCardNo(cardNum)) {
+            member.addCreditCard($newCardnum2.val()).success(function(){
                 $("#card-add-box-2").hide();
-                app.credit_card = card_num;
+                member.loanApplication.creditCard = cardNum;
                 setTimeout(function () {
                     $("#card-confirm-2").show();
                 }, 500);
-                $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
-                var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
+                var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
                 $("#cardlist-2").prepend($(tmp));
             }).error(function(){
-                $("#new-cardnum-2").val("");
+                $newCardnum2.val("");
                 $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
             });
         }
         else {
-            $("#new-cardnum-2").val("");
+            $newCardnum2.val("");
             $("#new-cardnum-2-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
         }
     });
@@ -906,142 +960,169 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
-    member.phone = "";
-    if (!member.avlcrl) {
-        getAvlCrl();
+    if (typeof dict.bincode === "undefined") {
+        dict.getBincode();
     }
-    $("#loan-limit").html(numberWithCommas(Math.round(member.avlcrl)));
 
-    if(member.existingFlag == 2){
+    var $verifyingTips = $("#varifying-tips");
+    member.phone = "";
+    if (typeof member.avlCrl === "undefined") {
+        member.getAvlCrl();
+    }
+    $("#loan-limit").html(dict.numberWithCommas(Math.round(member.avlCrl)));
+
+    if(member.existingFlag === 2){
         $("#request").html("确认, 去选择信用卡");
     }
 
-    var i = 60;
-    if(member.mobile_varified){
+    var i = 60,
+        $phone = $("#phone");
+    if(member.mobileVarified){
         $("#varifying").remove();
         member.validate = 1;
     }
     else{
         $("#acquire-code").off("click").click(function(){
-            var phone_num = $("#phone").val();
-            if(phone_num.length != 11) {
-                $("#varifying-tips h4").html("请输入正确的手机号码!");
-                $("#varifying-tips").show();
+            var phoneNum = $phone.val();
+            if(phoneNum.length !== 11) {
+                $verifyingTips.children("h4").html("请输入正确的手机号码!");
+                $verifyingTips.show();
             }
             else{
-                $.get(config.api_path + "dict/mobileArea/" + phone_num, function(text){
-                    if(text == "北京" || text == "上海" || text == "广州" || text == "深圳") {
-                        member.phone = phone_num;
-                        if (i == 60) {
-                            sendVarificationCode(member.phone).success(function(){
-                                $("#varifying-tips h4").html("您的验证码已发送!");
-                                $("#varifying-tips").show();
+                $.get(config.apiPath + "dict/mobileArea/" + phoneNum, function(text){
+                    if(text === "北京" || text === "上海" || text === "广州" || text === "深圳") {
+                        member.phone = phoneNum;
+                        if (i === 60) {
+                            member.acquireVerificationCode(member.phone).success(function(){
+                                $verifyingTips.children("h4").html("您的验证码已发送!");
+                                $verifyingTips.show();
                                 $(this).attr("disabled", "true");
+                                member.refreshIntervalId = setInterval(function() {
+                                    if (i > 0) {
+                                        $("#acquire-code").html(i);
+                                        i -= 1;
+                                    }
+                                    else {
+                                        $("#acquire-code").html("重新获取");
+                                        clearInterval(member.refreshIntervalId);
+                                        i = 60;
+                                    }
+                                }, 1000);
                             }).error(function () {
-                                $("#varifying-tips h4").html("您的验证码发送失败!");
-                                $("#varifying-tips").show();
+                                $verifyingTips.children("h4").html("您的验证码发送失败!");
+                                $verifyingTips.show();
                             });
                         }
                     }
                     else {
                         $("#out-of-area").show();
-                        returnFootPrint(member.id, "-1");
+                        member.returnFootPrint(member.id, "-1");
                     }
                 });
             }
         });
 
-        $("#phone").off("keyup").keyup(function(){
-            if($(this).val())
-                $("#phone-txt").hide();
-            else
+        $phone.off("focusin").focusin(function(){
+            $("#phone-txt").hide();
+        }).off("focusout").focusout(function() {
+            if(!$(this).val()) {
                 $("#phone-txt").show();
+            }
         });
 
         $("#code").off("keyup").keyup(function(){
-            var vcode = $(this).val();
-            if(vcode)
-                $("#code-txt").hide();
-            else
-                $("#code-txt").show();
+            var code = $(this).val();
 
             $("#code-tip").attr("src", "../img/public/keyboard.png");
-            if(vcode.length == 6 && member.phone.length == 11){
-                matchVarificationCode(vcode, member.phone).success(function(text){
-                    if("true" == text){
+            if(code.length === 6 && member.phone.length === 11){
+                member.matchVerificationCode(code, member.phone).success(function(text){
+                    if("true" === text){
                         $("#code-tip").attr("src", "resources/img/public/correct.png");
                         member.validate = true;
-                        if (typeof refreshIntervalId != "undefined") {
-                            clearInterval(refreshIntervalId);
+                        if (typeof member.refreshIntervalId !== "undefined") {
+                            clearInterval(member.refreshIntervalId);
                         }
-                        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
-                            requestAvilable();
+                        if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
+                            requestAvailable();
+                        }
                     }
                     else {
                         $("#code-tip").attr("src", "resources/img/public/wrong.png");
                     }
                 });
             }
+        }).off("focusin").focusin(function() {
+            $("#code-txt").hide();
+        }).off("focusout").focusout(function() {
+            if(!$(this).val()) {
+                $("#code-txt").show();
+            }
         });
     }
 
-    $("#phone").off("click").click(function () {
-        if($(this).val.length > 0)
-            $("#phone-txt").hide();
-        else
+    $phone.off("focusin").focusin(function () {
+        $("#phone-txt").hide();
+    }).off("focusout").focusout(function() {
+        if(!$(this).val()) {
             $("#phone-txt").show();
+        }
     });
 
-    app.term = "3";
+    member.loanApplication.term = "3";
     $("#amount").val("").off("keyup").keyup(function(){
-        var tmp = $("#amount").val();
-        if(tmp.length > 0)
-            $("#amount-txt").hide();
-        else
-            $("#amount-txt").show();
-
+        var tmp = $(this).val();
         if (tmp.length > 3 && parseInt(tmp, 10) % 100) {
             $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
         }
 
-        if(parseInt(tmp, 10) > parseInt(member.avlcrl, 10))
-            $(this).val(parseInt(member.avlcrl));
-
-        if (parseFloat($(this).val()) >= 1000) {
-            app.amount = $(this).val();
-            countPayback(app);
+        if(parseInt(tmp, 10) > parseInt(member.avlCrl, 10)) {
+            $(this).val(parseInt(member.avlCrl));
         }
 
-        if($("#agree").attr("checkFlag") && member.validate && app.term && app.amount)
-            requestAvilable();
+        if (parseFloat($(this).val()) >= 1000) {
+            member.loanApplication.amount = $(this).val();
+            member.countPaybackEachTerm(member.loanApplication);
+        } else {
+            $("#each-term, #saved").html("");
+        }
+
+        if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
+            requestAvailable();
+        }
+    }).off("focusin").focusin(function() {
+        $("#amount-txt").hide();
+    }).off("focusout").focusout(function() {
+        if(!$(this).val()) {
+            $("#amount-txt").show();
+        }
     });
 
     $("#term-3").off("click").click(function(){
-        if (app.term != "3"){
+        if (member.loanApplication.term !== "3"){
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
-            app.term = "3";
-            app.amount = $("#amount").val();
-            countPayback(app);
+            member.loanApplication.term = "3";
+            member.loanApplication.amount = $("#amount").val();
+            member.countPaybackEachTerm(member.loanApplication);
         }
     });
 
     $("#term-6").off("click").click(function(){
-        if (app.term != "6") {
+        if (member.loanApplication.term !== "6") {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
-            app.term = "6";
-            app.amount = $("#amount").val();
-            countPayback(app);
+            member.loanApplication.term = "6";
+            member.loanApplication.amount = $("#amount").val();
+            member.countPaybackEachTerm(member.loanApplication);
         }
     });
 
     if(!member.creditcard){
         member.creditcard = [];
-        $.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
+        $.get(config.apiPath + "members/" + member.id +"/creditCard", function(data){
             var tmp = [];
             $.each(data, function(ind, obj){
-                var src = getCardIconSrc(obj.bank);
+                var src = dict.getCardIconSrc(obj.bank);
                 tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
@@ -1052,48 +1133,50 @@ $(document).on("pagebeforeshow", "#loan", function () {
     $("#new-cardnum-2").off("keyup").keyup(function (e) {
         $("new-cardnum-2-tip").html("请使用您自己的卡片, 否则借款将无法注入").css("color", "#333333");
         var tmp = $(this).val();
-        if(tmp.length > 0)
-            $("#new-cardnum-2-placeholder").hide();
-        else
-            $("#new-cardnum-2-placeholder").show();
-
-        setCardIcon("tip-new-cardnum-2", tmp);
-
-        if (tmp.length % 5 == 4) {
-            if (e.keyCode != 8)
+        dict.setCardIcon("tip-new-cardnum-2", tmp);
+        if (tmp.length % 5 === 4) {
+            if (e.keyCode !== 8) {
                 $(this).val(tmp + " ");
-            else
+            }
+            else {
                 $(this).val(tmp.slice(0, tmp.length - 1));
+            }
+        }
+    }).off("focusin").focusin(function() {
+        $("#new-cardnum-2-placeholder").hide();
+    }).off("focusout").focusout(function() {
+        if(!$(this).val()) {
+            $("#new-cardnum-2-placeholder").show();
         }
     });
 });
 
 $(document).on("tap", ".card-container-0", function () {
-    app.credit_card = $(this).children("div").html();
+    member.loanApplication.creditCard = $(this).children("div").html();
     $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
             $("#card-confirm-2").show();
         }, 500);
     });
     $("#cardlist-2").popup("close");
-    $("#num-tail-0").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
 });
 
 $(document).on("tap", ".card-container", function () {
-    app.credit_card = $(this).children("div").html();
+    member.loanApplication.creditCard = $(this).children("div").html();
     $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
             $("#card-confirm").show();
         }, 500);
     });
     $("#cardlist").popup("close");
-    $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
+    $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
 });
 
 $(document).on("pagebeforeshow", "#congratulation", function(){
-    getAppNo();
+    member.getFirstLoanAppNo();
     if (!dict.bincode) {
-        getBincode();
+        dict.getBincode();
     }
 
     $("#agree-cong").click(function(){
@@ -1109,12 +1192,12 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $.ajax({
-        url: config.api_path + "app/" + member.appNo + config.time,
+        url: config.apiPath + "app/" + member.appNo + config.timeStamp,
         type: "GET",
         async: false,
         dataType: "json",
         success: function (json) {
-            $("#amt-x").html(numberWithCommas(json.amt));
+            $("#amt-x").html(dict.numberWithCommas(json.amt));
             $("#term-shown").html(json.term);
             $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css({"color": "black", "font-family": "avrial"});
             $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css({"color": "black", "font-family": "avrial"});
@@ -1123,16 +1206,16 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             }
         },
         error: function () {
-            alert(config.api_path + "app/" + member.appNo + config.time);
+            alert(config.apiPath + "app/" + member.appNo + config.timeStamp);
         }
     });
 
     if(!member.creditcard){
         member.creditcard = [];
-        $.get(config.api_path + "members/" + member.id +"/creditCard", function(data){
+        $.get(config.apiPath + "members/" + member.id +"/creditCard", function(data){
             var tmp = [];
             $.each(data, function(ind, obj){
-                var src = getCardIconSrc(obj.bank);
+                var src = dict.getCardIconSrc(obj.bank);
                 tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
@@ -1149,7 +1232,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         else
             $("#new-cardnum-placeholder").show();
 
-        setCardIcon("tip-new-cardnum", tmp);
+        dict.setCardIcon("tip-new-cardnum", tmp);
 
         if (tmp.length % 5 == 4) {
             if (e.keyCode != 8)
@@ -1160,7 +1243,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $("#Y").off("tap").tap(function(){
-        loanToThisCard(app.credit_card).success(function(){});
+        member.loanToCard(member.loanApplication.creditCard).success(function(){});
     });
 
     $("#N, #close-3").off("tap").tap(function(){
@@ -1181,17 +1264,17 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $("#addcard").off("tap").tap(function(){
-        var card_num = $("#new-cardnum").val().replace(/ /g, "");
-        if (validateCardNo(card_num)) {
-            addCreditCard($("#new-cardnum").val()).success(function(){
+        var cardNum = $("#new-cardnum").val().replace(/ /g, "");
+        if (dict.validateCardNo(cardNum)) {
+            member.addCreditCard($("#new-cardnum").val()).success(function(){
                 $("#card-add-box").hide();
-                app.credit_card = card_num;
+                member.loanApplication.creditCard = cardNum;
                 setTimeout(function () {
                     $("#card-confirm").show();
                 }, 500);
-                $("#num-tail").html(app.credit_card.slice(app.credit_card.length - 4, app.credit_card.length));
-                var icon_src = getCardIconSrc(card_num.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + icon_src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + card_num + "</div></div><hr>";
+                $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
+                var iconSrc = getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
                 $("#cardlist").prepend($(tmp));
             }).error(function(){
                 $("#new-cardnum").val("");
@@ -1214,20 +1297,24 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 });
 
 $(document).on("pagecreate", "#repayment-0", function () {
-    $.ajax({
-        url: config.api_path + "account/members/" + member.id,
-        type: "GET",
-        async: false,
-        dataType:"json",
-        success: function(json){
-            member.loan = json;
-        },
-        error: function () {
-            if (config.debug)
-                alert(config.api_path + "account/members/" + member.id);
-        }
-    });
-    if(!!member.loan && !!member.loan.loans && member.loan.loans.length != 0) {
+    if(!member.loan) {
+        $.ajax({
+            url: config.apiPath + "account/members/" + member.id,
+            type: "GET",
+            async: false,
+            dataType:"json",
+            success: function(json){
+                member.loan = json;
+            },
+            error: function () {
+                if (config.debug) {
+                    config.alertUrl(config.apiPath + "account/members/" + member.id);
+                }
+            }
+        });
+    }
+
+    if(!!member.loan && !!member.loan.loans && member.loan.loans.length !== 0) {
         generateCarousels(member.loan);
     } else {
         $.mobile.changePage("#no-repayment");
@@ -1247,7 +1334,7 @@ function generateCarousels(loanSummary) {
     }
     $("#container").html(contentHtml);
 
-    member.crnt_caro = 0;
+    member.crntCaro = 0;
     sliderPage();
 
     $(".repay-item-pay").off("tap").tap(function(e){
@@ -1259,18 +1346,18 @@ function generateCarousels(loanSummary) {
         var index = $(this).attr("index");
         var curLoan = loans[index];
         var detailInfo = [];
-        detailInfo.push(formatDate(curLoan.startDate,"1"));
+        detailInfo.push(dict.formatDate(curLoan.startDate,"1"));
         detailInfo.push("尾号" + curLoan.creditCardNo.slice(curLoan.creditCardNo.length - 4, curLoan.creditCardNo.length));
-        detailInfo.push(numberWithCommas(curLoan.amount));
+        detailInfo.push(dict.numberWithCommas(curLoan.amount));
         detailInfo.push(curLoan.term + "期");
-        var perDay = getReadableDate(curLoan.startDate)[2];
+        var perDay = dict.getReadableDate(curLoan.startDate)[2];
         if(perDay > 28) {
             detailInfo.push("每月" + perDay + "日 （无"+perDay+"日则提前）");
         } else {
             detailInfo.push("每月" + perDay + "日");
         }
-        detailInfo.push(numberWithCommas(curLoan.dueAmt.toFixed(2)));
-        detailInfo.push(numberWithCommas(curLoan.lastDueAmt.toFixed(2)));
+        detailInfo.push(dict.numberWithCommas(curLoan.dueAmt.toFixed(2)));
+        detailInfo.push(dict.numberWithCommas(curLoan.lastDueAmt.toFixed(2)));
 
         var $aim = $("#loan-specific");
         $("#loan-specific").find(".loan-d-r").each(function(i,item){
@@ -1307,11 +1394,11 @@ function generateItemLoan(loan,index) {
     if(status == 1) { // 逾期
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+dict.numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
-            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
+            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+dict.numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1320,7 +1407,7 @@ function generateItemLoan(loan,index) {
     } else if(status == 9) { // 结清
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+dict.numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">该笔借款已还清，总额：</div>\n"+
@@ -1331,11 +1418,11 @@ function generateItemLoan(loan,index) {
     } else {
         contentHtml = "<div class=\"repay-summary\">\n"+
             "    <div class=\"repay-s-time\">"+formatDate(loan.startDate,"1")+"</div>\n"+
-            "    <div class=\"repay-s-info\">借款&yen;"+numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
+            "    <div class=\"repay-s-info\">借款&yen;"+dict.numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
             "</div>\n"+
             "<div class=\"repay-amount\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
-            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
+            "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+dict.numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
             "    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1370,7 +1457,7 @@ function generateItemLoan(loan,index) {
 
 function sliderPage() {
     var $items = $(".repayment-item");
-    $items.current = $items[member.crnt_caro];
+    $items.current = $items[member.crntCaro];
     $items.prev = function() {
         if ($items.current != $items[0]) {
             window.scrollTo(0, 0);
@@ -1379,7 +1466,7 @@ function sliderPage() {
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind - 1) + ")").addClass("spot-chosen");
             $items.current = $items[ind - 1];
-            member.crnt_caro -= 1;
+            member.crntCaro -= 1;
         }
     };
     $items.next = function() {
@@ -1390,16 +1477,16 @@ function sliderPage() {
             $(".spot:eq(" + ind + ")").removeClass("spot-chosen");
             $(".spot:eq(" + (ind + 1) + ")").addClass("spot-chosen");
             $items.current = $items[ind + 1];
-            member.crnt_caro += 1;
+            member.crntCaro += 1;
         }
     };
 
-    $(".repayment-item").off("swipeleft").off("swiperight");
+    $items.off("swipeleft").off("swiperight");
     var $width = $(document).width();
     $items.css({"width":$width*0.9,"margin-left":$width*0.05,"margin-right":$width*0.045});
     $(".container").css({
         "width": $items.length * $width,
-        "left": -($width * member.crnt_caro)
+        "left": -($width * member.crntCaro)
     });
     // set width of dialog
     $("#loan-specific").css("width", $width*0.9);
@@ -1411,7 +1498,7 @@ function sliderPage() {
         }
     }
     $("#spots").css("width", 26 * $items.length + "px").html(tmp);
-    $(".spot:eq(" + member.crnt_caro + ")").addClass("spot-chosen");
+    $(".spot:eq(" + member.crntCaro + ")").addClass("spot-chosen");
 
     $(".repayment-item:not(:first, :last)").on({
         swipeleft: $items.next,
@@ -1423,10 +1510,10 @@ function sliderPage() {
 
 function generateLoanSum(info) {
     if(info) {
-        $("#total-amount").text(numberWithCommas(info.totalAmount));
+        $("#total-amount").text(dict.numberWithCommas(info.totalAmount));
         $("#total-times").text(info.loanCount);
-        $("#total-payback").text(numberWithCommas(info.totalDueAmt.toFixed(2)));
-        $("#total-saved").text(numberWithCommas(info.totalSavedCost.toFixed(0)));
+        $("#total-payback").text(dict.numberWithCommas(info.totalDueAmt.toFixed(2)));
+        $("#total-saved").text(dict.numberWithCommas(info.totalSavedCost.toFixed(0)));
     }
     if(info.loans) {
         var contentHtml = "";
@@ -1442,7 +1529,7 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+numberWithCommas(loan.amount)+"</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+dict.numberWithCommas(loan.amount)+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">注入卡片:</span>\n"+
@@ -1450,7 +1537,7 @@ function generateLoanSum(info) {
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">总计应还:</span>\n"+
-                "            <span class=\"sum-r-r\">&yen;"+numberWithCommas(loan.dueAmt.toFixed(2))+"</span>\n"+
+                "            <span class=\"sum-r-r\">&yen;"+dict.numberWithCommas(loan.dueAmt.toFixed(2))+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">较信用卡最低还款金额:</span>\n"+
@@ -1482,20 +1569,21 @@ $(document).on("pagecreate", "#no-repayment", function () {
         WeixinJSBridge.call("closeWindow");
     });
 });
-$(document).on("pagecreate", "#sum-loan", function () {
-    $.ajax({
-        url: config.api_path + "account/members/" + member.id,
-        type: "GET",
-        async: false,
-        dataType:"json",
-        success: function(json){
-            member.loan = json;
-        },
-        error: function () {
-            if (config.debug)
-                alert(config.api_path + "account/members/" + member.id);
-        }
-    });
+$(document).on("pagebeforeshow", "#sum-loan", function () {
+    if(!member.loan) {
+        $.ajax({
+            url: config.apiPath + "account/members/" + member.id,
+            type: "GET",
+            async: false,
+            dataType:"json",
+            success: function(json){
+                member.loan = json;
+            },
+            error: function () {
+                config.alertUrl(config.apiPath + "account/members/" + member.id);
+            }
+        });
+    }
     generateLoanSum(member.loan);
 });
 
@@ -1517,21 +1605,21 @@ $(document).on("pageshow", "#suspension", function () {
     });
 });
 
-$(document).on("pagecreate", "#patience", function () {
+$(document).on("pagebeforeshow", "#patience", function () {
     $.ajax({
-        url: config.api_path + "app/members/" + member.id + "/progress",
+        url: config.apiPath + "app/members/" + member.id + "/progress",
         type: "GET",
         dataType: "text",
         success: function(text) {
             var process = parseFloat(text);
             $("#hours").html((1 - process) * 48);
-            if(process < 0.15)
+            if(process < 0.15) {
                 process = 0.15;
+            }
             $("#bar-inner").css("width", 100 * process + "%");
         },
         error: function() {
-            if (config.debug)
-                alert(config.api_path + "app/members/" + member.id + "/progress");
+                config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
         }
     });
 });
@@ -1563,12 +1651,12 @@ $(document).on("pagecreate", "#feedback", function () {
             $tag.attr("href","#thanks-feedback");
             $tag.trigger("tag");
             $.ajax({
-                url: config.api_path + "members/" + member.id + "/feedback?f=" + tmp,
+                url: config.apiPath + "members/" + member.id + "/feedback?f=" + tmp,
                 type: "POST",
                 success: function () {},
                 error: function () {
                     if (config.debug)
-                        alert(config.api_path + "members/" + member.id + "/feedback");
+                        alert(config.apiPath + "members/" + member.id + "/feedback");
                 }
             });
         }
@@ -1582,43 +1670,43 @@ $(document).on("pagecreate", "#thanks-feedback", function () {
     });
 });
 
-window.onunload = function () {
-    var print_status,
-        ptn = /#(\w+)/,
-        hash = ptn.exec(window.location)[1];
-
-    if (hash == "#result" && member.status == "3.1") {
-        print_status = "1";
-        returnFootPrint(member.id, print_status);
-    }
-    else if (hash == "#congratulation" && (!app.credit_card)) {
-        print_status = "2";
-        returnFootPrint(member.id, print_status);
-    }
-
-    if ((member.status == "1" || member.status == "2") && (hash == "#limit" || hash == "#basic-info")) {
-        if (member.id_card) {
-            localStorage.setItem("id_card", member.id_card);
-        }
-        if (member.valid_thru) {
-            localStorage.setItem("valid_thru", member.valid_thru);
-        }
-        if ($("#credit-card").val()) {
-            localStorage.setItem("credit_card", $("#credit-card").val());
-            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
-        }
-        if (member.education) {
-            localStorage.setItem("education", member.education);
-        }
-        if (member.industry) {
-            localStorage.setItem("industry", member.industry);
-        }
-        if (member.email) {
-            localStorage.setItem("email", member.email);
-        }
-    }
-    else {
-        localStorage.clear();
-    }
-};
+//window.onunload = function () {
+//    var printStatus,
+//        ptn = /#(\w+)/,
+//        hash = ptn.exec(window.location)[1];
+//
+//    if (hash === "#result" && member.status == "3.1") {
+//        printStatus = "1";
+//        returnFootPrint(member.id, printStatus);
+//    }
+//    else if (hash === "#congratulation" && (!member.loanApplication.creditCard)) {
+//        printStatus = "2";
+//        returnFootPrint(member.id, printStatus);
+//    }
+//
+//    if ((member.status === "1" || member.status === "2") && (hash === "#limit" || hash === "#basic-info")) {
+//        if (member.idCard) {
+//            localStorage.setItem("id_card", member.idCard);
+//        }
+//        if (member.validThru) {
+//            localStorage.setItem("valid_thru", member.validThru);
+//        }
+//        if ($("#credit-card").val()) {
+//            localStorage.setItem("credit_card", $("#credit-card").val());
+//            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
+//        }
+//        if (member.education) {
+//            localStorage.setItem("education", member.education);
+//        }
+//        if (member.industry) {
+//            localStorage.setItem("industry", member.industry);
+//        }
+//        if (member.email) {
+//            localStorage.setItem("email", member.email);
+//        }
+//    }
+//    else {
+//        localStorage.clear();
+//    }
+//};
 console.log("END!");
