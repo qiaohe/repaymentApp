@@ -14,6 +14,7 @@ public class WeChatUser implements Serializable {
     private String language;
     private String headimgurl;
     private Integer subscribe_time;
+    private String remark;
     private Integer errcode;
     private String errmsg;
 
@@ -122,5 +123,13 @@ public class WeChatUser implements Serializable {
 
     public void setSubscribe_time(Integer subscribe_time) {
         this.subscribe_time = subscribe_time;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
