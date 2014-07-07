@@ -59,9 +59,9 @@ $(function(){
             success: function (data) {
                 if(data && data == "1") {
                     if(flag == "1") {
-                        console.log("处理成功");
+                        console.log("处理成功！");
                     } else {
-                        alert("处理成功");
+                        alert("处理失败，请稍后重试！");
                     }
                 } else {
                     alert("请稍后重试！");
@@ -104,10 +104,10 @@ $(function(){
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    if(data) {
-                        window.open("api/resources/idcard/temp/"+data,"_blank");
+                    if(data && data == "1") {
+                        alert("处理成功！");
                     } else {
-                        alert("请稍后重试！");
+                        alert("处理失败，请稍后重试！");
                     }
                 },
                 error: function(data) {

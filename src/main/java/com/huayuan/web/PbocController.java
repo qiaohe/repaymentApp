@@ -222,8 +222,8 @@ public class PbocController {
             }
             IdCard idCard = idCards.get(0);
             if(idCard != null) {
-                processor.preProcessingImage(idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR);
-                processor.preProcessingImage(idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR);
+                processor.preProcessingImage(path +"/"+ idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR);
+                processor.preProcessingImage(path +"/"+ idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR);
             }
         }
         return "1";
