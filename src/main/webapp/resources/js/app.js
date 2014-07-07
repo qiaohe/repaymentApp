@@ -947,7 +947,7 @@ $(document).on("pagecreate", "#loan", function () {
         $("#card-add-box-2").hide();
     });
 
-    $("#varifying-tips a").click(function () {
+    $("#varifying-tips a").click(function() {
         $("#varifying-tips").hide();
     });
 
@@ -1070,8 +1070,9 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
     member.loanApplication.term = "3";
     $("#amount").val("").off("keyup").keyup(function(){
-        var tmp = $(this).val();
-        if (tmp.length > 3 && parseInt(tmp, 10) % 100) {
+        var tmp = $(this).val(),
+            judgeLength = member.avlCrl.toString().length - 1;
+        if (tmp.length >= judgeLength && parseInt(tmp, 10) % 100) {
             $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
         }
 
