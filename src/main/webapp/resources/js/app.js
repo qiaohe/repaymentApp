@@ -1,4 +1,4 @@
-﻿/* global alert:false */
+﻿﻿/* global alert:false */
 /* global config:false */
 /* global member:false */
 /* global json:false */
@@ -576,7 +576,7 @@ $(document).on("pagecreate", "#limit", function () {
             $("#next-step").attr("href", "#");
             if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
                 $cardTip.html("卡号错误!").show();
-                $("#next-step").removeClass("blue-btn").attr("href", "#");
+                $("#next-step").removeClass("bluebtn").attr("href", "#");
             }
             else {
                 $cardTip.hide();
@@ -617,12 +617,12 @@ $(document).on("pageshow", "#limit", function(){
         WeixinJSBridge.call("closeWindow");
     });
 
-    $("#continue").tap(function() {
+    $("#continue").off("tap").tap(function() {
         $("#pop-limit").popup("close");
     });
 
     if (member.anothertest) {
-        $("#credit-card").val("").focus().trigger("tap");
+        $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
     }
 
@@ -856,7 +856,7 @@ function resetWechatShare() {
 }
 
 function requestAvailable() {
-    $("#request").addClass("blue-btn");
+    $("#request").addClass("bluebtn");
 }
 
 $(document).on("pagecreate", "#loan", function () {
@@ -864,7 +864,7 @@ $(document).on("pagecreate", "#loan", function () {
     var $newCardnum2 = $("#new-cardnum-2"),
         $verifyingTips = $("#varifying-tips");
 
-    $("#request").click(function(){
+    $("#request").off("click").click(function(){
         if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount){
             if (member.existingFlag === 2) {
                 $("#cardlist-2").popup("open");
@@ -888,30 +888,28 @@ $(document).on("pagecreate", "#loan", function () {
         }
         if($agree.attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
             requestAvailable();
-        } else {
-            $("#request").removeClass("blue-btn");
         }
     });
 
-    $("#ok").click(function() {
+    $("#ok").off("click").click(function() {
         $("#out-of-area").hide();
         $("#request").off("click");
     });
 
-    $("#Y-2").click(function(){
+    $("#Y-2").off("click").click(function(){
         member.applyLoan(member.loanApplication);
     });
 
-    $("#N-2, #close-4").click(function(){
+    $("#N-2, #close-4").off("click").click(function(){
         $("#card-confirm-2").hide();
     });
 
-    $("#add-another-2").click(function(){
+    $("#add-another-2").off("click").click(function(){
         $("#cardlist-2").popup("close");
         $("#card-add-box-2").show();
     });
 
-    $("#return-2").click(function(){
+    $("#return-2").off("click").click(function(){
         $("#card-add-box-2").hide();
     });
 
@@ -939,23 +937,16 @@ $(document).on("pagecreate", "#loan", function () {
         }
     });
 
-    $("#close").click(function() {
+    $("#close").off("click").click(function() {
         $("#cardlist-2").popup("close");
     });
 
-    $("#close-2").click(function() {
+    $("#close-2").off("click").click(function() {
         $("#card-add-box-2").hide();
     });
 
-    $("#varifying-tips a").click(function() {
+    $("#varifying-tips a").off("click").click(function() {
         $("#varifying-tips").hide();
-    });
-
-    $("#amount").focusout(function() {
-        if (parseFloat($(this).val()) < 1000) {
-            $("#varifying-tips h4").html("抱歉，最小借款金额为￥1000!");
-            $("#varifying-tips").show();
-        }
     });
 });
 
@@ -985,7 +976,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
         $("#acquire-code").off("click").click(function(){
             var phoneNum = $phone.val();
             if(phoneNum.length !== 11) {
-                $verifyingTips.children("h4").html("请输入正确的手机号码!");
+                $verifyingTips.find("h4").html("请输入正确的手机号码!");
                 $verifyingTips.show();
             }
             else{
@@ -994,7 +985,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         member.phone = phoneNum;
                         if (i === 60) {
                             member.acquireVerificationCode(member.phone).success(function(){
-                                $verifyingTips.children("h4").html("您的验证码已发送!");
+                                $verifyingTips.find("h4").html("您的验证码已发送!");
                                 $verifyingTips.show();
                                 $(this).attr("disabled", "true");
                                 member.refreshIntervalId = setInterval(function() {
@@ -1009,7 +1000,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                                     }
                                 }, 1000);
                             }).error(function () {
-                                $verifyingTips.children("h4").html("您的验证码发送失败!");
+                                $verifyingTips.find("h4").html("您的验证码发送失败!");
                                 $verifyingTips.show();
                             });
                         }
@@ -1070,11 +1061,10 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
     member.loanApplication.term = "3";
     $("#amount").val("").off("keyup").keyup(function(){
-        var tmp = $(this).val(),
-            judgeLength = member.avlCrl.toString().length - 1;
-        if (tmp.length >= judgeLength && parseInt(tmp, 10) % 100) {
-            $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
-        }
+        var tmp = $(this).val();
+//        if (tmp.length >= judgeLength && parseInt(tmp, 10) % 100) {
+//            $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
+//        }
 
         if(parseInt(tmp, 10) > parseInt(member.avlCrl, 10)) {
             $(this).val(parseInt(member.avlCrl));
@@ -1096,6 +1086,17 @@ $(document).on("pagebeforeshow", "#loan", function () {
         if(!$(this).val()) {
             $("#amount-txt").show();
         }
+        $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
+        if (parseFloat($(this).val()) < 1000) {
+            $("#varifying-tips h4").html("抱歉，最小借款金额为￥1000!");
+            $("#varifying-tips").show();
+        }
+//        var amount = $("#amount").val();
+//        if(parseFloat(amount) % 100) {
+//            var $verifyingTips = $("#varifying-tips");
+//            $verifyingTips.find("h4").html("借款金额仅限整百!");
+//            $verifyingTips.show();
+//        }
     });
 
     $("#term-3").off("click").click(function(){
@@ -1193,7 +1194,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $.ajax({
-        url: config.apiPath + "app/" + member.appNo + config.timeStamp,
+        url: config.apiPath + "app/" + member.firstLoanAppNo + config.timeStamp,
         type: "GET",
         async: false,
         dataType: "json",
@@ -1207,7 +1208,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             }
         },
         error: function () {
-            alert(config.apiPath + "app/" + member.appNo + config.timeStamp);
+            alert(config.apiPath + "app/" + member.firstLoanAppNo + config.timeStamp);
         }
     });
 

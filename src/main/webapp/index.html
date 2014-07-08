@@ -182,8 +182,7 @@
         <span style="color: #404040">&yen;</span>
         <span id="amt-shown" style="font-family: Arial; font-size: 2.3em; color: #404040"></span>
     </h1>
-    <h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown"
-                                                                                   style="font-size: 1.6em; font-family: Arial; color: #e67e22"></span>的用户<span
+    <h4 style="margin: -2% 0 0 35%; font-size: 1.6em; color: #c0c0c0">您的补给打败了<span id="rank-shown" style="font-size: 1.6em; font-family: Arial; color: #e67e22"></span>的用户<span
             id="rank-cmt">，<span class="gender">官人</span>还有努力空间。</span></h4>
 
     <div data-role="listview" style="float: right; width: 65%; margin:10% 5% 0 0 ">
@@ -207,10 +206,10 @@
 
 <!-- loan -->
 <div data-role="page" id="loan" data-title="申请借款" style="background-color:#f7f7f7">
-    <div class="cover" style="height:125px">
+    <div class="cover" style="height:130px">
         <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">可用额度:</div>
-        <div style="font-family: Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:35px"><span style="font-size: 1.5em">&yen; </span><span
-                id="loan-limit" style="font-size: 2.4em; color: #404040"></span></div>
+        <div style="font-family: Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:35px"><span style="font-size: 1.6em; font-weight:bolder">&yen; </span><span
+                id="loan-limit" style="font-family: Arial; font-size: 2.3em; color: #404040; font-weight: bolder"></span></div>
     </div>
     <p><span class="gender">官人</span>本次想动用多少额度？<span style="color:#c0c0c0; font-size:0.9em">(仅支持整百)</span></p>
 
@@ -281,7 +280,7 @@
                             class="placeholder" id="code-txt" style="width:50%">请填写</span></label>
                     <input data-role="none" type="tel" id="code"
                            style="border:none; padding-left:5px; font-size:1.4em; width: 94%; height: 26px">
-                    <label for="code"><img src="resources/img/public/keyboard.png" id="code-tip" style="z-index: 0; float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:22px"></label>
+                    <label for="code"><img src="resources/img/public/keyboard.png" id="code-tip" style="z-index: 0; float: right; position: absolute; top:3px; right:-5% ;margin: 5px 6% auto auto;  width:22px; height:16px"></label>
                 </div>
                 <div style="float:left; margin-left:5%">
                     <a href="#" class="ui-btn custom-btn" id="acquire-code"
@@ -292,7 +291,7 @@
 
         <div style="margin-left: 9%; font-size:1.2em">
             <div class="check-custom1" id="agree" style="position: relative; top: 5px"></div>
-            <label style="margin-top:5px; padding-top:6px">我同意<a href="protocol-1"><span
+            <label style="margin-top:5px; padding-top:6px">我同意<a href="#protocol-1"><span
                     style="color:blue">《么么贷借款协议》</span></a></label>
         </div>
 
@@ -312,7 +311,7 @@
     <div id="varifying-tips" style="position: absolute; top: 0; width: 100%; height: 100%; display: none">
         <div class="bkg"></div>
         <div style="width:92%; position: absolute; top: 40%; left: 4%; background-color: white; border: 3px solid silver; border-radius: 5px; text-align: center">
-            <h4 style="font-size:1.3em"></h4>
+            <h4 style="font-size:1.5em"></h4>
             <div style="width: 60%; margin: auto 20%"><a href="#" class="ui-btn custom-btn" style="background-color: #3ca0e6">知道了</a></div>
         </div>
     </div>
@@ -380,7 +379,7 @@
     <div style="font-size: 1.8em; color: gray; text-align: center; margin-top: 15%">申请已提交</div>
     <div style="text-align: center; margin-top: 5px"><img src="resources/img/other_icons/6-4-1.png" style="width: 140px; height: 140px"></div>
 
-    <ul style="color: gray; width: 80%; margin: 0">
+    <ul style="color: gray; width: 90%; margin: 0">
         <li><span>大概两个工作日后，我们会发消息给您~</span></li>
         <li><span>小声说，信用卡还款有3天宽限期的哦~</span></li>
     </ul>
@@ -422,29 +421,32 @@
 
 <div data-role="page" id="congratulation">
     <div>
-        <div class="cover" style="height: 150px; padding-top: 10px">
+        <div class="cover" style="height: 120px; padding-top: 35px">
             <div id="cong-discription" style="text-align: left; margin-left: 10%; color: white; font-size: 1.6em">
                 恭喜<span class="gender">官人</span>!您的借款审批通过~
             </div>
-            <div style="font-size:2.5em; font-family: Arial, sans-serif;">&yen;<span id="amt-x" style="font-size:2em">10,000</span></div>
+            <div style="font-size:1.6em; font-family: Arial; font-weight: bolder; margin: 20px auto">&yen;<span id="amt-x" style="font-size:2.3em; font-weight: bolder">10,000</span></div>
         </div>
+        <hr style="color: gray; margin-top:10px">
 
         <p style="margin: 30px auto 0 10%">还款期数</p>
         <div style="width: 40%; margin-left: 10%">
-            <div class="ui-btn term-chose" disabled><span id="term-shown">6</span>个月</div>
+            <div class="ui-btn term-chose" disabled><span id="term-shown" style="font-family: Arial">6</span>个月</div>
         </div>
+        <hr style="color: gray">
 
         <div style="width: 100%; height: 60px">
             <div style="width: 50%; float: left">
                 <p style="text-align: center; font-size: 1.5em; margin: 5px auto">您每期需要还款</p>
-                <div style="text-align: center; font-size: 1.5em; margin: 5px auto"><span id="each-x" style="color: black">&yen;540.20</span></div>
+                <div style="text-align: center; font-size: 1.5em; margin: 5px auto; font-family: Arial"><span id="each-x" style="color: black">&yen;540.20</span></div>
             </div>
 
             <div style="width: 50%; float: right">
                 <p style="text-align: center; font-size: 1.5em; margin: 5px auto">相比信用卡最高可省</p>
-                <div style="text-align: center; font-size: 1.5em; margin: 5px auto"><span id="saved-x">&yen;150</span></div>
+                <div style="text-align: center; font-size: 1.5em; margin: 5px auto"><span id="saved-x" style="font-family: Arial">&yen;150</span></div>
             </div>
         </div>
+        <hr style="color: gray">
 
         <div style="margin: 40px auto 0 8%; height: 35px">
             <div class="check-custom1" id="agree-cong" style="position: relative; top: 5px"></div>

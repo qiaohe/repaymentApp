@@ -8,7 +8,7 @@ $(function(){
             var data = window.dialogArguments;
             idcard.idNo = data.idNo;
             idcard.type = data.frontOrBack;
-            $("#target").attr("src","api/resources/idcard/"+data.imgName+"?r="+new Date().getTime());
+            $("#target").attr("src","api/resources/idcard/processed/"+data.imgName+"?r="+new Date().getTime());
         }
         idcard.initCrop();
         idcard.initEvent();
