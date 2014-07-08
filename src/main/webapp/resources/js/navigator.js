@@ -163,6 +163,7 @@ var config = {
     })();
 
 (function navigate() {
+    member.id = 145;
     member.getId();
     member.getStatus();
     member.getDestPage();
@@ -171,7 +172,7 @@ var config = {
     if (Number(member.status) > 2) {
         member.getBasicInfo();
     }
-    $.mobile.navigate(member.destPage);
+    $.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);
 })();
 
 console.log("navigation ends!");

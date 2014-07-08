@@ -18,7 +18,7 @@ $(function(){
             "<td style=\"width:10%;\">PDF</td>\n"+
             "<td style=\"width:10%;\">身份证正面</td>\n"+
             "<td style=\"width:10%;\">身份证反面</td>\n"+
-        "</tr>");
+            "</tr>");
         $.ajax({
             url: url,
             dataType: "json",
@@ -36,12 +36,12 @@ $(function(){
                         "<td>"+entity.idNo+"</td>\n"+
                         "<td><input type=\"button\" class=\"idCardPdf\" value=\"打开\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' idNo=\""+entity.idNo+"\"></td>\n"+
                         "<td>\n"+
-                        "    <input type=\"button\" class=\"idCardFront\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageFront+"\" idNo=\""+entity.idNo+"\">\n"+
+                        " <input type=\"button\" class=\"idCardFront\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageFront+"\" idNo=\""+entity.idNo+"\">\n"+
                         "</td>\n"+
                         "<td>\n"+
-                        "    <input type=\"button\" class=\"idCardBack\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageBack+"\" idNo=\""+entity.idNo+"\">\n"+
+                        " <input type=\"button\" class=\"idCardBack\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageBack+"\" idNo=\""+entity.idNo+"\">\n"+
                         "</td>\n"+
-                    "</tr>"
+                        "</tr>"
                 });
                 $("#pboc-table").append(contentHtml);
             },

@@ -1,4 +1,4 @@
-﻿﻿/* global alert:false */
+﻿/* global alert:false */
 /* global config:false */
 /* global member:false */
 /* global json:false */
@@ -859,6 +859,10 @@ function requestAvailable() {
     $("#request").addClass("bluebtn");
 }
 
+function requestUnavailable() {
+    $("#request").removeClass("bluebtn").css("background-color", "gray");
+}
+
 $(document).on("pagecreate", "#loan", function () {
     member.loanApplication = {};
     var $newCardnum2 = $("#new-cardnum-2"),
@@ -888,6 +892,8 @@ $(document).on("pagecreate", "#loan", function () {
         }
         if($agree.attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
             requestAvailable();
+        } else {
+            requestUnavailable();
         }
     });
 
@@ -1023,12 +1029,13 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
         $("#code").off("keyup").keyup(function(){
             var code = $(this).val();
-
-            $("#code-tip").attr("src", "../img/public/keyboard.png");
             if(code.length === 6 && member.phone.length === 11){
                 member.matchVerificationCode(code, member.phone).success(function(text){
                     if("true" === text){
-                        $("#code-tip").attr("src", "resources/img/public/correct.png");
+                        $("#code-tip").attr("src", "resources/img/public/correct.png").css({
+                            "height": "22px",
+                            "margin-top": "3px"
+                        });
                         member.validate = true;
                         if (typeof member.refreshIntervalId !== "undefined") {
                             clearInterval(member.refreshIntervalId);
@@ -1038,12 +1045,19 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         }
                     }
                     else {
-                        $("#code-tip").attr("src", "resources/img/public/wrong.png");
+                        $("#code-tip").attr("src", "resources/img/public/wrong.png").css({
+                            "height": "22px",
+                            "margin-top": "3px"
+                        });
                     }
                 });
             }
         }).off("focusin").focusin(function() {
             $("#code-txt").hide();
+            $("#code-tip").attr("src", "../img/public/keyboard.png").css({
+                "height": "16px",
+                "margin-top": "5px"
+            });
         }).off("focusout").focusout(function() {
             if(!$(this).val()) {
                 $("#code-txt").show();
@@ -1062,18 +1076,23 @@ $(document).on("pagebeforeshow", "#loan", function () {
     member.loanApplication.term = "3";
     $("#amount").val("").off("keyup").keyup(function(){
         var tmp = $(this).val();
-//        if (tmp.length >= judgeLength && parseInt(tmp, 10) % 100) {
-//            $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
-//        }
-
+        if(isNaN(parseFloat(tmp, 10))) {
+            $(this).val("");
+        } else {
+            $(this).val(parseFloat(tmp, 10));
+        }
         if(parseInt(tmp, 10) > parseInt(member.avlCrl, 10)) {
             $(this).val(parseInt(member.avlCrl));
+            alert(tmp);
+            alert($(this).val());
         }
 
         if (parseFloat($(this).val()) >= 1000) {
             member.loanApplication.amount = $(this).val();
             member.countPaybackEachTerm(member.loanApplication);
         } else {
+            member.loanApplication.amount = undefined;
+            requestUnavailable();
             $("#each-term, #saved").html("");
         }
 
@@ -1083,20 +1102,17 @@ $(document).on("pagebeforeshow", "#loan", function () {
     }).off("focusin").focusin(function() {
         $("#amount-txt").hide();
     }).off("focusout").focusout(function() {
-        if(!$(this).val()) {
-            $("#amount-txt").show();
+        var tmp = $(this).val();
+        if(!isNaN(parseInt(tmp))) {
+            $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
+        } else {
+            $(this).val("");
         }
-        $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
+
         if (parseFloat($(this).val()) < 1000) {
             $("#varifying-tips h4").html("抱歉，最小借款金额为￥1000!");
             $("#varifying-tips").show();
         }
-//        var amount = $("#amount").val();
-//        if(parseFloat(amount) % 100) {
-//            var $verifyingTips = $("#varifying-tips");
-//            $verifyingTips.find("h4").html("借款金额仅限整百!");
-//            $verifyingTips.show();
-//        }
     });
 
     $("#term-3").off("click").click(function(){

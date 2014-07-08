@@ -12,12 +12,14 @@ import com.huayuan.repository.member.PreCreditRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.SmsVerificationCodeService;
 import com.huayuan.web.dto.*;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -56,7 +58,7 @@ public class MemberController {
     @RequestMapping(value = "/{id}/idCardFront", method = RequestMethod.POST)
     public
     @ResponseBody
-    Callable<IdCard> uploadIdCardFront(@PathVariable final Long id, @RequestParam("idCardFrontFile") final MultipartFile idCardFrontFile) throws IOException {
+    Callable<IdCard> uploadIdCardFront(@PathVariable final Long id, @RequestParam("idCardFrontFile") final MultipartFile idCardFrontFile,HttpServletRequest request) throws IOException {
         if (idCardFrontFile.isEmpty())
             throw new IllegalArgumentException("error.member.idCard.front.bad.argument.empty");
         return new Callable<IdCard>() {

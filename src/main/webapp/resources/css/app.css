@@ -11,6 +11,7 @@ a {
 li {
     list-style: none;
     border: none;
+    font-weight: normal
 }
 
 input {
@@ -939,4 +940,10 @@ hr{
     font-size: 1.4em;
     margin: 35px 30px auto 30px;
     color: gray;
+}
+
+.ui-icon-loading {
+    background: url(../img/other_icons/9-4-1.gif);
+    background-size: 2.875em 2.875em;
+    background-color: transparent;
 }
