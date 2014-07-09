@@ -1634,12 +1634,12 @@ $(document).on("pagebeforeshow", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-//            var process = parseFloat(text);
-//            $("#hours").html((1 - process) * 48);
-//            if(process < 0.15) {
-//                process = 0.15;
-//            }
-            $("#bar-inner").css("width", text + "%");
+            $("#hours").html(text);
+            var process = 100 - Math.floor(100 * Number(text) / 48);
+            if(process < 15) {
+                process = 15;
+            }
+            $("#bar-inner").css("width", progress + "%");
         },
         error: function() {
                 config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
