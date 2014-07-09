@@ -17,8 +17,6 @@ import com.huayuan.web.dto.LoanApplicationDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Hours;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -136,11 +134,9 @@ public class ApplicationLoanController {
 
     @RequestMapping(value = "/members/{memberId}/progress", method = RequestMethod.GET)
     @ResponseBody
-    public double getProgressOfApplication(@PathVariable Long memberId) {
+    public Integer getProgressOfApplication(@PathVariable Long memberId) {
         Application application = applicationService.getApplicationBy(memberId);
-        DateTime t1 = new DateTime(application.getCreateTime());
-        DateTime t2 = new DateTime();
-        return Hours.hoursBetween(t1, t2).getHours() / 48;
+        return application.remainingHoursBasedOnStatus();
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.GET)

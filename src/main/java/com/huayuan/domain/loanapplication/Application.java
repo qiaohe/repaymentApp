@@ -17,6 +17,7 @@ import java.util.List;
 public class Application {
     public static final Integer TEMPORARILY_STATUS = 99;
     public static final Integer APPROVED_STATUS = 5;
+    private static final Integer REMAINING_UNIT = 12;
     @Id
     @Column(name = "APPL_NO")
     private String applicationNo;
@@ -245,7 +246,11 @@ public class Application {
         return String.valueOf(status);
     }
 
-    public  boolean isFullyApproved() {
+    public boolean isFullyApproved() {
         return isApproved() && getApproval().getAmt().equals(getAmt());
+    }
+
+    public Integer remainingHoursBasedOnStatus() {
+        return Math.max((4 - status) * REMAINING_UNIT, 0);
     }
 }
