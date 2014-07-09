@@ -343,6 +343,8 @@ member = (function(member) {
         });
     };
 
+    member.loanApplication = {};
+
     member.applyLoan = function(loanApplication) {
         return $.ajax({
             url: config.apiPath + "app" + config.timeStamp,
@@ -415,8 +417,8 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     device.getUserAgent();
     device.getAndroidVersion();
-//    if(device.androidVersion <= 2.3) {
-    if(1 <= 2.3) {
+    if(device.androidVersion <= 2.3) {
+//    if(1 <= 2.3) {
         $("#front-upload, #back-upload").remove();
         $("label[for='front-upload']").attr("for", "front-upload-2");
         $("label[for='back-upload']").attr("for", "back-upload-2");
@@ -1217,14 +1219,14 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         success: function (json) {
             $("#amt-x").html(dict.numberWithCommas(json.amt));
             $("#term-shown").html(json.term);
-            $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css({"color": "black", "font-family": "avrial"});
-            $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css({"color": "black", "font-family": "avrial"});
+            $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css("color", "black");
+            $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css("color", "black");
             if (!json.isFullyApproved) {
                 $("#cong-discription").html("抱歉, 只能先借这么多给您...");
             }
         },
         error: function () {
-            alert(config.apiPath + "app/" + member.firstLoanAppNo + config.timeStamp);
+            config.alertUrl(config.apiPath + "app/" + member.firstLoanAppNo + config.timeStamp);
         }
     });
 
@@ -1673,8 +1675,7 @@ $(document).on("pagecreate", "#feedback", function () {
                 type: "POST",
                 success: function () {},
                 error: function () {
-                    if (config.debug)
-                        alert(config.apiPath + "members/" + member.id + "/feedback");
+                    config.alertUrl(config.apiPath + "members/" + member.id + "/feedback");
                 }
             });
         }

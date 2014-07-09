@@ -163,7 +163,7 @@ var config = {
     })();
 
 (function navigate() {
-    member.id = 145;
+    member.id = 134;
     member.getId();
     member.getStatus();
     member.getDestPage();
