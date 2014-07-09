@@ -1639,7 +1639,7 @@ $(document).on("pagebeforeshow", "#patience", function () {
             if(process < 15) {
                 process = 15;
             }
-            $("#bar-inner").css("width", progress + "%");
+            $("#bar-inner").css("width", process + "%");
         },
         error: function() {
                 config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
