@@ -417,6 +417,7 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     device.getUserAgent();
     device.getAndroidVersion();
+    alert(device.androidVersion);
     if(device.androidVersion <= 2.3) {
 //    if(1 <= 2.3) {
         $("#front-upload, #back-upload").remove();
@@ -756,7 +757,7 @@ $(document).on("pagebeforeshow", "#result", function(){
     }
 
     $("#amt-shown").html(dict.numberWithCommas(member.limit));
-    $("#rank-shown").html(Math.round(member.rank * 100) + "&#37");
+    $("#rank-shown").html(Math.round(member.rank * 100) + "&#37;");
     if(member.limit > 4000){
         if (member.gender === 1) {
             $("#rank-cmt").html("，娘子您是权贵啊！");
@@ -1056,7 +1057,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             }
         }).off("focusin").focusin(function() {
             $("#code-txt").hide();
-            $("#code-tip").attr("src", "../img/public/keyboard.png").css({
+            $("#code-tip").attr("src", "resources/img/public/keyboard.png").css({
                 "height": "16px",
                 "margin-top": "5px"
             });
@@ -1105,10 +1106,12 @@ $(document).on("pagebeforeshow", "#loan", function () {
         $("#amount-txt").hide();
     }).off("focusout").focusout(function() {
         var tmp = $(this).val();
-        if(!isNaN(parseInt(tmp))) {
-            $(this).val(parseInt(tmp, 10) - (parseInt(tmp, 10) % 100));
-        } else {
+        if(isNaN(parseInt(tmp))) {
             $(this).val("");
+        } else if(tmp % 100) {
+            member.loanApplication.amount = undefined;
+            $("#varifying-tips h4").html("借款金额仅限整百!");
+            $("#varifying-tips").show();
         }
 
         if (parseFloat($(this).val()) < 1000) {
@@ -1631,12 +1634,12 @@ $(document).on("pagebeforeshow", "#patience", function () {
         type: "GET",
         dataType: "text",
         success: function(text) {
-            var process = parseFloat(text);
-            $("#hours").html((1 - process) * 48);
-            if(process < 0.15) {
-                process = 0.15;
-            }
-            $("#bar-inner").css("width", 100 * process + "%");
+//            var process = parseFloat(text);
+//            $("#hours").html((1 - process) * 48);
+//            if(process < 0.15) {
+//                process = 0.15;
+//            }
+            $("#bar-inner").css("width", text + "%");
         },
         error: function() {
                 config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
