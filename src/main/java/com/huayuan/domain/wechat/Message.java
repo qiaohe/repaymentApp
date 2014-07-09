@@ -128,7 +128,7 @@ public class Message {
     }
 
     public boolean isTelephoneVerification() {
-        return StringUtils.isNotEmpty(content) && (content.contains("#") || content.contains("＃"));
+        return StringUtils.isNotEmpty(content) && StringUtils.startsWithAny(content, new String[]{"#", "＃"});
     }
 
     public boolean isAbout() {
