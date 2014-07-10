@@ -840,20 +840,19 @@ function resetWechatShare() {
                 "img_width": "200",
                 "img_height": "150",
                 "link": share.link,
-                "desc": share.description,
+                "desc": share.desc,
                 "title": share.title
             }, function(res) {
                 console.log(res);
             });
         });
         WeixinJSBridge.on('menu:share:weibo', function(argv){
-//            WeixinJSBridge.invoke('shareWeibo',{
-//                "content": share.description,
-//                "url": share.link
-//            }, function(res) {
-//                console.log(res);
-//            });
-            share_to('tqq',getShareConfig());
+            WeixinJSBridge.invoke('shareWeibo',{
+                "content": share.desc,
+                "url": share.link
+            }, function(res) {
+                console.log(res);
+            });
             return false;
         });
     }, false);
