@@ -863,7 +863,7 @@ function requestAvailable() {
 }
 
 function requestUnavailable() {
-    $("#request").removeClass("bluebtn").css("background-color", "gray");
+    $("#request").removeClass("bluebtn");
 }
 
 $(document).on("pagecreate", "#loan", function () {
