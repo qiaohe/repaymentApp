@@ -239,7 +239,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String getRating(Long memberId) {
         CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
-        if (creditResult != null) return creditResult.getLastRating();
+        if (creditResult != null) {
+            String rating = creditResult.getLastRating();
+            if(StringUtils.isNotEmpty(rating)) {
+                return rating;
+            }
+        }
         return find(memberId).getPreRating();
     }
 
