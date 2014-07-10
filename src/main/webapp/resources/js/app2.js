@@ -5,9 +5,13 @@
 /* global WeixinJSBridge:false */
 "use strict";
 
-//$(document).on("pageshow", "#prom", function () {
-//
-//});
+$(document).on("pageshow", "#prom", function () {
+
+});
+
+$(document).on("pagecreate", "#team", function () {
+    $(".member-item-right").width($(document).width()*0.9-85);
+});
 
 resetWechatShare();
 
