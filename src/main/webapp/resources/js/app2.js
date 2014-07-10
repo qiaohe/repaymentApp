@@ -10,7 +10,12 @@ $(document).on("pageshow", "#prom", function () {
 });
 
 $(document).on("pagecreate", "#team", function () {
-    $(".member-item-right").width($(document).width()*0.9-85);
+    var documentWidth = $(document).width();
+    if(documentWidth >= 640) {
+        $(".member-item-right").width(491);
+    } else {
+        $(".member-item-right").width(documentWidth*0.9-85);
+    }
 });
 
 resetWechatShare();
