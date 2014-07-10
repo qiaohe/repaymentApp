@@ -953,6 +953,8 @@ hr{
     max-width: 576px;
     margin: auto;
 }
+
+/********************* Promotion Start *******************/
 #prom-top {
     margin-top: 20px;
     width: 100%;
@@ -1012,3 +1014,30 @@ hr{
 #prom-bottom-cont .prom-cont-item {
     line-height: 30px;
 }
+/********************* Promotion End *******************/
+/********************* Team Start *******************/
+.member-item {
+    width: 100%;
+    height: 90px;
+    font-family: "黑体";
+    font-size: 14px;
+    line-height: 16px;
+    margin:5px auto;
+}
+.member-item-left {
+    float: left;
+    width: 80px;
+    height: 90px;
+}
+.member-item-right {
+    float: left;
+    margin-left: 5px;
+    height: 90px;
+}
+.mir-top {
+    margin-top: 10px;
+}
+.mir-bottom {
+
+}
+/********************* Team End *******************/
