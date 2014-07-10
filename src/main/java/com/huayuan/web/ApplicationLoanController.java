@@ -47,10 +47,7 @@ public class ApplicationLoanController {
     @RequestMapping(value = "/saveCost", method = RequestMethod.POST)
     @ResponseBody
     public SavedCostDto getSavedCost(@RequestBody LoanRequestDto applicationDto) {
-        String rating = memberService.getRating(applicationDto.getMemberId());
-        if(StringUtils.isEmpty(rating)) {
-            rating = memberService.find(applicationDto.getMemberId()).getPreRating();
-        }
+        final String rating = memberService.getRating(applicationDto.getMemberId());
         Pricing pricing = pricingRepository.findByRatingAndTerm(rating, applicationDto.getTerm());
         final Double saved = pricing.getSavedPerOneHundred() * applicationDto.getAmt() / 100;
         final double payBackEachTerm = new LoanRequest(applicationDto.getAmt(), pricing.getApr(), applicationDto.getTerm(), null).getMonthlyRepay();
