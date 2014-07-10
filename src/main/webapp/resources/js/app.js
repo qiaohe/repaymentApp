@@ -798,8 +798,8 @@ function getShareConfig() {
         title : "终于找到了，帮我还信用卡的那个人",
         desc : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
         summary : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
-        url : window.location.origin + window.location.pathname + "#prom",
-        img : "../img/8-1/sword.png",
+        url : window.location.origin + window.location.pathname.replace("index.html","index2.html") + "#prom",
+        img : "../img/public/logo.png",
         width : screen.width,
         height : screen.height,
         left : 0,
@@ -816,8 +816,8 @@ function resetWechatShare() {
     var share = {};
     share.title = "终于找到了，帮我还信用卡的那个人";
     share.desc = "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈";
-    share.img_url = "../img/8-1/sword.png";
-    share.link = window.location.origin + window.location.pathname + "#prom";
+    share.img_url = "../img/public/logo.png";
+    share.link = window.location.origin + window.location.pathname.replace("index.html","index2.html") + "#prom";
     share.appid = "";
 
     document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
