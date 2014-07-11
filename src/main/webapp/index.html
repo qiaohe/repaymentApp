@@ -207,7 +207,7 @@
 <!-- loan -->
 <div data-role="page" id="loan" data-title="申请借款" style="background-color:#f7f7f7">
     <div class="cover" style="height:130px">
-        <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:15%">可用额度:</div>
+        <div style="color: white; font-size: 1.7em; position:absolute; top:25px; left:10%">可用额度:</div>
         <div style="font-family: Arial; font-size:2.4em; text-align:center; color:#404040; padding-top:35px"><span style="font-size: 1.6em; font-weight:bolder">&yen; </span><span
                 id="loan-limit" style="font-family: Arial; font-size: 2.3em; color: #404040; font-weight: bolder"></span></div>
     </div>
@@ -238,10 +238,11 @@
                 <a href="#" class="ui-btn term-chose-not" id="term-6" style="font-family: Arial">6期</a>
             </div>
         </div>
+        <div style="width: 100%; height: 1px; border-bottom: 1px solid silver; margin: 5px auto"></div>
     </div>
 
     <div style="width: 100%; height: 70px">
-        <div style="width:80%; margin:10px auto auto auto; clear:both">
+        <div style="width:80%; margin:20px auto auto auto; clear:both">
             <div style="width:45%; float:left">
                 <p>您每期需要还款</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
@@ -249,7 +250,9 @@
                 </div>
             </div>
 
-            <div style="float:left; width: 55%">
+            <div style="float: left; height: 100%; width: 1px; border-left: 1px solid silver"></div>
+
+            <div style="float:left; width: 54%">
                 <p>相比信用卡最高可省</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
                     <span style="color: #333333"><br> &yen;</span><span id="saved"></span>
@@ -258,7 +261,7 @@
         </div>
     </div>
 
-    <div style="width: 100%; height: 1px; border-bottom: 1px solid silver"></div>
+    <div style="width: 100%; height: 1px; border-bottom: 1px solid silver; margin-top: 3px"></div>
 
     <div style="position: relative; top:-10px">
         <div id="varifying">
@@ -292,9 +295,7 @@
             </div>
         </div>
 
-        <div style="width: 100%; height: 1px; border-bottom: 1px solid silver; position: relative; top: -10px"></div>
-
-        <div style="margin-left: 9%; font-size:1.2em">
+        <div style="margin-left: 9%; margin-top: 20px; font-size:1.2em">
             <div class="check-custom1" id="agree" style="position: relative; top: 5px"></div>
             <label style="margin-top:5px; padding-top:6px">我同意<a href="#protocol-1"><span
                     style="color:blue">《么么贷借款协议》</span></a></label>
@@ -422,7 +423,7 @@
 </div>
 <!-- fail -->
 
-<div data-role="page" id="congratulation">
+<div data-role="page" id="congratulation" style="background-color:#f7f7f7">
     <div>
         <div class="cover" style="height: 100px; padding-top: 25px">
             <div id="cong-discription" style="text-align: left; margin-left: 10%; color: white; font-size: 1.6em">
