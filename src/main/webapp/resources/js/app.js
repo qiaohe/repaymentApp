@@ -1123,8 +1123,13 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "3";
-            member.loanApplication.amount = $("#amount").val();
-            member.countPaybackEachTerm(member.loanApplication);
+            var tmp = parseInt($("#amount").val());
+            if(tmp >= 1000) {
+                member.loanApplication.amount = tmp;
+                member.countPaybackEachTerm(member.loanApplication);
+            } else {
+                member.loanApplication.amount = undefined;
+            }
         }
     });
 
@@ -1133,8 +1138,13 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "6";
-            member.loanApplication.amount = $("#amount").val();
-            member.countPaybackEachTerm(member.loanApplication);
+            var tmp = parseInt($("#amount").val());
+            if(tmp >= 1000) {
+                member.loanApplication.amount = tmp;
+                member.countPaybackEachTerm(member.loanApplication);
+            } else {
+                member.loanApplication.amount = undefined;
+            }
         }
     });
 
