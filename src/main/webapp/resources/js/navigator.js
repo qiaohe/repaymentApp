@@ -172,6 +172,7 @@ var config = {
     if (Number(member.status) > 2) {
         member.getBasicInfo();
     }
+    if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
     $.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);
 })();
 

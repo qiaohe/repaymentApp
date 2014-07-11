@@ -38,7 +38,12 @@
 
     $.extend({
         formatDate:function(ms){
-            return ms ? new Date(ms).format("yyyyMMdd") : "";
+            if(!ms) return "";
+            if(/^\d+$/.test(ms)) {
+                return ms ? new Date(ms).format("yyyyMMdd") : "";
+            } else {
+                return ms.substring(0,10);
+            }
         },
         formatDate1:function(ms){
             if(!ms) return "";
