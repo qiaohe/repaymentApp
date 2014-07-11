@@ -17,6 +17,7 @@ var device = {
     getAndroidVersion: function() {
         if(this.userAgent.search("android") !== -1) {
             this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8, this.userAgent.indexOf("android") + 11);
+            this.androidVersion = Number(this.androidVersion);
         }
     }
 },
@@ -502,6 +503,7 @@ $(document).on("pagecreate", "#limit", function () {
         else {
             $("#front-upload").change(function (e) {
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
+                alert(device.androidVersion + "xxx");
                 $("#front-num").html("正在识别...").css("color", "#222222");
                 var formData = new FormData();
                 formData.append("idCardFrontFile", e.target.files[0]);
@@ -1124,7 +1126,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "3";
             var tmp = parseInt($("#amount").val());
-            if(tmp >= 1000) {
+            if(tmp >= 1000 && tmp%100 === 0) {
                 member.loanApplication.amount = tmp;
                 member.countPaybackEachTerm(member.loanApplication);
             } else {
@@ -1139,7 +1141,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "6";
             var tmp = parseInt($("#amount").val());
-            if(tmp >= 1000) {
+            if(tmp >= 1000 && tmp%100 === 0) {
                 member.loanApplication.amount = tmp;
                 member.countPaybackEachTerm(member.loanApplication);
             } else {
@@ -1350,6 +1352,13 @@ $(document).on("pagecreate", "#repayment-0", function () {
     } else {
         $.mobile.changePage("#no-repayment");
     }
+
+    $(this).on({
+        "swipeleft": function() {
+            $(".repayment-item")[member.crntCaro].trigger("swipeleft");
+        },
+
+    });
 });
 
 function generateCarousels(loanSummary) {
@@ -1490,7 +1499,7 @@ function sliderPage() {
     var $items = $(".repayment-item");
     $items.current = $items[member.crntCaro];
     $items.prev = function() {
-        if ($items.current != $items[0]) {
+        if ($items.current !== $items[0]) {
             window.scrollTo(0, 0);
             $(".container").animate({"left": "+=" + $width});
             var ind = $items.index($items.current);
@@ -1501,7 +1510,7 @@ function sliderPage() {
         }
     };
     $items.next = function() {
-        if ($items.current != $items[$items.length - 1]) {
+        if ($items.current !== $items[$items.length - 1]) {
             window.scrollTo(0, 0);
             $(".container").animate({"left": "-=" + $width});
             var ind = $items.index($items.current);
