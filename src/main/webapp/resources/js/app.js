@@ -418,7 +418,6 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     device.getUserAgent();
     device.getAndroidVersion();
-    alert(device.androidVersion);
     if(device.androidVersion <= 2.3) {
 //    if(1 <= 2.3) {
         $("#front-upload, #back-upload").remove();
@@ -704,7 +703,7 @@ $(document).on("pagecreate", "#basic-info", function(){
 
         var tmp = $("#email").val().replace(/ /g, "");
         $.ajax({
-            url: config.apiPath + member.id + "/creditCard/" + tmp + config.timeStamp,
+            url: config.apiPath + "members/email/" + tmp + config.timeStamp,
             type: "GET",
             dataType: "text",
             success: function(text) {
@@ -1008,6 +1007,18 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $verifyingTips.show();
             }
             else{
+                $.ajax({
+                    url: config.apiPath + "members/mobilePhone/" + phoneNum + config.timeStamp,
+                    type: "GET",
+                    dataType: "text",
+                    success: function(text) {
+                        alert("used = " + text);
+                    },
+                    error: function() {
+                        config.alertUrl(config.apiPath + "members/mobilePhone/" + phoneNum + config.timeStamp + " line 1016");
+                    }
+                });
+
                 $.get(config.apiPath + "dict/mobileArea/" + phoneNum, function(text){
                     if(text === "北京" || text === "上海" || text === "广州" || text === "深圳") {
                         member.phone = phoneNum;
