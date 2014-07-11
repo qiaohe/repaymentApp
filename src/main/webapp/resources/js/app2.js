@@ -23,7 +23,7 @@ $(document).on("pagecreate", "#prom", function () {
     $("#prom-step3").css({'position':"absolute",'left':10,'top':img1Height+img2Height,'width':curWidth-15});
     $("#prom-step-img1").css({'position':"absolute",'top':0,'left':0});
     $("#prom-step-img2").css({'position':"absolute",'top':img1Height-20,'left':curWidth-img2Width});
-    $("#prom-step-cont").height(img1Height+img2Height+80);
+    $("#prom-step-cont").height(img1Height+img2Height+100);
 });
 
 $(document).on("pagecreate", "#team", function () {
