@@ -695,15 +695,30 @@ $(document).on("pagecreate", "#basic-info", function(){
         enableLimitTest("hand-in");
     });
 
-    $("#email").keyup(function(){
-        member.email = $.trim($(this).val());
-        enableLimitTest("hand-in");
-    }).focusin(function() {
+    $("#email").focusin(function() {
         $("#email-txt").hide();
     }).focusout(function() {
         if(!$(this).val()) {
             $("#email-txt").show();
         }
+
+        var tmp = $("#email").val().replace(/ /g, "");
+        $.ajax({
+            url: config.apiPath + member.id + "/creditCard/" + tmp + config.timeStamp,
+            type: "GET",
+            dataType: "text",
+            success: function(text) {
+                if(text === "true") {
+                    alert("Used email address!");
+                } else {
+                    enableLimitTest("hand-in");
+                }
+            },
+            error: function() {
+                config.alertUrl("");
+            }
+        });
+
     });
 });
 
@@ -1305,20 +1320,25 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     $("#addcard").off("tap").tap(function(){
         var cardNum = $("#new-cardnum").val().replace(/ /g, "");
         if (dict.validateCardNo(cardNum)) {
-            member.addCreditCard($("#new-cardnum").val()).success(function(){
-                $("#card-add-box").hide();
-                member.loanApplication.creditCard = cardNum;
-                setTimeout(function () {
-                    $("#card-confirm").show();
-                }, 500);
-                $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
-                var iconSrc = getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
-                $("#cardlist").prepend($(tmp));
-            }).error(function(){
+            if(member.whetherUsedCard(cardNum)) {
+                member.addCreditCard($("#new-cardnum").val()).success(function(){
+                    $("#card-add-box").hide();
+                    member.loanApplication.creditCard = cardNum;
+                    setTimeout(function () {
+                        $("#card-confirm").show();
+                    }, 500);
+                    $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
+                    var iconSrc = getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                    var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
+                    $("#cardlist").prepend($(tmp));
+                }).error(function(){
+                    $("#new-cardnum").val("");
+                    $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                });
+            } else {
                 $("#new-cardnum").val("");
                 $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
-            });
+            }
         }
         else {
             $("#new-cardnum").val("");
