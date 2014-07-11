@@ -503,7 +503,6 @@ $(document).on("pagecreate", "#limit", function () {
         else {
             $("#front-upload").change(function (e) {
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
-                alert(device.androidVersion + "xxx");
                 $("#front-num").html("正在识别...").css("color", "#222222");
                 var formData = new FormData();
                 formData.append("idCardFrontFile", e.target.files[0]);
@@ -916,6 +915,7 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#add-another-2").off("click").click(function(){
+        $("#new-cardnum-2-placeholder").val("");
         $("#cardlist-2").popup("close");
         $("#card-add-box-2").show();
     });
@@ -927,20 +927,26 @@ $(document).on("pagecreate", "#loan", function () {
     $("#addcard-2").off("tap").tap(function(){
         var cardNum = $newCardnum2.val().replace(/ /g, "");
         if (dict.validateCardNo(cardNum)) {
-            member.addCreditCard($newCardnum2.val()).success(function(){
-                $("#card-add-box-2").hide();
-                member.loanApplication.creditCard = cardNum;
-                setTimeout(function () {
-                    $("#card-confirm-2").show();
-                }, 500);
-                $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
-                var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
-                var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
-                $("#cardlist-2").prepend($(tmp));
-            }).error(function(){
+            if(member.whetherUsedCard(cardNum)) {
+                member.addCreditCard($newCardnum2.val()).success(function(){
+                    $("#card-add-box-2").hide();
+                    member.loanApplication.creditCard = cardNum;
+                    setTimeout(function () {
+                        $("#card-confirm-2").show();
+                    }, 500);
+                    $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
+                    var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
+                    $("#cardlist-2").prepend($(tmp));
+                }).error(function(){
+                    $newCardnum2.val("");
+                    $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                });
+            } else {
                 $newCardnum2.val("");
                 $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
-            });
+            }
+
         }
         else {
             $newCardnum2.val("");
@@ -1357,7 +1363,9 @@ $(document).on("pagecreate", "#repayment-0", function () {
         "swipeleft": function() {
             $(".repayment-item")[member.crntCaro].trigger("swipeleft");
         },
-
+        "swiperight": function() {
+            $(".repayment-item")[member.crntCaro].trigger("swiperight");
+        }
     });
 });
 
