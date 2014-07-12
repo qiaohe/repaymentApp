@@ -1007,41 +1007,44 @@ $(document).on("pagebeforeshow", "#loan", function () {
                     type: "GET",
                     dataType: "text",
                     success: function(text) {
-                        alert("used = " + text);
+                        if(text === "true") {
+                            $verifyingTips.find("h4").html("该手机号已被人使用!");
+                            $verifyingTips.show();
+                        } else {
+                            $.get(config.apiPath + "dict/mobileArea/" + phoneNum, function(text){
+                                if(text === "北京" || text === "上海" || text === "广州" || text === "深圳") {
+                                    member.phone = phoneNum;
+                                    if (i === 60) {
+                                        member.acquireVerificationCode(member.phone).success(function(){
+                                            $verifyingTips.find("h4").html("您的验证码已发送!");
+                                            $verifyingTips.show();
+                                            $(this).attr("disabled", "true");
+                                            member.refreshIntervalId = setInterval(function() {
+                                                if (i > 0) {
+                                                    $("#acquire-code").html(i);
+                                                    i -= 1;
+                                                }
+                                                else {
+                                                    $("#acquire-code").html("重新获取");
+                                                    clearInterval(member.refreshIntervalId);
+                                                    i = 60;
+                                                }
+                                            }, 1000);
+                                        }).error(function () {
+                                            $verifyingTips.find("h4").html("您的验证码发送失败!");
+                                            $verifyingTips.show();
+                                        });
+                                    }
+                                }
+                                else {
+                                    $("#out-of-area").show();
+                                    member.returnFootPrint(member.id, "-1");
+                                }
+                            });
+                        }
                     },
                     error: function() {
                         config.alertUrl(config.apiPath + "members/mobilePhone/" + phoneNum + config.timeStamp + " line 1016");
-                    }
-                });
-
-                $.get(config.apiPath + "dict/mobileArea/" + phoneNum, function(text){
-                    if(text === "北京" || text === "上海" || text === "广州" || text === "深圳") {
-                        member.phone = phoneNum;
-                        if (i === 60) {
-                            member.acquireVerificationCode(member.phone).success(function(){
-                                $verifyingTips.find("h4").html("您的验证码已发送!");
-                                $verifyingTips.show();
-                                $(this).attr("disabled", "true");
-                                member.refreshIntervalId = setInterval(function() {
-                                    if (i > 0) {
-                                        $("#acquire-code").html(i);
-                                        i -= 1;
-                                    }
-                                    else {
-                                        $("#acquire-code").html("重新获取");
-                                        clearInterval(member.refreshIntervalId);
-                                        i = 60;
-                                    }
-                                }, 1000);
-                            }).error(function () {
-                                $verifyingTips.find("h4").html("您的验证码发送失败!");
-                                $verifyingTips.show();
-                            });
-                        }
-                    }
-                    else {
-                        $("#out-of-area").show();
-                        member.returnFootPrint(member.id, "-1");
                     }
                 });
             }
