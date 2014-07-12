@@ -5,10 +5,6 @@
 /* global WeixinJSBridge:false */
 "use strict";
 
-if (!config || !member) {
-    alert("Config or member is undefined!");
-}
-
 var device = {
     getUserAgent: function() {
         this.userAgent = navigator.userAgent.toLowerCase();
@@ -597,13 +593,13 @@ $(document).on("pagecreate", "#limit", function () {
     }).focusin(function() {
         $("#credit-num").hide();
     }).focusout(function() {
-        if(!$(this).val()) {
+        if($(this).val() === "") {
             $("#credit-num").show();
         }
     });
 
     if (member.creditCard) {
-        $(this).val(member.creditCard);
+        $("#credit-card").val(member.creditCard);
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
         $("#credit-num").hide();
         $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
