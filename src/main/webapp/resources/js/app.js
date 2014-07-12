@@ -602,7 +602,6 @@ $(document).on("pagecreate", "#limit", function () {
         $("#credit-card").val(member.creditCard);
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
         $("#credit-num").hide();
-        $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
     }
 });
 
@@ -692,8 +691,9 @@ $(document).on("pagecreate", "#basic-info", function(){
 
     $("#email").focusin(function() {
         $("#email-txt").hide();
+        $("#replicated-card").hide();
     }).focusout(function() {
-        if(!$(this).val()) {
+        if($(this).val() === "") {
             $("#email-txt").show();
         }
 
@@ -704,16 +704,15 @@ $(document).on("pagecreate", "#basic-info", function(){
             dataType: "text",
             success: function(text) {
                 if(text === "true") {
-                    alert("Used email address!");
+                    $("#replicated-card").hide();
                 } else {
                     enableLimitTest("hand-in");
                 }
             },
             error: function() {
-                config.alertUrl("");
+                config.alertUrl(config.apiPath + "members/email/" + tmp + config.timeStamp + " line 713");
             }
         });
-
     });
 });
 
