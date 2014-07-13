@@ -710,6 +710,7 @@ $(document).on("pagecreate", "#basic-info", function(){
         }
 
         var tmp = $("#email").val().replace(/ /g, "");
+        $("#email").val(tmp);
         if(tmp !== "") {
             $.ajax({
                 url: config.apiPath + "members/email/" + tmp + config.timeStamp,
@@ -719,6 +720,7 @@ $(document).on("pagecreate", "#basic-info", function(){
                     if(text === "true") {
                         $("#replicated-card").html("该Email已被人使用!").show();
                     } else {
+                        member.email = tmp;
                         enableLimitTest("hand-in");
                     }
                 },
