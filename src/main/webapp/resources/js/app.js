@@ -463,6 +463,10 @@ $(document).on("pagecreate", "#limit", function () {
                             $("#front-num").html(member.idCard).css("color", "#222222");
                             $("#front-upload-2").attr("disabled", true);
                             $("#tip-front").attr("src", "resources/img/public/correct.png");
+                        } else if(json.idNo === "") {
+                            $("#" + whichSide + "-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                            $("label[for='front-upload-2']").css("border-color", "#cc0000");
+                            $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
                         }
 
                         if(typeof member.gender === "undefined" && json.sex) {
@@ -504,12 +508,18 @@ $(document).on("pagecreate", "#limit", function () {
                 member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
                     $("#front-num").html(json.idNo).css("color", "#222222");
                     $("label[for='front-upload']").css("border-color", "#c0c0c0");
-                    $("#tip-front").attr("src", "resources/img/public/correct.png");
-                    $("#front-upload").attr("disabled", true);
-                    member.idCard = json.idNo;
-                    member.gender = json.sex;
-                    if (member.gender === "FEMALE") {
-                        $(".gender").html("娘子");
+                    if(json.idNo !== "") {
+                        $("#tip-front").attr("src", "resources/img/public/correct.png");
+                        $("#front-upload").attr("disabled", true);
+                        member.idCard = json.idNo;
+                        member.gender = json.sex;
+                        if (member.gender === "FEMALE") {
+                            $(".gender").html("娘子");
+                        }
+                    } else {
+                        $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                        $("label[for='front-upload']").css("border-color", "#cc0000");
+                        $("#tip-front").attr("src", "resources/img/public/wrong.png");
                     }
                 }).error(function () {
                     $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
