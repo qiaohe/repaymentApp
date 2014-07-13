@@ -1758,43 +1758,43 @@ $(document).on("pagecreate", "#thanks-feedback", function () {
     });
 });
 
-//window.onunload = function () {
-//    var printStatus,
-//        ptn = /#(\w+)/,
-//        hash = ptn.exec(window.location)[1];
-//
-//    if (hash === "#result" && member.status == "3.1") {
-//        printStatus = "1";
-//        returnFootPrint(member.id, printStatus);
-//    }
-//    else if (hash === "#congratulation" && (!member.loanApplication.creditCard)) {
-//        printStatus = "2";
-//        returnFootPrint(member.id, printStatus);
-//    }
-//
-//    if ((member.status === "1" || member.status === "2") && (hash === "#limit" || hash === "#basic-info")) {
-//        if (member.idCard) {
-//            localStorage.setItem("id_card", member.idCard);
-//        }
-//        if (member.validThru) {
-//            localStorage.setItem("valid_thru", member.validThru);
-//        }
-//        if ($("#credit-card").val()) {
-//            localStorage.setItem("credit_card", $("#credit-card").val());
-//            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
-//        }
-//        if (member.education) {
-//            localStorage.setItem("education", member.education);
-//        }
-//        if (member.industry) {
-//            localStorage.setItem("industry", member.industry);
-//        }
-//        if (member.email) {
-//            localStorage.setItem("email", member.email);
-//        }
-//    }
-//    else {
-//        localStorage.clear();
-//    }
-//};
+window.onunload = function () {
+    var printStatus,
+        ptn = /#(\w+)/,
+        hash = ptn.exec(window.location)[1];
+
+    if (hash === "#result" && member.status == "3.1") {
+        printStatus = "1";
+        member.returnFootPrint(member.id, printStatus);
+    }
+    else if (hash === "#congratulation" && (!member.loanApplication.creditCard)) {
+        printStatus = "2";
+        member.returnFootPrint(member.id, printStatus);
+    }
+
+    if ((member.status === "1" || member.status === "2") && (hash === "#limit" || hash === "#basic-info")) {
+        if (member.idCard !== undefined) {
+            localStorage.setItem("id_card", member.idCard);
+        }
+        if (member.validThru !== undefined) {
+            localStorage.setItem("valid_thru", member.validThru);
+        }
+        if ($("#credit-card").val()) {
+            localStorage.setItem("credit_card", $("#credit-card").val());
+            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
+        }
+        if (member.education !== undefined) {
+            localStorage.setItem("education", member.education);
+        }
+        if (member.industry !== undefined) {
+            localStorage.setItem("industry", member.industry);
+        }
+        if (member.email !== undefined) {
+            localStorage.setItem("email", member.email);
+        }
+    }
+    else {
+        localStorage.clear();
+    }
+};
 console.log("END!");
