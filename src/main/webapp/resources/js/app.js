@@ -655,7 +655,7 @@ $(document).on("pagecreate", "#basic-info", function(){
     function enableLimitTest(btnId) {
         var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         if(member.creditCard && member.industry && member.education && mailRegEx.test(member.email)) {
-            $("#" + btnId).css("background-color", "#3ca0e6").tap(function () {
+            $("#" + btnId).css("background-color", "#3ca0e6").off("tap").tap(function () {
                 member.testLimit();
             });
         } else if(!mailRegEx.test(member.email)) {
@@ -709,7 +709,7 @@ $(document).on("pagecreate", "#basic-info", function(){
             $("#email-txt").show();
         }
 
-        var tmp = $("#email").val().replace(/ /g, "");
+        var tmp = $("#email").val();
         $("#email").val(tmp);
         if(tmp !== "") {
             $.ajax({
@@ -1763,7 +1763,7 @@ window.onunload = function () {
         ptn = /#(\w+)/,
         hash = ptn.exec(window.location)[1];
 
-    if (hash === "#result" && member.status == "3.1") {
+    if (hash === "#result" && member.status === "3.1") {
         printStatus = "1";
         member.returnFootPrint(member.id, printStatus);
     }
