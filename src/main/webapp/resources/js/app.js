@@ -1772,7 +1772,7 @@ window.onunload = function () {
         member.returnFootPrint(member.id, printStatus);
     }
 
-    if ((member.status === "1" || member.status === "2") && (hash === "#limit" || hash === "#basic-info")) {
+    if (member.status === "1" || member.status === "2") {
         if (member.idCard !== undefined) {
             localStorage.setItem("id_card", member.idCard);
         }
