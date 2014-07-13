@@ -566,7 +566,7 @@ $(document).on("pagecreate", "#limit", function () {
         if(dict.validateCardNo(num)) {
             if (member.whetherUsedCard(num)) {
                 $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                $cardTip.html("不可用的信用卡号!").show();
+                $cardTip.html("该信用卡已被人使用!").show();
             }
             else {
                 if (!member.anothertest) {
@@ -658,8 +658,8 @@ $(document).on("pagecreate", "#basic-info", function(){
             $("#" + btnId).css("background-color", "#3ca0e6").tap(function () {
                 member.testLimit();
             });
-        } else if(mailRegEx.test(member.email) === -1) {
-            $("#reolicated-card").html("该邮箱格式错误!").show();
+        } else if(!mailRegEx.test(member.email)) {
+            $("#replicated-card").html("该邮箱格式错误!").show();
         } else {
             $("#" + btnId).css("background-color", "silver");
         }
@@ -1347,7 +1347,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                         $("#card-confirm").show();
                     }, 500);
                     $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
-                    var iconSrc = getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                    var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
                     var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
                     $("#cardlist").prepend($(tmp));
                 }).error(function(){
@@ -1356,7 +1356,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                 });
             } else {
                 $("#new-cardnum").val("");
-                $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
             }
         }
         else {
