@@ -21,7 +21,7 @@ var config = {
                 this.id = idPtn.exec(window.location)[1];
             }
             catch (e) {
-                alert("Exception: can not get memberId from url!");
+                window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
             }
         };
 

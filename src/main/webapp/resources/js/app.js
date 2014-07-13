@@ -463,7 +463,7 @@ $(document).on("pagecreate", "#limit", function () {
                             $("#front-num").html(member.idCard).css("color", "#222222");
                             $("#front-upload-2").attr("disabled", true);
                             $("#tip-front").attr("src", "resources/img/public/correct.png");
-                        } else if(json.idNo === "") {
+                        } else if(!json) {
                             $("#" + whichSide + "-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
                             $("label[for='front-upload-2']").css("border-color", "#cc0000");
                             $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
@@ -822,7 +822,7 @@ function getShareConfig() {
         title : "终于找到了，帮我还信用卡的那个人",
         desc : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
         summary : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
-        url : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom',
+        url : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
         img : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
         width : screen.width,
         height : screen.height,
@@ -836,7 +836,7 @@ WeixinApi.ready(function(Api) {
     var wxData = {
         "appId": "", // 服务号可以填写appId
         "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
-        "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom',
+        "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
         "desc" : '一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈',
         "title" : "终于找到了，帮我还信用卡的那个人"
     };

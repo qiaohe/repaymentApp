@@ -42,7 +42,7 @@ WeixinApi.ready(function(Api) {
     var wxData = {
         "appId": "", // 服务号可以填写appId
         "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
-        "link" : window.location.origin + window.location.pathname + "#prom",
+        "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
         "desc" : '一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈',
         "title" : "终于找到了，帮我还信用卡的那个人"
     };

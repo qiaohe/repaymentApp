@@ -317,7 +317,7 @@ function share_to(m,config) {
 		 return;
 		 var f = 'http://widget.renren.com/dialog/share?resourceUrl=', u =
 		 options.url, l = options.title, p = [
-		 u,'&title=', l,'&description=',options.desc,'&pic=',options.img ].join('');
+		 u,'&srcUrl=',options.url,'&title=', l,'&description=',options.desc,'&pic=',options.img ].join('');
 		 function a() {
 		 if (!window
 		 .open(
