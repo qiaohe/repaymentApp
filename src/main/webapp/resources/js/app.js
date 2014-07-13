@@ -658,6 +658,8 @@ $(document).on("pagecreate", "#basic-info", function(){
             $("#" + btnId).css("background-color", "#3ca0e6").tap(function () {
                 member.testLimit();
             });
+        } else if(mailRegEx.test(member.email) === -1) {
+            $("#reolicated-card").html("该邮箱格式错误!").show();
         } else {
             $("#" + btnId).css("background-color", "silver");
         }
@@ -708,21 +710,23 @@ $(document).on("pagecreate", "#basic-info", function(){
         }
 
         var tmp = $("#email").val().replace(/ /g, "");
-        $.ajax({
-            url: config.apiPath + "members/email/" + tmp + config.timeStamp,
-            type: "GET",
-            dataType: "text",
-            success: function(text) {
-                if(text === "true") {
-                    $("#replicated-card").hide();
-                } else {
-                    enableLimitTest("hand-in");
+        if(tmp !== "") {
+            $.ajax({
+                url: config.apiPath + "members/email/" + tmp + config.timeStamp,
+                type: "GET",
+                dataType: "text",
+                success: function(text) {
+                    if(text === "true") {
+                        $("#replicated-card").html("该Email已被人使用!").show();
+                    } else {
+                        enableLimitTest("hand-in");
+                    }
+                },
+                error: function() {
+                    config.alertUrl(config.apiPath + "members/email/" + tmp + config.timeStamp + " line 713");
                 }
-            },
-            error: function() {
-                config.alertUrl(config.apiPath + "members/email/" + tmp + config.timeStamp + " line 713");
-            }
-        });
+            });
+        }
     });
 });
 
