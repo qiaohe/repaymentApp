@@ -46,6 +46,10 @@ public final class App {
         return CONFIG.getString(key);
     }
 
+    public String getImageMagickPath() {
+        return get("imageMagickPath");
+    }
+
     public String getImageBase() {
         return get("image.store.base");
     }

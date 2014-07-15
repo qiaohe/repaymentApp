@@ -270,6 +270,12 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.0</version>
         </dependency>
+        <!-- Image processer -->
+        <dependency>
+            <groupId>org.im4java</groupId>
+            <artifactId>im4java</artifactId>
+            <version>1.4.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -293,6 +299,11 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+
+        <repository>
+            <id>cedarsoft-thirdparty</id>
+            <url>http://maven.cedarsoft.com/content/repositories/thirdparty/</url>
         </repository>
     </repositories>
 
