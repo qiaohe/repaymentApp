@@ -172,6 +172,11 @@ var WeixinApi = (function () {
     function weixinShareWeibo(data, callbacks) {
         callbacks = callbacks || {};
         var shareWeibo = function (theData) {
+            var agent = navigator.userAgent;
+            if(agent.indexOf('iPhone') > -1 || agent.indexOf('iPod') > -1 || agent.indexOf('iPad') > -1) {
+                theData.desc += " " + theData.link;
+                theData.link = "";
+            } else if(agent.indexOf('Android') > -1) {}
             WeixinJSBridge.invoke('shareWeibo', {
                 "content":theData.desc,
                 "url":theData.link
