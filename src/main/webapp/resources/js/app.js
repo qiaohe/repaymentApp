@@ -500,7 +500,9 @@ $(document).on("pagecreate", "#limit", function () {
             $("#tip-front").attr("src", "resources/img/public/correct.png");
         }
         else {
+            alert("line 503");
             $("#front-upload").change(function (e) {
+                alert("Event 'change' triggered!");
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
                 $("#front-num").html("正在识别...").css("color", "#222222");
                 var formData = new FormData();
@@ -566,7 +568,7 @@ $(document).on("pagecreate", "#limit", function () {
         if(dict.validateCardNo(num)) {
             if (member.whetherUsedCard(num)) {
                 $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                $cardTip.html("不可用的信用卡号!").show();
+                $cardTip.html("该信用卡已被人使用!").show();
             }
             else {
                 if (!member.anothertest) {
@@ -625,9 +627,10 @@ $(document).on("pageshow", "#limit", function(){
         WeixinJSBridge.call("closeWindow");
     });
 
-    $("#continue").off("tap").tap(function() {
-        $("#pop-limit").popup("close");
-    });
+//    $("#continue").off("tap").tap(function() {
+//        $("#pop-limit").popup("close");
+//
+//    });
 
     if (member.anothertest) {
         $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
@@ -655,11 +658,11 @@ $(document).on("pagecreate", "#basic-info", function(){
     function enableLimitTest(btnId) {
         var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         if(member.creditCard && member.industry && member.education && mailRegEx.test(member.email)) {
-            $("#" + btnId).css("background-color", "#3ca0e6").tap(function () {
+            $("#" + btnId).css("background-color", "#3ca0e6").off("tap").tap(function () {
                 member.testLimit();
             });
-        } else if(mailRegEx.test(member.email) === -1) {
-            $("#reolicated-card").html("该邮箱格式错误!").show();
+        } else if(!mailRegEx.test(member.email) && member.email) {
+            $("#replicated-card").html("该Emial格式错误!").show();
         } else {
             $("#" + btnId).css("background-color", "silver");
         }
@@ -709,7 +712,8 @@ $(document).on("pagecreate", "#basic-info", function(){
             $("#email-txt").show();
         }
 
-        var tmp = $("#email").val().replace(/ /g, "");
+        var tmp = $("#email").val();
+        $("#email").val(tmp);
         if(tmp !== "") {
             $.ajax({
                 url: config.apiPath + "members/email/" + tmp + config.timeStamp,
@@ -719,6 +723,7 @@ $(document).on("pagecreate", "#basic-info", function(){
                     if(text === "true") {
                         $("#replicated-card").html("该Email已被人使用!").show();
                     } else {
+                        member.email = tmp;
                         enableLimitTest("hand-in");
                     }
                 },
@@ -1347,7 +1352,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                         $("#card-confirm").show();
                     }, 500);
                     $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
-                    var iconSrc = getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
+                    var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
                     var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
                     $("#cardlist").prepend($(tmp));
                 }).error(function(){
@@ -1356,7 +1361,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                 });
             } else {
                 $("#new-cardnum").val("");
-                $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
             }
         }
         else {
@@ -1756,43 +1761,55 @@ $(document).on("pagecreate", "#thanks-feedback", function () {
     });
 });
 
-//window.onunload = function () {
-//    var printStatus,
-//        ptn = /#(\w+)/,
-//        hash = ptn.exec(window.location)[1];
-//
-//    if (hash === "#result" && member.status == "3.1") {
-//        printStatus = "1";
-//        returnFootPrint(member.id, printStatus);
-//    }
-//    else if (hash === "#congratulation" && (!member.loanApplication.creditCard)) {
-//        printStatus = "2";
-//        returnFootPrint(member.id, printStatus);
-//    }
-//
-//    if ((member.status === "1" || member.status === "2") && (hash === "#limit" || hash === "#basic-info")) {
-//        if (member.idCard) {
-//            localStorage.setItem("id_card", member.idCard);
-//        }
-//        if (member.validThru) {
-//            localStorage.setItem("valid_thru", member.validThru);
-//        }
-//        if ($("#credit-card").val()) {
-//            localStorage.setItem("credit_card", $("#credit-card").val());
-//            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
-//        }
-//        if (member.education) {
-//            localStorage.setItem("education", member.education);
-//        }
-//        if (member.industry) {
-//            localStorage.setItem("industry", member.industry);
-//        }
-//        if (member.email) {
-//            localStorage.setItem("email", member.email);
-//        }
-//    }
-//    else {
-//        localStorage.clear();
-//    }
-//};
+window.onunload = function () {
+    var printStatus,
+        ptn = /#(\w+)/,
+        hash = ptn.exec(window.location)[1];
+
+    if (hash === "#result" && member.status === "3.1") {
+        printStatus = "1";
+        member.returnFootPrint(member.id, printStatus);
+    }
+    else if (hash === "#congratulation" && (!member.loanApplication.creditCard)) {
+        printStatus = "2";
+        member.returnFootPrint(member.id, printStatus);
+    }
+
+    if (member.status === "1" || member.status === "2") {
+        if (member.idCard !== undefined) {
+            localStorage.setItem("id_card", member.idCard);
+        }
+        if (member.validThru !== undefined) {
+            localStorage.setItem("valid_thru", member.validThru);
+        }
+        if ($("#credit-card").val()) {
+            localStorage.setItem("credit_card", $("#credit-card").val());
+            localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
+        }
+        if (member.education !== undefined) {
+            localStorage.setItem("education", member.education);
+        }
+        if (member.industry !== undefined) {
+            localStorage.setItem("industry", member.industry);
+        }
+        if (member.email !== undefined) {
+            localStorage.setItem("email", member.email);
+        }
+    }
+    else {
+        localStorage.clear();
+    }
+};
 console.log("END!");
+
+//$(document).on("pagecreate", "#testpage", function() {
+//    $("#testinput").change(function (e) {
+//        var formData = new FormData();
+//        formData.append("idCardFrontFile", e.target.files[0]);
+//        member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+//            alert(json.idNo);
+//        }).error(function () {
+//            alert("alert");
+//        });
+//    });
+//});

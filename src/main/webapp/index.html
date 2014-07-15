@@ -30,11 +30,9 @@
         <label><img src="resources/img/2-1/id_front.png" style="float:left; margin: 3px auto auto 6%; width:40px; height:28px;"></label>
 
         <div class="id-card-container" style="float:left; width:70%">
-            <label for="front-upload" class="textinput"
-                   style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+            <label for="front-upload" class="textinput" style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                     class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
-            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" style="opacity: 0; z-index: 99"
-                   capture="camera">
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" capture="camera" style="opacity: 0">
             <img src="resources/img/public/blank.png" id="tip-front"
                  style="position:absolute; left:5px; top:5px; width:22px; height:22px">
             <label for="front-upload"><img src="resources/img/public/camera.png"
@@ -49,8 +47,7 @@
 
         <div class="id-card-container" style="float:left; width:70%">
             <label for="back-upload" class="textinput"
-                   style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
-                    class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
+                   style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
             <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="back-upload" style="opacity: 0"
                    capture="camera">
             <img src="resources/img/public/blank.png" id="tip-back"
@@ -85,20 +82,20 @@
         <span style="position:absolute; right:5px; top:28px; color:white">1/2</span>
     </div>
 
-    <div data-role="popup" data-transition="pop" data-overlay-theme="b" class="r-popup" id="pop-limit" style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">
-        <div id="area-tip">
-            <div style="font-weight: bold; color: #303030">么么贷暂时仅能服务北上广深用户。</div>
-            <div>其他地区的用户可以先信用评估，</div>
-            <div>但暂时无法申请借款。</div>
-        </div>
+    <!--<div data-role="popup" data-transition="pop" data-overlay-theme="b" class="r-popup" id="pop-limit" style="width: 100%; background-color: white; border: 5px solid silver; border-radius: 8px">-->
+        <!--<div id="area-tip">-->
+            <!--<div style="font-weight: bold; color: #303030">么么贷暂时仅能服务北上广深用户。</div>-->
+            <!--<div>其他地区的用户可以先信用评估，</div>-->
+            <!--<div>但暂时无法申请借款。</div>-->
+        <!--</div>-->
 
-        <div style="margin: 30px 10% 40px 10%; text-align: center"><img src="resources/img/additional/pop-limit.png" style="width: 224px; height: 141px"></div>
+        <!--<div style="margin: 30px 10% 40px 10%; text-align: center"><img src="resources/img/additional/pop-limit.png" style="width: 224px; height: 141px"></div>-->
 
-        <div style="height:63px; margin-top:8px; background-color: white; border-radius: 0 0 5px 5px">
-            <div style="width:40%; margin-left:5%; float:left"><a href="#" class="ui-btn custom-btn" id="quit" style="height: 20px; line-height: 20px">退出</a></div>
-            <div style="width:40%; margin-right:5%; float:right"><a href="#" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>
-        </div>
-    </div>
+        <!--<div style="height:63px; margin-top:8px; background-color: white; border-radius: 0 0 5px 5px">-->
+            <!--<div style="width:40%; margin-left:5%; float:left"><a href="#" class="ui-btn custom-btn" id="quit" style="height: 20px; line-height: 20px">退出</a></div>-->
+            <!--<div style="width:40%; margin-right:5%; float:right"><a href="#" class="ui-btn custom-btn bluebtn" id="continue" style="height: 20px; line-height: 20px">确认并继续</a></div>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <div style="width: 0; height: 0; overflow: hidden">
         <form id="front-form" method="post" data-ajax="false" encoding="multipart/form-data" enctype="multipart/form-data">
@@ -159,7 +156,7 @@
             <label for="email" class="textinput"
                    style="float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
                     class="placeholder" id="email-txt" style="width:50%">请填写</span></label>
-            <input data-role="none" type="email" id="email"
+            <input data-role="none" type="email" id="email" maxlength="23"
                    style="border:none; padding-left:5px; font-size:1.4em; width: 98%">
             <label for="email"><img src="resources/img/public/keyboard.png" style="position:absolute; right:5px; top: 8px; width:22px; height:16px"></label>
             <span id="replicated-card" style="color: #cc0000; display:none">该Emial已被人使用</span>
@@ -803,6 +800,10 @@
     7、本人违反本申请协议规定及“申请人承诺、声明及授权”的，本人将承担因此引起的一切后果，并赔偿受影响方的一切损失；
     8、本人确认：如申请借款成功，则本申请协议属于《个人借款协议》的补充组成部分。
 
+</div>
+
+<div id="testpage" data-role="page">
+    <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="testinput" capture="camera">
 </div>
 
 <script type="text/javascript" src="resources/js/WeixinApi.js?v=0.1"></script>

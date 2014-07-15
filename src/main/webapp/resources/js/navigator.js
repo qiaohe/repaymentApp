@@ -97,12 +97,6 @@ var config = {
                 if (status === "1") {
                     this.isnew = 1;
                     this.destPage = "#limit";
-                }
-                else if (Number(status) > 2) {
-                    this.destPage = "#result";
-                }
-                else{
-                    this.destPage = "#limit";
                     var tmp = localStorage.getItem("id_card");
                     if (tmp) {
                         member.idCard = tmp;
@@ -132,6 +126,9 @@ var config = {
                     if (tmp) {
                         member.email = tmp;
                     }
+                }
+                else if (Number(status) > 2) {
+                    this.destPage = "#result";
                 }
             }
             else if (/loan/.test(destPage)) {
