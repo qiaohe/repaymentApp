@@ -2,13 +2,13 @@ package com.huayuan.web;
 
 import com.huayuan.common.App;
 import com.huayuan.common.CommonDef;
+import com.huayuan.common.integration.MatlabIdCardPreProcessor;
 import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.domain.member.IdCard;
 import com.huayuan.repository.credit.PbocRepository;
-import com.huayuan.repository.integration.MatlabIdCardPreProcessor;
 import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.ImageCropDto;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;

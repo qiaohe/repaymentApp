@@ -1,8 +1,7 @@
-package com.huayuan.repository.integration;
+package com.huayuan.common.integration;
 
 import com.mathworks.toolbox.javabuilder.MWCharArray;
 import com.mathworks.toolbox.javabuilder.MWException;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import processor.ImageProcessor;
 
 /**
