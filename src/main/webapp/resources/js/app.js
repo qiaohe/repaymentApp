@@ -500,7 +500,9 @@ $(document).on("pagecreate", "#limit", function () {
             $("#tip-front").attr("src", "resources/img/public/correct.png");
         }
         else {
+            alert("line 503");
             $("#front-upload").change(function (e) {
+                alert("Event 'change' triggered!");
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
                 $("#front-num").html("正在识别...").css("color", "#222222");
                 var formData = new FormData();
@@ -625,9 +627,10 @@ $(document).on("pageshow", "#limit", function(){
         WeixinJSBridge.call("closeWindow");
     });
 
-    $("#continue").off("tap").tap(function() {
-        $("#pop-limit").popup("close");
-    });
+//    $("#continue").off("tap").tap(function() {
+//        $("#pop-limit").popup("close");
+//
+//    });
 
     if (member.anothertest) {
         $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
@@ -658,8 +661,8 @@ $(document).on("pagecreate", "#basic-info", function(){
             $("#" + btnId).css("background-color", "#3ca0e6").off("tap").tap(function () {
                 member.testLimit();
             });
-        } else if(!mailRegEx.test(member.email)) {
-            $("#replicated-card").html("该邮箱格式错误!").show();
+        } else if(!mailRegEx.test(member.email) && member.email) {
+            $("#replicated-card").html("该Emial格式错误!").show();
         } else {
             $("#" + btnId).css("background-color", "silver");
         }
@@ -1798,3 +1801,15 @@ window.onunload = function () {
     }
 };
 console.log("END!");
+
+//$(document).on("pagecreate", "#testpage", function() {
+//    $("#testinput").change(function (e) {
+//        var formData = new FormData();
+//        formData.append("idCardFrontFile", e.target.files[0]);
+//        member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+//            alert(json.idNo);
+//        }).error(function () {
+//            alert("alert");
+//        });
+//    });
+//});
