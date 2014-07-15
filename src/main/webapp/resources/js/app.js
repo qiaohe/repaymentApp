@@ -510,7 +510,7 @@ $(document).on("pagecreate", "#limit", function () {
                 member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
                     $("#front-num").html(json.idNo).css("color", "#222222");
                     $("label[for='front-upload']").css("border-color", "#c0c0c0");
-                    if(json.idNo !== "") {
+                    if(json.idNo) {
                         $("#tip-front").attr("src", "resources/img/public/correct.png");
                         $("#front-upload").attr("disabled", true);
                         member.idCard = json.idNo;
