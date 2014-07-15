@@ -951,7 +951,7 @@ $(document).on("pagecreate", "#loan", function () {
     $("#addcard-2").off("tap").tap(function(){
         var cardNum = $newCardnum2.val().replace(/ /g, "");
         if (dict.validateCardNo(cardNum)) {
-            if(member.whetherUsedCard(cardNum)) {
+            if(!member.whetherUsedCard(cardNum)) {
                 member.addCreditCard($newCardnum2.val()).success(function(){
                     $("#card-add-box-2").hide();
                     member.loanApplication.creditCard = cardNum;
@@ -992,6 +992,8 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
+    $(this).attr("data-role", "申请借款");
+
     if (typeof dict.bincode === "undefined") {
         dict.getBincode();
     }
@@ -1344,7 +1346,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     $("#addcard").off("tap").tap(function(){
         var cardNum = $("#new-cardnum").val().replace(/ /g, "");
         if (dict.validateCardNo(cardNum)) {
-            if(member.whetherUsedCard(cardNum)) {
+            if(!member.whetherUsedCard(cardNum)) {
                 member.addCreditCard($("#new-cardnum").val()).success(function(){
                     $("#card-add-box").hide();
                     member.loanApplication.creditCard = cardNum;
