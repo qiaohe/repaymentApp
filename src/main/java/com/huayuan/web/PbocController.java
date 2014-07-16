@@ -16,7 +16,10 @@ import com.huayuan.web.dto.PbocOutDto;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -37,11 +40,11 @@ import java.util.UUID;
 @Controller
 @RequestMapping(value = "/pboc")
 public class PbocController {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     @Inject
     private PbocRepository pbocRepository;
     @Inject
     private IdCardRepository idCardRepository;
-
     @Inject
     private MemberService memberService;
 
@@ -71,7 +74,49 @@ public class PbocController {
     @RequestMapping(value = "/out/list", method = RequestMethod.GET)
     @ResponseBody
     public List<PbocOutDto> searchPbocOutList() {
-        return pbocRepository.searchPbocOutList("");
+        List<PbocOutDto> pbocOutDtoList = pbocRepository.searchPbocOutList("");
+        if(CollectionUtils.isNotEmpty(pbocOutDtoList)) {
+            StringBuffer idNoSb = new StringBuffer(128);
+            for(PbocOutDto dto : pbocOutDtoList) {
+                idNoSb.append(dto.getIdNo()+",");
+            }
+            String idNos = idNoSb.toString();
+            String query = idNos.substring(0,idNos.length()-1);
+            query = "'"+query.replaceAll(",","','")+"'";
+
+            List<IdCard> idCards = idCardRepository.findByIdNos(query);
+            for(IdCard idCard : idCards) {
+                copyIdCard(idCard,"0");
+            }
+        }
+        return pbocOutDtoList;
+    }
+
+    /**
+     *  复制身份照片
+     * @param idCard
+     * @param flag 0:front and back 1:front  2:back
+     */
+    private void copyIdCard(IdCard idCard,String flag) {
+        final String path = App.getInstance().getIdCardImageBase();
+        File destDir = new File(path+CommonDef.IDCARD_PROCESS_DIR);
+        if(!destDir.exists() || !destDir.isDirectory()) {
+            destDir.mkdirs();
+        }
+        if("0".equals(flag) || "1".equals(flag)) {
+            try {
+                OperUtil.copyFile(path+"/"+idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR+"/"+idCard.getImageFront());
+            } catch (IOException e) {
+                log.error("OperUtil copyFile "+idCard.getImageFront()+" :",e);
+            }
+        }
+        if("0".equals(flag) || "2".equals(flag)) {
+            try {
+                OperUtil.copyFile(path+"/"+idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR+"/"+idCard.getImageBack());
+            } catch (IOException e) {
+                log.error("OperUtil copyFile "+idCard.getImageBack()+" :",e);
+            }
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
@@ -110,12 +155,12 @@ public class PbocController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void exportIdCardAsPdf() {
-        final String path = App.getInstance().getIdCardImageBase() + "/";
+        final String path = App.getInstance().getIdCardImageBase() ;
         List<IdCard> idCards = idCardRepository.findFromPbocOut();
         for (IdCard idCard : idCards) {
-            final String front = path + idCard.getImageFront();
-            final String back = path + idCard.getImageBack();
-            exportToPdf(path + idCard.getIdNo() + ".pdf", new String[]{front, back});
+            final String front = path + "/"+ idCard.getImageFront();
+            final String back = path + "/"+ idCard.getImageBack();
+            exportToPdf(path + CommonDef.IDCARD_TEMP +"/" + idCard.getIdNo() + ".pdf", new String[]{front, back});
         }
     }
 
@@ -135,24 +180,18 @@ public class PbocController {
             }
             document.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("exportToPdf",e);
         }
     }
 
     @RequestMapping(value = "/export/{idNo}", method = RequestMethod.GET)
     @ResponseBody
     public String exportIdCardToPdf(@PathVariable String idNo) {
-        final String path = App.getInstance().getIdCardImageBase();
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
         if(idCards == null || idCards.isEmpty()) {
             return "0";
         }
-        IdCard idCard = idCards.get(0);
-        String pdfName = "";
-        final String front = path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageFront();
-        final String back = path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageBack();
-        pdfName = idCard.getIdNo() + ".pdf";
-        exportToPdf(path + "/" + pdfName, new String[]{front, back});
+        generatePdfByIdCard(idCards.get(0));
         return "1";
     }
 
@@ -171,26 +210,49 @@ public class PbocController {
         if(idCards == null || idCards.isEmpty()) {
             return "";
         }
-        final String path = App.getInstance().getIdCardImageBase();
         for(IdCard idCard : idCards) {
-            String pdfName = "";
-            final String front = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageFront();
-            final String back = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageBack();
-            pdfName = idCard.getIdNo() + ".pdf";
-            exportToPdf(path + "/" + pdfName, new String[]{front, back});
+            generatePdfByIdCard(idCard);
         }
-        return packagePdfToZip(path, idNos);
+        return packagePdfToZip(idNos);
     }
 
-    private String packagePdfToZip(String path,String idNos) {
+    private void generatePdfByIdCard(IdCard idCard) {
+        final String path = App.getInstance().getIdCardImageBase();
+        final String front = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageFront();
+        final String back = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageBack();
+        String pdfName = idCard.getIdNo() + ".pdf";
+        exportToPdf(path +CommonDef.IDCARD_TEMP+ "/" + pdfName, new String[]{front, back});
+    }
+
+    private String packagePdfToZip(String idNos) {
+        final String path = App.getInstance().getIdCardImageBase();
         String[] pdfNames = idNos.split(",");
         File[] files = new File[pdfNames.length];
         for(int i = 0; i < pdfNames.length; i++) {
-            files[i] = new File(path+pdfNames[i]+".pdf");
+            files[i] = new File(path +CommonDef.IDCARD_TEMP +"/"+pdfNames[i]+".pdf");
         }
         String name = UUID.randomUUID().toString() +".zip";
         OperUtil.packageToZip(files,path+CommonDef.IDCARD_TEMP,name);
         return name;
+    }
+
+    @RequestMapping(value = "/idcard/{idNo}/{frontFlag}", method = RequestMethod.POST)
+    @ResponseBody
+    public String reuseOriginPic(@PathVariable String idNo,@PathVariable("frontFlag") String flag) {
+        if(StringUtils.isEmpty(idNo)) {
+            return "0";
+        }
+        List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
+        if(CollectionUtils.isEmpty(idCards)) {
+            return "0";
+        }
+        IdCard idCard = idCards.get(0);
+        if("1".equals(flag)) {
+            copyIdCard(idCard,"1");
+        } else if("2".equals(flag)) {
+            copyIdCard(idCard,"2");
+        }
+        return "1";
     }
 
     @RequestMapping(value = "/process/all", method = RequestMethod.GET)
@@ -254,7 +316,7 @@ public class PbocController {
 
     private void cropImageWrap(String imagePath,String imageName,ImageCropDto imageCropDto) {
         try {
-            String srcPath = imagePath+imageName;
+            String srcPath = imagePath+"/"+imageName;
             BufferedImage original = ImageIO.read(new File(srcPath));
             double scaleX = ((double)original.getWidth())/imageCropDto.getFixedWidth();
             double scaleY = ((double)original.getHeight())/imageCropDto.getFixedHeight();
@@ -262,14 +324,9 @@ public class PbocController {
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
-            String destPath = imagePath + CommonDef.IDCARD_PROCESS_DIR;
-            File destDir = new File(destPath);
-            if(!destDir.exists() || !destDir.isDirectory()) {
-                destDir.mkdirs();
-            }
-            OperUtil.cropImage(srcPath, destPath+"/"+imageName, x, y, width, height);
+            OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("OperUtil cropImageWrap " + imageName + " :", e);
         }
     }
 }
