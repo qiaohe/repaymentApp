@@ -8,6 +8,7 @@ $(function(){
             var data = window.dialogArguments;
             idcard.idNo = data.idNo;
             idcard.type = data.frontOrBack;
+            idcard.imgName = data.imgName;
             $("#target").attr("src","api/resources/idcard/processed/"+data.imgName+"?r="+new Date().getTime());
         }
         idcard.initCrop();
@@ -47,7 +48,33 @@ $(function(){
                     alert("请求异常！");
                 }
             });
-
+        });
+        $("#idcard-cancel").click(function(){
+            window.close();
+        });
+        $("#idcard-restore").click(function(){
+            if(confirm("您确定要恢复成原图？")) {
+                $.ajax({
+                    url: "api/pboc/idcard/"+idcard.idNo+"/"+idcard.type,
+                    dataType: "json",
+                    data : {},
+                    type: "POST",
+                    contentType: "application/json",
+                    success: function (json) {
+                        if(json == "0") {
+                            alert("未知异常！");
+                        } else if(json == "1") {
+                            $("#target").attr("src","api/resources/idcard/processed/"+idcard.imgName+"?r="+new Date().getTime());
+                            idcard.initCrop();
+                        } else if(json == "2") {
+                            alert("图片不存在！");
+                        }
+                    },
+                    error: function(data) {
+                        alert("请求异常！");
+                    }
+                });
+            }
         });
     };
     idcard.initCrop = function(){

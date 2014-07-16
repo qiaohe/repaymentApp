@@ -6,7 +6,6 @@ $(function(){
     pboc_out.init = function(){
         pboc_out.loadData("api/pboc/out/list");
         pboc_out.initEvent();
-        pboc_out.processImage("1");
     };
     pboc_out.loadData = function(url) {
         $("#pboc-table").html("<tr style=\"background: #ffff00;\">\n"+
@@ -58,11 +57,7 @@ $(function(){
             contentType: "application/json",
             success: function (data) {
                 if(data && data == "1") {
-                    if(flag == "1") {
-                        console.log("处理成功！");
-                    } else {
-                        alert("处理失败，请稍后重试！");
-                    }
+                    console.log("处理成功！");
                 } else {
                     alert("请稍后重试！");
                 }
@@ -121,7 +116,7 @@ $(function(){
                 idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
             });
             if(!idNos) {
-                alert("请选择要打包下载的行！");
+                alert("请选择要打包下载的项！");
                 return;
             }
             $.ajax({
@@ -150,7 +145,7 @@ $(function(){
                 contentType: "application/json",
                 success: function (data) {
                     if(data && data == "1") {
-                        var url = "resources/plugin/pdf/web/viewer.html?pdfUrl=api/resources/idcard/"+idNo+".pdf";
+                        var url = "resources/plugin/pdf/web/viewer.html?pdfUrl=api/resources/idcard/temp/"+idNo+".pdf";
                         window.open(url,"_blank");
                     } else {
                         alert("请重新生成PDF文件！");
@@ -167,16 +162,15 @@ $(function(){
                 idNo : $(this).attr("idNo"),
                 frontOrBack : "1"
             };
-            window.showModalDialog("idcard.html",param,"dialogWidth=1000px;dialogHeight=800px");
+            window.showModalDialog("idcard.html?r="+new Date().getTime(),param,"dialogWidth=1000px;dialogHeight=800px");
         });
-
         $("#pboc-table").on("click",".idCardBack",function(){
             var param = {
                 imgName : $(this).attr("imgName"),
                 idNo : $(this).attr("idNo"),
                 frontOrBack : "2"
             };
-            window.showModalDialog("idcard.html",param,"dialogWidth=1000px;dialogHeight=800px");
+            window.showModalDialog("idcard.html?r="+new Date().getTime(),param,"dialogWidth=1000px;dialogHeight=800px");
         });
     };
     pboc_out.init();
