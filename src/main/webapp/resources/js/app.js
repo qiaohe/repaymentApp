@@ -414,8 +414,8 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     device.getUserAgent();
     device.getAndroidVersion();
-    if(device.androidVersion <= 2.3) {
-//    if(1 <= 2.3) {
+//    if(device.androidVersion <= 2.3) {
+    if(1 <= 2.3) {
         $("#front-upload, #back-upload").remove();
         $("label[for='front-upload']").attr("for", "front-upload-2");
         $("label[for='back-upload']").attr("for", "back-upload-2");
@@ -424,11 +424,9 @@ $(document).on("pagecreate", "#limit", function () {
             var whichSide;
             if($(this).attr("id").search("front") !== -1) {
                 whichSide = "front";
-            }
-            else if($(this).attr("id").search("back") !== -1) {
+            } else if($(this).attr("id").search("back") !== -1) {
                 whichSide = "back";
-            }
-            else {
+            } else {
                 alert("The parameter whichSide is undefined!");
             }
 
@@ -455,28 +453,33 @@ $(document).on("pagecreate", "#limit", function () {
 
             setTimeout(function() {
                 $.ajax({
-                    url: config.apiPath + "members/" + member.id + "/idCard",
+                    url: config.apiPath + "members/" + member.id + "/idCard" + config.timeStamp,
                     type: "GET",
+                    cache: false,
                     success: function(json) {
-                        if(typeof member.idCard === "undefined" && json.idNo) {
+                        if(member.idCard === undefined && json.idNo) {
                             member.idCard = json.idNo;
                             $("#front-num").html(member.idCard).css("color", "#222222");
+                            $("label[for='front-upload-2']").css("border-color", "#c0c0c0");
                             $("#front-upload-2").attr("disabled", true);
                             $("#tip-front").attr("src", "resources/img/public/correct.png");
                         } else if(!json) {
-                            $("#" + whichSide + "-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                            $("#" + whichSide + "-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
                             $("label[for='front-upload-2']").css("border-color", "#cc0000");
                             $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
                         }
 
-                        if(typeof member.gender === "undefined" && json.sex) {
+                        if(member.gender === undefined && json.sex) {
                             member.gender = json.sex;
                             if (member.gender === "FEMALE") {
                                 $(".gender").html("娘子");
                             }
                         }
 
-                        if(typeof member.validThru === "undefined" && json.validThru) {
+                        alert("line 478");
+                        alert(member.validThru);
+                        alert(json.validThru);
+                        if(!member.validThru && json.validThru) {
                             member.validThru = dict.getReadableDate(json.validThru).join(".");
                             $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
                             $("#back-upload-2").attr("disabled", true);
@@ -504,30 +507,30 @@ $(document).on("pagecreate", "#limit", function () {
             $("#front-upload").change(function (e) {
                 alert("Event 'change' triggered!");
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
-                $("#front-num").html("正在识别...").css("color", "#222222");
-                var formData = new FormData();
-                formData.append("idCardFrontFile", e.target.files[0]);
-                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
-                    $("#front-num").html(json.idNo).css("color", "#222222");
-                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
-                    if(json.idNo) {
-                        $("#tip-front").attr("src", "resources/img/public/correct.png");
-                        $("#front-upload").attr("disabled", true);
-                        member.idCard = json.idNo;
-                        member.gender = json.sex;
-                        if (member.gender === "FEMALE") {
-                            $(".gender").html("娘子");
-                        }
-                    } else {
-                        $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
-                        $("label[for='front-upload']").css("border-color", "#cc0000");
-                        $("#tip-front").attr("src", "resources/img/public/wrong.png");
-                    }
-                }).error(function () {
-                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-                    $("label[for='front-upload']").css("border-color", "#cc0000");
-                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
-                });
+//                $("#front-num").html("正在识别...").css("color", "#222222");
+//                var formData = new FormData();
+//                formData.append("idCardFrontFile", e.target.files[0]);
+//                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+//                    $("#front-num").html(json.idNo).css("color", "#222222");
+//                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
+//                    if(json.idNo) {
+//                        $("#tip-front").attr("src", "resources/img/public/correct.png");
+//                        $("#front-upload").attr("disabled", true);
+//                        member.idCard = json.idNo;
+//                        member.gender = json.sex;
+//                        if (member.gender === "FEMALE") {
+//                            $(".gender").html("娘子");
+//                        }
+//                    } else {
+//                        $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
+//                        $("label[for='front-upload']").css("border-color", "#cc0000");
+//                        $("#tip-front").attr("src", "resources/img/public/wrong.png");
+//                    }
+//                }).error(function () {
+//                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+//                    $("label[for='front-upload']").css("border-color", "#cc0000");
+//                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
+//                });
             });
         }
 
@@ -1404,13 +1407,15 @@ $(document).on("pagecreate", "#repayment-0", function () {
     } else {
         $.mobile.changePage("#no-repayment");
     }
+});
 
-    $(this).on({
-        "swipeleft": function() {
-            $(".repayment-item")[member.crntCaro].trigger("swipeleft");
+$(document).on("pageshow", "#repayment-0", function() {
+    $(".repay-footer").on({
+        swipeleft: function() {
+            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swipeleft");
         },
-        "swiperight": function() {
-            $(".repayment-item")[member.crntCaro].trigger("swiperight");
+        swiperight: function() {
+            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swiperight");
         }
     });
 });
@@ -1804,14 +1809,15 @@ window.onunload = function () {
 };
 console.log("END!");
 
-//$(document).on("pagecreate", "#testpage", function() {
-//    $("#testinput").change(function (e) {
+$(document).on("pagecreate", "#testpage", function() {
+    $("#testinput").change(function (e) {
+        alert("Testing change event!");
 //        var formData = new FormData();
 //        formData.append("idCardFrontFile", e.target.files[0]);
 //        member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
 //            alert(json.idNo);
 //        }).error(function () {
-//            alert("alert");
+//            alert("error");
 //        });
-//    });
-//});
+    });
+});
