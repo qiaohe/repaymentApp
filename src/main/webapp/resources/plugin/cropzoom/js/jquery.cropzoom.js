@@ -156,10 +156,10 @@
                 });
 
                 var ext = getExtensionSource();
-                if (ext == 'png' || ext == 'gif')
-                    $image.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"
-                        + $options.image.source
-                        + "',sizingMethod='scale');";
+//                if (ext == 'png' || ext == 'gif')
+//                    $image.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"
+//                        + $options.image.source
+//                        + "',sizingMethod='scale');";
 
                 $container.append($image);
                 _self.append($container);
@@ -864,14 +864,14 @@
                     var image = _self.data('image');
                     var selector = _self.data('selector');
                     var fixed_data = {
-                        'viewPortW': _self.width(),
-                        'viewPortH': _self.height(),
                         'imageX': image.posX,
                         'imageY': image.posY,
                         'imageRotate': image.rotation,
                         'imageW': image.w,
                         'imageH': image.h,
                         'imageSource': image.source,
+                        'viewPortW': _self.width(),
+                        'viewPortH': _self.height(),
                         'selectorX': selector.x,
                         'selectorY': selector.y,
                         'selectorW': selector.w,
@@ -967,7 +967,8 @@
             $.ajax({
                 url: url,
                 type: type,
-                data: (_self.cropzoom.getParameters(_self, custom)),
+                data: JSON.stringify(_self.cropzoom.getParameters(_self, custom)),
+                contentType : "application/json",
                 success: function (r) {
                     _self.data('imageResult', r);
                     if (onSuccess !== undefined && onSuccess != null)
