@@ -457,7 +457,7 @@ $(document).on("pagecreate", "#limit", function () {
                     type: "GET",
                     cache: false,
                     success: function(json) {
-                        if(member.idCard === undefined && json.idNo) {
+                        if(json.idNo) {
                             member.idCard = json.idNo;
                             $("#front-num").html(member.idCard).css("color", "#222222");
                             $("label[for='front-upload-2']").css("border-color", "#c0c0c0");
@@ -469,16 +469,13 @@ $(document).on("pagecreate", "#limit", function () {
                             $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
                         }
 
-                        if(member.gender === undefined && json.sex) {
+                        if(json.sex) {
                             member.gender = json.sex;
                             if (member.gender === "FEMALE") {
                                 $(".gender").html("娘子");
                             }
                         }
 
-                        alert("line 478");
-                        alert(member.validThru);
-                        alert(json.validThru);
                         if(!member.validThru && json.validThru) {
                             member.validThru = dict.getReadableDate(json.validThru).join(".");
                             $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
