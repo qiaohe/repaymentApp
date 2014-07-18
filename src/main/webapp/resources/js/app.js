@@ -1407,13 +1407,12 @@ $(document).on("pagecreate", "#repayment-0", function () {
 });
 
 $(document).on("pageshow", "#repayment-0", function() {
-    $(".repay-footer").on({
-        swipeleft: function() {
-            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swipeleft");
-        },
-        swiperight: function() {
-            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swiperight");
-        }
+    $(".repay-footer").off("swipeleft").on("swipeleft", function() {
+        $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swipeleft");
+    });
+
+    $(".repay-footer").off("swiperight").on("swiperight", function() {
+        $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swiperight");
     });
 });
 
