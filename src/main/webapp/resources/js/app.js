@@ -627,10 +627,9 @@ $(document).on("pageshow", "#limit", function(){
         WeixinJSBridge.call("closeWindow");
     });
 
-//    $("#continue").off("tap").tap(function() {
-//        $("#pop-limit").popup("close");
-//
-//    });
+    $("#continue").off("tap").tap(function() {
+        $("#pop-limit").popup("destroy");
+    });
 
     if (member.anothertest) {
         $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
@@ -638,8 +637,9 @@ $(document).on("pageshow", "#limit", function(){
     }
 
     if (member.isnew) {
-        $("#pop-limit").popup("open");
+//        $("#pop-limit").popup("open");
         member.isnew = 0;
+        $.mobile.navigate("#limit");
     }
 });
 
@@ -672,6 +672,11 @@ $(document).on("pagecreate", "#basic-info", function(){
         $.getJSON(config.apiPath + "dict/industry", function(json){
             addOptions("industry-select", json);
             dict.industry = json;
+            if (member.industry) {
+                $("#industry-select option:eq(" + member.industry + ")").attr("selected", "selected");
+                $("#industry-select").selectmenu("refresh", true);
+                $("#industry-txt").hide();
+            }
         });
     }
 
@@ -679,15 +684,12 @@ $(document).on("pagecreate", "#basic-info", function(){
         $.getJSON(config.apiPath + "dict/education", function(json){
             addOptions("education-select", json);
             dict.education = json;
+            if (member.education) {
+                $("#education-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#education-select").selectmenu("refresh", true);
+                $("#education-txt").hide();
+            }
         });
-    }
-
-    if (member.industry) {
-        $("#industry-select:nth-child(" + (member.industry + 1) + ")").attr("selected", "selected");
-    }
-
-    if (member.education) {
-        $("#education-select:nth-child(" + (member.education + 1) + ")").attr("selected", "selected");
     }
 
     $("#industry-select").change(function () {
@@ -788,7 +790,7 @@ $(document).on("pagebeforeshow", "#result", function(){
     $("#amt-shown").html(dict.numberWithCommas(member.limit));
     $("#rank-shown").html(Math.round(member.rank * 100) + "&#37;");
     if(member.limit > 4000){
-        if (member.gender === 1) {
+        if (member.gender === 1 || member.gender === "FEMALE") {
             $("#rank-cmt").html("，娘子您是权贵啊！");
         }
         else {
