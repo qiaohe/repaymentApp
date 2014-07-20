@@ -680,7 +680,8 @@ $(document).on("pagecreate", "#basic-info", function(){
             addOptions("industry-select", json);
             dict.industry = json;
             if (member.industry) {
-                $("#industry-select option:eq(" + member.industry + ")").attr("selected", "selected");
+                $("#industry-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#industry-select option:eq(0)").remove();
                 $("#industry-select").selectmenu("refresh");
                 $("#industry-txt").hide();
             }
@@ -693,6 +694,7 @@ $(document).on("pagecreate", "#basic-info", function(){
             dict.education = json;
             if (member.education) {
                 $("#education-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#education-select option:eq(0)").remove();
                 $("#education-select").selectmenu("refresh");
                 $("#education-txt").hide();
             }
