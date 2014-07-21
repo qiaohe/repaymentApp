@@ -24,7 +24,7 @@ $(function(){
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                if(!data) return;
+                if(!data) { return; }
                 var contentHtml = "";
                 $.each(data,function(i,entity){
                     contentHtml += "<tr>\n"+
@@ -40,12 +40,12 @@ $(function(){
                         "<td>\n"+
                         " <input type=\"button\" class=\"idCardBack\" value=\"处理\" style='margin:5px 0 5px 40px;width: 80px;text-align: center;' imgName=\""+entity.imageBack+"\" idNo=\""+entity.idNo+"\">\n"+
                         "</td>\n"+
-                        "</tr>"
+                        "</tr>";
                 });
                 $("#pboc-table").append(contentHtml);
             },
             error: function(data) {
-                alert("服务器请求异常！");
+                window.alert("服务器请求异常！");
             }
         });
     };
@@ -56,14 +56,14 @@ $(function(){
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                if(data && data == "1") {
+                if(data && data === "1") {
                     console.log("处理成功！");
                 } else {
-                    alert("请稍后重试！");
+                    window.alert("请稍后重试！");
                 }
             },
             error: function(data) {
-                alert("请求异常！");
+                window.alert("请求异常！");
             }
         });
     };
@@ -82,7 +82,7 @@ $(function(){
             $("#checkAll").prop("checked",checkAll);
         });
         $("#processAll").on("click",function(){
-            if(confirm("您确定要全部复制？")) {
+            if(window.confirm("您确定要全部复制？")) {
                 pboc_out.processImage();
             }
         });
@@ -92,7 +92,7 @@ $(function(){
                 idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
             });
             if(!idNos) {
-                alert("请选择要处理身份证的项！");
+                window.alert("请选择要处理身份证的项！");
                 return;
             }
             $.ajax({
@@ -101,14 +101,14 @@ $(function(){
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    if(data && data == "1") {
-                        alert("处理成功！");
+                    if(data && data === "1") {
+                        window.alert("处理成功！");
                     } else {
-                        alert("处理失败，请稍后重试！");
+                        window.alert("处理失败，请稍后重试！");
                     }
                 },
                 error: function(data) {
-                    alert("请求异常！");
+                    window.alert("请求异常！");
                 }
             });
         });
@@ -118,7 +118,7 @@ $(function(){
                 idNos += ($(this).attr("idNo") ? $(this).attr("idNo")+"," : "");
             });
             if(!idNos) {
-                alert("请选择要打包下载的项！");
+                window.alert("请选择要打包下载的项！");
                 return;
             }
             $.ajax({
@@ -130,11 +130,11 @@ $(function(){
                     if(data) {
                         window.open("api/resources/idcard/temp/"+data,"_blank");
                     } else {
-                        alert("请稍后重试！");
+                        window.alert("请稍后重试！");
                     }
                 },
                 error: function(data) {
-                    alert("请求异常！");
+                    window.alert("请求异常！");
                 }
             });
         });
@@ -146,34 +146,22 @@ $(function(){
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    if(data && data == "1") {
+                    if(data && data === "1") {
                         var url = "resources/plugin/pdf/web/viewer.html?pdfUrl=api/resources/idcard/temp/"+idNo+".pdf";
                         window.open(url,"_blank");
                     } else {
-                        alert("请重新生成PDF文件！");
+                        window.alert("请重新生成PDF文件！");
                     }
                 },
                 error: function(data) {
-                    alert("请求异常！");
+                    window.alert("请求异常！");
                 }
             });
         });
         $("#pboc-table").on("click",".idCardFront",function(){
-//            var param = {
-//                imgName : $(this).attr("imgName"),
-//                idNo : $(this).attr("idNo"),
-//                frontOrBack : "1"
-//            };
-//            window.showModalDialog("idcard1.html?r="+new Date().getTime(),param,"dialogWidth=1280px;dialogHeight=1000px");
             window.open("idcard1.html?imgName="+$(this).attr("imgName")+"&idNo="+$(this).attr("idNo")+"&frontOrBack=1&r="+new Date().getTime());
         });
         $("#pboc-table").on("click",".idCardBack",function(){
-//            var param = {
-//                imgName : $(this).attr("imgName"),
-//                idNo : $(this).attr("idNo"),
-//                frontOrBack : "2"
-//            };
-//            window.showModalDialog("idcard1.html?r="+new Date().getTime(),param,"dialogWidth=1280px;dialogHeight=1000px");
             window.open("idcard1.html?imgName="+$(this).attr("imgName")+"&idNo="+$(this).attr("idNo")+"&frontOrBack=2&r="+new Date().getTime());
         });
     };
