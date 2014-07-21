@@ -2,7 +2,9 @@ package com.huayuan.common.util;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +44,29 @@ public class OtsuBinarize {
         return lum;
     }
 
+    public static BufferedImage toGrayPicture(BufferedImage originalPic) {
+        int imageWidth = originalPic.getWidth();
+        int imageHeight = originalPic.getHeight();
+        BufferedImage newPic = new BufferedImage(imageWidth, imageHeight,BufferedImage.TYPE_3BYTE_BGR);
+        ColorConvertOp cco = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+        cco.filter(originalPic, newPic);
+        return newPic;
+    }
+
+    public static BufferedImage toGrayPicture(BufferedImage srcImage,RenderingHints hints)  {
+        BufferedImage dstImage = new BufferedImage(srcImage.getWidth(), srcImage.getHeight(), srcImage.getType());
+        if (hints == null) {
+            Graphics2D g2 = dstImage.createGraphics();
+            hints = g2.getRenderingHints();
+            g2.dispose();
+            g2 = null;
+        }
+        ColorSpace grayCS = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+        ColorConvertOp colorConvertOp = new ColorConvertOp(grayCS, hints);
+        colorConvertOp.filter(srcImage, dstImage);
+        return dstImage;
+    }
+
     private static int otsuTreshold(BufferedImage original) {
         int[] histogram = imageHistogram(original);
         int total = original.getHeight() * original.getWidth();
@@ -71,10 +96,11 @@ public class OtsuBinarize {
 
     public static byte[] binarize(String imageFileName) throws IOException {
         BufferedImage original = ImageIO.read(new File(imageFileName));
-        BufferedImage grayscale = toGray(original);
-        BufferedImage binarized = binarize(grayscale);
+//        BufferedImage grayscale = toGray(original);
+//        BufferedImage binarized = binarize(original);
+        BufferedImage gray = toGrayPicture(original);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(binarized, "jpg", baos);
+        ImageIO.write(gray, "jpg", baos);
         byte[] result = baos.toByteArray();
         baos.flush();
         baos.close();

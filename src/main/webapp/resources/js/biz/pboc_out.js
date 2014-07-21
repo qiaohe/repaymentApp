@@ -82,7 +82,9 @@ $(function(){
             $("#checkAll").prop("checked",checkAll);
         });
         $("#processAll").on("click",function(){
-            pboc_out.processImage();
+            if(confirm("您确定要全部复制？")) {
+                pboc_out.processImage();
+            }
         });
         $("#processBatch").on("click",function(){
             var idNos = "";
@@ -157,20 +159,22 @@ $(function(){
             });
         });
         $("#pboc-table").on("click",".idCardFront",function(){
-            var param = {
-                imgName : $(this).attr("imgName"),
-                idNo : $(this).attr("idNo"),
-                frontOrBack : "1"
-            };
-            window.showModalDialog("idcard.html?r="+new Date().getTime(),param,"dialogWidth=1000px;dialogHeight=800px");
+//            var param = {
+//                imgName : $(this).attr("imgName"),
+//                idNo : $(this).attr("idNo"),
+//                frontOrBack : "1"
+//            };
+//            window.showModalDialog("idcard1.html?r="+new Date().getTime(),param,"dialogWidth=1280px;dialogHeight=1000px");
+            window.open("idcard1.html?imgName="+$(this).attr("imgName")+"&idNo="+$(this).attr("idNo")+"&frontOrBack=1&r="+new Date().getTime());
         });
         $("#pboc-table").on("click",".idCardBack",function(){
-            var param = {
-                imgName : $(this).attr("imgName"),
-                idNo : $(this).attr("idNo"),
-                frontOrBack : "2"
-            };
-            window.showModalDialog("idcard.html?r="+new Date().getTime(),param,"dialogWidth=1000px;dialogHeight=800px");
+//            var param = {
+//                imgName : $(this).attr("imgName"),
+//                idNo : $(this).attr("idNo"),
+//                frontOrBack : "2"
+//            };
+//            window.showModalDialog("idcard1.html?r="+new Date().getTime(),param,"dialogWidth=1280px;dialogHeight=1000px");
+            window.open("idcard1.html?imgName="+$(this).attr("imgName")+"&idNo="+$(this).attr("idNo")+"&frontOrBack=2&r="+new Date().getTime());
         });
     };
     pboc_out.init();

@@ -2,6 +2,7 @@ package com.huayuan.web;
 
 import com.huayuan.common.App;
 import com.huayuan.common.CommonDef;
+import com.huayuan.common.integration.ImageTools;
 import com.huayuan.common.integration.MatlabIdCardPreProcessor;
 import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
@@ -11,6 +12,7 @@ import com.huayuan.domain.member.IdCard;
 import com.huayuan.repository.credit.PbocRepository;
 import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.service.MemberService;
+import com.huayuan.web.dto.CropZoomData;
 import com.huayuan.web.dto.ImageCropDto;
 import com.huayuan.web.dto.PbocOutDto;
 import com.itextpdf.text.Document;
@@ -75,20 +77,6 @@ public class PbocController {
     @ResponseBody
     public List<PbocOutDto> searchPbocOutList() {
         List<PbocOutDto> pbocOutDtoList = pbocRepository.searchPbocOutList("");
-        if(CollectionUtils.isNotEmpty(pbocOutDtoList)) {
-            StringBuffer idNoSb = new StringBuffer(128);
-            for(PbocOutDto dto : pbocOutDtoList) {
-                idNoSb.append(dto.getIdNo()+",");
-            }
-            String idNos = idNoSb.toString();
-            String query = idNos.substring(0,idNos.length()-1);
-            query = "'"+query.replaceAll(",","','")+"'";
-
-            List<IdCard> idCards = idCardRepository.findByIdNos(query);
-            for(IdCard idCard : idCards) {
-                copyIdCard(idCard,"0");
-            }
-        }
         return pbocOutDtoList;
     }
 
@@ -258,15 +246,22 @@ public class PbocController {
     @RequestMapping(value = "/process/all", method = RequestMethod.GET)
     @ResponseBody
     public String processIdcardAll() {
-        final String path = App.getInstance().getIdCardImageBase();
-        final String destPath = path + CommonDef.IDCARD_PROCESS_DIR;
-        File destDir = new File(destPath);
-        if(!destDir.exists() || !destDir.isDirectory()) {
-            destDir.mkdirs();
+        List<PbocOutDto> pbocOutDtoList = pbocRepository.searchPbocOutList("");
+        if(CollectionUtils.isNotEmpty(pbocOutDtoList)) {
+            StringBuffer idNoSb = new StringBuffer(128);
+            for(PbocOutDto dto : pbocOutDtoList) {
+                idNoSb.append(dto.getIdNo()+",");
+            }
+            String idNos = idNoSb.toString();
+            String query = idNos.substring(0,idNos.length()-1);
+            query = "'"+query.replaceAll(",","','")+"'";
+
+            List<IdCard> idCards = idCardRepository.findByIdNos(query);
+            for(IdCard idCard : idCards) {
+                copyIdCard(idCard,"0");
+            }
         }
-        MatlabIdCardPreProcessor processor = new MatlabIdCardPreProcessor();
-        boolean result = processor.batchPreProcessingImage(path,destPath);
-        return result ? "1" : "0";
+        return "1";
     }
 
     @RequestMapping(value = "/process/batch/{idNos}", method = RequestMethod.GET)
@@ -314,6 +309,31 @@ public class PbocController {
         return "1";
     }
 
+    @RequestMapping(value = "/rotate/{idNo}", method = RequestMethod.POST)
+    @ResponseBody
+    public String ratoteIdCardImage(@PathVariable String idNo,@RequestBody CropZoomData cropZoomData) {
+        List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
+        if(idCards == null || idCards.isEmpty()) {
+            return "0";
+        }
+        IdCard idCard = idCards.get(0);
+        final String path = App.getInstance().getIdCardImageBase() + CommonDef.IDCARD_PROCESS_DIR;
+        String imagePath = "";
+        if(cropZoomData.getImageSource().indexOf(idCard.getImageFront()) > -1) {
+            imagePath = path + "/" + idCard.getImageFront();
+        } else if(cropZoomData.getImageSource().indexOf(idCard.getImageBack()) > -1) {
+            imagePath = path + "/" + idCard.getImageBack();
+        }
+        try {
+            if(cropZoomData.getImageRotate() != 0) {
+                ImageTools.rotateImage(imagePath,imagePath,cropZoomData.getImageRotate());
+            }
+        } catch (Exception e) {
+            log.error("ratoteIdCardImage",e);
+        }
+        return "1";
+    }
+
     private void cropImageWrap(String imagePath,String imageName,ImageCropDto imageCropDto) {
         try {
             String srcPath = imagePath+"/"+imageName;
@@ -325,7 +345,8 @@ public class PbocController {
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
             OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
-        } catch (IOException e) {
+            ImageTools.resizeImage(srcPath,srcPath,256, 162);
+        } catch (Exception e) {
             log.error("OperUtil cropImageWrap " + imageName + " :", e);
         }
     }

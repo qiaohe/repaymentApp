@@ -34,7 +34,7 @@
             }
         }
         return fmt;
-    }
+    };
 
     $.extend({
         formatDate:function(ms){
@@ -52,6 +52,11 @@
             } else {
                 return ms.substring(0,10);
             }
+        },
+        getParamter : function (name){
+            var r = new RegExp("(\\?|#|&)" + name + "=([^&#]*)(&|#|$)");
+            var m = location.href.match(r);
+            return (!m?"":m[2]);
         },
         mustache : function (template, view, partials) {
             return Mustache.render(template, view, partials);
