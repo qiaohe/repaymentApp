@@ -1009,6 +1009,14 @@ $(document).on("pagecreate", "#loan", function () {
     $("#varifying-tips a").off("click").click(function() {
         $("#varifying-tips").hide();
     });
+
+    $("#protocolOne").off("tap").tap(function() {
+        $("#protocol-1").show();
+    });
+
+    $("#return-protocol-1, #close-protocol-1").off("tap").tap(function() {
+        $("#protocol-1").hide();
+    });
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
@@ -1334,11 +1342,12 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
         dict.setCardIcon("tip-new-cardnum", tmp);
 
-        if (tmp.length % 5 == 4) {
-            if (e.keyCode != 8)
+        if (tmp.length % 5 === 4) {
+            if (e.keyCode !== 8) {
                 $(this).val(tmp + " ");
-            else
+            } else {
                 $(this).val(tmp.slice(0, tmp.length - 1));
+            }
         }
     });
 
@@ -1398,6 +1407,14 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#close-1").off("tap").tap(function() {
         $("#card-add-box").hide();
+    });
+
+    $("#protocolTwo").off("tap").tap(function() {
+        $("#protocol-2").show();
+    });
+
+    $("#return-protocol-2, #close-protocol-2").off("tap").tap(function() {
+        $("#protocol-2").hide();
     });
 });
 
