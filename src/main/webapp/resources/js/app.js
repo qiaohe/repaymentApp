@@ -105,6 +105,17 @@ var device = {
             }
         },
 
+        isSupportedBankCard: function(cardNo) {
+            var isSupported = false;
+            cardNo = cardNo.replace(/ /g, "").slice(0, 6);
+            $.each(this.bincode, function (i, value) {
+                if (value.binNo === cardNo) {
+                    isSupported = true;
+                }
+            });
+            return isSupported;
+        },
+
         setCardIcon: function(imgId, num) {
             if (num.length < 2) {
                 $("#" + imgId).attr("src", "resources/img/card_icon/card.png");
@@ -565,7 +576,7 @@ $(document).on("pagecreate", "#limit", function () {
         var num = $(this).val();
         dict.setCardIcon("tip-credit", num);
 
-        if(dict.validateCardNo(num)) {
+        if(dict.validateCardNo(num) && dict.isSupportedBankCard(num)) {
             if (member.whetherUsedCard(num)) {
                 $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
                 $cardTip.html("该信用卡已被人使用!").show();
@@ -582,8 +593,10 @@ $(document).on("pagecreate", "#limit", function () {
                 }
                 member.creditCard = num.replace(/ /g, "");
             }
-        }
-        else {
+        } else if(!dict.isSupportedBankCard(num)) {
+            $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
+            $cardTip.html("很抱歉,暂不开放该银行的信用卡借款!").show();
+        } else {
             $("#next-step").attr("href", "#");
             if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
                 $cardTip.html("卡号错误!").show();
@@ -613,7 +626,7 @@ $(document).on("pagecreate", "#limit", function () {
 
     if (member.creditCard) {
         $("#credit-card").val(member.creditCard);
-        if (member.status === "1" && dict.validateCardNo(member.creditCard) && !member.whetherUsedCard(member.creditCard)) {
+        if (member.status === "1" && dict.validateCardNo(member.creditCard) && dict.isSupportedBankCard(member.creditCard) && !member.whetherUsedCard(member.creditCard)) {
             $("#next-step").attr("href", "#basic-info").addClass("bluebtn");
         }
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
@@ -970,7 +983,7 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#addcard-2").off("tap").tap(function(){
         var cardNum = $newCardnum2.val().replace(/ /g, "");
-        if (dict.validateCardNo(cardNum)) {
+        if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
             if(!member.whetherUsedCard(cardNum)) {
                 member.addCreditCard($newCardnum2.val()).success(function(){
                     $("#card-add-box-2").hide();
@@ -991,6 +1004,8 @@ $(document).on("pagecreate", "#loan", function () {
                 $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
             }
 
+        } else if(!dict.isSupportedBankCard(cardNum)) {
+            $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         }
         else {
             $newCardnum2.val("");
@@ -1374,7 +1389,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#addcard").off("tap").tap(function(){
         var cardNum = $("#new-cardnum").val().replace(/ /g, "");
-        if (dict.validateCardNo(cardNum)) {
+        if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
             if(!member.whetherUsedCard(cardNum)) {
                 member.addCreditCard($("#new-cardnum").val()).success(function(){
                     $("#card-add-box").hide();
@@ -1391,11 +1406,11 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                     $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
                 });
             } else {
-                $("#new-cardnum").val("");
                 $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
             }
-        }
-        else {
+        } else if(!dict.isSupportedBankCard(cardNum)) {
+            $("#new-cardnum-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+        } else {
             $("#new-cardnum").val("");
             $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
         }
