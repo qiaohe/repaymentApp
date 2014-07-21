@@ -20,6 +20,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by dell on 14-4-28.
@@ -157,10 +158,14 @@ public class PbocController {
         try {
             PdfWriter.getInstance(document, new FileOutputStream(pdfFileName));
             document.open();
-            for (String imageFileName : images) {
+            for (int i = 0; i<images.length; i++) {
+                String imageFileName = images[i];
                 try {
                     Image image = Image.getInstance(OtsuBinarize.binarize(imageFileName));
                     image.scaleAbsolute(243f, 153f);
+                    if(i == 1) {
+                        image.setAbsolutePosition(100f,400f);
+                    }
                     document.add(image);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -219,7 +224,7 @@ public class PbocController {
         for(int i = 0; i < pdfNames.length; i++) {
             files[i] = new File(path +CommonDef.IDCARD_TEMP +"/"+pdfNames[i]+".pdf");
         }
-        String name = UUID.randomUUID().toString() +".zip";
+        String name = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") +".zip";
         OperUtil.packageToZip(files,path+CommonDef.IDCARD_TEMP,name);
         return name;
     }
