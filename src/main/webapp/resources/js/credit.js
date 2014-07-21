@@ -286,6 +286,9 @@
                 success: function(text){
                     var idNos = $.cookie("idNos");
                     var certNos = $.cookie("certNos");
+                    if(!!idNos) {
+                        window.location.href = "pboc.html";
+                    }
                     idNos = new RegExp(info.id+",") ? idNos.replace(info.id+",","") : idNos.replace(info.id,'');
                     certNos = new RegExp(info.cert+",") ? certNos.replace(info.cert+",","") : certNos.replace(info.cert,'');
                     if($.trim(idNos)) {
