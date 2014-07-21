@@ -6,17 +6,17 @@
 "use strict";
 
 var device = {
-    getUserAgent: function() {
-        this.userAgent = navigator.userAgent.toLowerCase();
-    },
+        getUserAgent: function() {
+            this.userAgent = navigator.userAgent.toLowerCase();
+        },
 
-    getAndroidVersion: function() {
-        if(this.userAgent.search("android") !== -1) {
-            this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8, this.userAgent.indexOf("android") + 11);
-            this.androidVersion = Number(this.androidVersion);
+        getAndroidVersion: function() {
+            if(this.userAgent.search("android") !== -1) {
+                this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8, this.userAgent.indexOf("android") + 11);
+                this.androidVersion = Number(this.androidVersion);
+            }
         }
-    }
-},
+    },
     dict = {
         getBincode: function() {
             var $this = this;
@@ -268,7 +268,7 @@ member = (function(member) {
                 $this.firstLoanAppNo = text;
             },
             error: function () {
-                    config.alertUrl(config.apiPath + "app/members/" + $this.id + "/appNo" + config.timeStamp);
+                config.alertUrl(config.apiPath + "app/members/" + $this.id + "/appNo" + config.timeStamp);
             }
         });
     };
@@ -397,7 +397,7 @@ member = (function(member) {
                 console.log(res);
             },
             error: function () {
-                    config.alertUrl(config.apiPath + "members/" + id + "/status/" + status);
+                config.alertUrl(config.apiPath + "members/" + id + "/status/" + status);
             }
         });
     };
@@ -406,7 +406,7 @@ member = (function(member) {
 })(member);
 
 $(document).on("pagebeforeshow", function() {
-    if (member.gender === 1) {
+    if (member.gender === 1 || member.gender === "FEMALE") {
         $(".gender").html("娘子");
     }
 });
@@ -414,8 +414,8 @@ $(document).on("pagebeforeshow", function() {
 $(document).on("pagecreate", "#limit", function () {
     device.getUserAgent();
     device.getAndroidVersion();
-//    if(device.androidVersion <= 2.3) {
-    if(1 <= 2.3) {
+    if(device.androidVersion <= 2.3) {
+        // if(1 <= 2.3) {
         $("#front-upload, #back-upload").remove();
         $("label[for='front-upload']").attr("for", "front-upload-2");
         $("label[for='back-upload']").attr("for", "back-upload-2");
@@ -469,14 +469,16 @@ $(document).on("pagecreate", "#limit", function () {
                             $("#tip-" + whichSide).attr("src", "resources/img/public/wrong.png");
                         }
 
-                        if(json.sex) {
+                        if(member.gender === undefined && json.sex) {
                             member.gender = json.sex;
                             if (member.gender === "FEMALE") {
                                 $(".gender").html("娘子");
                             }
                         }
 
-                        if(!member.validThru && json.validThru) {
+                        alert("Line 481!");
+                        if(json.validThru) {
+                            alert("Line 483");
                             member.validThru = dict.getReadableDate(json.validThru).join(".");
                             $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
                             $("#back-upload-2").attr("disabled", true);
@@ -500,34 +502,32 @@ $(document).on("pagecreate", "#limit", function () {
             $("#tip-front").attr("src", "resources/img/public/correct.png");
         }
         else {
-            alert("line 503");
             $("#front-upload").change(function (e) {
-                alert("Event 'change' triggered!");
                 //$.mobile.loading("show", {html: "<span><center><img src='resources/img/other_icons/loading.png'></center></span>"});
-//                $("#front-num").html("正在识别...").css("color", "#222222");
-//                var formData = new FormData();
-//                formData.append("idCardFrontFile", e.target.files[0]);
-//                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
-//                    $("#front-num").html(json.idNo).css("color", "#222222");
-//                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
-//                    if(json.idNo) {
-//                        $("#tip-front").attr("src", "resources/img/public/correct.png");
-//                        $("#front-upload").attr("disabled", true);
-//                        member.idCard = json.idNo;
-//                        member.gender = json.sex;
-//                        if (member.gender === "FEMALE") {
-//                            $(".gender").html("娘子");
-//                        }
-//                    } else {
-//                        $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
-//                        $("label[for='front-upload']").css("border-color", "#cc0000");
-//                        $("#tip-front").attr("src", "resources/img/public/wrong.png");
-//                    }
-//                }).error(function () {
-//                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
-//                    $("label[for='front-upload']").css("border-color", "#cc0000");
-//                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
-//                });
+                $("#front-num").html("正在识别...").css("color", "#222222");
+                var formData = new FormData();
+                formData.append("idCardFrontFile", e.target.files[0]);
+                member.recognizeIdCard(formData, config.apiPath + "members/" + member.id + "/idCardFront", "json").success(function (json) {
+                    $("#front-num").html(json.idNo).css("color", "#222222");
+                    $("label[for='front-upload']").css("border-color", "#c0c0c0");
+                    if(json.idNo) {
+                        $("#tip-front").attr("src", "resources/img/public/correct.png");
+                        $("#front-upload").attr("disabled", true);
+                        member.idCard = json.idNo;
+                        member.gender = json.sex;
+                        if (member.gender === "FEMALE") {
+                            $(".gender").html("娘子");
+                        }
+                    } else {
+                        $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                        $("label[for='front-upload']").css("border-color", "#cc0000");
+                        $("#tip-front").attr("src", "resources/img/public/wrong.png");
+                    }
+                }).error(function () {
+                    $("#front-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
+                    $("label[for='front-upload']").css("border-color", "#cc0000");
+                    $("#tip-front").attr("src", "resources/img/public/wrong.png");
+                });
             });
         }
 
@@ -587,14 +587,15 @@ $(document).on("pagecreate", "#limit", function () {
             $("#next-step").attr("href", "#");
             if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
                 $cardTip.html("卡号错误!").show();
-                $("#next-step").removeClass("bluebtn").attr("href", "#");
+                $("#next-step").removeClass("bluebtn").css("background-color", "silver").attr("href", "#");
             }
             else {
                 $cardTip.hide();
+                $("#next-step").removeClass("bluebtn").css("background-color", "silver");
             }
         }
 
-        if (num.length % 5 === 4) {
+        if (num.length % 5 === 4 && num.length !== 19) {
             if (e.keyCode !== 8) {
                 $(this).val(num + " ");
             }
@@ -612,6 +613,9 @@ $(document).on("pagecreate", "#limit", function () {
 
     if (member.creditCard) {
         $("#credit-card").val(member.creditCard);
+        if (member.status === "1" && dict.validateCardNo(member.creditCard) && !member.whetherUsedCard(member.creditCard)) {
+            $("#next-step").attr("href", "#basic-info").addClass("bluebtn");
+        }
         $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
         $("#credit-num").hide();
     }
@@ -622,16 +626,6 @@ $(document).on("pageshow", "#limit", function(){
         dict.getBincode();
     }
 
-    $("#quit").off("tap").tap(function() {
-        member.returnFootPrint(member.id, "-1");
-        WeixinJSBridge.call("closeWindow");
-    });
-
-//    $("#continue").off("tap").tap(function() {
-//        $("#pop-limit").popup("close");
-//
-//    });
-
     if (member.anothertest) {
         $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
@@ -641,6 +635,18 @@ $(document).on("pageshow", "#limit", function(){
         $("#pop-limit").popup("open");
         member.isnew = 0;
     }
+
+    $("#quit").off("tap").tap(function() {
+        member.returnFootPrint(member.id, "-1");
+        WeixinJSBridge.call("closeWindow");
+    });
+
+    $("#continue").off("tap").tap(function(e) {
+        e.preventDefault();
+        member.isnew = 0;
+        $.mobile.navigate("#limit");
+        // $("#pop-limit").popup("close");
+    });
 });
 
 $(document).on("pagecreate", "#basic-info", function(){
@@ -662,9 +668,10 @@ $(document).on("pagecreate", "#basic-info", function(){
                 member.testLimit();
             });
         } else if(!mailRegEx.test(member.email) && member.email) {
-            $("#replicated-card").html("该Emial格式错误!").show();
+            $("#replicated-card").html("该Email格式错误!").show();
+            $("#hand-in").off("tap").removeClass("bluebtn").css("background-color", "silver");
         } else {
-            $("#" + btnId).css("background-color", "silver");
+            $("#" + btnId).css("background-color", "silver").removeClass("bluebtn").off("tap");
         }
     }
 
@@ -672,6 +679,12 @@ $(document).on("pagecreate", "#basic-info", function(){
         $.getJSON(config.apiPath + "dict/industry", function(json){
             addOptions("industry-select", json);
             dict.industry = json;
+            if (member.industry) {
+                $("#industry-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#industry-select option:eq(0)").remove();
+                $("#industry-select").selectmenu("refresh");
+                $("#industry-txt").hide();
+            }
         });
     }
 
@@ -679,15 +692,19 @@ $(document).on("pagecreate", "#basic-info", function(){
         $.getJSON(config.apiPath + "dict/education", function(json){
             addOptions("education-select", json);
             dict.education = json;
+            if (member.education) {
+                $("#education-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#education-select option:eq(0)").remove();
+                $("#education-select").selectmenu("refresh");
+                $("#education-txt").hide();
+            }
         });
     }
 
-    if (member.industry) {
-        $("#industry-select:nth-child(" + (member.industry + 1) + ")").attr("selected", "selected");
-    }
-
-    if (member.education) {
-        $("#education-select:nth-child(" + (member.education + 1) + ")").attr("selected", "selected");
+    if(member.email) {
+        $("#email").val(member.email);
+        $("#email-txt").hide();
+        enableLimitTest("hand-in");
     }
 
     $("#industry-select").change(function () {
@@ -722,6 +739,7 @@ $(document).on("pagecreate", "#basic-info", function(){
                 success: function(text) {
                     if(text === "true") {
                         $("#replicated-card").html("该Email已被人使用!").show();
+                        $("#hand-in").off("tap").removeClass("bluebtn");
                     } else {
                         member.email = tmp;
                         enableLimitTest("hand-in");
@@ -731,6 +749,8 @@ $(document).on("pagecreate", "#basic-info", function(){
                     config.alertUrl(config.apiPath + "members/email/" + tmp + config.timeStamp + " line 713");
                 }
             });
+        } else {
+            $("#hand-in").off("tap").removeClass("bluebtn");
         }
     });
 });
@@ -788,7 +808,7 @@ $(document).on("pagebeforeshow", "#result", function(){
     $("#amt-shown").html(dict.numberWithCommas(member.limit));
     $("#rank-shown").html(Math.round(member.rank * 100) + "&#37;");
     if(member.limit > 4000){
-        if (member.gender === 1) {
+        if (member.gender === 1 || member.gender === "FEMALE") {
             $("#rank-cmt").html("，娘子您是权贵啊！");
         }
         else {
@@ -1407,13 +1427,12 @@ $(document).on("pagecreate", "#repayment-0", function () {
 });
 
 $(document).on("pageshow", "#repayment-0", function() {
-    $(".repay-footer").on({
-        swipeleft: function() {
-            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swipeleft");
-        },
-        swiperight: function() {
-            $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swiperight");
-        }
+    $(".repay-footer").off("swipeleft").on("swipeleft", function() {
+        $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swipeleft");
+    });
+
+    $(".repay-footer").off("swiperight").on("swiperight", function() {
+        $(".repayment-item:eq(" + member.crntCaro + ")").trigger("swiperight");
     });
 });
 
@@ -1478,7 +1497,7 @@ function generateCarousels(loanSummary) {
         });
     });
 
-    $(".repay-footer-summary").off("tap").tap(function(){
+    $(".repay-footer-summary").off("tap").tap(function(e){
         $.mobile.changePage("#sum-loan");
     });
 }
@@ -1495,7 +1514,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+dict.numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
-            //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+dict.getReadableDate(loan.applyDate)[1] + "月" + dict.getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
+            //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1621,7 +1640,7 @@ function generateLoanSum(info) {
                 "    <ul class=\"sum-r-detail\">\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款日期:</span>\n"+
-                "            <span class=\"sum-r-r\">"+dict.getReadableDate(loan.startDate).join("-")+"</span>\n"+
+                "            <span class=\"sum-r-r\">"+getReadableDate(loan.startDate).join("-")+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+
@@ -1715,7 +1734,7 @@ $(document).on("pagebeforeshow", "#patience", function () {
             $("#bar-inner").css("width", process + "%");
         },
         error: function() {
-                config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
+            config.alertUrl(config.apiPath + "app/members/" + member.id + "/progress");
         }
     });
 });
@@ -1782,6 +1801,9 @@ window.onunload = function () {
     if (member.status === "1" || member.status === "2") {
         if (member.idCard !== undefined) {
             localStorage.setItem("id_card", member.idCard);
+        }
+        if(member.gender !== undefined) {
+            localStorage.setItem("gender", member.gender);
         }
         if (member.validThru !== undefined) {
             localStorage.setItem("valid_thru", member.validThru);
