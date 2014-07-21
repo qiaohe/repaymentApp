@@ -191,6 +191,7 @@
 
                 // Create the selector
                 createSelector();
+                $selector.css({'display':'none'});
                 // Add solid color to the selector
                 _self.find('.ui-icon-gripsmall-diagonal-se').css({
                     'background': '#FFF',
@@ -199,7 +200,7 @@
                     'height': 8
                 });
                 // Create the dark overlay
-                createOverlay();
+//                createOverlay();
 
                 if ($options.selector.startWithOverlay) {
                     /* Make Overlays at Start */
@@ -607,6 +608,7 @@
                     showInfo($selector);
                     // add selector to the main container
                     _self.append($selector);
+
                 }
                 ;
 
