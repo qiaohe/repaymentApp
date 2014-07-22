@@ -1546,7 +1546,7 @@ function generateItemLoan(loan,index) {
             "<div class=\"repay-amount-delay\">\n"+
             "    <div class=\"repay-amt-title\">最近应还金额</div>\n"+
             "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+dict.numberWithCommas(loan.curDueAmt.toFixed(2))+"</span></div>\n"+
-            //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+getReadableDate(loan.applyDate)[1] + "月" + getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
+            //"    <div class=\"repay-amt-limit\"><span class=\"r-deadline\">"+dict.getReadableDate(loan.applyDate)[1] + "月" + dict.getReadableDate(loan.applyDate)[2] + "日"+"</span>到期，已逾期</div>\n"+
             "</div>\n"+
             "<div class=\"repay-item repay-item-pay\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-4.png');\"></div><div class=\"repay-info\">现在就去还款<span>(已逾期，请速速还)</span></div><div class=\"replay-collapse\"></div></div>\n"+
             "<div class=\"repay-item repay-item-detail\" index=\""+index+"\"><div class=\"repay-detail\" style=\"background-image: url('resources/img/other_icons/9-3-3.png');\"></div><div class=\"repay-info\">查看借款详情</div><div class=\"replay-collapse\"></div></div>\n"+
@@ -1672,7 +1672,7 @@ function generateLoanSum(info) {
                 "    <ul class=\"sum-r-detail\">\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款日期:</span>\n"+
-                "            <span class=\"sum-r-r\">"+getReadableDate(loan.startDate).join("-")+"</span>\n"+
+                "            <span class=\"sum-r-r\">"+dict.getReadableDate(loan.startDate).join("-")+"</span>\n"+
                 "        </li>\n"+
                 "        <li class=\"sum-r-item\">\n"+
                 "            <span class=\"sum-r-l\">借款金额:</span>\n"+
