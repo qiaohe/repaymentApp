@@ -102,6 +102,11 @@ var config = {
                         member.idCard = tmp;
                     }
 
+                    tmp = localStorage.getItem("gender");
+                    if (tmp) {
+                        member.gender = tmp;
+                    }
+
                     tmp = localStorage.getItem("valid_thru");
                     if (tmp) {
                         member.validThru = tmp;
@@ -160,7 +165,6 @@ var config = {
     })();
 
 (function navigate() {
-    member.id = 134;
     member.getId();
     member.getStatus();
     member.getDestPage();
