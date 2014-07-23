@@ -843,9 +843,6 @@ span.loan-i-cont {
 }
 
 #share {
-    /*    width: 300px;
-        height: 160px;
-        background-size: 300px 160px;*/
     background: url("../img/other_icons/share_bg.png") no-repeat;
     position: relative;
 }

@@ -775,11 +775,12 @@ $(document).on("pagecreate", "#basic-info", function(){
 });
 
 $(document).on("pagecreate", "#result", function(){
-    $("#option-2").click(function(e){
+    $("#option-2").off('click').on('click',function(){
         $("#share").popup("open");
     });
 
-    var width = $(window).width() * 0.9,
+    var screenW = $(window).width() > 640 ? 640 : $(window).width(),
+        width = screenW * 0.9,
         height = width * 160 / 300;
     $("#share").css({"width":width,"height":height,"background-size":width +"px " +height+ "px"});
     $("#share img").css({"width":width*0.16,"height":width*0.16});
