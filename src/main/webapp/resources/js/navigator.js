@@ -176,5 +176,4 @@ var config = {
     if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
     $.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);
 })();
-
 console.log("navigation ends!");
