@@ -29,7 +29,7 @@ $(function(){
             enableRotation:true,
             enableZoom:false,
             zoomSteps:10,
-            rotationSteps:10,
+            rotationSteps:3,
             selector:{
                 centered:true,
                 startWithOverlay: true,
