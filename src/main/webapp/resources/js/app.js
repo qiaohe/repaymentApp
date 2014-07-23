@@ -15,6 +15,9 @@ var device = {
                 this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8, this.userAgent.indexOf("android") + 11);
                 this.androidVersion = Number(this.androidVersion);
             }
+        },
+        isIOS : function() {
+            return this.userAgent.indexOf("iphone") > -1 || this.userAgent.indexOf("ipad") > -1;
         }
     },
     dict = {
@@ -775,8 +778,17 @@ $(document).on("pagecreate", "#basic-info", function(){
 });
 
 $(document).on("pagecreate", "#result", function(){
-    $("#option-2").off('click').on('click',function(){
-        $("#share").popup("open");
+    device.getUserAgent();
+    $("#option-2").off('tap').on('tap',function(e){
+        if(device.isIOS()) {
+            $("#share").popup("open");
+            if(!$('#share').is(':focus')) {
+                $("#share").focus();
+            }
+        } else {
+            e.preventDefault();
+            $("#share").popup("open");
+        }
     });
 
     var screenW = $(window).width() > 640 ? 640 : $(window).width(),
