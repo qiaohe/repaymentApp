@@ -83,7 +83,7 @@
         },
         dutyTitle = { // 职称
             "1": "高级职称",
-            "3": "中级职称",
+            "2": "中级职称",
             "3": "初级职称"
         },
         yStatus = {
@@ -288,9 +288,17 @@
                 alert("审批额度不能大于"+appDetail.maxApplyAmt+"！");
                 return;
             }
+            if(applyAmt%100 !== 0) {
+                alert("审批额度只能为100的倍数！");
+                return;
+            }
             var borrowingAmt = parseFloat(borrowingAmtStr);
             if(borrowingAmt > applyAmt) {
                 alert("核准借款金额不能大于审批额度！");
+                return;
+            }
+            if(borrowingAmt%100 !== 0) {
+                alert("核准借款金额只能为100的倍数！");
                 return;
             }
             var accountAvlStr = $("#account-avl-amt");

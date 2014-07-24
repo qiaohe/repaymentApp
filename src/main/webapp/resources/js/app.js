@@ -15,13 +15,22 @@ var device = {
                 this.androidVersion = this.userAgent.slice(this.userAgent.indexOf("android") + 8, this.userAgent.indexOf("android") + 11);
                 this.androidVersion = Number(this.androidVersion);
             }
+        },
+        isIOS : function() {
+            return this.userAgent.indexOf("iphone") > -1 || this.userAgent.indexOf("ipad") > -1;
         }
     },
     dict = {
         getBincode: function() {
             var $this = this;
-            $.getJSON(config.apiPath + "dict/binCode", function (json) {
-                $this.bincode = json;
+            $.ajax({
+                type: "GET",
+                url: config.apiPath + "dict/binCode",
+                async: false,
+                dataType: "json",
+                success: function(json) {
+                    $this.bincode = json;
+                }
             });
         },
 
@@ -423,6 +432,10 @@ $(document).on("pagebeforeshow", function() {
 });
 
 $(document).on("pagecreate", "#limit", function () {
+    if(typeof dict.bincode === "undefined") {
+        dict.getBincode();
+    }
+
     device.getUserAgent();
     device.getAndroidVersion();
     if(device.androidVersion <= 2.3) {
@@ -635,10 +648,6 @@ $(document).on("pagecreate", "#limit", function () {
 });
 
 $(document).on("pageshow", "#limit", function(){
-    if(typeof dict.bincode === "undefined") {
-        dict.getBincode();
-    }
-
     if (member.anothertest) {
         $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
@@ -693,7 +702,7 @@ $(document).on("pagecreate", "#basic-info", function(){
             addOptions("industry-select", json);
             dict.industry = json;
             if (member.industry) {
-                $("#industry-select option:eq(" + member.education + ")").attr("selected", "selected");
+                $("#industry-select option:eq(" + member.industry + ")").attr("selected", "selected");
                 $("#industry-select option:eq(0)").remove();
                 $("#industry-select").selectmenu("refresh");
                 $("#industry-txt").hide();
@@ -769,11 +778,21 @@ $(document).on("pagecreate", "#basic-info", function(){
 });
 
 $(document).on("pagecreate", "#result", function(){
-    $("#option-2").click(function(e){
-        $("#share").popup("open");
+    device.getUserAgent();
+    $("#option-2").off('tap').on('tap',function(e){
+        if(device.isIOS()) {
+            $("#share").popup("open");
+            if(!$('#share').is(':focus')) {
+                $("#share").focus();
+            }
+        } else {
+            e.preventDefault();
+            $("#share").popup("open");
+        }
     });
 
-    var width = $(window).width() * 0.9,
+    var screenW = $(window).width() > 640 ? 640 : $(window).width(),
+        width = screenW * 0.9,
         height = width * 160 / 300;
     $("#share").css({"width":width,"height":height,"background-size":width +"px " +height+ "px"});
     $("#share img").css({"width":width*0.16,"height":width*0.16});
@@ -1004,7 +1023,7 @@ $(document).on("pagecreate", "#loan", function () {
                 $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
             }
 
-        } else if(!dict.isSupportedBankCard(cardNum) && cardNum > 6) {
+        } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
             $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         }
         else {
@@ -1082,7 +1101,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                                         member.acquireVerificationCode(member.phone).success(function(){
                                             $verifyingTips.find("h4").html("您的验证码已发送!");
                                             $verifyingTips.show();
-                                            $(this).attr("disabled", "true");
+                                            $(this).attr("disabled", true);
                                             member.refreshIntervalId = setInterval(function() {
                                                 if (i > 0) {
                                                     $("#acquire-code").html(i);
@@ -1138,6 +1157,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                         if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
                             requestAvailable();
                         }
+                        $("#code, #acquire-code").attr("disabled", true).off("keyup");
                     }
                     else {
                         $("#code-tip").attr("src", "resources/img/public/wrong.png").css({
@@ -1145,6 +1165,11 @@ $(document).on("pagebeforeshow", "#loan", function () {
                             "margin-top": "3px"
                         });
                     }
+                });
+            } else {
+                $("#code-tip").attr("src", "resources/img/public/keyboard.png").css({
+                    "height": "16px",
+                    "margin-top": "5px"
                 });
             }
         }).off("focusin").focusin(function() {
@@ -1180,7 +1205,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $(this).val(parseInt(member.avlCrl));
         }
 
-        if (parseFloat($(this).val()) >= 1000) {
+        if (parseFloat($(this).val()) >= 1000 && parseFloat($(this).val()) % 100 === 0) {
             member.loanApplication.amount = $(this).val();
             member.countPaybackEachTerm(member.loanApplication);
         } else {
@@ -1408,7 +1433,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             } else {
                 $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
             }
-        } else if(!dict.isSupportedBankCard(cardNum) && $("#new-cardnum").val().length > 6) {
+        } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
             $("#new-cardnum-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         } else {
             $("#new-cardnum").val("");
