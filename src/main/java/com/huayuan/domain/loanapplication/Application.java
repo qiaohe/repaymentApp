@@ -247,7 +247,7 @@ public class Application {
     }
 
     public boolean isFullyApproved() {
-        return isApproved() && getApproval().getAmt().equals(getAmt());
+        return isApproved() && getApproval().getAmt().equals(amt);
     }
 
     public Integer remainingHoursBasedOnStatus() {
