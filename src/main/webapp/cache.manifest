@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 5.11
+#version 0.84
 NETWORK:
 index.html
 resources/js/jquery-1.11.0.min.js

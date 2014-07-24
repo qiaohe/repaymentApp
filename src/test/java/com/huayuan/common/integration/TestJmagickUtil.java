@@ -13,7 +13,7 @@ public class TestJmagickUtil {
         String srcFileName = "test.jpg";
         String toPackage = "F:/test/";
         String toFileName = "004.jpg";
-        JmagickUtil.resize(srcPackage, srcFileName, toPackage, toFileName,300, 200); //缩放
+//        JmagickUtil.resize(srcPackage, srcFileName, toPackage, toFileName,300, 200); //缩放
     }
 
 }

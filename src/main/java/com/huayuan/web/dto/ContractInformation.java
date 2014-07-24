@@ -12,17 +12,17 @@ public class ContractInformation implements Serializable {
     private Double apr;
     private String lender;
     private String lenderMobile;
-    private String lenderPhone;
+    private String lenderEmail;
 
     public ContractInformation() {
     }
 
-    public ContractInformation(Double apr, String lender, String lenderMobile, String lenderPhone) {
+    public ContractInformation(Double apr, String lender, String lenderMobile, String lenderEmail) {
         this();
         this.apr = apr;
         this.lender = lender;
         this.lenderMobile = lenderMobile;
-        this.lenderPhone = lenderPhone;
+        this.lenderEmail = lenderEmail;
     }
 
     public Double getApr() {
@@ -49,12 +49,12 @@ public class ContractInformation implements Serializable {
         this.lenderMobile = lenderMobile;
     }
 
-    public String getLenderPhone() {
-        return lenderPhone;
+    public String getLenderEmail() {
+        return lenderEmail;
     }
 
-    public void setLenderPhone(String lenderPhone) {
-        this.lenderPhone = lenderPhone;
+    public void setLenderEmail(String lenderEmail) {
+        this.lenderEmail = lenderEmail;
     }
 
     public static ContractInformation valueOf(Double apr) {

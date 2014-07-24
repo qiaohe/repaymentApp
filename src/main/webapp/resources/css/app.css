@@ -1106,3 +1106,16 @@ hr{
     background: #f5f5f5;
 }
 /********************* FAQ End *******************/
+#protocol-1 p, #protocol-2 p{
+    color: black;
+    margin: auto;
+    font-size:1.4em;
+}
+
+#protocol-1 p{
+    text-indent: 26px;
+}
+
+#protocol-1 h2, #protocol-2 h2{
+    color:#06c1ae;
+}
