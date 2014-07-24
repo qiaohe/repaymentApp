@@ -1,13 +1,13 @@
 package com.huayuan.service;
 
-        import com.huayuan.domain.credit.ApplicationCreditInfo;
-        import com.huayuan.domain.credit.TvExecution;
-        import com.huayuan.domain.loanapplication.Approval;
-        import com.huayuan.domain.loanapplication.CreditResult;
-        import com.huayuan.domain.loanapplication.Staff;
-        import com.huayuan.domain.loanapplication.TelephoneTV;
+import com.huayuan.domain.credit.ApplicationCreditInfo;
+import com.huayuan.domain.credit.TvExecution;
+import com.huayuan.domain.loanapplication.Approval;
+import com.huayuan.domain.loanapplication.CreditResult;
+import com.huayuan.domain.loanapplication.Staff;
+import com.huayuan.domain.loanapplication.TelephoneTV;
 
-        import java.util.List;
+import java.util.List;
 
 /**
  * Created by Johnson on 4/7/14.

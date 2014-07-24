@@ -1,6 +1,7 @@
 package com.huayuan.service;
 
 import com.huayuan.common.exception.MemberNotFoundException;
+import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.member.*;
 import com.huayuan.domain.wechat.WeChatUser;
@@ -50,6 +51,8 @@ public interface MemberService {
     public Integer getApplicationStatus(Long memberId);
 
     public String getRating(Long memberId);
+
+    public Pricing getPricing(Long memberId, Integer term);
 
     public String getPhone(String idCardNo);
 

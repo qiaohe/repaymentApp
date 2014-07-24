@@ -3,6 +3,7 @@ package com.huayuan.service;
 import com.huayuan.common.App;
 import com.huayuan.common.exception.MemberNotFoundException;
 import com.huayuan.domain.accounting.Account;
+import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.crawler.BillCrawler;
 import com.huayuan.domain.crawler.BillEmail;
 import com.huayuan.domain.dictionary.ValueBin;
@@ -12,6 +13,7 @@ import com.huayuan.domain.wechat.WeChatUser;
 import com.huayuan.repository.DictionaryRepository;
 import com.huayuan.repository.ValueBinRepository;
 import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.credit.CreditResultRepository;
 import com.huayuan.repository.member.*;
@@ -50,6 +52,8 @@ public class MemberServiceImpl implements MemberService {
     private DictionaryRepository dictionaryRepository;
     @Inject
     private ApplicationRepository applicationRepository;
+    @Inject
+    private PricingRepository pricingRepository;
     @Inject
     private BillCrawler billCrawler;
     @Inject
@@ -134,9 +138,9 @@ public class MemberServiceImpl implements MemberService {
         if (member.getIdCard() != null) {
             return member.getIdCard();
         }
-        if(StringUtils.isNotEmpty(idCard.getIdNo())) {
+        if (StringUtils.isNotEmpty(idCard.getIdNo())) {
             List<IdCard> idCardList = idCardRepository.findByIdNo(idCard.getIdNo());
-            if(idCardList != null && !idCardList.isEmpty()) {
+            if (idCardList != null && !idCardList.isEmpty()) {
                 return new IdCard();
             }
         }
@@ -238,11 +242,17 @@ public class MemberServiceImpl implements MemberService {
         CreditResult creditResult = creditResultRepository.findByMemberId(memberId);
         if (creditResult != null) {
             String rating = creditResult.getLastRating();
-            if(StringUtils.isNotEmpty(rating)) {
+            if (StringUtils.isNotEmpty(rating)) {
                 return rating;
             }
         }
         return find(memberId).getPreRating();
+    }
+
+    @Override
+    public Pricing getPricing(Long memberId, Integer term) {
+        final String rating = getRating(memberId);
+        return pricingRepository.findByRatingAndTerm(rating, term);
     }
 
     @Override

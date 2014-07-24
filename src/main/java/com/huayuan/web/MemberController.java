@@ -1,9 +1,11 @@
 package com.huayuan.web;
 
 import com.huayuan.common.util.Day;
+import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.dictionary.CreditLimitRanges;
 import com.huayuan.domain.member.*;
 import com.huayuan.domain.recognizer.IdCardRecognizer;
+import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.IdCardRepository;
 import com.huayuan.repository.member.MemberRepository;
@@ -21,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import static com.huayuan.common.util.Constants.*;
+import static com.huayuan.common.util.Constants.validateIdCard18;
 
 /**
  * Created by Johnson on 3/19/14.
@@ -45,6 +47,8 @@ public class MemberController {
     private IdCardRepository idCardRepository;
     @Inject
     private MemberRepository memberRepository;
+    @Inject
+    private PricingRepository pricingRepository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -191,5 +195,12 @@ public class MemberController {
     @ResponseBody
     public List<MemberLoanSummaryDto> getMembersWithLoanSummary(@RequestParam("q") String query) {
         return idCardRepository.findMembersWithLoanSummary(query);
+    }
+
+    @RequestMapping(value = "/{memberId}/term/{term}/contract", method = RequestMethod.GET)
+    @ResponseBody
+    public ContractInformation getContractInformation(@PathVariable Long memberId, @PathVariable Integer term) {
+        final Pricing pricing = memberService.getPricing(memberId, term);
+        return ContractInformation.valueOf(pricing.getApr());
     }
 }
