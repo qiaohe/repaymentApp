@@ -4,12 +4,14 @@ import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.Contract;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.*;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -20,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+
+import static com.huayuan.common.App.getInstance;
 
 /**
  * Created by dell on 14-4-8.
@@ -55,6 +59,9 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private MemberRepository memberRepository;
     @Inject
     private CreditCardRepository creditCardRepository;
+    @Inject
+    private ContractRepository contractRepository;
+
     private ApplicationEventPublisher publisher;
 
     @Override
@@ -163,6 +170,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         loan.setPrincipal(loan.getPay().getPayAmt());
         loan.createRepayPlans();
         loan.setStatus(0);
+        updateContractBy(loan);
         loanRepository.save(loan);
         sendMessage(loan);
         return true;
@@ -238,7 +246,9 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         loan.setAmt(application.getApproval().getAmt());
         loan.setPrincipal(loan.getAmt());
         loan.setStartDate(application.getApproval().getCreateTime());
-        return createLoan(loan);
+        Loan newLoan = createLoan(loan);
+        createContractBy(newLoan);
+        return newLoan;
     }
 
     @Override
@@ -271,6 +281,30 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             updateBlockCode(plan.getLoan().getMember(), plan.getLoan().getCurDelq());
         }
         repayPlanRepository.save(plans);
+    }
+
+    @Override
+    public Contract getContract(String appNo) {
+        return contractRepository.findByAppNo(appNo);
+    }
+
+    private Contract createContractBy(Loan loan) {
+        if (contractRepository.findByAppNo(loan.getApplicationNo()) != null)
+            throw new IllegalStateException("The Contract has been created by " + loan.getApplicationNo());
+        Contract contract = new Contract(loan, getInstance().getLender(),
+                getInstance().getLenderEmail(), getInstance().getLenderMobile());
+        return contractRepository.save(contract);
+    }
+
+    private Contract updateContractBy(Loan loan) {
+        Contract contract = contractRepository.findByAppNo(loan.getApplicationNo());
+        if (contract == null) throw new IllegalStateException("The Contract is null with " + loan.getApplicationNo());
+        contract.setAmount(loan.getPrincipal());
+        contract.setStartDate(loan.getStartDate());
+        contract.setEndDate(new Day(loan.getStartDate()).plusMonths(loan.getTerm()));
+        contract.setRepaymentDay(new DateTime(loan.getStartDate()).getDayOfMonth());
+        contract.setSigningDate(loan.getStartDate());
+        return contractRepository.save(contract);
     }
 
     @Override

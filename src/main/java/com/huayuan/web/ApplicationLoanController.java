@@ -76,7 +76,7 @@ public class ApplicationLoanController {
         member.setExistingFlag(application.getExistingFlag());
         memberService.update(member);
         applicationRepository.execute(application);
-        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo())) {
+        if (StringUtils.isNotEmpty(applicationDto.getCreditCarNo())) {
             accountService.createLoanBy(applicationRepository.findOne(application.getApplicationNo()));
         }
         return application.getApplicationNo();

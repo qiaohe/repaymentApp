@@ -111,7 +111,7 @@ public class Application {
     }
 
     public Double getAmt() {
-        return amt;
+        return isApproved() ? approval.getAmt() : amt;
     }
 
     public void setAmt(Double amt) {
@@ -119,7 +119,7 @@ public class Application {
     }
 
     public Integer getTerm() {
-        return term;
+        return isApproved() ? approval.getTerm() : term;
     }
 
     public void setTerm(Integer term) {

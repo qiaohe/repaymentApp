@@ -70,6 +70,18 @@ public final class App {
         return Integer.valueOf(get("ocrserver.port"));
     }
 
+    public String getLender() {
+        return get("contract.lender");
+    }
+
+    public String getLenderEmail() {
+        return get("contract.lender.email");
+    }
+
+    public String getLenderMobile() {
+        return get("contract.lender.mobile");
+    }
+
     @PostConstruct
     private void init() {
         List<Dictionary> banks = dictionaryRepository.findByType("BANK");

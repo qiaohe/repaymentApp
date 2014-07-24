@@ -5,6 +5,7 @@ import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.LoanSummary;
 import com.huayuan.domain.accounting.RepayPlan;
 import com.huayuan.domain.loanapplication.Application;
+import com.huayuan.domain.member.Contract;
 
 import java.util.List;
 
@@ -32,11 +33,11 @@ public interface AccountService {
 
     public void repay(Long memberId, Double amount);
 
-    public boolean review(Long loanId,Double payAmt);
+    public boolean review(Long loanId, Double payAmt);
 
-    public boolean transferLoan(Long loanId,String transCode);
+    public boolean transferLoan(Long loanId, String transCode);
 
-    public boolean handleLoan(Long loanId,Double payAmt,String msg);
+    public boolean handleLoan(Long loanId, Double payAmt, String msg);
 
     public boolean takeBackLoan(Long loanId);
 
@@ -49,4 +50,6 @@ public interface AccountService {
     public Double getAmtWithinThisPeriod(Long memberId);
 
     public void updateOverDue();
+
+    public Contract getContract(String appNo);
 }
