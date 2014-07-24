@@ -779,7 +779,7 @@ $(document).on("pagecreate", "#basic-info", function(){
 
 $(document).on("pagecreate", "#result", function(){
     device.getUserAgent();
-    $("#option-2").off('tap').on('tap',function(e){
+    $("#option-2").off("tap").on("tap",function(e){
         if(device.isIOS()) {
             $("#share").popup("open");
             if(!$('#share').is(':focus')) {
