@@ -563,10 +563,10 @@
             <div style="height: 87%; overflow: scroll; padding: 0 5%">
                 <h1 style="color: black; font-size:1.6em">么么贷个人借款协议</h1>
                 <span style="font-size: 1.4em; color: black;">协议编号:</span><br>
-                <span style="font-size: 1.4em; color: black;">借款人:</span><br>
-                <span style="font-size: 1.4em; color: black;">出借人:</span><br>
+                <span style="font-size: 1.4em; color: black;">借款人: <span class="borrower"></span></span><br>
+                <span style="font-size: 1.4em; color: black;">出借人: <span class="lender"></span></span><br>
                 <span style="font-size: 1.4em; color: black;">居间服务人：上海米么金融信息服务有限公司</span><br>
-                <span id="contract-time" style="font-size: 1.4em; color: black;">年     月     日</span><br>
+                <span class="date-contract" style="font-size: 1.4em; color: black;"></span><br>
                 <h2>鉴于:</h2>
                 <p>1.居间服务人是一家在中国上海市合法成立并有效存续的有限责任公司，拥有微信服务号”么么贷”(微信号：memeloan)（本协议中凡提及该服务号，所指的权利义务主体均系居间服务人）的经营权，向服务号注册用户提供信用咨询及金融信息服务。<br>
                     2.借款人和出借人均已在服务号注册，本协议使用其已充分阅读并认可的服务号借款协议样本。<br>
@@ -575,17 +575,17 @@
                     借款人和出借人基于平等自愿原则，经居间服务人的居间介绍，就有关借款事项达成如下协议，以兹共守：</p>
                 <h2>第一条 借款基本信息</h2>
                 <p>借款开始日：出借人指定账户划付本协议项下借款之日<br>
-                    借款到期日：借款开始后的第[       ]个自然月的借款开始日当日，节假日不顺延(如当月不存在该借款开始日的，则应为当月的最后一日)<br>
+                    借款到期日：借款开始后的第[<span class="term-contract"></span>]个自然月的借款开始日当日，节假日不顺延(如当月不存在该借款开始日的，则应为当月的最后一日)<br>
                     还款方式：等额本息<br>
                     还款日：自第二个月起每个自然月的借款开始日当日，节假日不顺延(如当月不存在该借款开始日的，则应为当月的最后一日)<br>
-                    借款人：<br>
-                    出借人：<br>
-                    借款金额：<br>
-                    借款期限（月）：<br>
-                    借款开始日：<br>
-                    借款到期日：<br>
-                    月截止还款日：<br>
-                    年利率：<br>
+                    借款人： <span class="borrower"></span><br>
+                    出借人： <span class="lender"></span><br>
+                    借款金额：<span class="amount-contract"></span><br>
+                    借款期限（月）：<span class="term-contract"></span><br>
+                    借款开始日：<span class="date-contract"></span><br>
+                    借款到期日：<span class="dueDate-contract"></span><br>
+                    月截止还款日：<span class="dueDay-contract"></span><br>
+                    年利率：<span class="apr"></span><br>
                 </p>
                 <h2>第二条 借款的支付</h2>
                 <p>2.1出借人在同意向借款人出借相应款项时，已委托么么贷在本协议生效时将本协议项下的借款直接划付至借款人账户。<br>
@@ -608,10 +608,9 @@
                 <p>4.1任何一方因履行本协议做出的通知和/或文件均应为书面形式，并通过短信、电子邮件及微信消息等方式传送。<br>
                     4.2以短信、电子邮件及微信消息方式发出的通知，以成功发送为有效送达。<br>
                     4.3各方在本协议中填写的联系信息即为其有效的通讯方式。各方联系信息如下：<br>
-                    出借人：                                                借款人：<br>
-                    微信号：                                                微信号：<br>
-                    邮箱地址：                                              邮箱地址：<br>
-                    移动电话：                                              移动电话：
+                    出借人： <span class="lender"></span>                   借款人： <span class="borrower"></span><br>
+                    邮箱地址： <span class="lenderEmail"></span>           邮箱地址：<span class="borrowerEmail"></span> <br>
+                    移动电话： <span class="lenderMoblie"></span>          移动电话：<span class="borrowerMoblie"></span>
                 </p>
                 <h2>第五条 逾期及违约</h2>
                 <p>5.1借款人应严格履行还款义务，借款人未于借款协议规定的还款日足额还款、但于还款日次日起算的3天内足额还款的，无需支付逾期罚息。若借款人在还款日次日起算的3天内未足额还款的，则应向出借人支付按照下列公式计算出的逾期罚息。逾期罚息与借款利息不同时计算，即借款人还清全部本金、利息、罚息之前，逾期本金的正常利息停止计算。<br>
