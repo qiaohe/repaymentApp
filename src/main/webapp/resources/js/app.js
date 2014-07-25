@@ -422,6 +422,75 @@ member = (function(member) {
         });
     };
 
+    member.showContract = function() {
+        var contract = "";
+        contract = this.existingFlag === 2 ? "resources/html/contract_v1.0.html" : "resources/html/announcement_v1.0.html";
+        $(":mobile-pagecontainer").pagecontainer("change", contract, {role: "dialog"});
+        if(this.existingFlag === 2) {
+            $(document).one("pagecontainerload", function(event, ui) {
+                $.ajax({
+                    url: "../../" + config.apiPath + "members/" + member.id + "/idCard" + config.timeStamp,
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    success: function(json) {
+                        member.name = json.name;
+                    },
+                    error: function() {
+                        config.alertUrl(config.apiPath + "members/" + member.id + "/idCard" + config.timeStamp);
+                    }
+                });
+
+                var term = member.currentLoanAppTerm || member.loanApplication.term;
+                if(term) {
+                    $.ajax({
+                        url: "../../" + config.apiPath + "members/" + member.id + "/term/" + term + "/contract" + config.timeStamp,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(json) {
+                            var amount = $("#amt-x").html(),
+                                term = $("#term-shown").html(),
+                                apr = json.apr,
+                                lender = json.lender,
+                                lenderMobile = json.lenderMobile,
+                                lenderEmail = json.lenderEmail,
+                                date = dict.getReadableDate(new Date());
+                            $(".borrower").html(member.name);
+                            $(".lender").html(lender);
+                            $(".date-contract").html(date[0] + "年" + date[1] + "月" + date[2] + "日");
+                            $(".term-contract").html(term);
+                            $(".borrowerMobile").html("");
+                            $(".borrowerEmail").html(member.email);
+                            $(".lenderMobile").html(lenderMobile);
+                            $(".lenderEmail").html(lenderEmail);
+                            $(".apr").html(apr);
+                            var dueYear, dueMonth, dueDay;
+                            if(date[1] + Number(term) > 12) {
+                                dueYear = date[0] + 1;
+                                dueMonth = date[1] + Number(term) - 12;
+                            } else {
+                                dueYear = date[0];
+                                dueMonth = date[1] + Number(term);
+                            }
+                            if(dueMonth === 2 && date[2] > 28) {
+                                dueDay = 28;
+                            } else if(dueMonth in [1, 3, 5, 7, 8, 10, 12] && dueDay === 31) {
+                                dueDay = 30;
+                            } else {
+                                dueDay = date[2];
+                            }
+                            $(".dueDate-contract").html(dueYear + "年" + dueMonth + "月" + dueDay + "日");
+                            $(".dueDay-contract").html("每月" + dueDay + "日");
+                        },
+                        error: function() {
+                            config.alertUrl(config.apiPath + "members/" + member.id + "/term/" + member.loanApplication.term + "/contract" + config.timeStamp);
+                        }
+                    });
+                }
+            });
+        }
+    };
+
     return member;
 })(member);
 
@@ -1045,16 +1114,12 @@ $(document).on("pagecreate", "#loan", function () {
     });
 
     $("#protocolOne").off("tap").tap(function() {
-        $("#protocol-1").show();
-    });
-
-    $("#return-protocol-1, #close-protocol-1").off("tap").tap(function() {
-        $("#protocol-1").hide();
+        member.showContract();
     });
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
-    $(this).attr("data-role", "申请借款");
+    $(this).attr("data-title", "申请借款");
 
     if (typeof dict.bincode === "undefined") {
         dict.getBincode();
@@ -1348,7 +1413,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             $("#amt-x").html(dict.numberWithCommas(json.amt));
             member.firstLoanAppAmount = json.amt;
             $("#term-shown").html(json.term);
-            member.firstLoanAppTerm = json.term;
+            member.currentLoanAppTerm = json.term;
             $("#each-x").html("&yen;" + Math.round(json.repayPerTerm * 100)/100).css("color", "black");
             $("#saved-x").html("&yen;" + Math.round(json.saveCost * 100)/100).css("color", "black");
             if (!json.isFullyApproved) {
@@ -1452,67 +1517,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $("#protocolTwo").off("tap").tap(function() {
-        $("#protocol-2").show();
-        $.ajax({
-            url: config.apiPath + "members/" + member.id + "/idCard" + config.timeStamp,
-            type: "GET",
-            async: false,
-            dataType: "json",
-            success: function(json) {
-                member.name = json.name;
-            },
-            error: function() {
-                config.alertUrl(config.apiPath + "members/" + member.id + "/idCard" + config.timeStamp);
-            }
-        });
-
-        $.ajax({
-            url: config.apiPath + "members/" + member.id + "/term/" + member.firstLoanAppTerm + "/contract" + config.timeStamp,
-            type: "GET",
-            dataType: "json",
-            success: function(json) {
-                var amount = $("#amt-x").html(),
-                    term = $("#term-shown").html(),
-                    apr = json.apr,
-                    lender = json.lender,
-                    lenderMobile = json.lenderMobile,
-                    lenderEmail = json.lenderEmail,
-                    date = dict.getReadableDate(new Date());
-                $(".borrower").html(member.name);
-                $(".lender").html(lender);
-                $(".date-contract").html(date[0] + "年" + date[1] + "月" + date[2] + "日");
-                $(".term-contract").html(term);
-                $(".borrowerMobile").html("");
-                $(".borrowerEmail").html(member.email);
-                $(".lenderMobile").html(lenderMobile);
-                $(".lenderEmail").html(lenderEmail);
-                $(".apr").html(apr);
-                var dueYear, dueMonth, dueDay;
-                if(date[1] + Number(term) > 12) {
-                    dueYear = date[0] + 1;
-                    dueMonth = date[1] + Number(term) - 12;
-                } else {
-                    dueYear = date[0];
-                    dueMonth = date[1] + Number(term);
-                }
-                if(dueMonth === 2 && date[2] > 28) {
-                    dueDay = 28;
-                } else if(dueMonth in [1, 3, 5, 7, 8, 10, 12] && dueDay === 31) {
-                    dueDay = 30;
-                } else {
-                    dueDay = date[2];
-                }
-                $(".dueDate-contract").html(dueYear + "年" + dueMonth + "月" + dueDay + "日");
-                $(".dueDay-contract").html("每月" + dueDay + "日");
-            },
-            error: function() {
-                config.alertUrl(config.apiPath + "members/" + member.id + "/term/" + member.loanApplication.term + "/contract" + config.timeStamp);
-            }
-        });
-    });
-
-    $("#return-protocol-2, #close-protocol-2").off("tap").tap(function() {
-        $("#protocol-2").hide();
+        member.showContract();
     });
 });
 
