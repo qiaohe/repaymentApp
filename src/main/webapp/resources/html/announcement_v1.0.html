@@ -3,6 +3,38 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body{
+            font-size: 62.5%;
+        }
+
+        p{
+            color: black;
+            margin: auto;
+            font-size:1.4em;
+            text-indent: 26px;
+        }
+
+        h2{
+            color:#06c1ae;
+        }
+
+        .custom-btn {
+            position: relative;
+            top: 0;
+            display: block;
+            width: 100%;
+            margin: .5em 0;
+            padding: .7em 1em;
+            text-decoration: none;
+            background-color: #3ca0e6;
+            text-align: center;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.6em;
+        }
+    </style>
 </head>
 <body>
 <div id="protocol-1">
@@ -39,9 +71,28 @@
 <img src="../img/other_icons/7-3-2.png" id="close-protocol-1" style="position: fixed; width: 40px; height: 40px; right: 0px; top: 0px">
 <div style="width:80%; margin: 10% 10% 0 10%" id="return-protocol-1"><a type="button" class="ui-btn bluebtn custom-btn">返回</a></div>
 <script>
-    $("#close-protocol-1, #return-protocol-1").off("tap").tap(function() {
-        $.mobile.back();
-    });
+    (function(){
+        function goBackward() {
+            window.history.back();
+        }
+
+        function showBoxShadow() {
+            document.getElementById("return-protocol-1").style.boxShadow = "0 0 5px black";
+        }
+
+        function hideBoxShadow() {
+            document.getElementById("return-protocol-1").style.boxShadow = "none";
+        }
+
+        var aims = document.querySelectorAll("#close-protocol-1, #return-protocol-1");
+
+        for(var i = 0; i < aims.length; i++) {
+            aims[i].addEventListener("click", goBackward);
+        }
+
+        document.getElementById("return-protocol-1").addEventListener("mousedown", showBoxShadow);
+        document.getElementById("return-protocol-1").addEventListener("mouseup", hideBoxShadow);
+    })();
 </script>
 </body>
 </html>
