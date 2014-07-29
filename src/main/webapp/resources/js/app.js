@@ -658,7 +658,9 @@ $(document).on("pagecreate", "#limit", function () {
 
 $(document).on("pageshow", "#limit", function(){
     if (member.anothertest) {
-        $("#credit-card").val("").scrollTop(350).focus().trigger("tap");
+        $("#next-step").off("click").css("background-color: silver").removeClass("bluebtn");
+        $("#credit-card").val("").scrollTop(350).focus();
+        alert($("#credit-card").val());
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
     }
 
@@ -1002,8 +1004,12 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#add-another-2").off("click").click(function(){
         $("#new-cardnum-2-placeholder").val("");
+        $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
+            setTimeout(function () {
+                $("#card-add-box-2").show();
+            }, 500);
+        });
         $("#cardlist-2").popup("close");
-        $("#card-add-box-2").show();
     });
 
     $("#return-2").off("click").click(function(){

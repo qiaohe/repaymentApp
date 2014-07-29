@@ -165,43 +165,51 @@
             return [year, month, day];
         }
 
+        function setHTMLByClass(className, innerHTML) {
+            var elements = document.getElementsByClassName(className);
+            for(var i = 0; i < elements.length; i++) {
+                elements[i].innerHTML = innerHTML;
+            }
+        }
+
         var contract = getContract(),
             aims = document.querySelectorAll("#close-protocol-2, #return-protocol-2"),
             returnBtn = document.getElementById("return-protocol-2"),
-            xhr = new XMLHttpRequest();
+            xhrZero = new XMLHttpRequest(),
+            xhrOne = new XMLHttpRequest(),
+            xhrTwo = new XMLHttpRequest();
 
-        xhr.onreadystatechange = function() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                contract.borrowerName = JSON.parse(request.responseText).name;
-                document.getElementsByClassName("borrower").innerHTML = contract.borrowerName;
+        xhrZero.onreadystatechange = function() {
+            if(xhrZero.readyState == 4 && xhrZero.status == 200) {
+                contract.borrowerName = JSON.parse(xhrZero.responseText).name;
+                setHTMLByClass("borrower", contract.borrowerName);
             }
         };
-        xhr.open("GET", "../../api/" + "members/" + contract.id + "/idCard");
-        xhr.send(null);
+        xhrZero.open("GET", "../../api/" + "members/" + contract.id + "/idCard");
+        xhrZero.send(null);
 
-        xhr.onreadystatechange = function() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                var json = JSON.parse(request.responseText);
+        xhrOne.onreadystatechange = function() {
+            if(xhrOne.readyState == 4 && xhrOne.status == 200) {
+                var json = JSON.parse(xhrOne.responseText);
                 var apr = json.apr,
                     lender = json.lender,
                     lenderMobile = json.lenderMobile,
                     lenderEmail = json.lenderEmail,
                     date = getReadableDate(new Date());
-                document.getElementsByClassName("lender").innerHTML = lender;
-                document.getElementsByClassName("date-contract").innerHTML = date[0] + "年" + date[1] + "月" + date[2] + "日";
-                document.getElementsByClassName("term-contract").innerHTML = contract.term;
-                document.getElementsByClassName("borrowerMobile").innerHTML = "";
-                document.getElementsByClassName("borrowerEmail").innerHTML = "";
-                document.getElementsByClassName("lenderMobile").innerHTML = lenderMobile;
-                document.getElementsByClassName("lenderEmail").innerHTML = lenderEmail;
-                document.getElementsByClassName("apr").innerHTML = apr;
+                setHTMLByClass("lender", lender);
+                setHTMLByClass("date-contract", date[0] + "年" + date[1] + "月" + date[2] + "日");
+                setHTMLByClass("term-contract", contract.term);
+                setHTMLByClass("borrowerMobile", "");
+                setHTMLByClass("lenderMobile", lenderMobile);
+                setHTMLByClass("lenderEmail", lenderEmail);
+                setHTMLByClass("apr", apr);
                 var dueYear, dueMonth, dueDay;
-                if(date[1] + Number(term) > 12) {
+                if(date[1] + Number(contract.term) > 12) {
                     dueYear = date[0] + 1;
-                    dueMonth = date[1] + Number(term) - 12;
+                    dueMonth = date[1] + Number(contract.term) - 12;
                 } else {
                     dueYear = date[0];
-                    dueMonth = date[1] + Number(term);
+                    dueMonth = date[1] + Number(contract.term);
                 }
                 if(dueMonth === 2 && date[2] > 28) {
                     dueDay = 28;
@@ -210,21 +218,21 @@
                 } else {
                     dueDay = date[2];
                 }
-                $(".dueDate-contract").html(dueYear + "年" + dueMonth + "月" + dueDay + "日");
-                $(".dueDay-contract").html("每月" + dueDay + "日");
+                setHTMLByClass("dueDate-contract", dueYear + "年" + dueMonth + "月" + dueDay + "日");
+                setHTMLByClass("dueDay-contract", "每月" + dueDay + "日");
             }
         };
-        xhr.open("GET", "../../api" + "members/" + contract.id + "/term/" + contract.term + "/contract");
-        xhr.send(null);
+        xhrOne.open("GET", "../../api/" + "members/" + contract.id + "/term/" + contract.term + "/contract");
+        xhrOne.send(null);
 
-        xhr.onreadystatechange = function() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                var json = JSON.parse(request.responseText);
-                document.getElementsByClassName("borrowerEmail").innerHTML = json.email;
+        xhrTwo.onreadystatechange = function() {
+            if(xhrTwo.readyState == 4 && xhrTwo.status == 200) {
+                var json = JSON.parse(xhrTwo.responseText);
+                setHTMLByClass("borrowerEmail", json.email);
             }
         };
-        xhr.open("GET", "../../api" + "members/" + contract.id);
-        xhr.send(null);
+        xhrTwo.open("GET", "../../api/" + "members/" + contract.id);
+        xhrTwo.send(null);
 
         returnBtn.addEventListener("mousedown", showBoxShadow);
         returnBtn.addEventListener("mouseup", hideBoxShadow);
