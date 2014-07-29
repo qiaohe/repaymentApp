@@ -95,7 +95,7 @@ var device = {
             if (l > 15) {
                 for (var i = 0; i < l; i++) {
                     var tmp = Number(cardNum[i], 10);
-                    if ((i % 2) === 0) {
+                    if((i % 2) === 0) {
                         if (2 * tmp > 9) {
                             sum += (2 * tmp - 9);
                         }
@@ -420,6 +420,15 @@ member = (function(member) {
                 config.alertUrl(config.apiPath + "members/" + id + "/status/" + status);
             }
         });
+    };
+
+    member.refreshContract = function() {
+        var contract = this.existingFlag === 2 ? "resources/html/contract_v1.0.html" : "resources/html/announcement_v1.0.html";
+        contract += config.timeStamp;
+        contract += ("&memberId=" + this.id + "&");
+        contract += ("amount=" + this.contractAmount + "&");
+        contract += ("term=" + this.contractTerm);
+        $(".protocol").attr("href", contract);
     };
 
     return member;
@@ -964,7 +973,8 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#agree").off("click").click(function () {
         var $agree = $(this);
-        $agree.toggleClass("check-custom1").toggleClass("check-custom2");
+        $agree.attr("checkFlag", "1");
+        $agree.toggleClass("check-custom2").toggleClass("check-custom1");
         if($agree.attr("checkFlag")) {
             $agree.removeAttr("checkFlag");
         } else {
@@ -1016,11 +1026,11 @@ $(document).on("pagecreate", "#loan", function () {
                     $("#cardlist-2").prepend($(tmp));
                 }).error(function(){
                     $newCardnum2.val("");
-                    $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                    $("#new-cardnum-2-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
                 });
             } else {
                 $newCardnum2.val("");
-                $("#new-cardnum-2-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
+                $("#new-cardnum-2-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
             }
 
         } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
@@ -1043,17 +1053,15 @@ $(document).on("pagecreate", "#loan", function () {
     $("#varifying-tips a").off("click").click(function() {
         $("#varifying-tips").hide();
     });
-
-    var contract = member.existingFlag === 2 ? "resources/html/contract_v1.0.html" : "resources/html/announcement_v1.0.html";
-    contract += config.timeStamp;
-    contract += ("of" + member.id);
-    $(".protocol").attr("href", contract);
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
     $(this).attr("data-title", "申请借款");
+    member.contractTerm = 3;
+    member.contractAmount = 0;
+    member.refreshContract();
 
-    if (typeof dict.bincode === "undefined") {
+    if(typeof dict.bincode === "undefined") {
         dict.getBincode();
     }
 
@@ -1205,6 +1213,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
         if (parseFloat($(this).val()) >= 1000 && parseFloat($(this).val()) % 100 === 0) {
             member.loanApplication.amount = $(this).val();
             member.countPaybackEachTerm(member.loanApplication);
+            member.contractAmount = $(this).val();
+            member.refreshContract();
         } else {
             member.loanApplication.amount = undefined;
             requestUnavailable();
@@ -1237,8 +1247,10 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "3";
+            member.contractTerm = 3;
+            member.refreshContract();
             var tmp = parseInt($("#amount").val());
-            if(tmp >= 1000 && tmp%100 === 0) {
+            if(tmp >= 1000 && tmp %100 === 0) {
                 member.loanApplication.amount = tmp;
                 member.countPaybackEachTerm(member.loanApplication);
             } else {
@@ -1252,6 +1264,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "6";
+            member.contractTerm = 6;
+            member.refreshContract();
             var tmp = parseInt($("#amount").val());
             if(tmp >= 1000 && tmp%100 === 0) {
                 member.loanApplication.amount = tmp;
