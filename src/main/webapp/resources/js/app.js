@@ -1041,6 +1041,7 @@ $(document).on("pagecreate", "#loan", function () {
             }
 
         } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
+            $("#new-cardnum-2").val("");
             $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         }
         else {
@@ -1309,6 +1310,9 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $(this).val(tmp.slice(0, tmp.length - 1));
             }
         }
+        if(tmp.length > 6 && dict.isSupportedBankCard(tmp)) {
+            $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+        }
     }).off("focusin").focusin(function() {
         $("#new-cardnum-2-placeholder").hide();
     }).off("focusout").focusout(function() {
@@ -1318,7 +1322,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 });
 
-$(document).on("tap", ".card-container-0", function () {
+$(document).on("tap", ".card-container-0", function (e) {
+    e.preventDefault();
     member.loanApplication.creditCard = $(this).children("div").html();
     $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
@@ -1329,7 +1334,8 @@ $(document).on("tap", ".card-container-0", function () {
     $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
 });
 
-$(document).on("tap", ".card-container", function () {
+$(document).on("tap", ".card-container", function (e) {
+    e.preventDefault();
     member.loanApplication.creditCard = $(this).children("div").html();
     $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
@@ -1395,20 +1401,20 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     $("#new-cardnum").off("keyup").keyup(function (e) {
         $("new-cardnum-tip").html("请使用您自己的卡片, 否则借款将无法注入").css("color", "#333333");
         var tmp = $(this).val();
-
-        if(tmp.length > 0)
-            $("#new-cardnum-placeholder").hide().html("请输入").css("color", "#333333");
-        else
-            $("#new-cardnum-placeholder").show();
-
         dict.setCardIcon("tip-new-cardnum", tmp);
-
         if (tmp.length % 5 === 4) {
             if (e.keyCode !== 8) {
                 $(this).val(tmp + " ");
-            } else {
+            }
+            else {
                 $(this).val(tmp.slice(0, tmp.length - 1));
             }
+        }
+    }).off("focusin").focusin(function() {
+        $("#new-cardnum-placeholder").hide();
+    }).off("focusout").focusout(function() {
+        if(!$(this).val()) {
+            $("#new-cardnum-placeholder").hide().html("请输入").css("color", "#333333").show();
         }
     });
 
