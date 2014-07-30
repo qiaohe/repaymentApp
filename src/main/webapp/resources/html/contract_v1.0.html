@@ -93,8 +93,10 @@
         </tr>
         <tr>
             <td>邮箱地址： </td>
-            <td><span class="lenderEmail"></span></td>
             <td>邮箱地址： </td>
+        </tr>
+        <tr>
+            <td><span class="lenderEmail"></span></td>
             <td><span class="borrowerEmail"></span></td>
         </tr>
         <tr>
@@ -179,6 +181,9 @@
             xhrOne = new XMLHttpRequest(),
             xhrTwo = new XMLHttpRequest();
 
+        setHTMLByClass("term-contract", contract.term);
+        setHTMLByClass("amount-contract", contract.amount);
+
         xhrZero.onreadystatechange = function() {
             if(xhrZero.readyState == 4 && xhrZero.status == 200) {
                 contract.borrowerName = JSON.parse(xhrZero.responseText).name;
@@ -198,7 +203,6 @@
                     date = getReadableDate(new Date());
                 setHTMLByClass("lender", lender);
                 setHTMLByClass("date-contract", date[0] + "年" + date[1] + "月" + date[2] + "日");
-                setHTMLByClass("term-contract", contract.term);
                 setHTMLByClass("borrowerMobile", "");
                 setHTMLByClass("lenderMobile", lenderMobile);
                 setHTMLByClass("lenderEmail", lenderEmail);

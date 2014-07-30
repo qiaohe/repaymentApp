@@ -659,6 +659,7 @@ $(document).on("pagecreate", "#limit", function () {
 $(document).on("pageshow", "#limit", function(){
     if (member.anothertest) {
         $("#next-step").off("click").css("background-color: silver").removeClass("bluebtn");
+        document.getElementById("credit-card").innerHTML = "";
         $("#credit-card").val("").scrollTop(350).focus();
         alert($("#credit-card").val());
         $("#tip-credit").attr("src", "resources/img/card_icon/card.png");
@@ -956,6 +957,7 @@ function requestUnavailable() {
 
 $(document).on("pagecreate", "#loan", function () {
     member.loanApplication = {};
+    $("#agree").attr("checkFlag", "1");
     var $newCardnum2 = $("#new-cardnum-2"),
         $verifyingTips = $("#varifying-tips");
 
@@ -975,7 +977,6 @@ $(document).on("pagecreate", "#loan", function () {
 
     $("#agree").off("click").click(function () {
         var $agree = $(this);
-        $agree.attr("checkFlag", "1");
         $agree.toggleClass("check-custom2").toggleClass("check-custom1");
         if($agree.attr("checkFlag")) {
             $agree.removeAttr("checkFlag");
@@ -1146,6 +1147,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
         $phone.off("focusin").focusin(function(){
             $("#phone-txt").hide();
+            $(this).scrollTop(250);
         }).off("focusout").focusout(function() {
             if(!$(this).val()) {
                 $("#phone-txt").show();
