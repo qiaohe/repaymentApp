@@ -1311,6 +1311,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             }
         }
         if(tmp.length > 6 && !dict.isSupportedBankCard(tmp)) {
+            $("#new-cardnum-2").val();
             $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         }
     }).off("focusin").focusin(function() {
