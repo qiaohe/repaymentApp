@@ -1310,7 +1310,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 $(this).val(tmp.slice(0, tmp.length - 1));
             }
         }
-        if(tmp.length > 6 && dict.isSupportedBankCard(tmp)) {
+        if(tmp.length > 6 && !dict.isSupportedBankCard(tmp)) {
             $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
         }
     }).off("focusin").focusin(function() {
