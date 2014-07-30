@@ -1299,6 +1299,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
     }
 
     $("#new-cardnum-2").off("keyup").keyup(function (e) {
+        $("#new-cardnum-2-placeholder").hide();
         $("new-cardnum-2-tip").html("请使用您自己的卡片, 否则借款将无法注入").css("color", "#333333");
         var tmp = $(this).val();
         dict.setCardIcon("tip-new-cardnum-2", tmp);
