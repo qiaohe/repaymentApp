@@ -17,7 +17,7 @@
     </script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
     <script type="text/javascript" src="resources/js/navigator.js?v=0.11"></script>
-    <!--<script>localStorage.clear();</script>-->
+    <script>localStorage.clear();</script>
 </head>
 <body>
 <!-- limit -->
@@ -239,16 +239,17 @@
     </div>
 
     <div style="width: 100%; height: 70px">
-        <div style="width:86%; margin:20px auto auto auto; clear:both">
-            <div style="width:48%; float:left">
+        <div style="width:90%; margin:20px auto auto auto; clear:both">
+            <div style="width:49%; float:left">
                 <p>您每期需要还款</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
                     <span style="color: #333333"><br> &yen;</span><span id="each-term"></span>
                 </div>
             </div>
 
+            <div style="width: 0px; height: 74px; border-left: 1px solid #dfdfdf; border-right: 1px solid white; float: left; position: relative; top: -2px; left: 2px"></div>
 
-            <div style="float:left; width: 51%">
+            <div style="float:right; width: 50%">
                 <p>相比信用卡最高可省</p>
                 <div style="text-align: center; font-family: Arial; font-size: 1.6em; position: relative; top: -12px">
                     <span style="color: #333333"><br> &yen;</span><span id="saved"></span>
@@ -335,8 +336,7 @@
     <div id="card-add-box-2" style="position: absolute; top: 0; width: 100%; height: 100%; display: none;">
         <div class="bkg"></div>
 
-        <div class="unselectable"
-             style="position:absolute; top:25%; left:4%; width:92%; height:165px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px">
+        <div class="unselectable" style="position:absolute; top:25%; left:4%; width:92%; height:165px; border: 1px solid silver; background-color: #e7e7e7; border-radius: 5px">
 
             <img src="resources/img/other_icons/7-3-2.png" id="close-2" style="position: absolute; width: 40px; height: 40px; right: -15px; top: -15px">
 
@@ -420,7 +420,7 @@
 
 <div data-role="page" id="congratulation" style="background-color:#f7f7f7">
     <div>
-        <div class="cover" style="height: 100px; padding-top: 25px">
+        <div class="cover" style="height: 120px; padding-top: 25px">
             <div id="cong-discription" style="text-align: left; margin-left: 10%; color: white; font-size: 1.6em">
                 恭喜<span class="gender">官人</span>!您的借款审批通过~
             </div>
@@ -429,24 +429,28 @@
                 <span id="amt-x" style="font-size: 4.4em; color: #404040; font-weight: bolder">9300</span></div>
         </div>
 
+        <div style="width: 100%; height: 0px; border-top: 1px solid #dfdfdf; border-bottom: 1px solid white; margin: 30px auto -10px auto"></div>
+
         <p style="margin: 20px auto -2px 10%; font-size: 1.5em">还款期数</p>
         <div style="width: 40%; margin-left: 10%">
             <div class="ui-btn term-chose" disabled><span id="term-shown" style="font-family: Arial">6</span>个月</div>
         </div>
-        <div style="width: 100%; height: 0px; border-bottom: 1px solid red"></div>
+        <div style="width: 100%; height: 0px; border-top: 1px solid #dfdfdf; border-bottom: 1px solid white; margin: 20px auto 10px auto"></div>
 
         <div style="width: 100%; height: 60px">
-            <div style="width: 50%; float: left">
+            <div style="width: 49%; float: left">
                 <p style="text-align: center; font-size: 1.5em; margin: 5px auto">您每期需要还款</p>
                 <div style="text-align: center; font-size: 1.5em; margin: 5px auto; font-family: Arial"><span id="each-x" style="color: black">&yen;540.20</span></div>
             </div>
+
+            <div style="width: 0px; height: 72px; border-left: 1px solid #dfdfdf; border-right: 1px solid white; float: left; position: relative; top: -11px; left: 2px"></div>
 
             <div style="width: 50%; float: right">
                 <p style="text-align: center; font-size: 1.5em; margin: 5px auto">相比信用卡最高可省</p>
                 <div style="text-align: center; font-size: 1.5em; margin: 5px auto"><span id="saved-x" style="font-family: Arial">&yen;150</span></div>
             </div>
         </div>
-        <div style="width: 100%; height: 1px; border-bottom: 1px solid silver"></div>
+        <div style="width: 100%; height: 0px; border-top: 1px solid #dfdfdf; border-bottom: 1px solid white;"></div>
 
         <div style="margin: 40px auto 0 8%; height: 35px">
             <div class="check-custom1" id="agree-cong" style="position: relative; top: 5px"></div>
