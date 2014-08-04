@@ -248,9 +248,12 @@ function share_to(m,config) {
 			try {
 			} catch (e) {
 			}
-			var f = 'http://v.t.sina.com.cn/share/share.php?', u = d.location.href, p = [
-					'url=', options.url, '&title=', options.title, '&appkey=330242870' ]
-					.join('');
+//			var f = 'http://v.t.sina.com.cn/share/share.php?', u = d.location.href, p = [
+//					'url=', options.url, '&title=', options.title, '&appkey=330242870' ]
+//					.join('');
+            var f = 'http://service.weibo.com/share/share.php?', u = d.location.href, p = [
+                'url=', options.url, '&title=', options.title,'&pic=', options.img,'&searchPic=false', '&appkey=330242870' ]
+                .join('');
 			function a() {
 				if (!window
 						.open(

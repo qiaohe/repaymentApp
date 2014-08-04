@@ -1531,6 +1531,7 @@ function generateCarousels(loanSummary) {
         contentHtml += "<div class='repayment-item'>" + generateItemLoan(loan,i) + "</div>";
     }
     $("#container").html(contentHtml);
+    $("#repayFooterDiv").show();
 
     member.crntCaro = 0;
     sliderPage();
@@ -1555,7 +1556,8 @@ function generateCarousels(loanSummary) {
             detailInfo.push("每月" + perDay + "日");
         }
         detailInfo.push(dict.numberWithCommas(curLoan.dueAmt.toFixed(2)));
-        detailInfo.push(dict.numberWithCommas(curLoan.lastDueAmt.toFixed(2)));
+        detailInfo.push(dict.numberWithCommas(Math.abs(curLoan.lastDueAmt).toFixed(2)));
+
 
         var $aim = $("#loan-specific");
         $("#loan-specific").find(".loan-d-r").each(function(i,item){
