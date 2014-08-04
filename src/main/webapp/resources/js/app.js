@@ -1029,7 +1029,7 @@ $(document).on("pagecreate", "#loan", function () {
                     }, 500);
                     $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
                     var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
-                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
+                    var tmp = "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum.slice(0, 4) + "********" + cardNum.slice(cardNum.length - 4) + "</div></div><hr>";
                     $("#cardlist-2").prepend($(tmp));
                 }).error(function(){
                     $newCardnum2.val("");
@@ -1291,7 +1291,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = dict.getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo.slice(0, 4) + "********" + obj.cardNo.slice(obj.cardNo.length - 4) + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist-2").prepend($(tmp));
@@ -1393,7 +1393,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             var tmp = [];
             $.each(data, function(ind, obj){
                 var src = dict.getCardIconSrc(obj.bank);
-                tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo + "</div></div><hr>";
+                tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo.slice(0, 4) + "********" + obj.cardNo.slice(obj.cardNo.length - 4) + "</div></div><hr>";
                 member.creditcard.push([obj.cardNo, obj.bank]);
             });
             $("#cardlist").prepend($(tmp));
@@ -1453,7 +1453,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                     }, 500);
                     $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
                     var iconSrc = dict.getCardIconSrc(cardNum.replace(/ /g, "").slice(0, 6));
-                    var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum + "</div></div><hr>";
+                    var tmp = "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + iconSrc + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + cardNum.slice(0, 4) + "********" + cardNum.slice(cardNum.length - 4) + "</div></div><hr>";
                     $("#cardlist").prepend($(tmp));
                 }).error(function(){
                     $("#new-cardnum").val("");
