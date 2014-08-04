@@ -72,8 +72,17 @@
 <div style="width:80%; margin: 10% 10% 0 10%" id="return-protocol-1"><a type="button" class="ui-btn bluebtn custom-btn">返回</a></div>
 <script>
     (function(){
+        function getContract() {
+            var contract = {};
+            contract.id = /memberId=(\d+)/.exec(window.location)[1];
+            contract.amount = /amount=(\d+)/.exec(window.location)[1];
+            contract.term = /term=(\d+)/.exec(window.location)[1];
+            return contract;
+        }
+
         function goBackward() {
-            window.history.back();
+            //window.history.back();
+            window.location = "http://192.168.0.186/repaymentApp/index.html#loan?memberId=" + contract.id + "&t=" + (new Date());
         }
 
         function showBoxShadow() {
@@ -84,7 +93,8 @@
             document.getElementById("return-protocol-1").style.boxShadow = "none";
         }
 
-        var aims = document.querySelectorAll("#close-protocol-1, #return-protocol-1");
+        var aims = document.querySelectorAll("#close-protocol-1, #return-protocol-1"),
+                contract = getContract();
 
         for(var i = 0; i < aims.length; i++) {
             aims[i].addEventListener("click", goBackward);

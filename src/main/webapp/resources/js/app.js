@@ -812,7 +812,7 @@ $(document).on("pagecreate", "#result", function(){
     member.whetherLoanable();
     if(member.isLoanable) {
         $("#option-1").css("background-color", "#3ca0e6").off("tap").on("tap", function() {
-            $.mobile.changePage("#loan");
+            $.mobile.navigate("#loan?memberId=" + member.id);
         });
     }
 
