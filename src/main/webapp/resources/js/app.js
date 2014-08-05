@@ -351,8 +351,8 @@ member = (function(member) {
             }),
             dataType: "json",
             success: function(json) {
-                $("#each-term").html(json.payBackEachTerm);
-                $("#saved").html(Math.round(json.savedCost * 100) / 100);
+                $("#each-term").html("&yen; " + json.payBackEachTerm);
+                $("#saved").html("&yen; " + Math.round(json.savedCost * 100) / 100);
             },
             error: function () {
                 config.alertUrl(config.apiPath + "app/saveCost" + config.timeStamp);
