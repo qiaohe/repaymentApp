@@ -1330,8 +1330,14 @@ $(document).on("pagebeforeshow", "#loan", function () {
             if(amount) {
                 $("#amount").val(amount);
                 $("#amount-txt").hide();
+                member.contractAmount = amount;
             }
+            member.contractTerm = term;
             $("#term-" + term).trigger("click");
+            member.refreshContract();
+            if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
+                requestAvailable();
+            }
         })();
     }
 });
