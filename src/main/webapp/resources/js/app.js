@@ -1322,6 +1322,18 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $("#new-cardnum-2-placeholder").show();
         }
     });
+
+    if(/amount/.exec(window.location)) {
+        (function(){
+            var amount = Number(/amount=(\d+)/.exec(window.location)[1]),
+                term = /term=(\d)/.exec(window.location)[1];
+            if(amount) {
+                $("#amount").val(amount);
+                $("#amount-txt").hide();
+            }
+            $("#term-" + term).trigger("click");
+        })();
+    }
 });
 
 $(document).on("tap", ".card-container-0", function (e) {

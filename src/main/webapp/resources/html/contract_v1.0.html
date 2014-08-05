@@ -155,7 +155,7 @@
 
         function goBackward() {
             //window.history.back();
-            window.location = contract.existingFlag === 2 ? "http://192.168.0.186/repaymentApp/index.html#loan?memberId=" + contract.id + "&t=" + (new Date()) : "http://192.168.0.186/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&t=" + (new Date())
+            window.location = contract.existingFlag === 2 ? "http://192.168.0.131:8080/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.131:8080/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
         }
 
         function showBoxShadow() {
