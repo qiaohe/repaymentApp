@@ -1064,6 +1064,10 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
+    if(member.existingFlag === 2) {
+        $("#probably").remove();
+    }
+
     $(this).attr("data-title", "申请借款");
     member.contractTerm = 3;
     member.contractAmount = 0;
