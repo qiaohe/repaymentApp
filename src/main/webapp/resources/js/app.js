@@ -429,6 +429,8 @@ member = (function(member) {
         contract += ("amount=" + this.contractAmount + "&");
         contract += ("term=" + this.contractTerm);
         $(".protocol").attr("href", contract);
+        var textshown = this.existingFlag === 2 ? "《么么贷个人借款协议》" : "《个人借款申请声明》";
+        $(".protocol").html(textshown);
     };
 
     return member;
@@ -1066,6 +1068,7 @@ $(document).on("pagecreate", "#loan", function () {
 $(document).on("pagebeforeshow", "#loan", function () {
     if(member.existingFlag === 2) {
         $("#probably").remove();
+        $("#amount-description").html("可用");
     }
 
     $(this).attr("data-title", "申请借款");
