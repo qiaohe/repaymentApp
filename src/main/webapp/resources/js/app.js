@@ -353,6 +353,9 @@ member = (function(member) {
             success: function(json) {
                 $("#each-term").html("&yen; " + json.payBackEachTerm);
                 $("#saved").html("&yen; " + Math.round(json.savedCost * 100) / 100);
+                if(!member.termAltered) {
+                    $("#term-3").trigger("click");
+                }
             },
             error: function () {
                 config.alertUrl(config.apiPath + "app/saveCost" + config.timeStamp);
@@ -1215,6 +1218,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 
     member.loanApplication.term = "3";
+    member.termAltered = false;
     $("#amount").val("").off("keyup").keyup(function(){
         var tmp = $(this).val();
         if(isNaN(parseFloat(tmp, 10))) {
@@ -1259,6 +1263,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 
     $("#term-3").off("click").click(function(){
+        member.termAltered = true;
         if (member.loanApplication.term !== "3"){
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
@@ -1276,6 +1281,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 
     $("#term-6").off("click").click(function(){
+        member.termAltered = true;
         if (member.loanApplication.term !== "6") {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
