@@ -430,7 +430,7 @@ member = (function(member) {
         contract += ("term=" + this.contractTerm);
         $(".protocol").attr("href", contract);
         var textshown = this.existingFlag === 2 ? "《么么贷个人借款协议》" : "《个人借款申请声明》";
-        $(".protocol").html(textshown);
+        $(".protocol").html(textshown).css("color", "blue");
     };
 
     return member;
@@ -596,7 +596,7 @@ $(document).on("pagecreate", "#limit", function () {
             $tipCredit = $("#tip-credit");
 
         $cardTip.hide();
-        $tipCredit.css({"height": "22px", "width": "32px"});
+//        $tipCredit.css({"height": "22px", "width": "32px"});
         var num = $(this).val();
         dict.setCardIcon("tip-credit", num);
 
