@@ -144,12 +144,13 @@
             contract.id = /memberId=(\d+)/.exec(window.location)[1];
             contract.amount = /amount=(\d+)/.exec(window.location)[1];
             contract.term = /term=(\d+)/.exec(window.location)[1];
+            contract.term = /isCong=(\d+)/.exec(window.location)[1];
             return contract;
         }
 
         function goBackward() {
             //window.history.back();
-            window.location = contract.existingFlag === 2 ? "http://192.168.0.131:8080/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.131:8080/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
+            window.location = contract.isCong === "true" ? "http://192.168.0.131:8080/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.131:8080/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
         }
 
         function showBoxShadow() {
@@ -234,7 +235,6 @@
             if(xhrTwo.readyState == 4 && xhrTwo.status == 200) {
                 var json = JSON.parse(xhrTwo.responseText);
                 setHTMLByClass("borrowerEmail", json.email);
-                contract.existingFlag = json.existingFlag;
             }
         };
         xhrTwo.open("GET", "../../api/" + "members/" + contract.id);

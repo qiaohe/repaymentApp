@@ -427,7 +427,8 @@ member = (function(member) {
         contract += config.timeStamp;
         contract += ("&memberId=" + this.id + "&");
         contract += ("amount=" + this.contractAmount + "&");
-        contract += ("term=" + this.contractTerm);
+        contract += ("term=" + this.contractTerm + "&");
+        contract += "&isCong=false";
         $(".protocol").attr("href", contract);
         var textshown = this.existingFlag === 2 ? "《么么贷个人借款协议》" : "《个人借款申请声明》";
         $(".protocol").html(textshown).css("color", "blue");
@@ -1386,9 +1387,8 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         dict.getBincode();
     }
 
-    $("#agree-cong").click(function(){
+    $("#agree-cong").attr("checkFlag","1").click(function(){
         var $agreeConfig = $(this);
-        $agreeConfig.attr("checkFlag","1");
         $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agreeConfig.attr("checkFlag")) {
             $agreeConfig.removeAttr("checkFlag");
@@ -1511,7 +1511,12 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $("#card-add-box").hide();
     });
 
-    member.refreshContract();
+    var contract = "resources/html/contract_v1.0.html";
+    contract += "?memberId=" + member.id;
+    contract += "&amount=" + member.firstLoanAppAmount;
+    contract += "&term=" + member.currentLoanAppTerm;
+    contract += "&isCong=true";
+    $(".protocol").attr("href", contract);
 });
 
 $(document).on("pagecreate", "#repayment-0", function () {
