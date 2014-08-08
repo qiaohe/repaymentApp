@@ -596,7 +596,7 @@ $(document).on("pagecreate", "#limit", function () {
             $tipCredit = $("#tip-credit");
 
         $cardTip.hide();
-//        $tipCredit.css({"height": "22px", "width": "32px"});
+        if($tipCredit.attr("src") !== "resources/img/public/wrong.png") {$tipCredit.css({"height": "22px", "width": "32px"});}
         var num = $(this).val();
         dict.setCardIcon("tip-credit", num);
 
