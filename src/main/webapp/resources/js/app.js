@@ -353,9 +353,6 @@ member = (function(member) {
             success: function(json) {
                 $("#each-term").html("&yen; " + json.payBackEachTerm);
                 $("#saved").html("&yen; " + Math.round(json.savedCost * 100) / 100);
-                if(!member.termAltered) {
-                    $("#term-3").trigger("click");
-                }
             },
             error: function () {
                 config.alertUrl(config.apiPath + "app/saveCost" + config.timeStamp);
@@ -599,7 +596,7 @@ $(document).on("pagecreate", "#limit", function () {
             $tipCredit = $("#tip-credit");
 
         $cardTip.hide();
-//        $tipCredit.css({"height": "22px", "width": "32px"});
+        if($tipCredit.attr("src") !== "resources/img/public/wrong.png") {$tipCredit.css({"height": "22px", "width": "32px"});}
         var num = $(this).val();
         dict.setCardIcon("tip-credit", num);
 
@@ -1263,8 +1260,8 @@ $(document).on("pagebeforeshow", "#loan", function () {
     });
 
     $("#term-3").off("click").click(function(){
-        member.termAltered = true;
-        if (member.loanApplication.term !== "3"){
+        if(!member.termAltered) {member.countPaybackEachTerm(member.loanApplication);}
+        if(member.loanApplication.term !== "3") {
             $("#term-3").toggleClass("term-chose").toggleClass("term-chose-not");
             $("#term-6").toggleClass("term-chose").toggleClass("term-chose-not");
             member.loanApplication.term = "3";
@@ -1278,6 +1275,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 member.loanApplication.amount = undefined;
             }
         }
+        member.termAltered = true;
     });
 
     $("#term-6").off("click").click(function(){
@@ -1346,6 +1344,9 @@ $(document).on("pagebeforeshow", "#loan", function () {
                 member.contractAmount = amount;
             }
             member.contractTerm = term;
+            if(!member.termAltered) {
+                $("#amount").trigger("keyup");
+            }
             $("#term-" + term).trigger("click");
             member.refreshContract();
             if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount) {
@@ -1387,6 +1388,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#agree-cong").click(function(){
         var $agreeConfig = $(this);
+        $agreeConfig.attr("checkFlag","1");
         $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agreeConfig.attr("checkFlag")) {
             $agreeConfig.removeAttr("checkFlag");
@@ -1509,10 +1511,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $("#card-add-box").hide();
     });
 
-    var contract = "resources/html/contract_v1.0.html";
-    contract += config.timeStamp;
-    contract += ("of" + member.id);
-    $(".protocol").attr("href", contract);
+    member.refreshContract();
 });
 
 $(document).on("pagecreate", "#repayment-0", function () {
