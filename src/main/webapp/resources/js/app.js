@@ -1388,6 +1388,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
 
     $("#agree-cong").click(function(){
         var $agreeConfig = $(this);
+        $agreeConfig.attr("checkFlag","1");
         $agreeConfig.toggleClass("check-custom1").toggleClass("check-custom2");
         if($agreeConfig.attr("checkFlag")) {
             $agreeConfig.removeAttr("checkFlag");
@@ -1510,10 +1511,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
         $("#card-add-box").hide();
     });
 
-    var contract = "resources/html/contract_v1.0.html";
-    contract += config.timeStamp;
-    contract += ("of" + member.id);
-    $(".protocol").attr("href", contract);
+    member.refreshContract();
 });
 
 $(document).on("pagecreate", "#repayment-0", function () {
