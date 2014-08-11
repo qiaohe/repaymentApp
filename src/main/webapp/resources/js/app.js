@@ -452,6 +452,17 @@ $(document).on("pagecreate", "#limit", function () {
     device.getAndroidVersion();
     if(device.androidVersion <= 2.3) {
         // if(1 <= 2.3) {
+        if (member.idCard) {
+            $("#front-num").html(member.idCard).css("color", "#222222");
+            $("#front-upload").attr("disabled", true);
+            $("#tip-front").attr("src", "resources/img/public/correct.png");
+        }
+        if (member.validThru) {
+            $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
+            $("#back-upload").attr("disabled", true);
+            $("#tip-back").attr("src", "resources/img/public/correct.png");
+        }
+
         $("#front-upload, #back-upload").remove();
         $("label[for='front-upload']").attr("for", "front-upload-2");
         $("label[for='back-upload']").attr("for", "back-upload-2");
