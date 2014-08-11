@@ -235,6 +235,7 @@
             if(xhrTwo.readyState == 4 && xhrTwo.status == 200) {
                 var json = JSON.parse(xhrTwo.responseText);
                 setHTMLByClass("borrowerEmail", json.email);
+                setHTMLByClass("borrowerMobile", json.mobile);
             }
         };
         xhrTwo.open("GET", "../../api/" + "members/" + contract.id);

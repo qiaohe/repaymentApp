@@ -1398,6 +1398,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             $("#go-choose-card").addClass("bluebtn").attr("href", "#cardlist");
         }
     });
+    $("#go-choose-card").addClass("bluebtn");
 
     $.ajax({
         url: config.apiPath + "app/" + member.firstLoanAppNo + config.timeStamp,
