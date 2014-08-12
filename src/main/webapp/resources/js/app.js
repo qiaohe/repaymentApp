@@ -363,6 +363,13 @@ member = (function(member) {
     member.loanApplication = {};
 
     member.applyLoan = function(loanApplication) {
+        for(var i = 0; i < member.creditcard.length; i++) {
+            if(loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && loanApplication.creditCard.substring(loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
+                loanApplication.creditCard = member.creditcard[i];
+                break;
+            }
+        }
+
         return $.ajax({
             url: config.apiPath + "app" + config.timeStamp,
             type: "POST",
@@ -381,8 +388,15 @@ member = (function(member) {
     };
 
     member.loanToCard = function(cardNum) {
+        for(var i = 0; i < member.creditcard.length; i++) {
+            if(cardNum.substring(0, 4) === member.creditcard[i].substring(0, 4) && cardNum.substring(cardNum.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
+                cardNum = member.creditcard[i];
+                break;
+            }
+        }
+
         var $this = this;
-        return $.ajax({
+        $.ajax({
             url: config.apiPath + "app/members/" + this.id + "/creditCard/" + cardNum + config.timeStamp,
             type: "POST",
             data: cardNum,
@@ -1081,7 +1095,9 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
-    var phoneTmp = /phone=(\d+)/.exec(window.location)[1];
+    if(/phone=(\d+)/.test(window.location)) {
+        var phoneTmp = /phone=(\d+)/.exec(window.location)[1];
+    }
     if(phoneTmp) {
         $("#phone").val(phoneTmp);
     }
@@ -1323,7 +1339,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
             $.each(data, function(ind, obj){
                 var src = dict.getCardIconSrc(obj.bank);
                 tmp += "<div class='card-container-0' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo.slice(0, 4) + "********" + obj.cardNo.slice(obj.cardNo.length - 4) + "</div></div><hr>";
-                member.creditcard.push([obj.cardNo, obj.bank]);
+                member.creditcard.push(obj.cardNo);
             });
             $("#cardlist-2").prepend($(tmp));
         });
@@ -1378,7 +1394,7 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
 $(document).on("tap", ".card-container-0", function (e) {
     e.preventDefault();
-    member.loanApplication.creditCard = $(this).children("div").html();
+    member.loanApplication.creditCard = $(this).children("div").attr("NO");
     $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
             $("#card-confirm-2").show();
@@ -1446,7 +1462,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
             $.each(data, function(ind, obj){
                 var src = dict.getCardIconSrc(obj.bank);
                 tmp += "<div class='card-container' style='line-height: 40px; background-color: #e7e7e7'><img src='" + src + "' class='card-in-list'><div style='float:right; line-height:40px; padding:3px 50px 0 10px; font-size: 1.5em'>" + obj.cardNo.slice(0, 4) + "********" + obj.cardNo.slice(obj.cardNo.length - 4) + "</div></div><hr>";
-                member.creditcard.push([obj.cardNo, obj.bank]);
+                member.creditcard.push(obj.cardNo);
             });
             $("#cardlist").prepend($(tmp));
         });
@@ -1473,7 +1489,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
     });
 
     $("#Y").off("tap").tap(function(){
-        member.loanToCard(member.loanApplication.creditCard).success(function(){});
+        member.loanToCard(member.loanApplication.creditCard);
     });
 
     $("#N, #close-3").off("tap").tap(function(){
@@ -1500,6 +1516,7 @@ $(document).on("pagebeforeshow", "#congratulation", function(){
                 member.addCreditCard($("#new-cardnum").val()).success(function(){
                     $("#card-add-box").hide();
                     member.loanApplication.creditCard = cardNum;
+                    member.creditcard.push(cardNum);
                     setTimeout(function () {
                         $("#card-confirm").show();
                     }, 500);
