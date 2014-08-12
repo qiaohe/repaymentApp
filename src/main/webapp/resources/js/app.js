@@ -1394,7 +1394,13 @@ $(document).on("pagebeforeshow", "#loan", function () {
 
 $(document).on("tap", ".card-container-0", function (e) {
     e.preventDefault();
-    member.loanApplication.creditCard = $(this).children("div").attr("NO");
+    member.loanApplication.creditCard = $(this).children("div").html();
+    for(var i = 0; i < member.creditcard.length; i++) {
+        if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
+            member.loanApplication.creditCard = member.creditcard[i];
+            break;
+        }
+    }
     $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
             $("#card-confirm-2").show();
@@ -1407,6 +1413,12 @@ $(document).on("tap", ".card-container-0", function (e) {
 $(document).on("tap", ".card-container", function (e) {
     e.preventDefault();
     member.loanApplication.creditCard = $(this).children("div").html();
+    for(var i = 0; i < member.creditcard.length; i++) {
+        if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
+            member.loanApplication.creditCard = member.creditcard[i];
+            break;
+        }
+    }
     $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
         setTimeout(function () {
             $("#card-confirm").show();
