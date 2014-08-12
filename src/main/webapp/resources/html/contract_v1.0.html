@@ -138,13 +138,20 @@
             contract.id = /memberId=(\d+)/.exec(window.location)[1];
             contract.amount = /amount=(\d+)/.exec(window.location)[1];
             contract.term = /term=(\d+)/.exec(window.location)[1];
-            contract.term = /isCong=(\d+)/.exec(window.location)[1];
+            contract.isCong = /isCong=(\w+)/.exec(window.location)[1];
+            if(/phone=(\d+)/.test(window.loacation)) {
+                contract.phone = /phone=(\d+)/.exec(window.location)[1];
+            }
             return contract;
         }
 
         function goBackward() {
             //window.history.back();
-            window.location = contract.isCong === "true" ? "http://192.168.0.131:8080/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.131:8080/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
+            var des = contract.isCong === "true" ? "http://192.168.0.131:8080/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.131:8080/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
+            if(contract.phone) {
+                des += ("&phone=" + contract.phone);
+            }
+            window.location = des;
         }
 
         function showBoxShadow() {

@@ -428,6 +428,9 @@ member = (function(member) {
         contract += ("&memberId=" + this.id + "&");
         contract += ("amount=" + this.contractAmount + "&");
         contract += ("term=" + this.contractTerm + "&");
+        if($("#phone").val()) {
+            contract += ("phone=" + $("#phone").val() + "&");
+        }
         contract += "&isCong=false";
         $(".protocol").attr("href", contract);
         var textshown = this.existingFlag === 2 ? "《么么贷个人借款协议》" : "《个人借款申请声明》";
@@ -1078,6 +1081,11 @@ $(document).on("pagecreate", "#loan", function () {
 });
 
 $(document).on("pagebeforeshow", "#loan", function () {
+    var phoneTmp = /phone=(\d+)/.exec(window.location)[1];
+    if(phoneTmp) {
+        $("#phone").val(phoneTmp);
+    }
+
     if(member.existingFlag === 2) {
         $("#probably").remove();
         $("#amount-description").html("可用");
