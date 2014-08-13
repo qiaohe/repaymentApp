@@ -2,7 +2,6 @@ package com.huayuan.domain.wechat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by dell on 14-4-29.

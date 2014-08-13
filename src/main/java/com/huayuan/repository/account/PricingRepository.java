@@ -1,6 +1,5 @@
 package com.huayuan.repository.account;
 
-import com.huayuan.domain.accounting.Loan;
 import com.huayuan.domain.accounting.Pricing;
 import org.springframework.data.jpa.repository.JpaRepository;
 

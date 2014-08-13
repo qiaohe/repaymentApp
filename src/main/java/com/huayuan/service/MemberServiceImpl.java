@@ -147,6 +147,8 @@ public class MemberServiceImpl implements MemberService {
         idCard.setMember(member);
         IdCard card = idCardRepository.save(idCard);
         idCardRepository.execute(card);
+        member.setSex(card.getSex());
+        memberRepository.save(member);
         return idCardRepository.findOne(card.getId());
     }
 

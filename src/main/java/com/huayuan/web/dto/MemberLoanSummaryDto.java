@@ -1,7 +1,5 @@
 package com.huayuan.web.dto;
 
-import com.huayuan.domain.member.SexEnum;
-
 import java.io.Serializable;
 import java.math.BigInteger;
 

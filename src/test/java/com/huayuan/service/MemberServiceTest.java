@@ -4,7 +4,6 @@ import com.huayuan.common.BaseTest;
 import com.huayuan.domain.member.Member;
 import org.junit.Test;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 
 /**

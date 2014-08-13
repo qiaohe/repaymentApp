@@ -2,7 +2,6 @@ package com.huayuan.repository.account;
 
 import com.huayuan.common.util.JpaSqlResultMapper;
 import com.huayuan.web.dto.LoanCommonDto;
-import com.huayuan.web.dto.MemberLoansDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

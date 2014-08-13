@@ -7,6 +7,10 @@ import com.huayuan.domain.accounting.core.RepayItem;
 import com.huayuan.domain.accounting.core.RepayListCalculator;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Member;
+import org.apache.commons.lang.math.IntRange;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "BORROW")
 public class Loan {
+    private static final int NOTIFICATION_THRESHOLD = 3;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BID")
@@ -285,6 +290,28 @@ public class Loan {
     @Transient
     public Date getDuePayDay() {
         return new Day(getStartDate()).getCurrentDayOfMonth();
+    }
+
+    public boolean overDueNotificationNeeded() {
+        final IntRange threeDaysRange = new IntRange(0, NOTIFICATION_THRESHOLD);
+        return isOverDue() && (threeDaysRange.containsInteger(curDelq) || curDelq % NOTIFICATION_THRESHOLD == 0);
+    }
+
+    public Date currentDueDate() {
+        final Integer months = Months.monthsBetween(new DateTime(startDate).withDayOfMonth(1), DateTime.now().withDayOfMonth(1)).getMonths();
+        return new Day(startDate).plusMonths(months);
+    }
+
+    public int daysBetweenDueDateAndNow() {
+        return Days.daysBetween(new DateTime(), new DateTime(currentDueDate())).getDays();
+    }
+
+    public boolean repaymentNotificationNeeded() {
+        return !isOverDue() && daysBetweenDueDateAndNow() < NOTIFICATION_THRESHOLD;
+    }
+
+    public boolean withTheSameMemberAndStartDate(Loan anotherLoan) {
+        return member.getId().equals(anotherLoan.getMember().getId()) && new Day(startDate).isSameDay(anotherLoan.getStartDate());
     }
 }
 

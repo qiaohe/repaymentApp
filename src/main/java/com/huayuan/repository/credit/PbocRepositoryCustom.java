@@ -1,6 +1,5 @@
 package com.huayuan.repository.credit;
 
-import com.huayuan.domain.credit.Pboc;
 import com.huayuan.domain.credit.PbocSummary;
 import com.huayuan.web.dto.PbocOutDto;
 

@@ -51,5 +51,11 @@ public interface AccountService {
 
     public void updateOverDue();
 
+    public void sendRepaymentNotification();
+
     public Contract getContract(String appNo);
+
+    public String getPaymentGateway(Long memberId, Double amount);
+
+    public String getPaymentSignMessage(String rawMessage);
 }

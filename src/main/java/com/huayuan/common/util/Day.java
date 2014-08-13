@@ -1,10 +1,10 @@
 package com.huayuan.common.util;
 
-        import org.joda.time.DateTime;
-        import org.joda.time.Days;
-        import org.joda.time.Months;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
 
-        import java.util.Date;
+import java.util.Date;
 
 /**
  * Created by Johnson on 4/8/14.
@@ -53,5 +53,11 @@ public final class Day {
 
     public Date nextMonth() {
         return new DateTime(date).plusMonths(1).toDate();
+    }
+
+    public boolean isSameDay(Date d) {
+        DateTime d1 = new DateTime(date);
+        DateTime d2 = new DateTime(d);
+        return d1.getYear() == d2.getYear() && d1.getMonthOfYear() == d2.getMonthOfYear() && d1.getDayOfMonth() == d2.getDayOfMonth();
     }
 }

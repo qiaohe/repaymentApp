@@ -1,7 +1,6 @@
 package com.huayuan.web.dto;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

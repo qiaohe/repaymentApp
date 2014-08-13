@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -78,5 +80,16 @@ public class AccountingController {
         accountService.repay(memberId, repayAmt);
         accountService.offset(memberId);
         return "1";
+    }
+
+    @RequestMapping(value = "/paymentCallback", method = RequestMethod.GET)
+    public void repay(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(request.getParameterNames().toString());
+    }
+
+    @RequestMapping(value = "/payment/signMessage/{rawMessage}", method = RequestMethod.GET)
+    @ResponseBody
+    public String repay(@PathVariable String rawMessage) {
+        return accountService.getPaymentSignMessage(rawMessage);
     }
 }

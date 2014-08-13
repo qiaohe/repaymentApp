@@ -9,6 +9,7 @@ public class Constants {
     public static final String REPLY_ANSWER_PATTERN = "#[A-F]{1,2}";
     public static final String COMPANY_QUESTION_PREFIX = "工作地址";
     public static final String HOME_QUESTION_PREFIX = "家庭住址";
+    public static final String LONG_DATE_PATTERN = "yyyyMMddHHmmss";
 
     public static final String ACCESS_TOKEN_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appSecret}";
     public static final String GET_USER_URL_PATTERN = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={accessToken}&openid={openid}&lang=zh_CN";

@@ -1,27 +1,33 @@
 package com.huayuan.service;
 
 import com.huayuan.common.event.MemberStatusChangeEvent;
+import com.huayuan.common.util.Constants;
 import com.huayuan.common.util.Day;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Contract;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.Member;
+import com.huayuan.domain.member.MemberStatusEnum;
+import com.huayuan.domain.payment.Pkipair;
 import com.huayuan.repository.account.*;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.Date;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
 import static com.huayuan.common.App.getInstance;
 
@@ -53,6 +59,10 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private String graceDay;
     @Value("${account.overdueRating}")
     private String overDueRating;
+    @Value("${99bill.payment.gateway}")
+    private String paymentGatewayUrlPattern;
+    @Inject
+    private RepaymentNotification repaymentNotification;
     @Inject
     private RepayOffsetRepository repayOffsetRepository;
     @Inject
@@ -123,6 +133,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             loanRepository.save(plan.getLoan());
             if (plan.getMember().blockCodeChangeIfNeeded()) {
                 plan.getMember().setBlockCode(plan.getMember().getBlockCodeAfterRepayment());
+                plan.getMember().setStatus(MemberStatusEnum.NORMAL);
                 memberRepository.save(plan.getMember());
             }
             updateAccountCrl(account, plan);
@@ -172,14 +183,13 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         loan.setStatus(0);
         updateContractBy(loan);
         loanRepository.save(loan);
-        sendMessage(loan);
+        sendMessage(loan, loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess);
         return true;
     }
 
-    private void sendMessage(Loan loan) {
+    private void sendMessage(Loan loan, String message) {
         final String wcNo = memberRepository.findOne(loan.getMember().getId()).getWcNo();
-        final String msg = loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess;
-        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, wcNo, msg);
+        MemberStatusChangeEvent event = new MemberStatusChangeEvent(this, wcNo, message);
         publisher.publishEvent(event);
     }
 
@@ -226,7 +236,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         CreditCard card = loan.getApplication().getCreditCard();
         card.setIsValid(false);
         creditCardRepository.save(card);
-        sendMessage(loan);
+        sendMessage(loan, loan.getStatus().equals(10) ? bindCreditCardFail : bindCreditCardSuccess);
         loanRepository.save(loan);
         return true;
     }
@@ -262,6 +272,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         final String blockCode = member.getBlockCodeBy(overDueDays);
         if (!blockCode.equals(member.getBlockCode())) {
             member.setBlockCode(blockCode);
+            member.setStatus(MemberStatusEnum.REJECTED);
             memberRepository.save(member);
         }
     }
@@ -283,9 +294,39 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         repayPlanRepository.save(plans);
     }
 
+    private Map<Loan, Integer> getLoanNotificationCountMap(List<Loan> loans) {
+        Map<Loan, Integer> result = new HashMap<>();
+        for (Loan loan : loans) {
+            boolean hasTheSameMemberAndStartDate = false;
+            for (Map.Entry<Loan, Integer> entry : result.entrySet()) {
+                if (entry.getKey().withTheSameMemberAndStartDate(loan)) {
+                    hasTheSameMemberAndStartDate = true;
+                    result.put(entry.getKey(), result.get(entry.getKey()) + 1);
+                }
+            }
+            if (!hasTheSameMemberAndStartDate) result.put(loan, 1);
+        }
+        return result;
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void sendRepaymentNotification() {
+        List<Loan> loans = loanRepository.findByStatusIn(Arrays.asList(0, 1, 2));
+        for (Map.Entry<Loan, Integer> entry : getLoanNotificationCountMap(loans).entrySet()) {
+            final String ns = repaymentNotification.getNotificationMessage(entry.getKey(), entry.getValue());
+            sendMessage(entry.getKey(), ns);
+        }
+    }
+
     @Override
     public Contract getContract(String appNo) {
         return contractRepository.findByAppNo(appNo);
+    }
+
+    @Override
+    public String getPaymentSignMessage(String rawMessage) {
+        return new Pkipair().signMsg(rawMessage);
     }
 
     private Contract createContractBy(Loan loan) {

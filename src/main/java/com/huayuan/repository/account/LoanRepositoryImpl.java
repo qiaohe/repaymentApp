@@ -1,6 +1,5 @@
 package com.huayuan.repository.account;
 
-import com.huayuan.common.util.JpaSqlResultMapper;
 import com.huayuan.domain.accounting.Loan;
 
 import javax.persistence.EntityManager;
