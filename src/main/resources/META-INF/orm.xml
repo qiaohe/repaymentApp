@@ -82,21 +82,20 @@
     </named-native-query>
     <named-native-query name="Member.findMembersWithLoanSummary" result-set-mapping="memberLoanSummaryMapping">
         <query>
-            select m.id, m.sex, m.mobile,m.email,
-            m.education, m.industry, m.WC_USER_NAME,ic.ID_NO, ic.NAME, ma.city, count(loan.BID) as loanCount, m.block_code
-            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID left join Borrow loan on loan.MEMBER_ID = m.id
-            left join VALUE_MOBILE_AREA ma on ma.N1_7 = substring(m.mobile, 0 , 8) where ic.ID_NO > ''
-            group by m.id, m.sex, m.mobile, m.email, m.education, m.industry, m.block_code, ma.city, m.WC_USER_NAME, ic.NAME,ic.ID_NO
+            select m.id, m.sex, m.mobile,m.email, m.education, m.industry, m.WC_USER_NAME,ic.ID_NO, ic.NAME, ma.city, loan.loanCount as loanCount, m.block_code
+            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID
+            left join (select COUNT(*) as loanCount, MEMBER_ID from Borrow group by MEMBER_ID) as loan on loan.MEMBER_ID = m.id
+            left join VALUE_MOBILE_AREA ma on ma.N1_7 = substring(m.mobile, 0 , 8)
+            WHERE loan.loanCount > 0
         </query>
     </named-native-query>
 
     <named-native-query name="Member.searchMembersWithLoanSummary" result-set-mapping="memberLoanSummaryMapping">
         <query>
-            select m.id, m.sex, m.mobile,m.email,
-            m.education, m.industry, m.WC_USER_NAME,ic.ID_NO, ic.NAME, ma.city, count(loan.BID) as loanCount, m.block_code
-            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID left join Borrow loan on loan.MEMBER_ID = m.id
+            select m.id, m.sex, m.mobile,m.email, m.education, m.industry, m.WC_USER_NAME,ic.ID_NO, ic.NAME, ma.city, loan.loanCount as loanCount, m.block_code
+            from Member m left join ID_CARD ic on m.ID = ic.MEMBER_ID
+            left join (select COUNT(*) as loanCount, MEMBER_ID from Borrow group by MEMBER_ID) as loan on loan.MEMBER_ID = m.id
             left join VALUE_MOBILE_AREA ma on ma.N1_7 = substring(m.mobile, 0 , 8) :q
-            group by m.id, m.sex, m.mobile, m.email, m.education, m.industry, m.block_code, ma.city, m.WC_USER_NAME, ic.NAME,ic.ID_NO
          </query>
     </named-native-query>
 

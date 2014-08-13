@@ -33,7 +33,7 @@ public class MemberLoanSummaryDto implements Serializable {
         this.idNo = idNo;
         this.name = name;
         this.mobileCity = mobileCity;
-        this.countOfLoan = countOfLoan;
+        this.countOfLoan = countOfLoan == null? 0:countOfLoan;
         this.blockCode = blockCode;
     }
 
