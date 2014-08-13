@@ -1,6 +1,5 @@
 package com.huayuan.domain.accounting;
 
-import com.huayuan.common.util.Day;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.account.RepayOffsetRepository;
 import com.huayuan.repository.account.RepayPlanRepository;
