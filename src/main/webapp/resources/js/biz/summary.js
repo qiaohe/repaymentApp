@@ -48,7 +48,7 @@ $(function(){
                 param += " and m.mobile like '["+mobile+"]'";
             }
             if(onlyFlag) {
-                param += " and ic.ID_NO > ''";
+                param += " and loan.loanCount > 0";
             }
             if(param) {
                 summary.loadData("../api/members/loanSummary/search?q="+param.replace(" and",""));
