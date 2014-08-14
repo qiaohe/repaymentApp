@@ -19,7 +19,7 @@ public class PkiPairUtil {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             BufferedInputStream bis = new BufferedInputStream(new ClassPathResource("99bill-rsa.pfx").getInputStream());
             keyStore.load(bis, KEY_PWD);
-            PrivateKey privateKey = (PrivateKey) ks.getKey("test-alias", KEY_PWD);
+            PrivateKey privateKey = (PrivateKey) keyStore.getKey("test-alias", KEY_PWD);
             Signature signature = Signature.getInstance("SHA1withRSA");
             signature.initSign(privateKey);
             signature.update(signMsg.getBytes("utf-8"));
