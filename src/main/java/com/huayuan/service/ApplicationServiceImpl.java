@@ -75,7 +75,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationSummary> getApplicationSummaries(String query) {
-        return applicationRepository.findApplicationSummaries(query);
+    public List<ApplicationSummary> getApplicationSummaries(Integer curPage,String query) {
+        return applicationRepository.findApplicationSummaries(curPage,query);
     }
 }
