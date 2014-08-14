@@ -1607,18 +1607,9 @@ $(document).on("pagecreate", "#repayment-0", function () {
     }
 
     $(".repay-item-pay").tap(function() {
-        var orderAmount = Math.round(member.loan.loans[member.crntCaro].curDueAmt * 100);
-        $.ajax({
-            url: config.apiPath + "account/repay/" + member.id + "/" + orderAmount,
-            type: "GET",
-            async: false,
-            success: function() {
-                console.log("Repayment request secceeded!");
-            },
-            error: function() {
-                if(config.debug) alert("Repayment request failed!");
-            }
-        });
+        var orderAmount = Math.floor(member.loan.loans[member.crntCaro].curDueAmt);
+        orderAmount = 1;
+        window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
     });
 });
 
