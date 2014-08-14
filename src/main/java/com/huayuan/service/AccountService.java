@@ -1,9 +1,6 @@
 package com.huayuan.service;
 
-import com.huayuan.domain.accounting.Account;
-import com.huayuan.domain.accounting.Loan;
-import com.huayuan.domain.accounting.LoanSummary;
-import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Contract;
 
@@ -56,4 +53,6 @@ public interface AccountService {
     public Contract getContract(String appNo);
 
     public String getPaymentGateway(Long memberId, Double amount);
+
+    public void addPaymentList(PaymentList paymentList);
 }

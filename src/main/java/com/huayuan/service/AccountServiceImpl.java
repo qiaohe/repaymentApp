@@ -73,6 +73,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private CreditCardRepository creditCardRepository;
     @Inject
     private ContractRepository contractRepository;
+    @Inject
+    private PaymentListRepository paymentListRepository;
 
     private ApplicationEventPublisher publisher;
 
@@ -332,12 +334,19 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
         final String payAmount = String.valueOf(new Double(amount * 100).longValue());
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
-        String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount));
+        String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcUserName(),
+                member.getEmail(), memberId, orderId, payAmount));
         try {
-            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
+            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcUserName(), member.getEmail(), memberId,
+                    orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }
+    }
+
+    @Override
+    public void addPaymentList(PaymentList paymentList) {
+        paymentListRepository.save(paymentList);
     }
 
     private Contract createContractBy(Loan loan) {

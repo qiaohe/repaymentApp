@@ -1,6 +1,7 @@
 package com.huayuan.web;
 
 import com.huayuan.domain.accounting.LoanSummary;
+import com.huayuan.domain.accounting.PaymentList;
 import com.huayuan.domain.accounting.RepayPlan;
 import com.huayuan.repository.account.AccountRepository;
 import com.huayuan.service.AccountService;
@@ -75,14 +76,14 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/repay/{memberId}/{repayAmt}", method = RequestMethod.GET)
-    public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt, HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+    public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt) {
         final String paymentGateway = accountService.getPaymentGateway(memberId, repayAmt);
         return "redirect:" + paymentGateway;
     }
 
     @RequestMapping(value = "/paymentCallback", method = RequestMethod.GET)
-    public void repay(HttpServletRequest request, HttpServletResponse response) {
+    public void repay(HttpServletRequest request, HttpServletResponse response, @RequestBody PaymentList paymentList) {
         System.out.println(request.getParameterNames().toString());
+        accountService.addPaymentList(paymentList);
     }
 }
