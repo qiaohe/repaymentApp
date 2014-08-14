@@ -14,7 +14,7 @@ public interface ApplicationRepositoryCustom {
 
     public List<ApplicationSummary> findApplicationSummaries();
 
-    public List<ApplicationSummary> findApplicationSummaries(String q);
+    public List<ApplicationSummary> findApplicationSummaries(Integer curPage,String q);
 
     public List<MemberProfile.Application> findApplicationsProfile(Long memberId);
 }

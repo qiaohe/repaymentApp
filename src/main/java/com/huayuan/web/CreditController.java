@@ -70,8 +70,11 @@ public class CreditController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<ApplicationSummary> searchApps(@RequestParam("q") String query) {
-        return applicationService.getApplicationSummaries(query);
+    public List<ApplicationSummary> searchApps(@RequestParam("curPage") Integer curPage,@RequestParam("q") String query) {
+        if(curPage == null || curPage < 1) {
+            curPage = 1;
+        }
+        return applicationService.getApplicationSummaries(curPage,query);
     }
 
 

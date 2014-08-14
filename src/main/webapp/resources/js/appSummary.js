@@ -18,9 +18,16 @@
             "7": "客户接受，发放借款",
             "99": "暂存"
         };
-
+    appSummary.page = {
+        curPage : 1,
+        perPage : 15,
+        lastPage : false
+    };
     appSummary.init = function () {
         this.initEvent();
+        appSummary.loadDataPage(path);
+    };
+    appSummary.loadDataPage = function(path) {
         $.get(path, function (json) {
             appSummary.loadData(json);
         });
@@ -29,23 +36,35 @@
         // click search button
         $("#search").click(function () {
             var param = appSummary.generateParam();
-            $.get(path + "/search?q=" + param, function (json) {
-                appSummary.loadData(json);
-            });
+            appSummary.loadDataPage(path + "/search?curPage=1&q=" + param);
         });
         $("#forSystem").click(function(){
             var $system = $(this).prev();
-            $system.prop("checked",!$system.prop("checked"))
+            $system.prop("checked",!$system.prop("checked"));
         });
         $("#forTv").click(function(){
             var $tv = $(this).prev();
             $tv.prop("checked",!$tv.prop("checked"));
         });
-        $("#prev").on("click", function () {
-
+        $("#prev").click(function(){
+            var curPage = appSummary.page.curPage - 1;
+            if(curPage < 1) {
+                alert("已经是第一页");
+                return;
+            }
+            var param = appSummary.generateParam();
+            appSummary.loadDataPage(path + "/search?curPage="+curPage+"&q=" + param);
+            appSummary.page.curPage = curPage;
         });
-        $("#next").on("click", function () {
-
+        $("#next").click(function(){
+            var curPage = appSummary.page.curPage + 1;
+            if(appSummary.page.lastPage) {
+                alert("已经是最后一页");
+                return;
+            }
+            var param = appSummary.generateParam();
+            appSummary.loadDataPage(path + "/search?curPage="+curPage+"&q=" + param);
+            appSummary.page.curPage = curPage;
         });
     };
     appSummary.loadData = function (json) {
@@ -62,6 +81,11 @@
             '<td>征信员</td>' +
             '<td>处理时间</td>' +
             '</tr>';
+        if(!json || json.length < appSummary.page.perPage) {
+            appSummary.page.lastPage = true;
+        } else {
+            appSummary.page.lastPage = false;
+        }
         if (!json) {
             $("#data-table").html(contentHtml);
             return;

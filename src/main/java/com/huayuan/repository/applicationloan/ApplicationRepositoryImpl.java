@@ -1,5 +1,6 @@
 package com.huayuan.repository.applicationloan;
 
+import com.huayuan.common.CommonDef;
 import com.huayuan.domain.credit.ApplicationSummary;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.MemberProfile;
@@ -32,12 +33,12 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public List<ApplicationSummary> findApplicationSummaries() {
-        return em.createNamedQuery("Application.findApplicationSummaries").getResultList();
+        return em.createNamedQuery("Application.findApplicationSummaries").setMaxResults(CommonDef.PER_PAGE).setFirstResult(0).getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<ApplicationSummary> findApplicationSummaries(final String q) {
+    public List<ApplicationSummary> findApplicationSummaries(Integer curPage,final String q) {
         String sql = "select distinct appl.APPL_NO,idcard.NAME,idcard.ID_NO,appl.EXISTING_FLAG,appl.APPLY_TIME,ma.CITY,appl.STATUS,apv.CREDITOR,appl.CREATE_TIME\n" +
                 " from APPL appl\n" +
                 " inner join APPROVAL apv on apv.APPL_NO = appl.APPL_NO\n" +
@@ -47,7 +48,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 " left join APPL_TV appltv on appltv.APPL_NO = appl.APPL_NO\n" +
                 " left join (select appl.APPL_NO,count(teletv.ID) as NUM from APPL appl,tele_tv teletv where appl.APPL_NO = teletv.APPL_NO group by appl.APPL_NO) as t1 on t1.APPL_NO = appl.APPL_NO\n" +
                 " where " + q;
-        List<Object> resultList = em.createNativeQuery(sql).getResultList();
+        List<Object> resultList = em.createNativeQuery(sql).setMaxResults(CommonDef.PER_PAGE).setFirstResult((curPage-1)*CommonDef.PER_PAGE).getResultList();
 
         if (resultList == null || resultList.isEmpty()) {
             return null;
