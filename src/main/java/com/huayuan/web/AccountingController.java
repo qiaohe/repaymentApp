@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -76,7 +75,8 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/repay/{memberId}/{repayAmt}", method = RequestMethod.GET)
-    public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt) {
+    public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt, HttpServletResponse response) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         final String paymentGateway = accountService.getPaymentGateway(memberId, repayAmt);
         return "redirect:" + paymentGateway;
     }
