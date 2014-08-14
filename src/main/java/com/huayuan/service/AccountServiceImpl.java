@@ -330,7 +330,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public String getPaymentGateway(Long memberId, Double amount) {
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
-        final long payAmount = new Double(amount * 100).longValue();
+        final String payAmount = String.valueOf(new Double(amount * 100).longValue());
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
         String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount));
         try {
@@ -368,8 +368,6 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public static void main(String[] args) {
         ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
         AccountService service = context.getBean("accountService", AccountService.class);
-        System.out.println(service.getPaymentGateway(228l, 1.00d));
-
-
+        System.out.println(service.getPaymentGateway(221l, 100.00d));
     }
 }
