@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -87,9 +88,9 @@ public class AccountingController {
         System.out.println(request.getParameterNames().toString());
     }
 
-    @RequestMapping(value = "/payment/signMessage/{rawMessage}", method = RequestMethod.GET)
+    @RequestMapping(value = "/payment/signMessage", method = RequestMethod.GET)
     @ResponseBody
-    public String repay(@PathVariable String rawMessage) {
+    public String repay(@PathParam("r") String rawMessage) {
         return accountService.getPaymentSignMessage(rawMessage);
     }
 }
