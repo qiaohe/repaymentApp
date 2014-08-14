@@ -87,10 +87,4 @@ public class AccountingController {
     public void repay(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getParameterNames().toString());
     }
-
-    @RequestMapping(value = "/payment/signMessage", method = RequestMethod.GET)
-    @ResponseBody
-    public String repay(@PathParam("r") String rawMessage) {
-        return accountService.getPaymentSignMessage(rawMessage);
-    }
 }

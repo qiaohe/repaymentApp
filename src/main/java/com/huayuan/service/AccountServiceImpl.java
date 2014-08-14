@@ -9,7 +9,7 @@ import com.huayuan.domain.member.Contract;
 import com.huayuan.domain.member.CreditCard;
 import com.huayuan.domain.member.Member;
 import com.huayuan.domain.member.MemberStatusEnum;
-import com.huayuan.domain.payment.Pkipair;
+import com.huayuan.domain.payment.PkiPairUtil;
 import com.huayuan.repository.account.*;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
@@ -331,18 +331,13 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
         final long payAmount = new Double(amount * 100).longValue();
-        String signMessage = new Pkipair().signMsg(MessageFormat.format(StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg"),
-                member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount));
+        String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
+        String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount));
         try {
             return MessageFormat.format(paymentGatewayUrlPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }
-    }
-
-    @Override
-    public String getPaymentSignMessage(String rawMessage) {
-        return new Pkipair().signMsg(rawMessage);
     }
 
     private Contract createContractBy(Loan loan) {
