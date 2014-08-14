@@ -76,7 +76,7 @@ public class AccountingController {
 
     @RequestMapping(value = "/repay/{memberId}/{repayAmt}", method = RequestMethod.GET)
     public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         final String paymentGateway = accountService.getPaymentGateway(memberId, repayAmt);
         return "redirect:" + paymentGateway;
     }
