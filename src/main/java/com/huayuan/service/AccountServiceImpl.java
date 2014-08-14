@@ -267,11 +267,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
 
     @Override
     public Double getAmtWithinThisPeriod(Long memberId) {
-<<<<<<< Updated upstream
         List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId);
-=======
-        List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId, Day.TODAY.plusMonths(3));
->>>>>>> Stashed changes
         if (CollectionUtils.isNotEmpty(plans)) return plans.get(0).getDueAmt() + plans.get(0).getOverDue_Interest();
         return null;
     }
@@ -286,11 +282,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-<<<<<<< Updated upstream
     @Scheduled(cron = "0 0 * * * ?")
-=======
-    @Scheduled(cron = "0 0/20 * * * ?")
->>>>>>> Stashed changes
     public void updateOverDue() {
         List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays((-1) * Integer.valueOf(graceDay)));
         for (RepayPlan plan : plans) {
