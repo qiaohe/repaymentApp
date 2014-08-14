@@ -1,5 +1,7 @@
 package com.huayuan.domain.accounting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ public class PaymentList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private Long id;
     @Column(name = "MERCHANT_ACCT_ID")
     private String merchantAcctId;
@@ -47,8 +50,10 @@ public class PaymentList {
     private String errCode;
     @Column(name = "BIND_CARD")
     private String bindCard;
-    @Column(name = "BIND_MOBILE")
-    private String bindMobile;
+    @Column(name = "EXT1")
+    private String ext1;
+    @Column(name = "EXT2")
+    private String ext2;
 
     public Long getId() {
         return id;
@@ -194,11 +199,19 @@ public class PaymentList {
         this.bindCard = bindCard;
     }
 
-    public String getBindMobile() {
-        return bindMobile;
+    public String getExt1() {
+        return ext1;
     }
 
-    public void setBindMobile(String bindMobile) {
-        this.bindMobile = bindMobile;
+    public void setExt1(String ext1) {
+        this.ext1 = ext1;
+    }
+
+    public String getExt2() {
+        return ext2;
+    }
+
+    public void setExt2(String ext2) {
+        this.ext2 = ext2;
     }
 }
