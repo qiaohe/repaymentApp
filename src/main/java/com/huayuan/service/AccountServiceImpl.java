@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -325,6 +327,20 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
+    public String getPaymentGateway(Long memberId, Double amount) {
+        Member member = memberRepository.findOne(memberId);
+        final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
+        final long payAmount = new Double(amount * 100).longValue();
+        String signMessage = new Pkipair().signMsg(MessageFormat.format(StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg"),
+                member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount));
+        try {
+            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcUserName(), member.getEmail(), memberId, orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("can not talk with 99bill gateway.");
+        }
+    }
+
+    @Override
     public String getPaymentSignMessage(String rawMessage) {
         return new Pkipair().signMsg(rawMessage);
     }
@@ -351,5 +367,14 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
+    }
+
+
+    public static void main(String[] args) {
+        ApplicationContext context = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+        AccountService service = context.getBean("accountService", AccountService.class);
+        System.out.println(service.getPaymentGateway(228l, 1.00d));
+
+
     }
 }
