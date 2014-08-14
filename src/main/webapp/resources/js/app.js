@@ -31,7 +31,7 @@ var device = {
                 success: function(json) {
                     $this.bincode = json;
                 },
-                error: function() {
+                error: function(a, b, c) {
                     if(config.debug) alert("Can't fetch the binCode!");
                 }
             });
@@ -191,15 +191,23 @@ member = (function(member) {
         cardNum = cardNum.replace(/ /g, "");
         var taken,
             $this = this;
+
         $.ajax({
             url: config.apiPath + "members/" + this.id + "/creditCard/" + cardNum + config.timeStamp,
             type: "GET",
+
             async: false,
             dataType: "text",
+
+            // jsonp : '$callback',
+            // dataType : 'jsonp text',
+            // crossDomain: true,
+
             success: function (text) {
                 taken = text === "true";
             },
-            error: function() {
+            error: function(a, b, c) {
+                alert(a + b + c);
                 config.alertUrl(config.apiPath + "members/" + $this.id + "/creditCard/" + cardNum + config.timeStamp);
             }
         });
@@ -272,6 +280,7 @@ member = (function(member) {
                 $this.rank = json.rankOfLimit;
                 $this.anothertest = 0;
                 localStorage.clear();
+                $("#next-step").off("click").attr("href", "#");
                 $.mobile.navigate("#result");
             },
             error: function () {
@@ -715,6 +724,8 @@ $(document).on("pageshow", "#limit", function(){
         $.mobile.navigate("#limit");
         // $("#pop-limit").popup("close");
     });
+
+    // alert($("#next-step").attr("href"));
 });
 
 $(document).on("pagecreate", "#basic-info", function(){
@@ -864,8 +875,9 @@ $(document).on("pagecreate", "#result", function(){
     if(+member.status < 4) {
         $("#option-3").tap(function () {
             member.anothertest = 1;
-            $.mobile.changePage("#limit");
-        }).addClass("bluebtn");
+            // $.mobile.changePage("#limit");
+            // $.mobile.changePage("#limit");
+        }).addClass("bluebtn").attr("href", "#limit");
     }
 });
 
@@ -1595,119 +1607,18 @@ $(document).on("pagecreate", "#repayment-0", function () {
     }
 
     $(".repay-item-pay").tap(function() {
-        var parameters = {},
-            date = new Date(),
-            paraString = "";
-        //编码方式，1代表 UTF-8; 2 代表 GBK; 3代表 GB2312 默认为1,该参数必填。
-        parameters.inputCharset = "1";
-        //接收支付结果的页面地址，该参数一般置为空即可。
-        parameters.pageUrl = "";
-        //服务器接收支付结果的后台地址，该参数务必填写，不能为空。
-        parameters.bgUrl = "http://godzilla.dlinkddns.com.cn/repaymentApp/account/paymentCallback";
-        parameters.version =  "mobile1.0";
-        //语言种类，1代表中文显示，2代表英文显示。默认为1,该参数必填。
-        parameters.language =  "1";
-        //签名类型,该值为4，代表PKI加密方式,该参数必填。
-        parameters.signType =  "4";
-        //人民币网关账号，该账号为11位人民币网关商户编号+01,该参数必填。
-        parameters.merchantAcctId = "1002372628101";
-        //支付人姓名,可以为空。
-        parameters.payerName= "";
-        //支付人联系类型，1 代表电子邮件方式；2 代表手机联系方式。可以为空。
-        parameters.payerContactType =  "1";
-        //支付人联系方式，与payerContactType设置对应，payerContactType为1，则填写邮箱地址；payerContactType为2，则填写手机号码。可以为空。
-        parameters.payerContact = member.email;
-        parameters.payerIdType="3";
-        parameters.payerId="180129";
-        //商户订单号，以下采用时间来定义订单号，商户可以根据自己订单号的定义规则来定义该值，不能为空。
-        parameters.orderId = date.getTime();
-        //订单金额，金额以“分”为单位，商户测试以1分测试即可，切勿以大金额测试。该参数必填。
-        parameters.orderAmount = Math.round(member.loan.loans[member.crntCaro].curDueAmt * 100);
-        //订单提交时间，格式：yyyyMMddHHmmss，如：20071117020101，不能为空。
-        function formateChracter(x) {
-            return x.toString().length > 1 ? x.toString() : "0" + x.toString();
-        }
-        var time = [];
-        time.push(date.getFullYear());
-        time.push(formateChracter(date.getMonth()));
-        time.push(formateChracter(date.getDate()));
-        time.push(formateChracter(date.getHours()));
-        time.push(formateChracter(date.getMinutes()));
-        time.push(formateChracter(date.getSeconds()));
-        parameters.orderTime = time.join("");
-        //商品名称，可以为空。
-        parameters.productName= "p001";
-        //商品数量，可以为空。
-        parameters.productNum = "1";
-        //商品代码，可以为空。
-        parameters.productId = "";
-        //商品描述，可以为空。
-        parameters.productDesc = "";
-        //扩展字段1，商户可以传递自己需要的参数，支付完快钱会原值返回，可以为空。
-        parameters.ext1 = "";
-        //扩展自段2，商户可以传递自己需要的参数，支付完快钱会原值返回，可以为空。
-        parameters.ext2 = "";
-        //支付方式，一般为00，代表所有的支付方式。如果是银行直连商户，该值为10，必填。
-        parameters.payType = "00";
-        //银行代码，如果payType为00，该值可以为空；如果payType为10，该值必须填写，具体请参考银行列表。
-        parameters.bankId = "";
-        //同一订单禁止重复提交标志，实物购物车填1，虚拟产品用0。1代表只能提交一次，0代表在支付不成功情况下可以再提交。可为空。
-        parameters.redoFlag = "";
-        //快钱合作伙伴的帐户号，即商户编号，可为空。
-        parameters.pid = "";
-        // signMsg 签名字符串 不可空，生成加密签名串
-        parameters.signMsgVal = "";
-        //网关版本，固定值：v2.0,该参数必填。
-        parameters.mobileGateway="phone";
-        //for(var i in parameters) {
-        //    if(parameters.hasOwnProperty(i) && parameters[i] !== "") {
-        //        if(paraString === "") paraString += i + "=" + parameters[i];
-        //        else paraString += "&" + i + "=" + parameters[i];
-        //    }
-        //}
-        paraString = $.param(parameters);
-        // get the password
+        var orderAmount = Math.round(member.loan.loans[member.crntCaro].curDueAmt * 100);
         $.ajax({
-            url: config.apiPath + "account/payment/signMessage?r=" + paraString,
+            url: config.apiPath + "account/repay/" + member.id + "/" + orderAmount,
             type: "GET",
             async: false,
-            dataType: "text",
-            success: function(text) {
-                parameters.signMsg = text;
+            success: function() {
+                console.log("Repayment request secceeded!");
             },
-            error: function(a, b, c) {
-                if(config.debug) alert("Can't get the signMsg");
+            error: function() {
+                if(config.debug) alert("Repayment request failed!");
             }
         });
-        // post the form
-        var $form = $("#pay-form");
-        $form.children("input[name='inputCharset']").val(parameters.inputCharset);
-        $form.children("input[name='pageUrl']").val(parameters.pageUrl);
-        $form.children("input[name='bgUrl']").val(parameters.bgUrl);
-        $form.children("input[name='version']").val(parameters.version);
-        $form.children("input[name='mobileGateway']").val(parameters.mobileGateway);
-        $form.children("input[name='language']").val(parameters.language);
-        $form.children("input[name='signType']").val(parameters.signType);
-        $form.children("input[name='merchantAcctId']").val(parameters.merchantAcctId);
-        $form.children("input[name='payerName']").val(parameters.merchantAcctId);
-        $form.children("input[name='payerContactType']").val(parameters.payerContactType);
-        $form.children("input[name='payerContact']").val(parameters.payerContact);
-        $form.children("input[name='payerIdType']").val(parameters.payerIdType);
-        $form.children("input[name='payerId']").val(parameters.payerId);
-        $form.children("input[name='orderId']").val(parameters.orderId);
-        $form.children("input[name='orderAmount']").val(parameters.orderAmount);
-        $form.children("input[name='orderTime']").val(parameters.orderTime);
-        $form.children("input[name='productName']").val(parameters.productName);
-        $form.children("input[name='productNum']").val(parameters.productNum);
-        $form.children("input[name='productId']").val(parameters.productId);
-        $form.children("input[name='productDesc']").val(parameters.productDesc);
-        $form.children("input[name='ext1']").val(parameters.ext1);
-        $form.children("input[name='ext2']").val(parameters.ext2);
-        $form.children("input[name='payType']").val(parameters.payType);
-        $form.children("input[name='bankId']").val(parameters.bankId);
-        $form.children("input[name='redoFlag']").val(parameters.redoFlag);
-        $form.children("input[name='pid']").val(parameters.pid);
-        $form.submit();
     });
 });
 
