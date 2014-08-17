@@ -648,14 +648,16 @@ $(document).on("pagecreate", "#limit", function () {
                 $cardTip.html("该信用卡已被人使用!").show();
             }
             else {
-                if (!member.anothertest) {
+                if (!member.anothertest && member.idCard &&member.validThru) {
                     $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
                 }
                 else{
-                    $("#next-step").attr("href", "#result").css("background-color", "#3ca0e6").off("click").click(function () {
-                        member.creditCard = num;
-                        member.testLimit();
-                    });
+                    if(member.idCard &&member.validThru) {
+                        $("#next-step").css("background-color", "#3ca0e6").off("click").click(function () {
+                            member.creditCard = num;
+                            member.testLimit();
+                        });
+                    }
                 }
                 member.creditCard = num.replace(/ /g, "");
             }
