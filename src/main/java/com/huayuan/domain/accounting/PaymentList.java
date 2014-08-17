@@ -54,6 +54,8 @@ public class PaymentList {
     private String ext1;
     @Column(name = "EXT2")
     private String ext2;
+    @Column(name = "SIGN_MSG")
+    private String signMsg;
 
     public Long getId() {
         return id;
@@ -213,5 +215,13 @@ public class PaymentList {
 
     public void setExt2(String ext2) {
         this.ext2 = ext2;
+    }
+
+    public String getSignMsg() {
+        return signMsg;
+    }
+
+    public void setSignMsg(String signMsg) {
+        this.signMsg = signMsg;
     }
 }
