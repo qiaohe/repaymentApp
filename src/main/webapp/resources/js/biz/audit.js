@@ -28,8 +28,12 @@
     audit.initEvent = function() {
         $("#audit-table").on("click",".error",function(){
             var amt = $.trim($(this).parent().prev().find("input").val());
-            if(amt == "" || parseFloat(amt) == 0) {
+            if(amt == "") {
                 bootbox.alert("请输入实转金额！");
+                return;
+            }
+            if(!/^\d+(\.\d+)?$/.test(amt)) {
+                bootbox.alert("输入的实转金额不能包含非数字字符！");
                 return;
             }
             var dialog = new Dialog($("#error-div").html(), {modal: false,showTitle:false});
@@ -40,7 +44,7 @@
             $dialog.on("click",".msg-confirm",function(){
                 var msg = $(".dialog").find(".msgType").val();
                 $.ajax({
-                    url: "../api/account/loan/"+loanNo+"/handle/"+parseFloat(amt)+"/msg/"+msg,
+                    url: "../api/account/loan/"+loanNo+"/handle/"+parseFloat(amt)+"/msg/"+encodeURIComponent(msg),
                     dataType: "json",
                     type: "GET",
                     contentType: "application/json",
