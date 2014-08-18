@@ -1,8 +1,13 @@
 package com.huayuan.domain.accounting;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huayuan.common.util.Constants;
+import com.huayuan.domain.payment.PkiPairUtil;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.text.MessageFormat;
 import java.util.Date;
 
 /**
@@ -11,6 +16,9 @@ import java.util.Date;
 @Entity
 @Table(name = "PAYMENT_LIST")
 public class PaymentList {
+    private static final String PAYMENT_SIGN_MESSAGE_PATTERN = "merchantAcctId={0}&version={1}&language={2}&signType={3}" +
+            "&payType={4}&bankId={5}&orderId={6}&orderTime={7}&orderAmount={8}&dealId={9}&bankDealId={10}&dealTime={11}" +
+            "&payAmount={12}&payResult={13}";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -223,5 +231,17 @@ public class PaymentList {
 
     public void setSignMsg(String signMsg) {
         this.signMsg = signMsg;
+    }
+
+    public String paymentSignMessageVariable() {
+        String result = MessageFormat.format(PAYMENT_SIGN_MESSAGE_PATTERN, merchantAcctId, version, language, signType, payType, bankId,
+                orderId, new LocalDate(orderTime).toString(Constants.LONG_DATE_PATTERN), orderAmount, dealId, bankDealId,
+                new LocalDate(dealTime).toString(Constants.LONG_DATE_PATTERN), payAmount, payResult);
+        return StringUtils.isEmpty(errCode) ? result : result + "&errCode=" + errCode;
+    }
+
+    public boolean isPaymentSuccess() {
+        boolean signMessageMatched = new PkiPairUtil().enCodeByCer(paymentSignMessageVariable(), signMsg);
+        return signMessageMatched && Integer.valueOf(payResult) == 10;
     }
 }
