@@ -99,6 +99,7 @@ public class AccountingController {
     @RequestMapping(value = "/paymentCallback", method = RequestMethod.GET)
     public String repay(PaymentList paymentList) {
         accountService.addPaymentList(paymentList);
-        return paymentList.isPaymentSuccess() ? baseUrl + "#pay-success" : baseUrl + "#pay-fail";
+        final String redirectUrl = paymentList.isPaymentSuccess() ? baseUrl + "#pay-success" : baseUrl + "#pay-fail";
+        return "redirect:" + redirectUrl;
     }
 }
