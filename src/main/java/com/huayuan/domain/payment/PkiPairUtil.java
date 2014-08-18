@@ -27,7 +27,7 @@ public class PkiPairUtil {
             return Base64.encodeBase64String(signature.sign());
         } catch (KeyStoreException | CertificateException | UnrecoverableKeyException
                 | NoSuchAlgorithmException | IOException | SignatureException | InvalidKeyException ex) {
-            throw new IllegalStateException("can not load cert from repository.");
+            throw new IllegalStateException(ex.getMessage());
         }
     }
 
@@ -40,8 +40,8 @@ public class PkiPairUtil {
             signature.initVerify(pk);
             signature.update(val.getBytes());
             return signature.verify(Base64.decodeBase64(msg));
-        } catch (Exception e) {
-            throw new IllegalStateException("can not load cert from repository.");
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex.getMessage());
         }
     }
 }

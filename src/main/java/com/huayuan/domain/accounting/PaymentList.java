@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huayuan.common.util.Constants;
 import com.huayuan.domain.payment.PkiPairUtil;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.text.MessageFormat;
@@ -235,8 +235,8 @@ public class PaymentList {
 
     public String paymentSignMessageVariable() {
         String result = MessageFormat.format(PAYMENT_SIGN_MESSAGE_PATTERN, merchantAcctId, version, language, signType, payType, bankId,
-                orderId, new LocalDate(orderTime).toString(Constants.LONG_DATE_PATTERN), orderAmount, dealId, bankDealId,
-                new LocalDate(dealTime).toString(Constants.LONG_DATE_PATTERN), payAmount, payResult);
+                orderId, new DateTime(orderTime).toString(Constants.LONG_DATE_PATTERN), orderAmount, dealId, bankDealId,
+                new DateTime(dealTime).toString(Constants.LONG_DATE_PATTERN), payAmount, payResult);
         return StringUtils.isEmpty(errCode) ? result : result + "&errCode=" + errCode;
     }
 

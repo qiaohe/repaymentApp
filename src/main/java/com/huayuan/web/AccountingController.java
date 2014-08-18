@@ -1,24 +1,24 @@
 package com.huayuan.web;
 
-        import com.huayuan.common.util.Constants;
-        import com.huayuan.domain.accounting.LoanSummary;
-        import com.huayuan.domain.accounting.PaymentList;
-        import com.huayuan.domain.accounting.RepayPlan;
-        import com.huayuan.repository.account.AccountRepository;
-        import com.huayuan.service.AccountService;
-        import com.huayuan.web.dto.LoanCommonDto;
-        import org.springframework.beans.factory.annotation.Value;
-        import org.springframework.beans.propertyeditors.CustomDateEditor;
-        import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.transaction.annotation.Transactional;
-        import org.springframework.web.bind.WebDataBinder;
-        import org.springframework.web.bind.annotation.*;
+import com.huayuan.common.util.Constants;
+import com.huayuan.domain.accounting.LoanSummary;
+import com.huayuan.domain.accounting.PaymentList;
+import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.service.AccountService;
+import com.huayuan.web.dto.LoanCommonDto;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-        import javax.inject.Inject;
-        import java.text.SimpleDateFormat;
-        import java.util.Date;
-        import java.util.List;
+import javax.inject.Inject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dell on 14-5-4.
