@@ -317,6 +317,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         List<Loan> loans = loanRepository.findByStatusIn(Arrays.asList(0, 1, 2));
         for (Map.Entry<Loan, Integer> entry : getLoanNotificationCountMap(loans).entrySet()) {
             final String ns = repaymentNotification.getNotificationMessage(entry.getKey(), entry.getValue());
+            if (StringUtils.isEmpty(ns)) continue;
             sendMessage(entry.getKey(), ns);
         }
     }
