@@ -120,7 +120,11 @@
         $("#limitAmt").text(account.crl);
         $("#forecastAmt").text(member.preCrl);
         $("#avlAmt").text(account.crlAvl);
-        $("#cashAmt").text(account.debit_amt);
+        if(account.debit_amt) {
+            $("#cashAmt").text(account.debit_amt.toFixed(2));
+        } else {
+            $("#cashAmt").text("0.00");
+        }
         // 申请记录
         var applications = json.applications;
         var appRecordHtml = "";
@@ -134,7 +138,7 @@
         $("#app-record").on("click",".app-appNo",function(){
             var appNo = $.trim($(this).text());
             window.open("../appDetail.html?appNo="+appNo,"_blank");
-        })
+        });
         // 信用卡
         var creditCards = member.creditCards;
         if(creditCards && creditCards.length != 0) {
