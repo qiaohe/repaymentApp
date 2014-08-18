@@ -31,7 +31,6 @@ public class PkiPairUtil {
     }
 
     public boolean enCodeByCer(String val, String msg) {
-        boolean flag = false;
         try {
             String file = PkiPairUtil.class.getResource("99bill[1].cert.rsa.20140803.cer").toURI().getPath();
             FileInputStream inStream = new FileInputStream(file);
@@ -41,13 +40,9 @@ public class PkiPairUtil {
             Signature signature = Signature.getInstance("SHA1withRSA");
             signature.initVerify(pk);
             signature.update(val.getBytes());
-            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-            System.out.println(new String(decoder.decodeBuffer(msg)));
-            flag = signature.verify(decoder.decodeBuffer(msg));
+            return signature.verify(Base64.decodeBase64(msg));
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("no");
+            throw new IllegalStateException("can not load cert from repository.");
         }
-        return flag;
     }
 }
