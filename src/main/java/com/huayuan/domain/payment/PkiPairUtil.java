@@ -6,6 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -32,10 +33,8 @@ public class PkiPairUtil {
 
     public boolean enCodeByCer(String val, String msg) {
         try {
-            String file = PkiPairUtil.class.getResource("99bill[1].cert.rsa.20140803.cer").toURI().getPath();
-            FileInputStream inStream = new FileInputStream(file);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            X509Certificate cert = (X509Certificate) cf.generateCertificate(inStream);
+            X509Certificate cert = (X509Certificate) cf.generateCertificate(new ClassPathResource("99bill[1].cert.rsa.20140803.cer").getInputStream());
             PublicKey pk = cert.getPublicKey();
             Signature signature = Signature.getInstance("SHA1withRSA");
             signature.initVerify(pk);
