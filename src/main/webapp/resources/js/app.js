@@ -1014,7 +1014,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             $("#request").off("click").click(function(){
                 if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount){
                     if (member.existingFlag === 2) {
-                        $("#cardlist-2").popup("open");
+                        $("#cardlist-2").popup("open").focus();
                     }
                     else {
                         member.loanApplication.creditCard = "";
@@ -1945,7 +1945,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
         $(document).on("pagebeforeshow", "#pay-fail, #pay-success", function () {
             function closeWhenReady() {
-                if(WeixinJSBridge !== undefined) WeixinJSBridge.call("closeWindow");
+                if(WeixinJSBridge.call !== undefined) WeixinJSBridge.call("closeWindow");
                 else setTimeout(closeWhenReady, 500);
             }
             closeWhenReady();
@@ -2033,5 +2033,22 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
         };
     })();
+} else {
+    $(document).on("pageshow", "#pay-success, #pay-fail", function () {
+        function onBridgeReady(){
+            WeixinJSBridge.call('closeWindow');
+        }
+
+        if(typeof WeixinJSBridge === "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady();
+        }
+    });
 }
 console.log("END!");
