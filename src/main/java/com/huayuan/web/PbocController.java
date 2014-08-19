@@ -3,7 +3,6 @@ package com.huayuan.web;
 import com.huayuan.common.App;
 import com.huayuan.common.CommonDef;
 import com.huayuan.common.integration.ImageTools;
-import com.huayuan.common.integration.MatlabIdCardPreProcessor;
 import com.huayuan.common.util.OperUtil;
 import com.huayuan.common.util.OtsuBinarize;
 import com.huayuan.domain.credit.Pboc;
@@ -82,28 +81,29 @@ public class PbocController {
     }
 
     /**
-     *  复制身份照片
+     * 复制身份照片
+     *
      * @param idCard
-     * @param flag 0:front and back 1:front  2:back
+     * @param flag   0:front and back 1:front  2:back
      */
-    private void copyIdCard(IdCard idCard,String flag) {
+    private void copyIdCard(IdCard idCard, String flag) {
         final String path = App.getInstance().getIdCardImageBase();
-        File destDir = new File(path+CommonDef.IDCARD_PROCESS_DIR);
-        if(!destDir.exists() || !destDir.isDirectory()) {
+        File destDir = new File(path + CommonDef.IDCARD_PROCESS_DIR);
+        if (!destDir.exists() || !destDir.isDirectory()) {
             destDir.mkdirs();
         }
-        if("0".equals(flag) || "1".equals(flag)) {
+        if ("0".equals(flag) || "1".equals(flag)) {
             try {
-                OperUtil.copyFile(path+"/"+idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR+"/"+idCard.getImageFront());
+                OperUtil.copyFile(path + "/" + idCard.getImageFront(), path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageFront());
             } catch (IOException e) {
-                log.error("OperUtil copyFile "+idCard.getImageFront()+" :",e);
+                log.error("OperUtil copyFile " + idCard.getImageFront() + " :", e);
             }
         }
-        if("0".equals(flag) || "2".equals(flag)) {
+        if ("0".equals(flag) || "2".equals(flag)) {
             try {
-                OperUtil.copyFile(path+"/"+idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR+"/"+idCard.getImageBack());
+                OperUtil.copyFile(path + "/" + idCard.getImageBack(), path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageBack());
             } catch (IOException e) {
-                log.error("OperUtil copyFile "+idCard.getImageBack()+" :",e);
+                log.error("OperUtil copyFile " + idCard.getImageBack() + " :", e);
             }
         }
     }
@@ -124,8 +124,8 @@ public class PbocController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public List<PbocSummary> search(@RequestParam("curPage") Integer curPage,@RequestParam("q") String query) {
-        return pbocRepository.search(curPage,query);
+    public List<PbocSummary> search(@RequestParam("curPage") Integer curPage, @RequestParam("q") String query) {
+        return pbocRepository.search(curPage, query);
     }
 
     @RequestMapping(value = "/{idCardNo}/phone/{type}", method = RequestMethod.GET)
@@ -144,12 +144,12 @@ public class PbocController {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void exportIdCardAsPdf() {
-        final String path = App.getInstance().getIdCardImageBase() ;
+        final String path = App.getInstance().getIdCardImageBase();
         List<IdCard> idCards = idCardRepository.findFromPbocOut();
         for (IdCard idCard : idCards) {
-            final String front = path + "/"+ idCard.getImageFront();
-            final String back = path + "/"+ idCard.getImageBack();
-            exportToPdf(path + CommonDef.IDCARD_TEMP +"/" + idCard.getIdNo() + ".pdf", new String[]{front, back});
+            final String front = path + "/" + idCard.getImageFront();
+            final String back = path + "/" + idCard.getImageBack();
+            exportToPdf(path + CommonDef.IDCARD_TEMP + "/" + idCard.getIdNo() + ".pdf", new String[]{front, back});
         }
     }
 
@@ -158,13 +158,13 @@ public class PbocController {
         try {
             PdfWriter.getInstance(document, new FileOutputStream(pdfFileName));
             document.open();
-            for (int i = 0; i<images.length; i++) {
+            for (int i = 0; i < images.length; i++) {
                 String imageFileName = images[i];
                 try {
                     Image image = Image.getInstance(OtsuBinarize.binarize(imageFileName));
                     image.scaleAbsolute(243f, 153f);
-                    if(i == 1) {
-                        image.setAbsolutePosition(100f,400f);
+                    if (i == 1) {
+                        image.setAbsolutePosition(100f, 400f);
                     }
                     document.add(image);
                 } catch (IOException e) {
@@ -173,7 +173,7 @@ public class PbocController {
             }
             document.close();
         } catch (Exception e) {
-            log.error("exportToPdf",e);
+            log.error("exportToPdf", e);
         }
     }
 
@@ -181,7 +181,7 @@ public class PbocController {
     @ResponseBody
     public String exportIdCardToPdf(@PathVariable String idNo) {
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        if(idCards == null || idCards.isEmpty()) {
+        if (idCards == null || idCards.isEmpty()) {
             return "0";
         }
         generatePdfByIdCard(idCards.get(0));
@@ -192,18 +192,18 @@ public class PbocController {
     @ResponseBody
     public String exportIdCardToZip(@PathVariable String idNos) {
         String query = "";
-        if(StringUtils.isNotEmpty(idNos)) {
-            query = idNos.substring(0,idNos.length()-1);
+        if (StringUtils.isNotEmpty(idNos)) {
+            query = idNos.substring(0, idNos.length() - 1);
         } else {
             return "";
         }
-        query = "'"+query.replaceAll(",","','")+"'";
+        query = "'" + query.replaceAll(",", "','") + "'";
 
         List<IdCard> idCards = idCardRepository.findByIdNos(query);
-        if(idCards == null || idCards.isEmpty()) {
+        if (idCards == null || idCards.isEmpty()) {
             return "";
         }
-        for(IdCard idCard : idCards) {
+        for (IdCard idCard : idCards) {
             generatePdfByIdCard(idCard);
         }
         return packagePdfToZip(idNos);
@@ -211,39 +211,39 @@ public class PbocController {
 
     private void generatePdfByIdCard(IdCard idCard) {
         final String path = App.getInstance().getIdCardImageBase();
-        final String front = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageFront();
-        final String back = path +CommonDef.IDCARD_PROCESS_DIR +"/"+ idCard.getImageBack();
+        final String front = path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageFront();
+        final String back = path + CommonDef.IDCARD_PROCESS_DIR + "/" + idCard.getImageBack();
         String pdfName = idCard.getIdNo() + ".pdf";
-        exportToPdf(path +CommonDef.IDCARD_TEMP+ "/" + pdfName, new String[]{front, back});
+        exportToPdf(path + CommonDef.IDCARD_TEMP + "/" + pdfName, new String[]{front, back});
     }
 
     private String packagePdfToZip(String idNos) {
         final String path = App.getInstance().getIdCardImageBase();
         String[] pdfNames = idNos.split(",");
         File[] files = new File[pdfNames.length];
-        for(int i = 0; i < pdfNames.length; i++) {
-            files[i] = new File(path +CommonDef.IDCARD_TEMP +"/"+pdfNames[i]+".pdf");
+        for (int i = 0; i < pdfNames.length; i++) {
+            files[i] = new File(path + CommonDef.IDCARD_TEMP + "/" + pdfNames[i] + ".pdf");
         }
-        String name = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") +".zip";
-        OperUtil.packageToZip(files,path+CommonDef.IDCARD_TEMP,name);
+        String name = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".zip";
+        OperUtil.packageToZip(files, path + CommonDef.IDCARD_TEMP, name);
         return name;
     }
 
     @RequestMapping(value = "/idcard/{idNo}/{frontFlag}", method = RequestMethod.POST)
     @ResponseBody
-    public String reuseOriginPic(@PathVariable String idNo,@PathVariable("frontFlag") String flag) {
-        if(StringUtils.isEmpty(idNo)) {
+    public String reuseOriginPic(@PathVariable String idNo, @PathVariable("frontFlag") String flag) {
+        if (StringUtils.isEmpty(idNo)) {
             return "0";
         }
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        if(CollectionUtils.isEmpty(idCards)) {
+        if (CollectionUtils.isEmpty(idCards)) {
             return "0";
         }
         IdCard idCard = idCards.get(0);
-        if("1".equals(flag)) {
-            copyIdCard(idCard,"1");
-        } else if("2".equals(flag)) {
-            copyIdCard(idCard,"2");
+        if ("1".equals(flag)) {
+            copyIdCard(idCard, "1");
+        } else if ("2".equals(flag)) {
+            copyIdCard(idCard, "2");
         }
         return "1";
     }
@@ -252,38 +252,18 @@ public class PbocController {
     @ResponseBody
     public String processIdcardAll() {
         List<PbocOutDto> pbocOutDtoList = pbocRepository.searchPbocOutList("");
-        if(CollectionUtils.isNotEmpty(pbocOutDtoList)) {
+        if (CollectionUtils.isNotEmpty(pbocOutDtoList)) {
             StringBuffer idNoSb = new StringBuffer(128);
-            for(PbocOutDto dto : pbocOutDtoList) {
-                idNoSb.append(dto.getIdNo()+",");
+            for (PbocOutDto dto : pbocOutDtoList) {
+                idNoSb.append(dto.getIdNo() + ",");
             }
             String idNos = idNoSb.toString();
-            String query = idNos.substring(0,idNos.length()-1);
-            query = "'"+query.replaceAll(",","','")+"'";
+            String query = idNos.substring(0, idNos.length() - 1);
+            query = "'" + query.replaceAll(",", "','") + "'";
 
             List<IdCard> idCards = idCardRepository.findByIdNos(query);
-            for(IdCard idCard : idCards) {
-                copyIdCard(idCard,"0");
-            }
-        }
-        return "1";
-    }
-
-    @RequestMapping(value = "/process/batch/{idNos}", method = RequestMethod.GET)
-    @ResponseBody
-    public String processIdcardBatch(@PathVariable String idNos) {
-        final String path = App.getInstance().getIdCardImageBase();
-        String[] idNoArr = idNos.split(",");
-        MatlabIdCardPreProcessor processor = new MatlabIdCardPreProcessor();
-        for(String idNo : idNoArr) {
-            List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-            if(idCards == null || idCards.isEmpty()) {
-                continue;
-            }
-            IdCard idCard = idCards.get(0);
-            if(idCard != null) {
-//                processor.preProcessingImage(path +"/"+ idCard.getImageFront(),path+CommonDef.IDCARD_PROCESS_DIR);
-//                processor.preProcessingImage(path +"/"+ idCard.getImageBack(),path+CommonDef.IDCARD_PROCESS_DIR);
+            for (IdCard idCard : idCards) {
+                copyIdCard(idCard, "0");
             }
         }
         return "1";
@@ -297,60 +277,60 @@ public class PbocController {
 
     @RequestMapping(value = "/crop/{idNo}", method = RequestMethod.POST)
     @ResponseBody
-    public String cropIdCardImage(@PathVariable String idNo,@RequestBody ImageCropDto imageCropDto) {
+    public String cropIdCardImage(@PathVariable String idNo, @RequestBody ImageCropDto imageCropDto) {
         final String path = App.getInstance().getIdCardImageBase() + CommonDef.IDCARD_PROCESS_DIR;
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        if(idCards == null || idCards.isEmpty()) {
+        if (idCards == null || idCards.isEmpty()) {
             return "0";
         }
         IdCard idCard = idCards.get(0);
         String imageName = "";
-        if("1".equals(imageCropDto.getType())) { // Front IdCard Image
+        if ("1".equals(imageCropDto.getType())) { // Front IdCard Image
             imageName = idCard.getImageFront();
-        } else if("2".equals(imageCropDto.getType())) { // Back IdCard Image
+        } else if ("2".equals(imageCropDto.getType())) { // Back IdCard Image
             imageName = idCard.getImageBack();
         }
-        cropImageWrap(path,imageName,imageCropDto);
+        cropImageWrap(path, imageName, imageCropDto);
         return "1";
     }
 
     @RequestMapping(value = "/rotate/{idNo}", method = RequestMethod.POST)
     @ResponseBody
-    public String ratoteIdCardImage(@PathVariable String idNo,@RequestBody CropZoomData cropZoomData) {
+    public String ratoteIdCardImage(@PathVariable String idNo, @RequestBody CropZoomData cropZoomData) {
         List<IdCard> idCards = idCardRepository.findByIdNo(idNo);
-        if(idCards == null || idCards.isEmpty()) {
+        if (idCards == null || idCards.isEmpty()) {
             return "0";
         }
         IdCard idCard = idCards.get(0);
         final String path = App.getInstance().getIdCardImageBase() + CommonDef.IDCARD_PROCESS_DIR;
         String imagePath = "";
-        if(cropZoomData.getImageSource().indexOf(idCard.getImageFront()) > -1) {
+        if (cropZoomData.getImageSource().contains(idCard.getImageFront())) {
             imagePath = path + "/" + idCard.getImageFront();
-        } else if(cropZoomData.getImageSource().indexOf(idCard.getImageBack()) > -1) {
+        } else if (cropZoomData.getImageSource().contains(idCard.getImageBack())) {
             imagePath = path + "/" + idCard.getImageBack();
         }
         try {
-            if(cropZoomData.getImageRotate() != 0) {
-                ImageTools.rotateImage(imagePath,imagePath,cropZoomData.getImageRotate());
+            if (cropZoomData.getImageRotate() != 0) {
+                ImageTools.rotateImage(imagePath, imagePath, cropZoomData.getImageRotate());
             }
         } catch (Exception e) {
-            log.error("ratoteIdCardImage",e);
+            log.error("ratoteIdCardImage", e);
         }
         return "1";
     }
 
-    private void cropImageWrap(String imagePath,String imageName,ImageCropDto imageCropDto) {
+    private void cropImageWrap(String imagePath, String imageName, ImageCropDto imageCropDto) {
         try {
-            String srcPath = imagePath+"/"+imageName;
+            String srcPath = imagePath + "/" + imageName;
             BufferedImage original = ImageIO.read(new File(srcPath));
-            double scaleX = ((double)original.getWidth())/imageCropDto.getFixedWidth();
-            double scaleY = ((double)original.getHeight())/imageCropDto.getFixedHeight();
+            double scaleX = ((double) original.getWidth()) / imageCropDto.getFixedWidth();
+            double scaleY = ((double) original.getHeight()) / imageCropDto.getFixedHeight();
             int x = (int) (imageCropDto.getX() * scaleX);
             int y = (int) (imageCropDto.getY() * scaleY);
             int width = (int) (imageCropDto.getWidth() * scaleX);
             int height = (int) (imageCropDto.getHeight() * scaleY);
             OperUtil.cropImage(srcPath, srcPath, x, y, width, height);
-            ImageTools.resizeImage(srcPath,srcPath,256, 162);
+            ImageTools.resizeImage(srcPath, srcPath, 256, 162);
         } catch (Exception e) {
             log.error("OperUtil cropImageWrap " + imageName + " :", e);
         }

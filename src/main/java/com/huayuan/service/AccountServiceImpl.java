@@ -317,6 +317,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         List<Loan> loans = loanRepository.findByStatusIn(Arrays.asList(0, 1, 2));
         for (Map.Entry<Loan, Integer> entry : getLoanNotificationCountMap(loans).entrySet()) {
             final String ns = repaymentNotification.getNotificationMessage(entry.getKey(), entry.getValue());
+            if (StringUtils.isEmpty(ns)) continue;
             sendMessage(entry.getKey(), ns);
         }
     }
@@ -330,12 +331,12 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public String getPaymentGateway(Long memberId, Double amount) {
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
-        final String payAmount = String.valueOf(new Double(amount * 100).longValue());
+        final String payAmount = amount.toString().replace(".", StringUtils.EMPTY);
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
-        String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcUserName(),
+        String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcNo(),
                 member.getEmail(), memberId, orderId, payAmount));
         try {
-            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcUserName(), member.getEmail(), memberId,
+            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
                     orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");

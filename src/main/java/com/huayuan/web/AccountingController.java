@@ -82,7 +82,7 @@ public class AccountingController {
         return accountRepository.findLoanTransDetails(query);
     }
 
-    @RequestMapping(value = "/repay/{memberId}/{repayAmt}", method = RequestMethod.GET)
+    @RequestMapping(value = "/repay/{memberId}/{repayAmt:.+}", method = RequestMethod.GET)
     public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt) {
         final String paymentGateway = accountService.getPaymentGateway(memberId, repayAmt);
         return "redirect:" + paymentGateway;
@@ -96,9 +96,11 @@ public class AccountingController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = "/paymentCallback", method = RequestMethod.GET)
-    public String repay(PaymentList paymentList) {
+    @RequestMapping(value = "/paymentCallback/{memberId}", method = RequestMethod.GET)
+    public String repay(@PathVariable Long memberId, PaymentList paymentList) {
         accountService.addPaymentList(paymentList);
+        accountService.repay(memberId, paymentList.getPayAmount());
+        accountService.offset(memberId);
         final String redirectUrl = paymentList.isPaymentSuccess() ? baseUrl + "#pay-success" : baseUrl + "#pay-fail";
         return "redirect:" + redirectUrl;
     }
