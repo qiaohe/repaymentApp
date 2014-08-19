@@ -1611,8 +1611,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
 
             $(".repay-item-pay").tap(function() {
-                var orderAmount = Math.floor(member.loan.loans[member.crntCaro].curDueAmt);
-                orderAmount = 1;
+                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
                 window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
             });
         });

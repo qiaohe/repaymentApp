@@ -21,7 +21,9 @@ var config = {
                 this.id = idPtn.exec(window.location)[1];
             }
             catch (e) {
-                window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
+                if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
+                    window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
+                }
             }
         };
 
