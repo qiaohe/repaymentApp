@@ -1612,7 +1612,17 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
             $(".repay-item-pay").tap(function() {
                 var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
-                window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
+                $.ajax({
+                    url: config.apiPath + "account/loan/" + member.loan.loans[member.crntCaro].loanId + "/takeback",
+                    type: "GET",
+                    async: false,
+                    success: function() {
+                        window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
+                    },
+                    error: function() {
+                        if(config.debug) alert("1621!");
+                    }
+                });
             });
         });
 
@@ -1711,7 +1721,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 contentHtml = "<div class=\"repay-summary\">\n"+
                     "    <div class=\"repay-s-time\">"+dict.getformatDate(loan.startDate,"1")+"</div>\n"+
                     "    <div class=\"repay-s-info\">借款&yen;"+dict.numberWithCommas(loan.amount)+"入卡片"+loan.creditCardNo.substring(loan.creditCardNo.length-4)+"</div>\n"+
-                    "</div>\n"+
+                     "</div>\n"+
                     "<div class=\"repay-amount\">\n"+
                     "    <div class=\"repay-amt-title\">该笔借款已还清，总额：</div>\n"+
                     "    <div class=\"repay-amt-num\">&yen;<span class=\"r-next\">"+loan.dueAmt+"</span></div>\n"+
@@ -1933,17 +1943,25 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
         });
 
-        $(document).on("pagecreate", "#pay-success", function () {
-            $("#pays-known").off("tap").on("tap", function () {
-                WeixinJSBridge.call("closeWindow");
-            });
+        $(document).on("pagebeforeshow", "#pay-fail, #pay-success", function () {
+            function closeWhenReady() {
+                if(WeixinJSBridge !== undefined) WeixinJSBridge.call("closeWindow");
+                else setTimeout(closeWhenReady, 500);
+            }
+            closeWhenReady();
         });
 
-        $(document).on("pagecreate", "#pay-fail", function () {
-            $("#payf-known").off("tap").on("tap", function () {
-                WeixinJSBridge.call("closeWindow");
-            });
-        });
+//        $(document).on("pagecreate", "#pay-success", function () {
+//            $("#pays-known").off("tap").on("tap", function () {
+//                WeixinJSBridge.call("closeWindow");
+//            });
+//        });
+//
+//        $(document).on("pagecreate", "#pay-fail", function () {
+//            $("#payf-known").off("tap").on("tap", function () {
+//                WeixinJSBridge.call("closeWindow");
+//            });
+//        });
 
         $(document).on("pagecreate", "#feedback", function () {
             var $tip = $("#fd-tip");
