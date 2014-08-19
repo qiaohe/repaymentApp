@@ -36,7 +36,11 @@ public class SmsVerificationCodeServiceImpl implements SmsVerificationCodeServic
         restAPI.init(smsHost, smsPort);
         restAPI.setAccount(smsAccount, smsToken);
         restAPI.setAppId(smsAppId);
-        return SEND_SUCCESS.equals(restAPI.sendTemplateSMS(mobilePhone, smsTemplateId, new String[]{code}).get("statusCode"));
+        if (SEND_SUCCESS.equals(restAPI.sendTemplateSMS(mobilePhone, smsTemplateId, new String[]{code}).get("statusCode"))) {
+            MOBILE_PHONE_VERIFICATION_CODE_MAP.put(mobilePhone, code);
+            return true;
+        }
+        return false;
     }
 
     @Override

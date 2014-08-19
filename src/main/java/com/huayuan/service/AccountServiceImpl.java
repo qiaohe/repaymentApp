@@ -331,7 +331,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public String getPaymentGateway(Long memberId, Double amount) {
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
-        final String payAmount = amount.toString().replace(".", StringUtils.EMPTY);
+        final Long payAmount = new Double(amount * 100).longValue();
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
         String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcNo(),
                 member.getEmail(), memberId, orderId, payAmount));
