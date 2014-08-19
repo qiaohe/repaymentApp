@@ -21,7 +21,9 @@ var config = {
                 this.id = idPtn.exec(window.location)[1];
             }
             catch (e) {
-                window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
+                if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
+                    window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
+                }
             }
         };
 
@@ -165,15 +167,17 @@ var config = {
     })();
 
 (function navigate() {
-    member.getId();
-    member.getStatus();
-    member.getDestPage();
-    member.whetherApplying();
-    member.setDestPage();
-    if (Number(member.status) > 2) {
-        member.getBasicInfo();
+    if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
+        member.getId();
+        member.getStatus();
+        member.getDestPage();
+        member.whetherApplying();
+        member.setDestPage();
+        if (Number(member.status) > 2) {
+            member.getBasicInfo();
+        }
+        if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
+        if(!/term/.exec(window.location)) {$.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);}
     }
-    if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
-    if(!/term/.exec(window.location)) {$.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);}
 })();
 console.log("navigation ends!");
