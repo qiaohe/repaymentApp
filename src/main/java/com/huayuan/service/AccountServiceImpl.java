@@ -331,7 +331,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     public String getPaymentGateway(Long memberId, Double amount) {
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
-        final Long payAmount = new Double(amount * 100).longValue();
+        final String payAmount = String.valueOf(new Double(amount * 100).longValue());
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
         String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcNo(),
                 member.getEmail(), memberId, orderId, payAmount));
@@ -370,5 +370,10 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
+    }
+
+    public static void main(String[] args) {
+        Double amount = 340.02d;
+        System.out.println(String.valueOf(new Double(amount * 100).longValue()));
     }
 }

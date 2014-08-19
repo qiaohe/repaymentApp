@@ -99,7 +99,7 @@ public class AccountingController {
     @RequestMapping(value = "/paymentCallback/{memberId}", method = RequestMethod.GET)
     public String repay(@PathVariable Long memberId, PaymentList paymentList) {
         accountService.addPaymentList(paymentList);
-        accountService.repay(memberId, paymentList.getPayAmount());
+        accountService.repay(memberId, paymentList.getPayAmount() / 100);
         accountService.offset(memberId);
         final String redirectUrl = paymentList.isPaymentSuccess() ? baseUrl + "#pay-success" : baseUrl + "#pay-fail";
         return "redirect:" + redirectUrl;
