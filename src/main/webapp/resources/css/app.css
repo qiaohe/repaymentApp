@@ -742,14 +742,12 @@ span.loan-i-cont {
 .tfb-title {
     width: 80%;
     text-align: center;
-    height: 140px;
-    line-height: 140px;
     font-size: 20px;
     font-family: "黑体";
     color: #22292b;
     background-size:180px 140px;
-    background: url("../img/other_icons/fb-cloud1.png") no-repeat center;
-    margin: 40px auto;
+    background: url("../img/addtional/feedback.png") no-repeat center;
+    margin: 20px auto;
 }
 .tfb-img {
     width: 80%;
@@ -830,16 +828,16 @@ span.loan-i-cont {
 }
 /************************** Pay End *****************************/
 .check-custom1 {
-    width:18px;
+    width: 18px;
     height: 18px;
     float:left;
-    background:url("../img/public/checkbox-1.png") no-repeat center;
+    background:url("../img/public/checkbox-1.png") no-repeat;
 }
 .check-custom2 {
     width:18px;
     height: 18px;
     float:left;
-    background:url("../img/public/checkbox-2.png") no-repeat center;
+    background:url("../img/public/checkbox-2.png") no-repeat;
 }
 
 #share {

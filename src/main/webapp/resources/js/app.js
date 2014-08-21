@@ -1560,6 +1560,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                             $("#new-cardnum-placeholder").html("不可用的信用卡号!").css("color", "#cc0000").show();
                         });
                     } else {
+                        $("#new-cardnum").val("");
                         $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
                     }
                 } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
