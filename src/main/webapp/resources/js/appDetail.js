@@ -471,6 +471,12 @@
         $("#applNote").val(application.title);
         $("#applCreateTime").val($.formatDate(application.createTime));
         $("#appTime").val($.formatDate(application.applyTime));
+        var curCreditCard = application.creditCard;
+        if(curCreditCard) {
+            $("#cardBank").val(appDetail.bankMap[curCreditCard.bank]);
+            $("#cardNo").val(curCreditCard.cardNo);
+            $("#cardLevel").val(curCreditCard.type || "");
+        }
 
         var pboc = json.pboc;
         // 基础资料
