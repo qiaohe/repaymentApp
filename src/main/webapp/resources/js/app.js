@@ -1412,7 +1412,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         $(document).on("tap", ".card-container-0", function (e) {
-            e.preventDefault();
+            e.stopPropagation();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
@@ -1430,7 +1430,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         $(document).on("tap", ".card-container", function (e) {
-            e.preventDefault();
+            e.stopPropagation();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
