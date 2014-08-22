@@ -26,7 +26,7 @@ public interface AccountService {
 
     public List<Loan> getLoansBy(Long memberId);
 
-    public void offset(Long memberId);
+    public void offset(Long memberId, Long loanId);
 
     public void repay(Long memberId, Double amount);
 
@@ -52,7 +52,7 @@ public interface AccountService {
 
     public Contract getContract(String appNo);
 
-    public String getPaymentGateway(Long memberId, Double amount);
+    public String getPaymentGateway(Long memberId, Long loanId, Double amount);
 
     public void addPaymentList(PaymentList paymentList);
 }

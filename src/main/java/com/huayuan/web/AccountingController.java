@@ -1,26 +1,28 @@
 package com.huayuan.web;
 
-        import com.huayuan.common.util.Constants;
-        import com.huayuan.domain.accounting.LoanSummary;
-        import com.huayuan.domain.accounting.PaymentList;
-        import com.huayuan.domain.accounting.RepayPlan;
-        import com.huayuan.repository.account.AccountRepository;
-        import com.huayuan.repository.account.PaymentListRepository;
-        import com.huayuan.service.AccountService;
-        import com.huayuan.web.dto.LoanCommonDto;
-        import org.springframework.beans.factory.annotation.Value;
-        import org.springframework.beans.propertyeditors.CustomDateEditor;
-        import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.transaction.annotation.Transactional;
-        import org.springframework.web.bind.WebDataBinder;
-        import org.springframework.web.bind.annotation.*;
+import com.huayuan.common.util.Constants;
+import com.huayuan.domain.accounting.LoanSummary;
+import com.huayuan.domain.accounting.PaymentList;
+import com.huayuan.domain.accounting.RepayPlan;
+import com.huayuan.repository.account.AccountRepository;
+import com.huayuan.repository.account.PaymentListRepository;
+import com.huayuan.service.AccountService;
+import com.huayuan.web.dto.LoanCommonDto;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-        import javax.inject.Inject;
-        import java.text.MessageFormat;
-        import java.text.SimpleDateFormat;
-        import java.util.Date;
-        import java.util.List;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dell on 14-5-4.
@@ -88,9 +90,9 @@ public class AccountingController {
         return accountRepository.findLoanTransDetails(query);
     }
 
-    @RequestMapping(value = "/repay/{memberId}/{repayAmt:.+}", method = RequestMethod.GET)
-    public String repay(@PathVariable Long memberId, @PathVariable Double repayAmt) {
-        final String paymentGateway = accountService.getPaymentGateway(memberId, repayAmt);
+    @RequestMapping(value = "/repay/{memberId}/{loanId}/{repayAmt:.+}", method = RequestMethod.GET)
+    public String repay(@PathVariable Long memberId,@PathVariable Long loanId, @PathVariable Double repayAmt) {
+        final String paymentGateway = accountService.getPaymentGateway(memberId, loanId, repayAmt);
         return "redirect:" + paymentGateway;
     }
 
@@ -102,12 +104,12 @@ public class AccountingController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = "/paymentCallback/{memberId}", method = RequestMethod.GET)
-    public String repay(@PathVariable Long memberId, PaymentList paymentList) {
+    @RequestMapping(value = "/paymentCallback/{memberId}/{loanId}", method = RequestMethod.GET)
+    public void repay(@PathVariable Long memberId, @PathVariable Long loanId, PaymentList paymentList, HttpServletResponse response) throws IOException {
         accountService.addPaymentList(paymentList);
         accountService.repay(memberId, paymentList.getPayAmount() / 100);
-        accountService.offset(memberId);
+        accountService.offset(memberId, loanId);
         final String redirectUrl = paymentList.isPaymentSuccess() ? baseUrl + "#pay-success" : baseUrl + "#pay-fail";
-        return MessageFormat.format(PAYMENT_CALLBACK_PATTERN, redirectUrl);
+        response.getWriter().println(MessageFormat.format(PAYMENT_CALLBACK_PATTERN, redirectUrl));
     }
 }
