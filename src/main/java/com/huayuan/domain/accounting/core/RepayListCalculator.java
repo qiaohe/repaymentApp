@@ -26,7 +26,7 @@ public class RepayListCalculator {
         Double amt = loan.getMonthlyRepay();
         double monthlyApr = loan.getAprByMonth();
         for (int termNo = 1; termNo <= loan.getTerm(); termNo++) {
-            Double dueInterest = new Number(restPrincipal * monthlyApr).getValue();
+            Double dueInterest = isLastTerm(termNo) ? amt - restPrincipal : new Number(restPrincipal * monthlyApr).getValue();
             Double duePrincipal = isLastTerm(termNo) ? restPrincipal : new Number(amt - dueInterest).getValue();
             restPrincipal = new Number(restPrincipal - duePrincipal).getValue();
             RepayItem pi = new RepayItem(termNo, new Day(loan.getStartDate()).plusMonths(termNo), amt, duePrincipal, dueInterest, restPrincipal);
