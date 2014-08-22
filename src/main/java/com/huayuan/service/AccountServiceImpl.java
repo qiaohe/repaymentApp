@@ -337,7 +337,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
                 member.getEmail(), memberId, orderId, payAmount, loanId));
         try {
             return MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
-                    orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"), loanId);
+                    orderId, payAmount, loanId, URLEncoder.encode(signMessage, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }
