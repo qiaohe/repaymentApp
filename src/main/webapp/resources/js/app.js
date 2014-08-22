@@ -1613,17 +1613,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
             $(".repay-item-pay").tap(function() {
                 var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
-                $.ajax({
-                    url: config.apiPath + "account/loan/" + member.loan.loans[member.crntCaro].loanId + "/takeback",
-                    type: "GET",
-                    async: false,
-                    success: function() {
-                        window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
-                    },
-                    error: function() {
-                        if(config.debug) alert("1621!");
-                    }
-                });
+                window.location = "http://godzilla.dlinkddns.com.cn/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
             });
         });
 
