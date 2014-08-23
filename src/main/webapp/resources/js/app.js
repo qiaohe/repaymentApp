@@ -1051,7 +1051,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#N-2, #close-4").off("click").click(function(e){
-                e.stopPropagation();
+//                e.stopPropagation();
                 $("#card-confirm-2").hide();
             });
 
