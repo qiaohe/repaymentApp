@@ -665,7 +665,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                 } else if(!dict.isSupportedBankCard(num) && num.length > 6) {
                     $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                    $cardTip.html("很抱歉,暂不开放该银行的信用卡借款!").show();
+                    $cardTip.html("暂不开放该银行的信用卡").show();
                 } else {
                     $("#next-step").attr("href", "#");
                     if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
@@ -1046,12 +1046,12 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#Y-2").off("click").click(function(e){
-                e.preventDefault();
+                e.stopPropagation();
                 member.applyLoan(member.loanApplication);
             });
 
             $("#N-2, #close-4").off("click").click(function(e){
-                e.preventDefault();
+                e.stopPropagation();
                 $("#card-confirm-2").hide();
             });
 
@@ -1094,7 +1094,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
                 } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
                     $("#new-cardnum-2").val("");
-                    $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum-2-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 }
                 else {
                     $newCardnum2.val("");
@@ -1380,8 +1380,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                 }
                 if(tmp.length > 6 && !dict.isSupportedBankCard(tmp)) {
-                    $("#new-cardnum-2").val();
-                    $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum-2").val("");
+                    $("#new-cardnum-2-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 }
             }).off("focusin").focusin(function() {
                 $("#new-cardnum-2-placeholder").hide();
@@ -1413,7 +1413,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
         });
 
-        $(document).on("tap", ".card-container-0 div, .card-container-0 img", function (e) {
+        $(document).on("tap", ".card-container-0", function (e) {
             e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
@@ -1431,7 +1431,12 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
         });
 
-        $(document).on("tap", ".card-container div, .card-container img", function (e) {
+        $(document).on("tap", ".card-container-0 img, .card-container-0 div, .card-container img, .card-container div", function (e) {
+            e.stopPropagation();
+            $(this).parent().trigger("tap");
+        });
+
+        $(document).on("tap", ".card-container", function (e) {
             e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
@@ -1522,12 +1527,12 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#Y").off("tap").tap(function(e){
-                e.preventDefault();
+                e.stopPropagation();
                 member.loanToCard(member.loanApplication.creditCard);
             });
 
             $("#N, #close-3").off("tap").tap(function(e){
-                e.preventDefault();
+                e.stopPropagation();
                 $("#card-confirm").hide();
             });
 
@@ -1568,7 +1573,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
                     }
                 } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
-                    $("#new-cardnum-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum").val();
+                    $("#new-cardnum-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 } else {
                     $("#new-cardnum").val("");
                     $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
