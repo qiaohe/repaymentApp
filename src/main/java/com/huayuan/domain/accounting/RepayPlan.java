@@ -201,4 +201,9 @@ public class RepayPlan {
     public Double getDueTotalAmt() {
         return dueAmt + overDue_Interest;
     }
+
+    @Transient
+    public boolean isLastTerm() {
+        return term.equals(termNo);
+    }
 }

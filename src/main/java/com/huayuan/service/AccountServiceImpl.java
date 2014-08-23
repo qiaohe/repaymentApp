@@ -15,6 +15,7 @@ import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,6 +38,7 @@ import static com.huayuan.common.App.getInstance;
 @Service(value = "accountService")
 @Transactional
 public class AccountServiceImpl implements AccountService, ApplicationEventPublisherAware {
+    private static final double PRECISION_THRESHOLD = 0.01d;
     @Inject
     private AccountRepository accountRepository;
     @Inject
@@ -132,6 +134,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.getLoan().setPaidInterest(plan.getPaidInterest() + plan.getLoan().getPaidInterest());
             plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
             plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
+            if (plan.isLastTerm()) plan.getLoan().setStatus(9);
             loanRepository.save(plan.getLoan());
             if (plan.getMember().blockCodeChangeIfNeeded()) {
                 plan.getMember().setBlockCode(plan.getMember().getBlockCodeAfterRepayment());
@@ -152,7 +155,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     private void updateAccountCrl(Account account, RepayPlan plan) {
-        account.setDebit_amt(account.getDebit_amt() - plan.getPaidAmt());
+        Double r = account.getDebit_amt() - plan.getPaidAmt();
+        account.setDebit_amt(Math.abs(r) < PRECISION_THRESHOLD ? NumberUtils.DOUBLE_ZERO : r);
         account.setCrlUsed(account.getCrlUsed() - plan.getPaidPrincipal());
         account.setCrlAvl(account.getCrl() - account.getCrlUsed());
         accountRepository.save(account);
