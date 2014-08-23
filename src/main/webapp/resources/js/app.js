@@ -1045,11 +1045,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#request").off("click");
             });
 
-            $("#Y-2").off("click").click(function(){
+            $("#Y-2").off("click").click(function(e){
+                e.preventDefault();
                 member.applyLoan(member.loanApplication);
             });
 
-            $("#N-2, #close-4").off("click").click(function(){
+            $("#N-2, #close-4").off("click").click(function(e){
+                e.preventDefault();
                 $("#card-confirm-2").hide();
             });
 
@@ -1411,8 +1413,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
         });
 
-        $(document).on("tap", ".card-container-0", function (e) {
-            e.stopPropagation();
+        $(document).on("tap", ".card-container-0 div, .card-container-0 img", function (e) {
+            e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
@@ -1429,8 +1431,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
         });
 
-        $(document).on("tap", ".card-container", function (e) {
-            e.stopPropagation();
+        $(document).on("tap", ".card-container div, .card-container img", function (e) {
+            e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
@@ -1519,11 +1521,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             });
 
-            $("#Y").off("tap").tap(function(){
+            $("#Y").off("tap").tap(function(e){
+                e.preventDefault();
                 member.loanToCard(member.loanApplication.creditCard);
             });
 
-            $("#N, #close-3").off("tap").tap(function(){
+            $("#N, #close-3").off("tap").tap(function(e){
+                e.preventDefault();
                 $("#card-confirm").hide();
             });
 
