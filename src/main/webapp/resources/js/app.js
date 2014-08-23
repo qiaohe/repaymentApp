@@ -1046,13 +1046,16 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#Y-2").off("click").click(function(e){
-                e.stopPropagation();
                 member.applyLoan(member.loanApplication);
+                e.stopPropagation();
+                $.mobile.navigate("#full");
+                return false;
             });
 
             $("#N-2, #close-4").off("click").click(function(e){
-//                e.stopPropagation();
                 $("#card-confirm-2").hide();
+                e.stopPropagation();
+                return false;
             });
 
             $("#add-another-2").off("click").click(function(){
@@ -1069,7 +1072,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#card-add-box-2").hide();
             });
 
-            $("#addcard-2").off("tap").tap(function(){
+            $("#addcard-2").off("tap").tap(function(e){
                 var cardNum = $newCardnum2.val().replace(/ /g, "");
                 if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
                     if(!member.whetherUsedCard(cardNum)) {
@@ -1100,6 +1103,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     $newCardnum2.val("");
                     $("#new-cardnum-2-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
                 }
+                e.stopPropagation();
+                return false;
             });
 
             $("#close").off("click").click(function() {
@@ -1527,13 +1532,16 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#Y").off("tap").tap(function(e){
-                e.stopPropagation();
                 member.loanToCard(member.loanApplication.creditCard);
+                e.stopPropagation();
+                $.mobile.navigate("#full");
+                return false;
             });
 
             $("#N, #close-3").off("tap").tap(function(e){
-                e.stopPropagation();
                 $("#card-confirm").hide();
+                e.stopPropagation();
+                return false;
             });
 
             $("#add-another").off("tap").tap(function(){
@@ -1549,7 +1557,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#card-add-box").hide();
             });
 
-            $("#addcard").off("tap").tap(function(){
+            $("#addcard").off("tap").tap(function(e){
                 var cardNum = $("#new-cardnum").val().replace(/ /g, "");
                 if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
                     if(!member.whetherUsedCard(cardNum)) {
@@ -1579,6 +1587,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     $("#new-cardnum").val("");
                     $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
                 }
+                e.stopPropagation();
+                return false;
             });
 
             $("#close-0").off("tap").tap(function() {
