@@ -83,6 +83,10 @@
         </query>
     </named-query>
 
+    <named-query name="Staff.findByPassword">
+        <query>SELECT staff FROM Staff staff WHERE staff.staffId = ?1 and staff.password = ?2 </query>
+    </named-query>
+
     <named-native-query name="TvQuestionList.Random" result-set-mapping="tvQuestionListMapping">
         <query>  select home.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 2 and CITY = ?1 order by newid()) home
                  union select company.ADDRESS from (select top 2 ADDRESS from TV_QUESTION_LIST where FLAG = 1 and CITY = ?1 order by newid()) company</query>
