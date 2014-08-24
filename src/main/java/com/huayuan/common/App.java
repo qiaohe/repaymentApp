@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +24,7 @@ public final class App {
     private static final App INSTANCE = new App();
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
     private static Configuration CONFIG;
+    private static Configuration MENU;
     @Inject
     private DictionaryRepository dictionaryRepository;
     private static final ConcurrentHashMap<Integer, String> BANK_MAP = new ConcurrentHashMap<>();
@@ -30,6 +32,11 @@ public final class App {
     static {
         try {
             CONFIG = new PropertiesConfiguration("config.properties");
+        } catch (ConfigurationException e) {
+            LOGGER.error(e.getMessage());
+        }
+        try {
+            MENU = new PropertiesConfiguration("menu.properties");
         } catch (ConfigurationException e) {
             LOGGER.error(e.getMessage());
         }
@@ -45,6 +52,20 @@ public final class App {
     public String get(final String key) {
         return CONFIG.getString(key);
     }
+
+    public String getIpDuration() {
+        return getInMenu("allowIps");
+    }
+
+    public String getInMenu(final String key) {
+        return MENU.getString(key);
+    }
+
+    public Configuration getMenu() {
+        return MENU;
+    }
+
+
 
     public String getImageMagickPath() {
         return get("imageMagickPath");

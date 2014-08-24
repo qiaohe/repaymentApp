@@ -1,5 +1,7 @@
 package com.huayuan.domain.loanapplication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -42,6 +44,10 @@ public class Staff implements Serializable {
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+
+    @Column(name = "PASSWORD")
+    @JsonIgnore
+    private String password;
 
     public Staff() {
         createTime = new Date();
@@ -109,4 +115,11 @@ public class Staff implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
