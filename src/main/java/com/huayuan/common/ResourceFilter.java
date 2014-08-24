@@ -1,6 +1,5 @@
 package com.huayuan.common;
 
-import com.huayuan.domain.loanapplication.Staff;
 import com.huayuan.web.dto.UserDto;
 
 import javax.servlet.*;
@@ -17,15 +16,12 @@ public class ResourceFilter implements Filter {
 
     private String allowIps = null;
 
-    private FilterConfig filterConfig;
-
     private String header = "x-forwarded-for";
 
     private String loginPath = "/login.html";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.filterConfig = filterConfig;
         allowIps = filterConfig.getInitParameter("allowIps");
     }
 
@@ -39,9 +35,7 @@ public class ResourceFilter implements Filter {
         httpServletResponse.setDateHeader("Expires", -1);
 
         String requestURL =  httpServletRequest.getRequestURL().toString();
-        System.out.println("requestURL------------------->"+requestURL);
-
-        if(requestURL.endsWith(".html") || requestURL.endsWith(".htm")) {
+        if(!isWeixinRequest(requestURL) && (requestURL.endsWith(".html") || requestURL.endsWith(".htm"))) {
             String remoteIp = getIpAddr(httpServletRequest);
             if(matchIp(allowIps,remoteIp)) {
                 if(requestURL.endsWith(loginPath)) {
@@ -61,6 +55,14 @@ public class ResourceFilter implements Filter {
         } else {
             chain.doFilter(request, response);
         }
+    }
+
+    private boolean isWeixinRequest(String requestURL) {
+        if(requestURL.endsWith("index.html") || requestURL.endsWith("index2.html")
+                || requestURL.endsWith("index.htm") || requestURL.endsWith("index2.htm")) {
+            return true;
+        }
+        return false;
     }
 
     private String getIpAddr(HttpServletRequest httpServletRequest) {
@@ -171,7 +173,6 @@ public class ResourceFilter implements Filter {
 
     @Override
     public void destroy() {
-        filterConfig = null;
     }
 
 }
