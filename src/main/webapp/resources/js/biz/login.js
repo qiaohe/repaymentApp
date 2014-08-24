@@ -30,9 +30,12 @@ $(function(){
                 async: false,
                 contentType: "application/json",
                 success: function (json) {
-                    if (!json) return;
-                    alert("登录成功！");
-                    window.location.href = "home.html?menus="+json;
+                    if (json) {
+                        alert("登录成功！");
+                        window.location.href = "home.html?menus="+json;
+                    } else {
+                        alert("用户名或密码不正确！");
+                    }
                 }
             });
         });
