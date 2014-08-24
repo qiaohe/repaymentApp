@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Richard on 14-8-22.
@@ -35,9 +32,7 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public String login(@RequestBody UserDto userDto,HttpServletRequest request) {
-//        Staff staff = staffRepositoryCustom.findByPassword(userDto.getUsername(),userDto.getPassword());
-        Staff staff = new Staff();
-        staff.setStaffId("001");
+        Staff staff = staffRepositoryCustom.findByPassword(userDto.getUsername(),userDto.getPassword());
         if(staff != null) {
             String menuUrls = getMenuUrls(staff.getStaffId());
             userDto.setAccessMenus(menuUrls);
