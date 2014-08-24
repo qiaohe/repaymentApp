@@ -31,7 +31,7 @@ public final class Day {
     }
 
     public int escapeDays(Date date) {
-        return Days.daysBetween(new DateTime(date), new DateTime()).getDays();
+        return Days.daysBetween(new DateTime(date).withTime(0, 0, 0, 0), new DateTime().withTime(0, 0, 0, 0)).getDays();
     }
 
     public String toString() {

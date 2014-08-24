@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,10 +41,10 @@ public class MemberStatusEvaluator {
     }
 
     private String getStatusByLoans(Long memberId) {
-        List<Loan> loans = loanRepository.findByMember_Id(memberId);
+        List<Loan> loans = loanRepository.findByMember_IdAndStatusIn(memberId, Arrays.asList(0, 1, 2, 9));
+        if (loans.size() == 0) return "7";
         Map<Integer, Integer> maps = new ConcurrentHashMap<>();
         for (Loan loan : loans) {
-            if (loan.getStatus() == 10) loan.setStatus(0);
             if (loan.isOverDueStatus()) return "11";
             maps.put(loan.getStatus(), maps.get(loan.getStatus()) == null ? 1 : maps.get(loan.getStatus()) + 1);
         }

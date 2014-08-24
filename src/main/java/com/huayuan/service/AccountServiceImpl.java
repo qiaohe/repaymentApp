@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.joda.time.DateTime;
+import com.huayuan.common.util.Number;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -286,12 +287,13 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     @Scheduled(cron = "0 0 * * * ?")
     public void updateOverDue() {
-        List<RepayPlan> plans = repayPlanRepository.findByDueDate(Day.TODAY.plusDays((-1) * Integer.valueOf(graceDay)));
+        List<RepayPlan> plans = repayPlanRepository.findByDueDate(DateTime.now().withTime(0, 0, 0, 0).toDate());
         for (RepayPlan plan : plans) {
             plan.setOverDueAmt(plan.getDuePrincipal());
             int overDueDays = Day.TODAY.escapeDays(plan.getDueDate());
             plan.setOverDueDay(overDueDays);
-            plan.setOverDue_Interest(overDueDays * plan.getOverDueAmt() * Double.valueOf(overDueRating));
+            if (overDueDays >= Integer.valueOf(graceDay))
+                plan.setOverDue_Interest(new Number(overDueDays * plan.getOverDueAmt() * Double.valueOf(overDueRating)).getValue());
             plan.getLoan().setStatus(1);
             plan.getLoan().setMaxDelq(Math.max(plan.getLoan().getMaxDelq(), overDueDays));
             plan.getLoan().setCurDelq(Math.max(plan.getLoan().getCurDelq(), overDueDays));

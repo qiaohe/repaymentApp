@@ -298,12 +298,12 @@ public class Loan {
     }
 
     public Date currentDueDate() {
-        final Integer months = Months.monthsBetween(new DateTime(startDate).withDayOfMonth(1), DateTime.now().withDayOfMonth(1)).getMonths();
+        final Integer months = Months.monthsBetween(new DateTime(startDate).withDayOfMonth(1).withTime(0, 0, 0, 0), DateTime.now().withDayOfMonth(1).withTime(0, 0, 0, 0)).getMonths();
         return new Day(startDate).plusMonths(months);
     }
 
     public int daysBetweenDueDateAndNow() {
-        return Days.daysBetween(new DateTime(), new DateTime(currentDueDate())).getDays();
+        return Days.daysBetween(new DateTime().withTime(0, 0, 0, 0), new DateTime(currentDueDate()).withTime(0, 0, 0, 0)).getDays();
     }
 
     public boolean repaymentNotificationNeeded() {

@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -226,7 +227,7 @@ public class CreditServiceImpl implements CreditService, ApplicationEventPublish
         Member member = memberRepository.findOne(application.getMember().getId());
         member.getCreditCardBills().size();
         member.getCreditCards().size();
-        Loans loans = new Loans(loanRepository.findByMember_Id(application.getMember().getId()));
+        Loans loans = new Loans(loanRepository.findByMember_IdAndStatusIn(application.getMember().getId(), Arrays.asList(0, 1, 2, 9)));
         Account account = accountRepository.findByMemberId(member.getId());
         return new ApplicationCreditInfo.Builder()
                 .application(application)
