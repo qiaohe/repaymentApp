@@ -665,7 +665,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                 } else if(!dict.isSupportedBankCard(num) && num.length > 6) {
                     $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
-                    $cardTip.html("很抱歉,暂不开放该银行的信用卡借款!").show();
+                    $cardTip.html("暂不开放该银行的信用卡").show();
                 } else {
                     $("#next-step").attr("href", "#");
                     if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
@@ -1045,12 +1045,17 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#request").off("click");
             });
 
-            $("#Y-2").off("click").click(function(){
+            $("#Y-2").off("click").click(function(e){
                 member.applyLoan(member.loanApplication);
+                e.stopPropagation();
+                $.mobile.navigate("#full");
+                return false;
             });
 
-            $("#N-2, #close-4").off("click").click(function(){
+            $("#N-2, #close-4").off("click").click(function(e){
                 $("#card-confirm-2").hide();
+                e.stopPropagation();
+                return false;
             });
 
             $("#add-another-2").off("click").click(function(){
@@ -1067,7 +1072,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#card-add-box-2").hide();
             });
 
-            $("#addcard-2").off("tap").tap(function(){
+            $("#addcard-2").off("tap").tap(function(e){
                 var cardNum = $newCardnum2.val().replace(/ /g, "");
                 if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
                     if(!member.whetherUsedCard(cardNum)) {
@@ -1092,12 +1097,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
                 } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
                     $("#new-cardnum-2").val("");
-                    $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum-2-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 }
                 else {
                     $newCardnum2.val("");
                     $("#new-cardnum-2-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
                 }
+                e.stopPropagation();
+                return false;
             });
 
             $("#close").off("click").click(function() {
@@ -1378,8 +1385,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                 }
                 if(tmp.length > 6 && !dict.isSupportedBankCard(tmp)) {
-                    $("#new-cardnum-2").val();
-                    $("#new-cardnum-2-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum-2").val("");
+                    $("#new-cardnum-2-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 }
             }).off("focusin").focusin(function() {
                 $("#new-cardnum-2-placeholder").hide();
@@ -1412,7 +1419,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         $(document).on("tap", ".card-container-0", function (e) {
-            e.stopPropagation();
+            e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
@@ -1429,8 +1436,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
         });
 
-        $(document).on("tap", ".card-container", function (e) {
+        $(document).on("tap", ".card-container-0 img, .card-container-0 div, .card-container img, .card-container div", function (e) {
             e.stopPropagation();
+            $(this).parent().trigger("tap");
+        });
+
+        $(document).on("tap", ".card-container", function (e) {
+            e.preventDefault();
             member.loanApplication.creditCard = $(this).children("div").html();
             for(var i = 0; i < member.creditcard.length; i++) {
                 if(member.loanApplication.creditCard.substring(0, 4) === member.creditcard[i].substring(0, 4) && member.loanApplication.creditCard.substring(member.loanApplication.creditCard.length - 4) === member.creditcard[i].substring(member.creditcard[i].length - 4)) {
@@ -1519,12 +1531,17 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             });
 
-            $("#Y").off("tap").tap(function(){
+            $("#Y").off("tap").tap(function(e){
                 member.loanToCard(member.loanApplication.creditCard);
+                e.stopPropagation();
+                $.mobile.navigate("#full");
+                return false;
             });
 
-            $("#N, #close-3").off("tap").tap(function(){
+            $("#N, #close-3").off("tap").tap(function(e){
                 $("#card-confirm").hide();
+                e.stopPropagation();
+                return false;
             });
 
             $("#add-another").off("tap").tap(function(){
@@ -1540,7 +1557,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#card-add-box").hide();
             });
 
-            $("#addcard").off("tap").tap(function(){
+            $("#addcard").off("tap").tap(function(e){
                 var cardNum = $("#new-cardnum").val().replace(/ /g, "");
                 if (dict.validateCardNo(cardNum) && dict.isSupportedBankCard(cardNum)) {
                     if(!member.whetherUsedCard(cardNum)) {
@@ -1564,11 +1581,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         $("#new-cardnum-placeholder").html("该信用卡已被人使用!").css("color", "#cc0000").show();
                     }
                 } else if(!dict.isSupportedBankCard(cardNum) && cardNum.length > 6) {
-                    $("#new-cardnum-placeholder").html("很抱歉,暂不开放该银行的信用卡借款!").css("color", "#cc0000").show();
+                    $("#new-cardnum").val();
+                    $("#new-cardnum-placeholder").html("暂不开放该银行的信用卡").css("color", "#cc0000").show();
                 } else {
                     $("#new-cardnum").val("");
                     $("#new-cardnum-placeholder").html("错误的信用卡号!").css("color", "#cc0000").show();
                 }
+                e.stopPropagation();
+                return false;
             });
 
             $("#close-0").off("tap").tap(function() {
@@ -1613,17 +1633,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
             $(".repay-item-pay").tap(function() {
                 var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
-                $.ajax({
-                    url: config.apiPath + "account/loan/" + member.loan.loans[member.crntCaro].loanId + "/takeback",
-                    type: "GET",
-                    async: false,
-                    success: function() {
-                        window.location = "http://192.168.0.115:8080/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + orderAmount;
-                    },
-                    error: function() {
-                        if(config.debug) alert("1621!");
-                    }
-                });
+                window.location = "http://godzilla.dlinkddns.com.cn/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
             });
         });
 

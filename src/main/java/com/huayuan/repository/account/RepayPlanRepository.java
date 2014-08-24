@@ -14,6 +14,8 @@ public interface RepayPlanRepository extends JpaRepository<RepayPlan, Long> {
 
     public List<RepayPlan> findByMemberIdAndDueDateLessThan(Long memberId);
 
+    public List<RepayPlan> findByLoanIdAndMemberIdAndDueDateLessThan(Long loanId, Long memberId);
+
     public List<RepayPlan> findByLoanIdAndDueDateLessThan(Long bid);
 
     public List<RepayPlan> findByDueDate(Date dueDate);

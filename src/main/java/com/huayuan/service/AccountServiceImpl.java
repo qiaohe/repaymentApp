@@ -15,6 +15,7 @@ import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,6 +38,7 @@ import static com.huayuan.common.App.getInstance;
 @Service(value = "accountService")
 @Transactional
 public class AccountServiceImpl implements AccountService, ApplicationEventPublisherAware {
+    private static final double PRECISION_THRESHOLD = 0.01d;
     @Inject
     private AccountRepository accountRepository;
     @Inject
@@ -119,9 +121,9 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-    public void offset(Long memberId) {
+    public void offset(Long memberId, Long loanId) {
         Account account = accountRepository.findByMemberId(memberId);
-        List<RepayPlan> plans = repayPlanRepository.findByMemberIdAndDueDateLessThan(memberId);
+        List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndMemberIdAndDueDateLessThan(loanId, memberId);
         for (RepayPlan plan : plans) {
             if (plan.getDueTotalAmt() > account.getDebit_amt()) return;
             plan.setPaidPrincipal(plan.getDuePrincipal());
@@ -132,6 +134,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.getLoan().setPaidInterest(plan.getPaidInterest() + plan.getLoan().getPaidInterest());
             plan.getLoan().setPaidPrincipal(plan.getPaidPrincipal() + plan.getLoan().getPaidPrincipal());
             plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
+            if (plan.isLastTerm()) plan.getLoan().setStatus(9);
             loanRepository.save(plan.getLoan());
             if (plan.getMember().blockCodeChangeIfNeeded()) {
                 plan.getMember().setBlockCode(plan.getMember().getBlockCodeAfterRepayment());
@@ -152,7 +155,8 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     private void updateAccountCrl(Account account, RepayPlan plan) {
-        account.setDebit_amt(account.getDebit_amt() - plan.getPaidAmt());
+        Double r = account.getDebit_amt() - plan.getPaidAmt();
+        account.setDebit_amt(Math.abs(r) < PRECISION_THRESHOLD ? NumberUtils.DOUBLE_ZERO : r);
         account.setCrlUsed(account.getCrlUsed() - plan.getPaidPrincipal());
         account.setCrlAvl(account.getCrl() - account.getCrlUsed());
         accountRepository.save(account);
@@ -328,16 +332,16 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     }
 
     @Override
-    public String getPaymentGateway(Long memberId, Double amount) {
+    public String getPaymentGateway(Long memberId, Long loanId, Double amount) {
         Member member = memberRepository.findOne(memberId);
         final String orderId = DateTime.now().toString(Constants.LONG_DATE_PATTERN);
         final String payAmount = String.valueOf(new Double(amount * 100).longValue());
         String gatewayParamPattern = StringUtils.substringBetween(paymentGatewayUrlPattern, "?", "&signMsg");
         String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcNo(),
-                member.getEmail(), memberId, orderId, payAmount));
+                member.getEmail(), memberId, orderId, payAmount, loanId));
         try {
             return MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
-                    orderId, payAmount, URLEncoder.encode(signMessage, "UTF-8"));
+                    orderId, payAmount, loanId, URLEncoder.encode(signMessage, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }

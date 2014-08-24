@@ -39,6 +39,13 @@
             rp.member.id=?1 order by rp.dueDate asc
         </query>
     </named-query>
+
+    <named-query name="RepayPlan.findByLoanIdAndMemberIdAndDueDateLessThan">
+        <query>SELECT rp FROM RepayPlan rp WHERE rp.paidPrincipal =0 and
+           rp.loan.id=?1 and rp.member.id=?2 order by rp.dueDate asc
+        </query>
+    </named-query>
+
     <named-query name="RepayPlan.findByLoanIdAndDueDateLessThan">
         <query>SELECT rp FROM RepayPlan rp WHERE rp.paidPrincipal =0 and
             rp.loan.id=?1 order by rp.dueDate, rp.dueAmt
