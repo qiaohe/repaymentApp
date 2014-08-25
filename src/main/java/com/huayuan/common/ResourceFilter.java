@@ -43,7 +43,7 @@ public class ResourceFilter implements Filter {
                 } else {
                     Object userObj = httpServletRequest.getSession().getAttribute(CommonDef.LOGIN_USER);
                     UserDto userDto = (UserDto) userObj;
-                    if(userDto != null && userDto.getAccessMenus().contains(httpServletRequest.getServletPath().substring(1))) {
+                    if(userDto != null && isAccessMenu(userDto.getAccessMenus(),httpServletRequest.getServletPath())) {
                         chain.doFilter(request, response);
                     } else {
                         httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+loginPath);
@@ -55,6 +55,19 @@ public class ResourceFilter implements Filter {
         } else {
             chain.doFilter(request, response);
         }
+    }
+
+    private boolean isAccessMenu(String menus, String servletPath) {
+        if(menus == null || "".equals(menus)) {
+            return false;
+        }
+        String[] menuArr = menus.split(",");
+        for(int i=0; i<menuArr.length; i++) {
+            if(servletPath.contains(menuArr[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isWeixinRequest(String requestURL) {

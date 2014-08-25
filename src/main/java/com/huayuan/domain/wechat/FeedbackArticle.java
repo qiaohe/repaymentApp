@@ -22,6 +22,8 @@ public class FeedbackArticle implements Serializable {
     private String picUrl;
     @Column(name = "URL")
     private String url;
+    @Column(name="MENU_EVENT_ID")
+    private String menuEventId;
 
     public Long getId() {
         return id;
@@ -61,5 +63,13 @@ public class FeedbackArticle implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getMenuEventId() {
+        return menuEventId;
+    }
+
+    public void setMenuEventId(String menuEventId) {
+        this.menuEventId = menuEventId;
     }
 }

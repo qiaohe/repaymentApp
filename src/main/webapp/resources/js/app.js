@@ -1428,19 +1428,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             }
             $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
+                $("#cardlist-2").popup("close");
                 setTimeout(function () {
                     $("#card-confirm-2").show();
                 }, 500);
             });
-            $("#cardlist-2").popup("close");
+            $("#cardlist-2").popup("close").trigger("popupafterclose");
             $("#num-tail-0").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
             e.stopPropagation();
-            return false;
-        });
-
-        $(document).on("tap", ".card-container-0 img, .card-container-0 div, .card-container img, .card-container div", function (e) {
-            e.stopPropagation();
-            $(this).parent().trigger("tap");
             return false;
         });
 
@@ -1454,11 +1449,12 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             }
             $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
+                $("#cardlist").popup("close");
                 setTimeout(function () {
                     $("#card-confirm").show();
                 }, 500);
             });
-            $("#cardlist").popup("close");
+            $("#cardlist").popup("close").trigger("popupafterclose");
             $("#num-tail").html(member.loanApplication.creditCard.slice(member.loanApplication.creditCard.length - 4, member.loanApplication.creditCard.length));
             e.stopPropagation();
             return false;

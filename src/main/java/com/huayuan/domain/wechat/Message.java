@@ -139,6 +139,10 @@ public class Message {
         return "M_003_FEEDBACK".equals(eventKey);
     }
 
+    public boolean isAboutTeam() {
+        return "M_003_ABOUT_TEAM".equals(eventKey);
+    }
+
     @XmlRootElement(name = "Articles")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Articles {

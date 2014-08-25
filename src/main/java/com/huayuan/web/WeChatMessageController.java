@@ -80,7 +80,7 @@ public class WeChatMessageController {
             content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), status);
         } else if (message.isFeedback()) {
             content = MessageFormat.format(feedbackTemplate, baseUrl, member.getId());
-        } else if (message.isAbout()) {
+        } else if (message.isAbout() || message.isAboutTeam()) {
             response.getWriter().println(weChatService.createReplyNews(message));
             return;
         } else if (message.isTelephoneVerification()) {
