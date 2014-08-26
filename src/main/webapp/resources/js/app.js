@@ -1633,7 +1633,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
 
             $(".repay-item-pay").tap(function() {
-                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
+//                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
+                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt.toFixed(2);
                 window.location = "http://godzilla.dlinkddns.com.cn/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
             });
         });
