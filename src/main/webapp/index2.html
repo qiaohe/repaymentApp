@@ -13,7 +13,7 @@
     <script type="text/javascript">
         $(document).on("mobileinit", function(){
             $.mobile.pushStateEnabled = false;
-        })
+        });
     </script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
 </head>
@@ -21,51 +21,46 @@
 
 <div data-role="page" id="prom" data-title="终于找到了，帮我还信用卡的那个人">
     <div class="wrap-device">
-        <div id="prom-top"></div>
-        <div class="prom-follow">
-            <div id="prom-wrap" style="height: 20px;width: 238px;margin:0 auto;">
-                <img src="resources/img/prom/prom-search.png" style="height: 20px;width: 238px;">
+        <div>
+            <img src="resources/img/additional/share-link-0.png" style="width: 100%;">
+        </div>
+        <div style="margin-top: 30px">
+            <img src="resources/img/additional/share-link-1.png">
+            <span style="color: white; font-size: 25px; position: relative; left: -135px; top: -15px">产品说明</span>
+        </div>
+        <div>
+            <div class="prom-cont" id="prom-mid-cont" style="color: #404040;">
+                <div class="prom-cont-item">1.啪啪啪，两分钟，信用快速评估。</div>
+                <div class="prom-cont-item">2.借款-还款，全流程公众号内完成。</div>
+                <div class="prom-cont-item">3.借款利率是银行循环利率（每日0.05%）的65折
+                    -88折。</div>
+                <div class="prom-cont-item">4.首次借款2个工作日审批，二次借款随时提取。</div>
+                <div class="prom-cont-item">5.借款注入信用卡。1个月之后开始还款。</div>
             </div>
         </div>
-        <div id="prom-mid">
-            <div class="prom-cont" id="prom-mid-cont">
-                <div class="prom-cont-item">小明有亲爹帮还信用卡，</div>
-                <div class="prom-cont-item">&nbsp;小露有干爹帮还信用卡。</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;找亲爹，我拉不下那个脸，</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;&nbsp;找干爹，我需要去整个脸。。。</div>
-            </div>
+        <div style="margin-top: 50px">
+            <img src="resources/img/additional/share-link-1.png">
+            <span style="color: white; font-size: 25px; position: relative; left: -135px; top: -15px">客服方式</span>
         </div>
-        <div id="prom-bottom">
-            <div class="prom-cont" id="prom-bottom-cont">
-                <div class="prom-cont-item">加<span>“么么贷”</span>为好友，</div>
-                <div class="prom-cont-item">&nbsp;预测额度嗖嗖的，</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;额度可以先放着，</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;&nbsp;需要时随提随用，</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;&nbsp;&nbsp;费率还比银行便宜。</div>
-                <div class="prom-cont-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再也不用看人脸啦~~</div>
-            </div>
+        <div class="prom-cont" style="font-size: 18px; color: #404040; line-height: 32px">
+            <div class="prom-cont-item">1.电话：400-021-0876。</div>
+            <div class="prom-cont-item">2.QQ群号：239959159。</div>
+            <div class="prom-cont-item">3.微博：@么么贷</div>
         </div>
-    </div>
-    <div class="wrap-device-full">
-        <div class="blue-line-1"></div>
-        <div class="blue-line-2"></div>
-    </div>
-    <div class="wrap-device">
-        <div class="prom-follow">
-            <div style="height: 20px;width: 194px;margin:0 auto;">
-                <img src="resources/img/prom/prom-add.png" style="height: 20px;width: 194px;">
+        <div style="margin-top: 50px;color: #979595; font-size: 18px; line-height: 30px">
+            <div>附：如何加“么么贷”？<br>&nbsp方法一：扫描二维码</div>
+            <div style="width: 100%; text-align: center; margin: 30px auto">
+                <img src="resources/img/additional/share-link-2.png">
             </div>
-        </div>
-        <div id="prom-step-cont">
-            <div id="prom-step1" class="prom-step-item">第一步：点击微信右上角的“+”键，再点菜单中的“添加朋友”。</div>
-            <div id="prom-step2" class="prom-step-item">第二步：在“添加朋友”页面点击“查找公众号”。</div>
-            <div id="prom-step3" class="prom-step-item" style="margin-bottom: 40px;">第三步：在“查找公众号”页面搜索“么么贷”，加关注。加关注之后直接点“查看消息”，就进来啦！</div>
-            <div id="prom-step-img1" style="width: 124px;height: 127px;">
-                <img src="resources/img/prom/prom-step1.png" style="width: 124px;height: 127px;">
+            <div>方法二：<br>第一步：点微信右上角的“+”键，再点菜单中的“添加朋友”；</div>
+            <div style="width: 100%; text-align: center; margin: 30px auto">
+                <img src="resources/img/additional/share-link-3.png">
             </div>
-            <div id="prom-step-img2" style="width: 112px;height: 160px;">
-                <img src="resources/img/prom/prom-step2.png" style="width: 112px;height: 160px;">
+            <div>第二步：在“添加朋友”页面点“查找公众号”;</div>
+            <div style="width: 100%; text-align: center; margin: 30px auto">
+                <img src="resources/img/additional/share-link-4.png">
             </div>
+            <div>第三步：在“查找公众号”页面搜索“么么贷”，加关注。加关注之后直接点“查看消息”，就进来啦！</div>
         </div>
     </div>
 </div>
