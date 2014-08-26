@@ -150,13 +150,12 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     @Override
     public String createReplyNews(Message inBoundMessage) {
         Message news = new Message();
-
         news.setFromUserName(inBoundMessage.getToUserName());
         news.setToUserName(inBoundMessage.getFromUserName());
         news.setMsgType("news");
         news.setCreateTime(new Date().getTime());
         Message.Articles articles = new Message.Articles();
-        List<FeedbackArticle> articleList = feedbackArticleRepository.findAll();
+        List<FeedbackArticle> articleList = feedbackArticleRepository.findByMenuEvent(inBoundMessage.getEventKey());
         news.setArticleCount(articleList.size());
         for (FeedbackArticle fa : articleList) {
             articles.addArticle(new Message.Article(fa.getTitle(), fa.getDescription(), fa.getPicUrl(), fa.getUrl()));

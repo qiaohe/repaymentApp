@@ -937,12 +937,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         function getShareConfig() {
+            var info = generateShareInfo();
             return {
                 title : "终于找到了，帮我还信用卡的那个人",
-                desc : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
-                summary : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
+                desc : info,
+                summary : info,
                 url : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                img : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
+                img : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/r120.png',
                 width : screen.width,
                 height : screen.height,
                 left : 0,
@@ -950,14 +951,26 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             };
         }
 
+        function generateShareInfo() {
+            var testAmt = $.trim($("#amt-shown").text());
+            var info = "";
+            if(testAmt) {
+                info = "【如何高冷地还信用卡】我在么么贷获得了"+testAmt+"元额度";
+            } else {
+                info = "【如何高冷地还信用卡】信用卡还不上，加么么贷";
+            }
+            return info;
+        }
+
         WeixinApi.ready(function(Api) {
+            var info = generateShareInfo();
             // 微信分享的数据
             var wxData = {
                 "appId": "", // 服务号可以填写appId
-                "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
+                "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/r120.png',
                 "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                "desc" : '一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈',
-                "title" : "终于找到了，帮我还信用卡的那个人"
+                "desc" : '信用卡还不上，微信加“么么贷”',
+                "title" : info
             };
 
             // 分享的回调
