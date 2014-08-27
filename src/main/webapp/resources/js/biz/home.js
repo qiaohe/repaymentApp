@@ -20,7 +20,7 @@ $(function(){
         $("#loginDiv").html(contentHtml);
     };
     home.exceptUrl = function(menu) {
-        return "home.html,viewer.html,appDetail.html,credit.html,account/detail1.html".indexOf(menu) > -1;
+        return "home.html,viewer.html,appDetail.html,credit.html,idcard1.html,idcard2.html,account/detail1.html".indexOf(menu) > -1;
     };
     home.init();
 });
