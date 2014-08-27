@@ -39,7 +39,7 @@ public class LoginController {
             request.getSession().setAttribute(CommonDef.LOGIN_USER,userDto);
             return menuUrls;
         } else {
-            return "";
+            return "0";
         }
     }
 

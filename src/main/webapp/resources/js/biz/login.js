@@ -30,7 +30,7 @@ $(function(){
                 async: false,
                 contentType: "application/json",
                 success: function (json) {
-                    if (json) {
+                    if (json != "0") {
                         alert("登录成功！");
                         window.location.href = "home.html?menus="+json;
                     } else {
