@@ -942,8 +942,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 title : "终于找到了，帮我还信用卡的那个人",
                 desc : info,
                 summary : info,
-                url : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                img : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/r120.png',
+                url : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                img : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
                 width : screen.width,
                 height : screen.height,
                 left : 0,
@@ -967,8 +967,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             // 微信分享的数据
             var wxData = {
                 "appId": "", // 服务号可以填写appId
-                "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/r120.png',
-                "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                "imgUrl" : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
+                "link" : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
                 "desc" : '信用卡还不上，微信加“么么贷”',
                 "title" : info
             };
