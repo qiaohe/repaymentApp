@@ -155,7 +155,7 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         news.setMsgType("news");
         news.setCreateTime(new Date().getTime());
         Message.Articles articles = new Message.Articles();
-        List<FeedbackArticle> articleList = feedbackArticleRepository.findByMenuEvent(inBoundMessage.getEventKey());
+        List<FeedbackArticle> articleList = feedbackArticleRepository.findByMenuEventId(inBoundMessage.getEventKey());
         news.setArticleCount(articleList.size());
         for (FeedbackArticle fa : articleList) {
             articles.addArticle(new Message.Article(fa.getTitle(), fa.getDescription(), fa.getPicUrl(), fa.getUrl()));

@@ -9,5 +9,5 @@ import java.util.List;
  * Created by dell on 14-6-5.
  */
 public interface FeedbackArticleRepository extends JpaRepository<FeedbackArticle, Long> {
-    public List<FeedbackArticle> findByMenuEvent(String menuEventId);
+    public List<FeedbackArticle> findByMenuEventId(String menuEventId);
 }
