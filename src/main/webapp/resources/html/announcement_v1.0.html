@@ -85,7 +85,7 @@
 
         function goBackward() {
             //window.history.back();
-            var des = "http://192.168.0.186/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()).getTime();
+            var des = "http://wechat.memedai.cn/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()).getTime();
             if(contract.phone) {
                 des += ("&phone=" + contract.phone);
             }
