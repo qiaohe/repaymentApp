@@ -746,7 +746,7 @@ span.loan-i-cont {
     font-family: "黑体";
     color: #22292b;
     background-size:180px 140px;
-    background: url("../img/addtional/feedback.png") no-repeat center;
+    /*background: url("../img/addtional/feedback.png") no-repeat center;*/
     margin: 20px auto;
 }
 .tfb-img {
