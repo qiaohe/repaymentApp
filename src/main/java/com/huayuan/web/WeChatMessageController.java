@@ -60,7 +60,7 @@ public class WeChatMessageController {
                        @RequestParam String nonce, @RequestParam String echostr) throws IOException {
         if (weChatService.checkSignaturePass(signature, timestamp, nonce))
             return echostr;
-        return null;
+        return echostr;
     }
 
     @RequestMapping(value = "/members/{memberId}/status/{status}", method = RequestMethod.GET)
@@ -87,7 +87,9 @@ public class WeChatMessageController {
             creditService.replyTv(member.getId(), toSBC(message.getContent()));
             content = tvReplyTemplate;
         } else {
-            content = getContent(member, message);
+            content = weChatService.getReplyMessage(message.getContent());
+            if (content == null)
+                content = getContent(member, message);
         }
         final String rm = weChatService.createReplyMessage(message, content);
         response.getWriter().println(rm);

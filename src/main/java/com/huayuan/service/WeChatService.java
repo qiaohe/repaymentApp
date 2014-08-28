@@ -20,4 +20,5 @@ public interface WeChatService {
 
     public MessageTemplate getTemplate(String menu_Key, String status);
 
+    public String getReplyMessage(String keyword);
 }

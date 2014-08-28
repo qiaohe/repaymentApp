@@ -91,7 +91,7 @@ public class AccountingController {
     }
 
     @RequestMapping(value = "/repay/{memberId}/{loanId}/{repayAmt:.+}", method = RequestMethod.GET)
-    public String repay(@PathVariable Long memberId,@PathVariable Long loanId, @PathVariable Double repayAmt) {
+    public String repay(@PathVariable Long memberId, @PathVariable Long loanId, @PathVariable Double repayAmt) {
         final String paymentGateway = accountService.getPaymentGateway(memberId, loanId, repayAmt);
         return "redirect:" + paymentGateway;
     }

@@ -313,5 +313,16 @@ public class Loan {
     public boolean withTheSameMemberAndStartDate(Loan anotherLoan) {
         return member.getId().equals(anotherLoan.getMember().getId()) && new Day(startDate).isSameDay(anotherLoan.getStartDate());
     }
+
+    @Transient
+    public boolean isPaid() {
+        for (RepayPlan plan : repayPlans) {
+            DateTime dt = new DateTime(plan.getDueDate());
+            if (dt.isAfterNow() && dt.plusMonths(-1).isBeforeNow() && plan.getPaidPrincipal() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

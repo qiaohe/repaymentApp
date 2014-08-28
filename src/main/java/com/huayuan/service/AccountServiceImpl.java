@@ -3,6 +3,7 @@ package com.huayuan.service;
 import com.huayuan.common.event.MemberStatusChangeEvent;
 import com.huayuan.common.util.Constants;
 import com.huayuan.common.util.Day;
+import com.huayuan.common.util.Number;
 import com.huayuan.domain.accounting.*;
 import com.huayuan.domain.loanapplication.Application;
 import com.huayuan.domain.member.Contract;
@@ -17,7 +18,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.joda.time.DateTime;
-import com.huayuan.common.util.Number;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -121,12 +121,19 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         return loanRepositoryCustom.findEffectiveLoansBy(memberId);
     }
 
+    private boolean blockCodeChangeIfNeeded(Member member, Loan loan) {
+        for (Loan ln : getLoansBy(member.getId())) {
+            if (!ln.getId().equals(loan.getId()) && ln.getCurDelq() > 0) return false;
+        }
+        return member.blockCodeChangeIfNeeded();
+    }
+
     @Override
     public void offset(Long memberId, Long loanId) {
         Account account = accountRepository.findByMemberId(memberId);
         List<RepayPlan> plans = repayPlanRepository.findByLoanIdAndMemberIdAndDueDateLessThan(loanId, memberId);
         for (RepayPlan plan : plans) {
-            if (plan.getDueTotalAmt() > account.getDebit_amt()) return;
+            if (new Number(plan.getDueTotalAmt()).getValue() > new Number(account.getDebit_amt()).getValue()) return;
             plan.setPaidPrincipal(plan.getDuePrincipal());
             plan.setPaidInterest(plan.getDueInterest());
             plan.setPaidOverDueInterest(plan.getOverDue_Interest());
@@ -137,7 +144,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.getLoan().setPaidOverDueInt(plan.getLoan().getPaidOverDueInt() + plan.getOverDue_Interest());
             if (plan.isLastTerm()) plan.getLoan().setStatus(9);
             loanRepository.save(plan.getLoan());
-            if (plan.getMember().blockCodeChangeIfNeeded()) {
+            if (blockCodeChangeIfNeeded(plan.getMember(), plan.getLoan())) {
                 plan.getMember().setBlockCode(plan.getMember().getBlockCodeAfterRepayment());
                 plan.getMember().setStatus(MemberStatusEnum.NORMAL);
                 memberRepository.save(plan.getMember());
@@ -284,6 +291,16 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         }
     }
 
+    private Integer getCuDelq(Loan loan, List<RepayPlan> plans, Integer overDueDays) {
+        Integer result = overDueDays;
+        for (RepayPlan plan : plans) {
+            if (plan.getLoan().equals(loan)) {
+                if (result < plan.getOverDueDay()) result = plan.getOverDueDay();
+            }
+        }
+        return result;
+    }
+
     @Override
     @Scheduled(cron = "0 0 * * * ?")
     public void updateOverDue() {
@@ -292,11 +309,11 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
             plan.setOverDueAmt(plan.getDuePrincipal());
             int overDueDays = Day.TODAY.escapeDays(plan.getDueDate());
             plan.setOverDueDay(overDueDays);
-            if (overDueDays >= Integer.valueOf(graceDay))
+            if (overDueDays > Integer.valueOf(graceDay))
                 plan.setOverDue_Interest(new Number(overDueDays * plan.getOverDueAmt() * Double.valueOf(overDueRating)).getValue());
             plan.getLoan().setStatus(1);
             plan.getLoan().setMaxDelq(Math.max(plan.getLoan().getMaxDelq(), overDueDays));
-            plan.getLoan().setCurDelq(Math.max(plan.getLoan().getCurDelq(), overDueDays));
+            plan.getLoan().setCurDelq(getCuDelq(plan.getLoan(), plans, overDueDays));
             updateBlockCode(plan.getLoan().getMember(), plan.getLoan().getCurDelq());
         }
         repayPlanRepository.save(plans);
@@ -305,6 +322,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     private Map<Loan, Integer> getLoanNotificationCountMap(List<Loan> loans) {
         Map<Loan, Integer> result = new HashMap<>();
         for (Loan loan : loans) {
+            if (loan.isPaid()) continue;
             boolean hasTheSameMemberAndStartDate = false;
             for (Map.Entry<Loan, Integer> entry : result.entrySet()) {
                 if (entry.getKey().withTheSameMemberAndStartDate(loan)) {
@@ -342,8 +360,9 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         String signMessage = new PkiPairUtil().signMsg(MessageFormat.format(gatewayParamPattern, member.getWcNo(),
                 member.getEmail(), memberId, orderId, payAmount, loanId));
         try {
-            return MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
+            String s = MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
                     orderId, payAmount, loanId, URLEncoder.encode(signMessage, "UTF-8"));
+            return s.replace("么么贷还款", URLEncoder.encode("么么贷还款", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }
@@ -378,8 +397,11 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         this.publisher = applicationEventPublisher;
     }
 
-    public static void main(String[] args) {
-        Double amount = 340.02d;
-        System.out.println(String.valueOf(new Double(amount * 100).longValue()));
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        System.out.println(URLEncoder.encode("么么贷还款", "UTF-8"));
+//        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
+//        AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
+//        accountService.getPaymentGateway(1l, 1l, 1.00d);
+//        System.out.println("ok");
     }
 }

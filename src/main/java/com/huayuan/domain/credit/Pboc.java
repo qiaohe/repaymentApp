@@ -198,7 +198,7 @@ public class Pboc implements Serializable {
     private Double semiCardHighestOverdueAmountPerMon;
 
     @Column(name = "SEMICARD_MAXDURATION")
-    private Double semiCardMaxDuration;
+    private Integer semiCardMaxDuration;
 
     @Column(name = "LOAN_ACCOUNTCOUNT")
     private Double loanAccountCount;
@@ -828,11 +828,11 @@ public class Pboc implements Serializable {
         this.semiCardHighestOverdueAmountPerMon = semiCardHighestOverdueAmountPerMon;
     }
 
-    public Double getSemiCardMaxDuration() {
+    public Integer getSemiCardMaxDuration() {
         return semiCardMaxDuration;
     }
 
-    public void setSemiCardMaxDuration(Double semiCardMaxDuration) {
+    public void setSemiCardMaxDuration(Integer semiCardMaxDuration) {
         this.semiCardMaxDuration = semiCardMaxDuration;
     }
 

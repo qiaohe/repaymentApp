@@ -8,6 +8,7 @@ import com.huayuan.domain.wechat.*;
 import com.huayuan.repository.FeedbackArticleRepository;
 import com.huayuan.repository.integration.HintMessageRepository;
 import com.huayuan.repository.integration.MenuRepository;
+import com.huayuan.repository.integration.ReplyMessageRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +56,9 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     private MemberRepository memberRepository;
     @Inject
     private FeedbackArticleRepository feedbackArticleRepository;
+    @Inject
+    private ReplyMessageRepository replyMessageRepository;
+
     @Value("${weChat.appSecret}")
     private String appSecret;
     @Value("${weChat.token}")
@@ -63,11 +67,13 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     private String appId;
     private List<Menu> menus;
     private List<HintMessage> hintMessages;
+    private List<ReplyMessage> replyMessages;
 
     @PostConstruct
     private void init() {
         menus = menuRepository.findAll();
         hintMessages = hintMessageRepository.findAll();
+        replyMessages = replyMessageRepository.findAll();
     }
 
     private String getAccessToken() {
@@ -82,6 +88,15 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
                     if (StringUtils.contains(template.getStatuses(), status)) return template;
                 }
             }
+        }
+        return null;
+    }
+
+    @Override
+    public String getReplyMessage(String keyword) {
+        for (ReplyMessage m : replyMessages) {
+            if (StringUtils.isNotEmpty(keyword) && StringUtils.contains(m.getKeywords(), keyword))
+                return m.getReplyMessage();
         }
         return null;
     }
@@ -155,7 +170,7 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         news.setMsgType("news");
         news.setCreateTime(new Date().getTime());
         Message.Articles articles = new Message.Articles();
-        List<FeedbackArticle> articleList = feedbackArticleRepository.findByMenuEvent(inBoundMessage.getEventKey());
+        List<FeedbackArticle> articleList = feedbackArticleRepository.findByMenuEventId(inBoundMessage.getEventKey());
         news.setArticleCount(articleList.size());
         for (FeedbackArticle fa : articleList) {
             articles.addArticle(new Message.Article(fa.getTitle(), fa.getDescription(), fa.getPicUrl(), fa.getUrl()));
@@ -179,4 +194,5 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
         HttpEntity<String> entity = new HttpEntity<>(message, headers);
         restTemplate.postForEntity(SEND_MESSAGE_URL_PATTERN, entity, String.class, getAccessToken());
     }
+
 }
