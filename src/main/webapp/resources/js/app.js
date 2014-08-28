@@ -840,11 +840,18 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
         $(document).on("pagecreate", "#result", function(){
             device.getUserAgent();
+            dict.shareForFirstTime = true;
+
+            $("#share").one("popupafteropen", function() {
+                dict.shareForFirstTime = false;
+            });
+
             $("#option-2").off("tap").on("tap",function(e){
                 if(device.isIOS()) {
                     $("#share").popup("open");
-                    if(!$('#share').is(':focus')) {
-                        $("#share").focus();
+                    if(!dict.shareForFirstTime) {
+                        e.stopPropagation();
+                        return false;
                     }
                 } else {
                     e.preventDefault();
@@ -937,12 +944,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         function getShareConfig() {
+            var info = generateShareInfo();
             return {
-                title : "终于找到了，帮我还信用卡的那个人",
-                desc : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
-                summary : "一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈",
-                url : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                img : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
+                title : info.title,
+                desc : info.desc,
+                summary : info.desc,
+                url : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                img : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
                 width : screen.width,
                 height : screen.height,
                 left : 0,
@@ -950,14 +958,37 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             };
         }
 
+        function generateShareInfo() {
+            var testAmt = $.trim($("#amt-shown").text());
+            var info = "";
+            if(testAmt) {
+                info = "【如何高冷地还信用卡】我在么么贷获得了"+testAmt+"元额度";
+            } else {
+                info = "【如何高冷地还信用卡】信用卡还不上，加么么贷";
+            }
+            var shareInfo = {};
+            shareInfo.title = info;
+            shareInfo.desc = "信用卡还不上，微信加“么么贷”";
+            return shareInfo;
+        }
+
         WeixinApi.ready(function(Api) {
+            var allInfo = generateShareInfo();
             // 微信分享的数据
-            var wxData = {
+            var wxDataToFriend = {
                 "appId": "", // 服务号可以填写appId
-                "imgUrl" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/resources/img/public/logo.png',
-                "link" : 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                "desc" : '一直以来我都觉得没有人帮我还信用卡是不科学的，今天终于被我找到了！哈哈哈哈',
-                "title" : "终于找到了，帮我还信用卡的那个人"
+                "imgUrl" : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
+                "link" : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                "desc" : allInfo.desc,
+                "title" : allInfo.title
+            };
+
+            var wxDataToTimeline = {
+                "appId": "", // 服务号可以填写appId
+                "imgUrl" : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
+                "link" : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                "desc" : allInfo.title,
+                "title" : ""
             };
 
             // 分享的回调
@@ -990,11 +1021,11 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             };
             // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
-            Api.shareToFriend(wxData, wxCallbacks);
+            Api.shareToFriend(wxDataToFriend, wxCallbacks);
             // 点击分享到朋友圈，会执行下面这个代码
-            Api.shareToTimeline(wxData, wxCallbacks);
+            Api.shareToTimeline(wxDataToTimeline, wxCallbacks);
             // 点击分享到腾讯微博，会执行下面这个代码
-            Api.shareToWeibo(wxData, wxCallbacks);
+            Api.shareToWeibo(wxDataToTimeline, wxCallbacks);
         });
 
         function requestAvailable() {
@@ -1633,7 +1664,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
 
             $(".repay-item-pay").tap(function() {
-                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
+//                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
+                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt.toFixed(2);
                 window.location = "http://godzilla.dlinkddns.com.cn/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
             });
         });

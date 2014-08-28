@@ -34,7 +34,7 @@
         <filter-class>com.huayuan.common.ResourceFilter</filter-class>
         <init-param>
             <param-name>allowIps</param-name>
-            <param-value>192.168.0.*,223.166.204.*</param-value>
+            <param-value>192.168.2.*,223.166.204.*</param-value>
         </init-param>
     </filter>
     <filter-mapping>

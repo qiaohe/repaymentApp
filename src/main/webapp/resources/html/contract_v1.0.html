@@ -147,7 +147,7 @@
 
         function goBackward() {
             //window.history.back();
-            var des = contract.isCong === "true" ? "http://192.168.0.186/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.186/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
+            var des = contract.isCong === "true" ? "http://wechat.memedai.cn/repaymentApp/index.html#congratulation?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date()) : "http://192.168.0.186/repaymentApp/index.html#loan?memberId=" + contract.id + "&amount=" + contract.amount + "&term=" + contract.term + "&t=" + (new Date());
             if(contract.phone) {
                 des += ("&phone=" + contract.phone);
             }
@@ -206,7 +206,6 @@
                         date = getReadableDate(new Date());
                 setHTMLByClass("lender", lender);
                 setHTMLByClass("date-contract", date[0] + "年" + date[1] + "月" + date[2] + "日");
-                setHTMLByClass("borrowerMobile", "");
                 setHTMLByClass("lenderMobile", lenderMobile);
                 setHTMLByClass("lenderEmail", lenderEmail);
                 setHTMLByClass("apr", apr);

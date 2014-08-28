@@ -20,6 +20,8 @@ public class ResourceFilter implements Filter {
 
     private String loginPath = "/login.html";
 
+    private String weixinUrlKey = "weixin.url";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         allowIps = filterConfig.getInitParameter("allowIps");
@@ -71,9 +73,12 @@ public class ResourceFilter implements Filter {
     }
 
     private boolean isWeixinRequest(String requestURL) {
-        if(requestURL.endsWith("index.html") || requestURL.endsWith("index2.html")
-                || requestURL.endsWith("index.htm") || requestURL.endsWith("index2.htm")) {
-            return true;
+        String weixinUrls = App.getInstance().getInMenu(this.weixinUrlKey);
+        String[] weixinUrlArr = weixinUrls.split("\\|");
+        for(int i = 0; i<weixinUrlArr.length; i++) {
+            if(requestURL.endsWith(weixinUrlArr[i])) {
+                return true;
+            }
         }
         return false;
     }
