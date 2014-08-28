@@ -22,7 +22,7 @@ var config = {
             }
             catch (e) {
                 if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
-                    window.location.href = 'http://godzilla.dlinkddns.com.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
+                    window.location.href = 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
                 }
             }
         };
