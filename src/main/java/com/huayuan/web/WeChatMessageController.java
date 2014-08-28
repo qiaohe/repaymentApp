@@ -77,7 +77,7 @@ public class WeChatMessageController {
         String status = memberStatusEvaluator.evaluate(member);
         String content;
         if (message.isSubscribe()) {
-            content = MessageFormat.format(welcomeTemplate, baseUrl, member.getId(), status);
+            content = welcomeTemplate;
         } else if (message.isFeedback()) {
             content = MessageFormat.format(feedbackTemplate, baseUrl, member.getId());
         } else if (message.isAbout() || message.isAboutTeam()) {

@@ -45,9 +45,10 @@ public class SmsVerificationCodeServiceImpl implements SmsVerificationCodeServic
 
     @Override
     public boolean verifyCode(String mobilePhone, String code) {
-        boolean result = MOBILE_PHONE_VERIFICATION_CODE_MAP.containsKey(mobilePhone) &&
-                MOBILE_PHONE_VERIFICATION_CODE_MAP.get(mobilePhone).equals(code);
-        MOBILE_PHONE_VERIFICATION_CODE_MAP.remove(mobilePhone);
-        return result;
+        if (MOBILE_PHONE_VERIFICATION_CODE_MAP.containsKey(mobilePhone) && MOBILE_PHONE_VERIFICATION_CODE_MAP.get(mobilePhone).equals(code)) {
+            MOBILE_PHONE_VERIFICATION_CODE_MAP.remove(mobilePhone);
+            return true;
+        }
+        return false;
     }
 }
