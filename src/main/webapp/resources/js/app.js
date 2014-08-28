@@ -946,9 +946,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         function getShareConfig() {
             var info = generateShareInfo();
             return {
-                title : "终于找到了，帮我还信用卡的那个人",
-                desc : info,
-                summary : info,
+                title : info.title,
+                desc : info.desc,
+                summary : info.desc,
                 url : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
                 img : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
                 width : screen.width,
@@ -966,18 +966,29 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             } else {
                 info = "【如何高冷地还信用卡】信用卡还不上，加么么贷";
             }
-            return info;
+            var shareInfo = {};
+            shareInfo.title = info;
+            shareInfo.desc = "信用卡还不上，微信加“么么贷”";
+            return shareInfo;
         }
 
         WeixinApi.ready(function(Api) {
-            var info = generateShareInfo();
+            var allInfo = generateShareInfo();
             // 微信分享的数据
-            var wxData = {
+            var wxDataToFriend = {
                 "appId": "", // 服务号可以填写appId
                 "imgUrl" : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
                 "link" : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
-                "desc" : '信用卡还不上，微信加“么么贷”',
-                "title" : info
+                "desc" : allInfo.desc,
+                "title" : allInfo.title
+            };
+
+            var wxDataToTimeline = {
+                "appId": "", // 服务号可以填写appId
+                "imgUrl" : 'http://wechat.memedai.cn/repaymentApp/resources/img/public/r120.png',
+                "link" : 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime(),
+                "desc" : allInfo.title,
+                "title" : ""
             };
 
             // 分享的回调
@@ -1010,11 +1021,11 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 }
             };
             // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
-            Api.shareToFriend(wxData, wxCallbacks);
+            Api.shareToFriend(wxDataToFriend, wxCallbacks);
             // 点击分享到朋友圈，会执行下面这个代码
-            Api.shareToTimeline(wxData, wxCallbacks);
+            Api.shareToTimeline(wxDataToTimeline, wxCallbacks);
             // 点击分享到腾讯微博，会执行下面这个代码
-            Api.shareToWeibo(wxData, wxCallbacks);
+            Api.shareToWeibo(wxDataToTimeline, wxCallbacks);
         });
 
         function requestAvailable() {
