@@ -840,11 +840,18 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
         $(document).on("pagecreate", "#result", function(){
             device.getUserAgent();
+            dict.shareForFirstTime = true;
+
+            $("#share").one("popupafteropen", function() {
+                dict.shareForFirstTime = false;
+            });
+
             $("#option-2").off("tap").on("tap",function(e){
                 if(device.isIOS()) {
                     $("#share").popup("open");
-                    if(!$('#share').is(':focus')) {
-                        $("#share").focus();
+                    if(!dict.shareForFirstTime) {
+                        e.stopPropagation();
+                        return false;
                     }
                 } else {
                     e.preventDefault();
