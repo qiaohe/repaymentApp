@@ -387,6 +387,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $.ajax({
                     url: config.apiPath + "app" + config.timeStamp,
                     type: "POST",
+                    async: false,
                     contentType: "application/json",
                     data: JSON.stringify({
                         term: loanApplication.term,
