@@ -209,7 +209,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         taken = text === "true";
                     },
                     error: function(a, b, c) {
-                        alert(a + b + c);
+                        if(config.debug) alert(a + b + c);
                         config.alertUrl(config.apiPath + "members/" + $this.id + "/creditCard/" + cardNum + config.timeStamp);
                     }
                 });
@@ -384,7 +384,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                 }
 
-                return $.ajax({
+                $.ajax({
                     url: config.apiPath + "app" + config.timeStamp,
                     type: "POST",
                     contentType: "application/json",
@@ -506,7 +506,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     } else if($(this).attr("id").search("back") !== -1) {
                         whichSide = "back";
                     } else {
-                        alert("The parameter whichSide is undefined!");
+                        if(config.debug) alert("The parameter whichSide is undefined!");
                     }
 
                     var iframe = $("<iframe></iframe>");
@@ -555,9 +555,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                                     }
                                 }
 
-                                alert("Line 481!");
                                 if(json.validThru) {
-                                    alert("Line 483");
                                     member.validThru = dict.getReadableDate(json.validThru).join(".");
                                     $("#back-num").html("有效期至" + member.validThru).css("color", "#222222");
                                     $("#back-upload-2").attr("disabled", true);
@@ -1044,6 +1042,10 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
             $("#request").off("click").click(function(){
                 if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount){
+                    $(this).attr("disabled", true);
+                    setTimeout(function() {
+                        $(this).attr("disabled", false);
+                    }, 5000);
                     if (member.existingFlag === 2) {
                         $("#cardlist-2").popup("open").focus();
                     }
@@ -1192,6 +1194,10 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
             else{
                 $("#acquire-code").off("click").click(function(){
+                    $(this).attr("disabled", true);
+                    setTimeout(function() {
+                        $(this).attr("disabled", false);
+                    }, 5000);
                     var phoneNum = $phone.val();
                     if(phoneNum.length !== 11) {
                         $verifyingTips.find("h4").html("请输入正确的手机号码!");
