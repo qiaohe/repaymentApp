@@ -1045,7 +1045,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 if($("#agree").attr("checkFlag") && member.validate && member.loanApplication.term && member.loanApplication.amount){
                     $(this).attr("disabled", true);
                     setTimeout(function() {
-                        $(this).attr("disabled", false);
+                        $("#request").attr("disabled", false);
                     }, 5000);
                     if (member.existingFlag === 2) {
                         $("#cardlist-2").popup("open").focus();
@@ -1197,7 +1197,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $("#acquire-code").off("click").click(function(){
                     $(this).attr("disabled", true);
                     setTimeout(function() {
-                        $(this).attr("disabled", false);
+                        $("#acquire-code").attr("disabled", false);
                     }, 5000);
                     var phoneNum = $phone.val();
                     if(phoneNum.length !== 11) {
@@ -1671,9 +1671,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
 
             $(".repay-item-pay").tap(function() {
-//                var orderAmount = member.loan.loans[member.crntCaro].curDueAmt;
                 var orderAmount = member.loan.loans[member.crntCaro].curDueAmt.toFixed(2);
-                window.location = "http://wechat.memedai.cn/repaymentApp/" + config.apiPath + "account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
+                window.location = "http://wechat.memedai.cn/repaymentApp/api/account/repay/" + member.id + "/" + member.loan.loans[member.crntCaro].loanId + "/" + orderAmount;
             });
         });
 
