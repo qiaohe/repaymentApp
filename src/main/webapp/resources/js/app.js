@@ -2058,26 +2058,26 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
 
             if (member.status === "1" || member.status === "2") {
-                if (member.idCard !== undefined) {
+                if (typeof member.idCard !== "undefined") {
                     localStorage.setItem("id_card", member.idCard);
                 }
-                if(member.gender !== undefined) {
+                if(typeof member.gender !== "undefined") {
                     localStorage.setItem("gender", member.gender);
                 }
-                if (member.validThru !== undefined) {
+                if (typeof member.validThru !== "undefined") {
                     localStorage.setItem("valid_thru", member.validThru);
                 }
                 if ($("#credit-card").val()) {
                     localStorage.setItem("credit_card", $("#credit-card").val());
                     localStorage.setItem("card_icon", $("#tip-credit").attr("src"));
                 }
-                if (member.education !== undefined) {
+                if (typeof member.education !== "undefined") {
                     localStorage.setItem("education", member.education);
                 }
-                if (member.industry !== undefined) {
+                if (typeof member.industry !== "undefined") {
                     localStorage.setItem("industry", member.industry);
                 }
-                if (member.email !== undefined) {
+                if (typeof member.email !== "undefined") {
                     localStorage.setItem("email", member.email);
                 }
             }
