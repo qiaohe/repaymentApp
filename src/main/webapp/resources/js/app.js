@@ -650,7 +650,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                             $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
                         }
                         else{
-                            if(member.idCard &&member.validThru) {
+                            if(member.idCard && member.validThru) {
                                 $("#next-step").css("background-color", "#3ca0e6").off("click").click(function () {
                                     member.creditCard = num;
                                     member.testLimit();
@@ -692,7 +692,8 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     $("#credit-card").keyup();
                 }
             }).change(function() {
-                $("#credit-card").keyup();
+                var $creditCard = $("#credit-card");
+                if($creditCard.val().length > 15) $creditCard.keyup();
             });
 
             if (member.creditCard) {
