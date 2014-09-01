@@ -197,14 +197,11 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $.ajax({
                     url: config.apiPath + "members/" + this.id + "/creditCard/" + cardNum + config.timeStamp,
                     type: "GET",
-
                     async: false,
                     dataType: "text",
-
                     // jsonp : '$callback',
                     // dataType : 'jsonp text',
                     // crossDomain: true,
-
                     success: function (text) {
                         taken = text === "true";
                     },
@@ -512,7 +509,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
                     var iframe = $("<iframe></iframe>");
                     iframe.attr({
-                        "src": "http://192.168.0.185:8080/repayment/index.html#limit?t=" + config.timeStamp,
+                        "src": "http://wechat.memedai.cn/repayment/index.html#limit?t=" + config.timeStamp,
                         "name": "for-upload",
                         "id": "for-upload"
                     }).css({
@@ -570,7 +567,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                             }
                         });
                         iframe.remove();
-                    }, 7000);
+                    }, 8000);
                 });
             }
             else {
@@ -649,7 +646,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         $cardTip.html("该信用卡已被人使用!").show();
                     }
                     else {
-                        if (!member.anothertest && member.idCard &&member.validThru) {
+                        if (!member.anothertest && member.idCard && member.validThru) {
                             $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
                         }
                         else{
@@ -691,6 +688,11 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 if($(this).val() === "") {
                     $("#credit-num").show();
                 }
+                else {
+                    $("#credit-card").keyup();
+                }
+            }).change(function() {
+                $("#credit-card").keyup();
             });
 
             if (member.creditCard) {
