@@ -663,9 +663,17 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     }
                     else {
                         if (!member.anothertest) {
-                            $("#front-upload, #back-upload").attr("disabled", false);
-                            $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
-                            $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
+                            if(!member.idCard) {
+                                $("#front-upload").attr("disabled", false);
+                                $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
+                            }
+                            if(!member.validThru) {
+                                $("#back-upload").attr("disabled", false);
+                                $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
+                            }
+                            if(member.idCard && member.validThru) {
+                                $("#next-step").css("background-color", "#3ca0e6").attr("href", "#basic-info");
+                            }
                         }
                         else{
                             if(member.idCard && member.validThru) {
@@ -777,6 +785,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             function enableLimitTest(btnId) {
                 var mailRegEx = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
                 if(member.creditCard && member.industry && member.education && mailRegEx.test(member.email)) {
+                    $("#replicated-card").hide();
                     $("#" + btnId).css("background-color", "#3ca0e6").off("tap").tap(function () {
                         member.testLimit();
                     });
