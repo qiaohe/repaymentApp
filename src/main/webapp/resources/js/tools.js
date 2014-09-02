@@ -39,7 +39,7 @@
     $.extend({
         formatDate:function(ms){
             if(!ms) return "";
-            if(/^\d+$/.test(ms)) {
+            if(/^-?\d+$/.test(ms)) {
                 return ms ? new Date(ms).format("yyyyMMdd") : "";
             } else {
                 return ms.substring(0,10);
