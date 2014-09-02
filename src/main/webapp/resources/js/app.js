@@ -596,6 +596,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                                 if(member.idCard && member.validThru &&member.creditCard) {
                                     $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
                                 }
+                                $("#idCard-front").attr("src", "resources/img/2-1/id_front.png");
                             } else {
                                 $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
                                 $("label[for='front-upload']").css("border-color", "#cc0000");
@@ -628,6 +629,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                             if(member.idCard && member.validThru && member.creditCard) {
                                 $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
                             }
+                            $("#idCard-back").attr("src", "resources/img/2-1/id_back.png");
                         }).error(function () {
                             $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
                             $("label[for='back-upload']").css("border-color", "#cc0000");
