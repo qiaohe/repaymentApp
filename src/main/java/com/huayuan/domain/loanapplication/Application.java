@@ -250,6 +250,6 @@ public class Application {
     }
 
     public Integer remainingHoursBasedOnStatus() {
-        return Math.max((4 - status) * REMAINING_UNIT, 0);
+        return Math.max((4 - (status == 99 ? 3 : status)) * REMAINING_UNIT, 0);
     }
 }
