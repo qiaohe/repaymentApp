@@ -71,7 +71,7 @@ public class Loan {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
     private Pay pay;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "loan")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "loan")
     private List<RepayPlan> repayPlans = new ArrayList<>();
 
     public Loan() {
