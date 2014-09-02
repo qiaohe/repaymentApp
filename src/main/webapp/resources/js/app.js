@@ -593,6 +593,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                                 if (member.gender === "FEMALE") {
                                     $(".gender").html("娘子");
                                 }
+                                if(member.idCard && member.validThru &&member.creditCard) {
+                                    $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
+                                }
                             } else {
                                 $("#front-num").html("该身份证已被人使用!").css({"color": "#cc0000", "border-color": "#cc0000"});
                                 $("label[for='front-upload']").css("border-color", "#cc0000");
@@ -622,6 +625,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                             $("#tip-back").attr("src", "resources/img/public/correct.png");
                             $("#back-upload").attr("disabled", true);
                             member.validThru = text;
+                            if(member.idCard && member.validThru && member.creditCard) {
+                                $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
+                            }
                         }).error(function () {
                             $("#back-num").html("无法识别, 请重新拍摄!").css({"color": "#cc0000", "border-color": "#cc0000"});
                             $("label[for='back-upload']").css("border-color", "#cc0000");
@@ -629,6 +635,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         });
                     });
                 }
+            }
+
+            function disableImageUpload() {
+                $("#front-upload, #back-upload").attr("disabled", true);
+                $("#idCard-front").attr("src", "resources/img/2-1/id_front.png");
+                $("#idCard-back").attr("src", "resources/img/2-1/id_back.png");
+                $("#next-step").removeClass("bluebtn").css("background-color", "silver").attr("href", "#");
             }
 
             $("#credit-card").on("keyup", function (e) {
@@ -644,10 +657,13 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     if (member.whetherUsedCard(num)) {
                         $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
                         $cardTip.html("该信用卡已被人使用!").show();
+                        disableImageUpload();
                     }
                     else {
-                        if (!member.anothertest && member.idCard && member.validThru) {
-                            $("#next-step").attr("href", "#basic-info").css("background-color", "#3ca0e6");
+                        if (!member.anothertest) {
+                            $("#front-upload, #back-upload").attr("disabled", false);
+                            $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
+                            $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
                         }
                         else{
                             if(member.idCard && member.validThru) {
@@ -662,6 +678,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 } else if(!dict.isSupportedBankCard(num) && num.length > 6) {
                     $tipCredit.attr("src", "resources/img/public/wrong.png").css({"height": "22px", "width": "22px"});
                     $cardTip.html("暂不开放该银行的信用卡").show();
+                    disableImageUpload();
                 } else {
                     $("#next-step").attr("href", "#");
                     if (num.replace(/ /g, "").length === 16 || num.replace(/ /g, "").length === 18) {
@@ -672,6 +689,7 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                         $cardTip.hide();
                         $("#next-step").removeClass("bluebtn").css("background-color", "silver");
                     }
+                    disableImageUpload();
                 }
 
                 if (num.length % 5 === 4 && num.length !== 19) {
@@ -699,7 +717,12 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             if (member.creditCard) {
                 $("#credit-card").val(member.creditCard);
                 if (member.status === "1" && dict.validateCardNo(member.creditCard) && dict.isSupportedBankCard(member.creditCard) && !member.whetherUsedCard(member.creditCard)) {
-                    $("#next-step").attr("href", "#basic-info").addClass("bluebtn");
+                    if(member.idCard && member.validThru) {
+                        $("#next-step").attr("href", "#basic-info").addClass("bluebtn");
+                    }
+                    $("#front-upload, #back-upload").attr("disabled", false);
+                    $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
+                    $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
                 }
                 $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
                 $("#credit-num").hide();
@@ -730,8 +753,6 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                 $.mobile.navigate("#limit");
                 // $("#pop-limit").popup("close");
             });
-
-            // alert($("#next-step").attr("href"));
         });
 
         $(document).on("pagecreate", "#basic-info", function(){
@@ -2007,18 +2028,6 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             }
             closeWhenReady();
         });
-
-//        $(document).on("pagecreate", "#pay-success", function () {
-//            $("#pays-known").off("tap").on("tap", function () {
-//                WeixinJSBridge.call("closeWindow");
-//            });
-//        });
-//
-//        $(document).on("pagecreate", "#pay-fail", function () {
-//            $("#payf-known").off("tap").on("tap", function () {
-//                WeixinJSBridge.call("closeWindow");
-//            });
-//        });
 
         $(document).on("pagecreate", "#feedback", function () {
             var $tip = $("#fd-tip");
