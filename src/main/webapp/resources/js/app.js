@@ -1097,12 +1097,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
             $("#add-another-2").off("click").click(function(){
                 $("#new-cardnum-2-placeholder").val("");
-                $("#cardlist-2").off("popupafterclose").one("popupafterclose", function(){
-                    setTimeout(function () {
+                var $cardList2 = $("#cardlist-2");
+                $cardList2.off("popupafterclose").one("popupafterclose", function(){
+                    $("#cardlist").popup("close");
+                    setTimeout(function() {
                         $("#card-add-box-2").show();
                     }, 500);
                 });
-                $("#cardlist-2").popup("close");
+                $cardList2.popup("close").trigger("popupafterclose");
             });
 
             $("#return-2").off("click").click(function(){
@@ -1587,12 +1589,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             });
 
             $("#add-another").off("tap").tap(function(){
-                $("#cardlist").off("popupafterclose").one("popupafterclose", function(){
+                var $cardList = $("#cardlist");
+                $cardList.off("popupafterclose").one("popupafterclose", function(){
+                    $("#cardlist").popup("close");
                     setTimeout(function() {
                         $("#card-add-box").show();
                     }, 500);
                 });
-                $("#cardlist").popup("close");
+                $cardList.popup("close").trigger("popupafterclose");
             });
 
             $("#return").off("tap").tap(function(){
