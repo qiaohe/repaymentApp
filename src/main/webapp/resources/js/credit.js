@@ -6,9 +6,7 @@
     info.id = id_pattern.exec(window.location).toString();
     info.id = info.id.slice(3, info.id.length);
 
-    var cert_pattern = /(?:certNo=)\d+/;
-    info.cert = cert_pattern.exec(window.location).toString();
-    info.cert = info.cert.slice(7, info.cert.length);
+    info.cert = $.getParamter("certNo");
 
     jQuery.ajaxSetup({async:false});
     $.get(info.path + 'pboc/' + info.id, function(json){
