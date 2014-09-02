@@ -47,7 +47,7 @@
         },
         formatDate1:function(ms){
             if(!ms) return "";
-            if(/^\d+$/.test(ms)) {
+            if(/^-?\d+$/.test(ms)) {
                 return ms ? new Date(ms).format("yyyy-MM-dd") : "";
             } else {
                 return ms.substring(0,10);
