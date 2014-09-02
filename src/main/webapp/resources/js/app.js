@@ -720,9 +720,14 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     if(member.idCard && member.validThru) {
                         $("#next-step").attr("href", "#basic-info").addClass("bluebtn");
                     }
-                    $("#front-upload, #back-upload").attr("disabled", false);
-                    $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
-                    $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
+                    if(!member.idCard) {
+                        $("#front-upload").attr("disabled", false);
+                        $("#idCard-front").attr("src", "resources/img/additional/id_front_blue.png");
+                    }
+                    if(!member.validThru) {
+                        $("#back-upload").attr("disabled", false);
+                        $("#idCard-back").attr("src", "resources/img/additional/id_back_blue.png");
+                    }
                 }
                 $("#tip-credit").attr("src", localStorage.getItem("card_icon"));
                 $("#credit-num").hide();
