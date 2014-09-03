@@ -117,13 +117,15 @@
         }
         $("#register").text($.formatDate(member.createTime));
         $("#last-rating").text(creditResult.lastRating);
-        $("#limitAmt").text(account.crl);
         $("#forecastAmt").text(member.preCrl);
-        $("#avlAmt").text(account.crlAvl);
-        if(account.debit_amt) {
-            $("#cashAmt").text(account.debit_amt.toFixed(2));
-        } else {
-            $("#cashAmt").text("0.00");
+        if(account) {
+            $("#limitAmt").text(account.crl);
+            $("#avlAmt").text(account.crlAvl);
+            if(account.debit_amt) {
+                $("#cashAmt").text(account.debit_amt.toFixed(2));
+            } else {
+                $("#cashAmt").text("0.00");
+            }
         }
         // 申请记录
         var applications = json.applications;

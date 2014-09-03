@@ -21,10 +21,8 @@
 
     <named-query name="Application.findByMemberIdWithProfile">
         <query>
-            select NEW com.huayuan.domain.member.MemberProfile$Application(appl.applicationNo, appl.applyTime,
-            apv.decision) from
-            Application appl, Approval apv where appl.applicationNo = apv.application.applicationNo and appl.member.id =
-            ?1 and appl.status in (3,5,7)
+            select NEW com.huayuan.domain.member.MemberProfile$Application(appl.applicationNo, appl.applyTime,apv.decision) from
+            Application appl, Approval apv where appl.applicationNo = apv.application.applicationNo and appl.member.id = ?1
         </query>
     </named-query>
 
