@@ -80,13 +80,15 @@
         var creditResult = member.creditResult;
         $("#memberId").text(member.id);
         $("#wechatNo").text(member.wcUserName);
-        $("#name").text(idcard.name);
-        $("#idcard").text(idcard.idNo);
-        $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
-        $("#gender").text(gender[idcard.sex]);
-        $("#idcard-address").text(idcard.address);
-        $("#birthday").text($.formatDate(idcard.birthday));
-        $("#idcard-valid").text($.formatDate(idcard.validFrom)+"-"+$.formatDate(idcard.validThru));
+        if(idcard) {
+            $("#name").text(idcard.name);
+            $("#idcard").text(idcard.idNo);
+            $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
+            $("#gender").text(gender[idcard.sex]);
+            $("#idcard-address").text(idcard.address);
+            $("#birthday").text($.formatDate(idcard.birthday));
+            $("#idcard-valid").text($.formatDate(idcard.validFrom)+"-"+$.formatDate(idcard.validThru));
+        }
         $("#profession").text(detail1.industryMap[member.industry]);
         $("#degree").text(detail1.educationMap[member.education]);
         $("#mobile").text(member.mobile);
@@ -116,7 +118,9 @@
             $("#dishonored").text("N");
         }
         $("#register").text($.formatDate(member.createTime));
-        $("#last-rating").text(creditResult.lastRating);
+        if(creditResult) {
+            $("#last-rating").text(creditResult.lastRating);
+        }
         $("#forecastAmt").text(member.preCrl);
         if(account) {
             $("#limitAmt").text(account.crl);
