@@ -10,6 +10,7 @@ import com.huayuan.service.AccountService;
 import com.huayuan.service.CreditService;
 import com.huayuan.service.MemberService;
 import com.huayuan.service.WeChatService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.oxm.Unmarshaller;
@@ -73,8 +74,7 @@ public class WeChatMessageController {
     @RequestMapping(value = "/huayuan", method = RequestMethod.POST, produces = {"text/html;charset=UTF-8"})
     public void handleMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Message message = (Message) unmarshaller.unmarshal(new StreamSource(request.getInputStream()));
-        Member member = weChatService.getMemberBy(message.getFromUserName());
-        String status = memberStatusEvaluator.evaluate(member);
+        Member member = weChatService.getMemberBy(StringUtils.trim(message.getFromUserName()));
         String content;
         if (message.isSubscribe()) {
             content = welcomeTemplate;
@@ -124,7 +124,7 @@ public class WeChatMessageController {
     @RequestMapping(value = "/members/{memberId}/feedback", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public void addCreditCard(@PathVariable Long memberId, @RequestParam("f") String feedback) {
+    public void addFeedback(@PathVariable Long memberId, @RequestParam("f") String feedback) {
         Feedback fb = new Feedback();
         fb.setMemberId(memberId);
         fb.setFeedback(feedback);

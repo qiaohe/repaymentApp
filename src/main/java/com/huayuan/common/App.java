@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class App {
     private static final App INSTANCE = new App();
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static Configuration CONFIG;
+    private static PropertiesConfiguration CONFIG;
     private static Configuration MENU;
     @Inject
     private DictionaryRepository dictionaryRepository;
@@ -30,11 +30,10 @@ public final class App {
 
     static {
         try {
-            CONFIG = new PropertiesConfiguration("config.properties");
-        } catch (ConfigurationException e) {
-            LOGGER.error(e.getMessage());
-        }
-        try {
+            CONFIG = new PropertiesConfiguration();
+            CONFIG.setEncoding("GBK");
+            CONFIG.setFileName("config.properties");
+            CONFIG.load();
             MENU = new PropertiesConfiguration("menu.properties");
         } catch (ConfigurationException e) {
             LOGGER.error(e.getMessage());

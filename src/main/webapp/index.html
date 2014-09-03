@@ -10,11 +10,7 @@
     <link type="text/css" rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.2.min.css">
     <link type="text/css" rel="stylesheet" href="resources/css/app.css">
     <script type="text/javascript" src="resources/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript">
-        $(document).on("mobileinit", function(){
-            $.mobile.pushStateEnabled = false;
-        });
-    </script>
+    <script type="text/javascript">$(document).on("mobileinit", function(){ $.mobile.pushStateEnabled = false; });</script>
     <script type="text/javascript" src="resources/js/jquery.mobile-1.4.2.min.js"></script>
     <script type="text/javascript" src="resources/js/navigator.js?v=0.11"></script>
 </head>
@@ -23,41 +19,11 @@
 <div data-role="page" id="limit" data-title="信用评估">
     <div class="cover">
         <img src="resources/img/2-1/mobile.png" class="cover-img" style="margin-top: 20px; width: 140px; height: 70px">
-        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0 1px;">先来啪啪啪吧，信用评估需要如下资料。</h1>
+        <h1 style="color: white; font-size: 1.6em; font-weight: normal; text-shadow: 0 0 0 1px;">先来啪啪啪吧~ 以下资料请<span style="color: #b04f88; font-weight: bold">横向</span>拍摄。</h1>
     </div>
 
     <div class="custom-li" style="margin-top:20px">
-        <label><img src="resources/img/2-1/id_front.png" style="float:left; margin: 3px auto auto 6%; width:40px; height:28px;"></label>
-
-        <div class="id-card-container" style="float:left; width:70%">
-            <label for="front-upload" class="textinput" style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
-                    class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
-            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" capture="camera" style="opacity:0" encoding="multipart/form-data" enctype="multipart/form-data">
-            <img src="resources/img/public/blank.png" id="tip-front"
-                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
-            <label for="front-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px; width:22px; height:16px"></label>
-        </div>
-    </div>
-    <br>
-
-    <div class="custom-li" style="margin-top:-15px">
-        <label><img src="resources/img/2-1/id_back.png"
-                    style="float:left; margin: 2px auto auto 6%; width:40px; height:28px;"></label>
-
-        <div class="id-card-container" style="float:left; width:70%">
-            <label for="back-upload" class="textinput"
-                   style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
-            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="back-upload" style="opacity: 0"
-                   capture="camera">
-            <img src="resources/img/public/blank.png" id="tip-back"
-                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
-            <label for="back-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px;  width:22px; height:16px"></label>
-        </div>
-    </div>
-    <br>
-
-    <div class="custom-li" style="margin-top:-15px">
-        <label><img src="resources/img/2-1/creditcard.png"
+        <label><img src="resources/img/additional/creditcard_blue.png"
                     style="float:left; margin: 3px auto auto 6%; width:40px; height:28px"></label>
 
         <div class="id-card-container" style="float:left; width:70%">
@@ -72,6 +38,35 @@
                                           style="float: right; position: absolute; top:3px; right: 3%; margin-top: 5px;  width:22px; height:16px"></label>
 
             <div id="card-tip" style="color:#cc0000; font-size:1.3em; clear:both; display:none">该信用卡已被人使用!</div>
+        </div>
+    </div>
+    <br>
+
+    <div class="custom-li" style="margin-top:-15px">
+        <label><img src="resources/img/2-1/id_front.png" id="idCard-front" style="float:left; margin: 3px auto auto 6%; width:40px; height:28px;"></label>
+
+        <div class="id-card-container" style="float:left; width:70%">
+            <label for="front-upload" class="textinput" style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span
+                    class="placeholder" id="front-num" style="padding-left:22px">拍摄身份证·正面</span></label>
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="front-upload" style="opacity:0" capture="camera" disabled="disabled">
+            <img src="resources/img/public/blank.png" id="tip-front"
+                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
+            <label for="front-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px; width:22px; height:16px"></label>
+        </div>
+    </div>
+    <br>
+
+    <div class="custom-li" style="margin-top:-15px">
+        <label><img src="resources/img/2-1/id_back.png" id="idCard-back"
+                    style="float:left; margin: 2px auto auto 6%; width:40px; height:28px;"></label>
+
+        <div class="id-card-container" style="float:left; width:70%">
+            <label for="back-upload" class="textinput"
+                   style="font-family: Arial; float: left; position: absolute; top: 0; height: 30px; border: 1px solid #c0c0c0; width: 100%"><span class="placeholder" id="back-num" style="padding-left:22px">拍摄身份证·反面</span></label>
+            <input data-role="none" type="file" accept="image/jpg, image/jpeg" id="back-upload" style="opacity: 0" capture="camera" disabled="disabled">
+            <img src="resources/img/public/blank.png" id="tip-back"
+                 style="position:absolute; left:5px; top:5px; width:22px; height:22px">
+            <label for="back-upload"><img src="resources/img/public/camera.png" style="float: right; position: absolute; top:3px; right: 3% ;margin-top: 5px;  width:22px; height:16px"></label>
         </div>
     </div>
     <br>

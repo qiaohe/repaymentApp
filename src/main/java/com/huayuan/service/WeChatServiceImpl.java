@@ -123,7 +123,7 @@ public class WeChatServiceImpl implements WeChatService, ApplicationListener<Mem
     }
 
     @Override
-    public Member getMemberBy(String openId) {
+    public synchronized Member getMemberBy(String openId) {
         Member member = memberRepository.findByWcNo(openId);
         if (member != null) return member;
         member = new Member(openId);
