@@ -474,9 +474,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         });
 
         $(document).on("pagecreate", "#limit", function () {
-            if(typeof dict.bincode === "undefined") {
-                dict.getBincode();
-            }
+//            if(typeof dict.bincode === "undefined") {
+//                dict.getBincode();
+//            }
 
             device.getUserAgent();
             device.getAndroidVersion();
@@ -1214,9 +1214,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             member.contractAmount = 0;
             member.refreshContract();
 
-            if(typeof dict.bincode === "undefined") {
-                dict.getBincode();
-            }
+//            if(typeof dict.bincode === "undefined") {
+//                dict.getBincode();
+//            }
 
             var $verifyingTips = $("#varifying-tips");
             member.phone = "";
@@ -1542,9 +1542,9 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
 
         $(document).on("pagebeforeshow", "#congratulation", function(){
             member.getFirstLoanAppNo();
-            if (!dict.bincode) {
-                dict.getBincode();
-            }
+//            if (!dict.bincode) {
+//                dict.getBincode();
+//            }
 
             $("#agree-cong").attr("checkFlag","1").click(function(){
                 var $agreeConfig = $(this);
@@ -2070,6 +2070,10 @@ if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
             $("#tfb-back").click(function(){
                 WeixinJSBridge.call("closeWindow");
             });
+        });
+
+        $(document).on("pageshow", "#clearLocalStorage", function() {
+            localStorage.clear();
         });
 
         window.onunload = function () {

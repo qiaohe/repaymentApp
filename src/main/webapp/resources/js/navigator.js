@@ -1,5 +1,11 @@
-/* global alert:false */
 "use strict";
+
+function getParameterByName(ParaName) {
+    ParaName = ParaName.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + ParaName + "=([^&#]*)"),
+        results = regex.exec(location.hash);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
 var config = {
         apiPath: "api/",
@@ -16,14 +22,21 @@ var config = {
         var member = {};
 
         member.getId = function() {
-            var idPtn = /memberId=(\d+)/;
-            try {
-                this.id = idPtn.exec(window.location)[1];
+            var id = getParameterByName("memberId");
+            if(isNaN(Number(id))) {
+                console.log("memberId is NaN!");
+                window.location.replace('http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime());
             }
-            catch (e) {
+            else {
+                id = Number(id) + "";
+            }
+            if(this.id === "0") {
                 if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
                     window.location.href = 'http://wechat.memedai.cn/repaymentApp/index2.html#prom?r='+new Date().getTime();
                 }
+            }
+            else {
+                this.id = id;
             }
         };
 
@@ -49,7 +62,7 @@ var config = {
                 this.destPage = destPtn.exec(window.location)[1];
             }
             catch (e) {
-                alert("Exception: can not get destPage from url!");
+                console.log("Exception: can not get destPage from url!");
             }
         };
 
@@ -167,6 +180,10 @@ var config = {
     })();
 
 (function navigate() {
+    if(window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+
     if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         member.getId();
         member.getStatus();
@@ -177,7 +194,12 @@ var config = {
             member.getBasicInfo();
         }
         if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
-        if(!/term/.exec(window.location)) {$.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);}
+        if(!/term/.exec(window.location)) {
+//            $.mobile.navigate(member.destPage + "?memberId=" + member.id);
+            if(!/#/.test(member.destPage)) member.destPage = "#" + member.destPage;
+            var locationTo = window.location.href;
+            locationTo = locationTo.replace(/#\w+/g, member.destPage);
+        }
     }
 })();
 console.log("navigation ends!");
