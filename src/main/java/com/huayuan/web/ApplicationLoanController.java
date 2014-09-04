@@ -4,9 +4,6 @@ import com.huayuan.domain.accounting.Pricing;
 import com.huayuan.domain.accounting.core.LoanRequest;
 import com.huayuan.domain.idgenerator.IdSequenceGenerator;
 import com.huayuan.domain.loanapplication.Application;
-import com.huayuan.domain.loanapplication.RepaymentModeEnum;
-import com.huayuan.domain.member.CreditCard;
-import com.huayuan.domain.member.Member;
 import com.huayuan.repository.account.PricingRepository;
 import com.huayuan.repository.applicationloan.ApplicationRepository;
 import com.huayuan.repository.member.CreditCardRepository;
@@ -16,7 +13,6 @@ import com.huayuan.service.MemberService;
 import com.huayuan.web.dto.LoanApplicationDto;
 import com.huayuan.web.dto.LoanRequestDto;
 import com.huayuan.web.dto.SavedCostDto;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -59,27 +55,28 @@ public class ApplicationLoanController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String applyLoan(@RequestBody LoanRequestDto applicationDto) {
-        Application application = new Application();
-        application.setAmt(applicationDto.getAmt());
-        application.setRepayType(RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST);
-        application.setTerm(applicationDto.getTerm());
-        application.setApplicationNo(idSequenceGenerator.getApplicationNo());
-        Member member = memberService.find(applicationDto.getMemberId());
-        application.setMember(member);
-        application.setIdCard(member.getIdCard());
-        application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
-        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo())) {
-            CreditCard creditCard = creditCardRepository.findByCardNo(applicationDto.getCreditCarNo()).get(0);
-            application.setCreditCard(creditCard);
-        }
-        application = applicationService.applyLoan(application);
-        member.setExistingFlag(application.getExistingFlag());
-        memberService.update(member);
-        applicationRepository.execute(application);
-        if (StringUtils.isNotEmpty(applicationDto.getCreditCarNo())) {
-            accountService.createLoanBy(applicationRepository.findOne(application.getApplicationNo()));
-        }
-        return application.getApplicationNo();
+        return null;
+//        Application application = new Application();
+//        application.setAmt(applicationDto.getAmt());
+//        application.setRepayType(RepaymentModeEnum.AVERAGE_CAPITAL_INTEREST);
+//        application.setTerm(applicationDto.getTerm());
+//        application.setApplicationNo(idSequenceGenerator.getApplicationNo());
+//        Member member = memberService.find(applicationDto.getMemberId());
+//        application.setMember(member);
+//        application.setIdCard(member.getIdCard());
+//        application.setExistingFlag(memberService.getApplicationStatus(applicationDto.getMemberId()));
+//        if (!StringUtils.isEmpty(applicationDto.getCreditCarNo())) {
+//            CreditCard creditCard = creditCardRepository.findByCardNo(applicationDto.getCreditCarNo()).get(0);
+//            application.setCreditCard(creditCard);
+//        }
+//        application = applicationService.applyLoan(application);
+//        member.setExistingFlag(application.getExistingFlag());
+//        memberService.update(member);
+//        applicationRepository.execute(application);
+//        if (StringUtils.isNotEmpty(applicationDto.getCreditCarNo())) {
+//            accountService.createLoanBy(applicationRepository.findOne(application.getApplicationNo()));
+//        }
+//        return application.getApplicationNo();
     }
 
     @RequestMapping(value = "/members/{memberId}", method = RequestMethod.POST)
@@ -145,4 +142,11 @@ public class ApplicationLoanController {
         Application application = applicationService.getApplicationBy(memberId);
         return application != null;
     }
+
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getApplicationCount(@PathVariable Long memberId) {
+        return 50;
+    }
+
 }
