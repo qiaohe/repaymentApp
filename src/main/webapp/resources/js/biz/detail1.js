@@ -80,13 +80,15 @@
         var creditResult = member.creditResult;
         $("#memberId").text(member.id);
         $("#wechatNo").text(member.wcUserName);
-        $("#name").text(idcard.name);
-        $("#idcard").text(idcard.idNo);
-        $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
-        $("#gender").text(gender[idcard.sex]);
-        $("#idcard-address").text(idcard.address);
-        $("#birthday").text($.formatDate(idcard.birthday));
-        $("#idcard-valid").text($.formatDate(idcard.validFrom)+"-"+$.formatDate(idcard.validThru));
+        if(idcard) {
+            $("#name").text(idcard.name);
+            $("#idcard").text(idcard.idNo);
+            $("#idcardPositiveImg").attr("src",imgPrefix + idcard.imageFront);
+            $("#gender").text(gender[idcard.sex]);
+            $("#idcard-address").text(idcard.address);
+            $("#birthday").text($.formatDate(idcard.birthday));
+            $("#idcard-valid").text($.formatDate(idcard.validFrom)+"-"+$.formatDate(idcard.validThru));
+        }
         $("#profession").text(detail1.industryMap[member.industry]);
         $("#degree").text(detail1.educationMap[member.education]);
         $("#mobile").text(member.mobile);
@@ -116,14 +118,18 @@
             $("#dishonored").text("N");
         }
         $("#register").text($.formatDate(member.createTime));
-        $("#last-rating").text(creditResult.lastRating);
-        $("#limitAmt").text(account.crl);
+        if(creditResult) {
+            $("#last-rating").text(creditResult.lastRating);
+        }
         $("#forecastAmt").text(member.preCrl);
-        $("#avlAmt").text(account.crlAvl);
-        if(account.debit_amt) {
-            $("#cashAmt").text(account.debit_amt.toFixed(2));
-        } else {
-            $("#cashAmt").text("0.00");
+        if(account) {
+            $("#limitAmt").text(account.crl);
+            $("#avlAmt").text(account.crlAvl);
+            if(account.debit_amt) {
+                $("#cashAmt").text(account.debit_amt.toFixed(2));
+            } else {
+                $("#cashAmt").text("0.00");
+            }
         }
         // 申请记录
         var applications = json.applications;
