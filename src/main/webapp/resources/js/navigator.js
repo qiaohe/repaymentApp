@@ -62,7 +62,7 @@ var config = {
                 this.destPage = destPtn.exec(window.location)[1];
             }
             catch (e) {
-                alert("Exception: can not get destPage from url!");
+                console.log("Exception: can not get destPage from url!");
             }
         };
 
@@ -180,6 +180,10 @@ var config = {
     })();
 
 (function navigate() {
+    if(window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+
     if(!(/pay-success/.test(window.location) || /pay-fail/.test(window.location))) {
         member.getId();
         member.getStatus();
@@ -190,7 +194,12 @@ var config = {
             member.getBasicInfo();
         }
         if(member.destPage === "repayment") {member.destPage += "-0"; member.destPage = "#" + member.destPage;}
-        if(!/term/.exec(window.location)) {$.mobile.navigate(member.destPage + "?memberId=" + member.id + config.timeStamp);}
+        if(!/term/.exec(window.location)) {
+//            $.mobile.navigate(member.destPage + "?memberId=" + member.id);
+            if(!/#/.test(member.destPage)) member.destPage = "#" + member.destPage;
+            var locationTo = window.location.href;
+            locationTo = locationTo.replace(/#\w+/g, member.destPage);
+        }
     }
 })();
 console.log("navigation ends!");
