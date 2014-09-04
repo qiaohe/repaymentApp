@@ -479,128 +479,130 @@
         }
 
         var pboc = json.pboc;
-        // 基础资料
-        $("#marriage").val(marriageStatus[pboc.maritalState]);
-        $("#mobile").val(pboc.mobile);
-        $("#num-district").val(pboc.mobileCity);
-        $("#phone-at-work").val(pboc.officeTelephoneNo);
-        $("#phone-home").val(pboc.homeTelephoneNo);
-        $("#education").val(appDetail.educationMap[pboc.eduDegree]);
-        $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
-        $("#live-city").val(pboc.homeCity);
-        $("#live-address").val(pboc.homeAddress).attr("title", pboc.homeAddress);
-        $("#live-status").val(homeStatus[pboc.homeResidenceType]);
-        $("#update-date").val(pboc.addressGetTime);
-        $("#mate-name").val(pboc.partnerName);
-        $("#mate-id").val(pboc.partnerCertNo);
-        $("#mate-phone").val(pboc.partnerTelephoneNo);
-        // 工作资料
-        // 工作信息
-        $("#work-at").val(pboc.employer);
-        $("#profession").val(pboc.occupation);
-        $("#industry").val(pboc.industry);
-        $("#industry-catography").val(appDetail.industryMap[pboc.industryAddress]);
-        $("#work-address").val(pboc.employerAddress).attr("title", pboc.employerAddress);
-        $("#work-city").val(pboc.employerCity);
-        $("#position").val(duty[pboc.duty]);
-        $("#level").val(dutyTitle[pboc.title]);
-        $("#since").val(pboc.startYear);
-        $("#working-age").val(pboc.industryYear);
-        $("#works-since").val(pboc.hisGetting);
-        $("#update-date-1").val(pboc.employerGetTime);
-        // 养老金缴纳记录
-        if (pboc.yGetTime) {
-            $("#pension-date").val(pboc.yRegisterDate);
-            $("#month-in-work").val(pboc.yWorkDate);
-            $("#base").val(pboc.yOwnBasicMoney);
-            $("#pension-state").val(yStatus[pboc.yState]);
-            $("#amount-each-2").val(pboc.yMoney);
-            $("#corp-conflict-2").val(conflictMap[pboc.yOrganName]);
-            $("#reason-suspension").val(pboc.pauseReason);
-            $("#update-date-2").val(pboc.yGetTime);
-        } else {
-            $("#pension-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 250});
-        }
-        // 公积金缴纳记录
-        if (pboc.getTime) {
-            $("#fund-date").val(pboc.registerDate);
-            $("#fund-since").val(pboc.firstMonth);
-            $("#fund-to").val(pboc.toMonth);
-            $("#fund-state").val(yStatus[pboc.state]);
-            $("#amount-each-3").val(pboc.pay);
-            $("#corp-conflict-3").val(conflictMap[pboc.organName]);
-            $("#update-date-3").val(pboc.getTime);
-        } else {
-            $("#fund-record").hide();
-            $("#switch-work-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-work-res").width() - 150});
-            $("#switch-work-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
-        }
+        if(pboc) {
+            // 基础资料
+            $("#marriage").val(marriageStatus[pboc.maritalState]);
+            $("#mobile").val(pboc.mobile);
+            $("#num-district").val(pboc.mobileCity);
+            $("#phone-at-work").val(pboc.officeTelephoneNo);
+            $("#phone-home").val(pboc.homeTelephoneNo);
+            $("#education").val(appDetail.educationMap[pboc.eduDegree]);
+            $("#address-conflict").val(conflictMap[pboc.registeredAddress]);
+            $("#live-city").val(pboc.homeCity);
+            $("#live-address").val(pboc.homeAddress).attr("title", pboc.homeAddress);
+            $("#live-status").val(homeStatus[pboc.homeResidenceType]);
+            $("#update-date").val(pboc.addressGetTime);
+            $("#mate-name").val(pboc.partnerName);
+            $("#mate-id").val(pboc.partnerCertNo);
+            $("#mate-phone").val(pboc.partnerTelephoneNo);
+            // 工作资料
+            // 工作信息
+            $("#work-at").val(pboc.employer);
+            $("#profession").val(pboc.occupation);
+            $("#industry").val(pboc.industry);
+            $("#industry-catography").val(appDetail.industryMap[pboc.industryAddress]);
+            $("#work-address").val(pboc.employerAddress).attr("title", pboc.employerAddress);
+            $("#work-city").val(pboc.employerCity);
+            $("#position").val(duty[pboc.duty]);
+            $("#level").val(dutyTitle[pboc.title]);
+            $("#since").val(pboc.startYear);
+            $("#working-age").val(pboc.industryYear);
+            $("#works-since").val(pboc.hisGetting);
+            $("#update-date-1").val(pboc.employerGetTime);
+            // 养老金缴纳记录
+            if (pboc.yGetTime) {
+                $("#pension-date").val(pboc.yRegisterDate);
+                $("#month-in-work").val(pboc.yWorkDate);
+                $("#base").val(pboc.yOwnBasicMoney);
+                $("#pension-state").val(yStatus[pboc.yState]);
+                $("#amount-each-2").val(pboc.yMoney);
+                $("#corp-conflict-2").val(conflictMap[pboc.yOrganName]);
+                $("#reason-suspension").val(pboc.pauseReason);
+                $("#update-date-2").val(pboc.yGetTime);
+            } else {
+                $("#pension-record").hide();
+                $("#switch-work-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 250});
+            }
+            // 公积金缴纳记录
+            if (pboc.getTime) {
+                $("#fund-date").val(pboc.registerDate);
+                $("#fund-since").val(pboc.firstMonth);
+                $("#fund-to").val(pboc.toMonth);
+                $("#fund-state").val(yStatus[pboc.state]);
+                $("#amount-each-3").val(pboc.pay);
+                $("#corp-conflict-3").val(conflictMap[pboc.organName]);
+                $("#update-date-3").val(pboc.getTime);
+            } else {
+                $("#fund-record").hide();
+                $("#switch-work-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-work-res").width() - 150});
+                $("#switch-work-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
+            }
 
-        // 银行资料
-        $("#earlist-credit").val(pboc.firstLoanMonth);
-        // 逾期信息-信用卡
-        $("#account-num").val(pboc.cardCount);
-        $("#amount-delayed-2").val(pboc.cardHighestOverdueAmountPerMon);
-        $("#delayed-month").val(pboc.cardMaxDuration);
-        $("#delayed-current").val(pboc.cardOverDuePerYear);
-        $("#delayed-times").val(pboc.cardOverDueNum);
-        // 逾期信息-贷款
-        if (pboc.loanCount) {
-            $("#num-delayed").val(pboc.loanCount);
-            $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
-            $("#time-delayed").val(pboc.loanMaxDuration);
-        } else {
-            $("#delay-res-1").hide();
-            $("#switch-delay-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 180});
-        }
-        // 逾期信息-准贷记卡
-        if (pboc.semiCardCount) {
-            $("#account-num-3").val(pboc.semiCardCount);
-            $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
-            $("#overdraft-time").val(pboc.semiCardMaxDuration);
-        } else {
-            $("#delay-res-2").hide();
-            $("#switch-delay-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-delay-res").width() - 100});
-            $("#switch-delay-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
-        }
+            // 银行资料
+            $("#earlist-credit").val(pboc.firstLoanMonth);
+            // 逾期信息-信用卡
+            $("#account-num").val(pboc.cardCount);
+            $("#amount-delayed-2").val(pboc.cardHighestOverdueAmountPerMon);
+            $("#delayed-month").val(pboc.cardMaxDuration);
+            $("#delayed-current").val(pboc.cardOverDueNum);
+            $("#delayed-times").val(pboc.cardOverDuePerYear);
+            // 逾期信息-贷款
+            if (pboc.loanCount) {
+                $("#num-delayed").val(pboc.loanCount);
+                $("#amount-delayed").val(pboc.loanHighestOverdueAmountPerMon);
+                $("#time-delayed").val(pboc.loanMaxDuration);
+            } else {
+                $("#delay-res-1").hide();
+                $("#switch-delay-res").find(".switch-res-item:eq(1)").hide().end().css({'width': 180});
+            }
+            // 逾期信息-准贷记卡
+            if (pboc.semiCardCount) {
+                $("#account-num-3").val(pboc.semiCardCount);
+                $("#overdraft-amount").val(pboc.semiCardHighestOverdueAmountPerMon);
+                $("#overdraft-time").val(pboc.semiCardMaxDuration);
+            } else {
+                $("#delay-res-2").hide();
+                $("#switch-delay-res").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-delay-res").width() - 100});
+                $("#switch-delay-res").find(".switch-res-item:visible:last").css({"border-right": "none"});
+            }
 
-        // 信用卡信息汇总
-        $("#num-corp").val(pboc.cardOrg);
-        $("#num-accounts").val(pboc.cardAccountCount);
-        $("#amount-credit").val(pboc.cardCreditLimit);
-        $("#credit-average").val(pboc.cardAvgCreditLimit);
-        $("#credit-max").val(pboc.cardMaxCreditLimitPerOrg);
-        $("#credit-min").val(pboc.cardMinCreditLimitPerOrg);
-        $("#credit-used").val(pboc.cardUsedCreditLimit);
-        $("#used-average").val(pboc.cardLatest6MonthUsedAvgAmount);
-        // 贷款信息汇总
-        if (pboc.loanAccountCount) {
-            $("#num-loan").val(pboc.loanAccountCount);
-            $("#amount-loan").val(pboc.loanCreditLimit);
-            $("#amount-remaining").val(pboc.loanBalance);
-            $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
-        } else {
-            $("#delay-res-1").hide();
-            $("#switch-info-summary").find(".switch-res-item:eq(1)").hide().end().css({'width': 320});
+            // 信用卡信息汇总
+            $("#num-corp").val(pboc.cardOrg);
+            $("#num-accounts").val(pboc.cardAccountCount);
+            $("#amount-credit").val(pboc.cardCreditLimit);
+            $("#credit-average").val(pboc.cardAvgCreditLimit);
+            $("#credit-max").val(pboc.cardMaxCreditLimitPerOrg);
+            $("#credit-min").val(pboc.cardMinCreditLimitPerOrg);
+            $("#credit-used").val(pboc.cardUsedCreditLimit);
+            $("#used-average").val(pboc.cardLatest6MonthUsedAvgAmount);
+            // 贷款信息汇总
+            if (pboc.loanAccountCount) {
+                $("#num-loan").val(pboc.loanAccountCount);
+                $("#amount-loan").val(pboc.loanCreditLimit);
+                $("#amount-remaining").val(pboc.loanBalance);
+                $("#payback-average").val(pboc.loanLatest6MonthUsedAvgAmount);
+            } else {
+                $("#delay-res-1").hide();
+                $("#switch-info-summary").find(".switch-res-item:eq(1)").hide().end().css({'width': 320});
+            }
+            // 准贷记卡信息汇总
+            if (pboc.semiCardAccountCount) {
+                $("#num-corp-3").val(pboc.semiCardOrg);
+                $("#num-accounts-3").val(pboc.semiCardAccountCount);
+                $("#amount-credit-3").val(pboc.semicardCreditLimit);
+                $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
+                $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
+                $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
+                $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
+                $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
+            } else {
+                $("#delay-res-2").hide();
+                $("#switch-info-summary").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-info-summary").width() - 170});
+                $("#switch-info-summary").find(".switch-res-item:visible:last").css({"border-right": "none"});
+            }
+            // 人行查询次数
+            $("#search-time").val(pboc.cardQueryLatest6Month);
         }
-        // 准贷记卡信息汇总
-        if (pboc.semiCardAccountCount) {
-            $("#num-corp-3").val(pboc.semiCardOrg);
-            $("#num-accounts-3").val(pboc.semiCardAccountCount);
-            $("#amount-credit-3").val(pboc.semicardCreditLimit);
-            $("#credit-average-3").val(pboc.semiCardAvgCreditlimit);
-            $("#credit-max-3").val(pboc.semiCardMaxCreditLimitPerOrg);
-            $("#credit-min-3").val(pboc.semicardMinCreditLimitPerOrg);
-            $("#overdraft-remaining").val(pboc.semiCardUsedCreditLimit);
-            $("#overdraft-average").val(pboc.semiCardLatest6MonthUsedAvgAmount);
-        } else {
-            $("#delay-res-2").hide();
-            $("#switch-info-summary").find(".switch-res-item:eq(2)").hide().end().css({'width': $("#switch-info-summary").width() - 170});
-            $("#switch-info-summary").find(".switch-res-item:visible:last").css({"border-right": "none"});
-        }
-        // 人行查询次数
-        $("#search-time").val(pboc.cardQueryLatest6Month);
 
         // 贷款信息
         appDetail.makeLoansMap(json.loans.loans);
