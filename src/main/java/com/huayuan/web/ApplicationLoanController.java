@@ -145,8 +145,7 @@ public class ApplicationLoanController {
 
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     @ResponseBody
-    public Integer getApplicationCount() {
-        return 50;
+    public Long getApplicationCount() {
+        return applicationService.getApplicationCount();
     }
-
 }

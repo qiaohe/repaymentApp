@@ -362,7 +362,7 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
         try {
             String s = MessageFormat.format(paymentGatewayUrlPattern, member.getWcNo(), member.getEmail(), memberId,
                     orderId, payAmount, loanId, URLEncoder.encode(signMessage, "UTF-8"));
-            return s.replace("么么贷还款", URLEncoder.encode("么么贷还款", "UTF-8"));
+            return s.replace(Constants.MEMEDAI_REPAYMENT_TEXT, URLEncoder.encode(Constants.MEMEDAI_REPAYMENT_TEXT, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("can not talk with 99bill gateway.");
         }
@@ -395,13 +395,5 @@ public class AccountServiceImpl implements AccountService, ApplicationEventPubli
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.publisher = applicationEventPublisher;
-    }
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        System.out.println(URLEncoder.encode("么么贷还款", "UTF-8"));
-//        ApplicationContext applicationContext = new FileSystemXmlApplicationContext("E:\\development\\working\\repaymentApp\\repaymentApp\\src\\main\\resources\\applicationContext.xml");
-//        AccountService accountService = applicationContext.getBean("accountService", AccountService.class);
-//        accountService.getPaymentGateway(1l, 1l, 1.00d);
-//        System.out.println("ok");
     }
 }

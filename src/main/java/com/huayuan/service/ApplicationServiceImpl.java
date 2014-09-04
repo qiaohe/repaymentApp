@@ -11,6 +11,7 @@ import com.huayuan.repository.applicationloan.ApprovalRepository;
 import com.huayuan.repository.member.CreditCardRepository;
 import com.huayuan.repository.member.MemberRepository;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +76,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationSummary> getApplicationSummaries(Integer curPage,String query) {
-        return applicationRepository.findApplicationSummaries(curPage,query);
+    public List<ApplicationSummary> getApplicationSummaries(Integer curPage, String query) {
+        return applicationRepository.findApplicationSummaries(curPage, query);
+    }
+
+    @Override
+    public long getApplicationCount() {
+        return applicationRepository.countByApplyTimeGreaterThan(DateTime.now().withTime(0, 0, 0, 0).toDate());
     }
 }
