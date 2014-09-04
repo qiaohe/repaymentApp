@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Date;
 
 import static com.huayuan.common.util.Constants.toSBC;
 
@@ -63,6 +64,13 @@ public class WeChatMessageController {
             return echostr;
         return echostr;
     }
+
+    @RequestMapping(value = "/ttl", method = RequestMethod.GET)
+    @ResponseBody
+    public Long getDate() {
+        return new Date().getTime();
+    }
+
 
     @RequestMapping(value = "/members/{memberId}/status/{status}", method = RequestMethod.GET)
     @ResponseBody
@@ -129,5 +137,10 @@ public class WeChatMessageController {
         fb.setMemberId(memberId);
         fb.setFeedback(feedback);
         feedbackRepository.save(fb);
+    }
+
+    public static void main(String[] args) {
+        String s = "仅需两步，信用评估就能帮您快速了解能借多少款，<a href=\"{0}#limit?memberId={1, number, #########}&status={2}\">点此马上进行评估</a>";
+        System.out.println(MessageFormat.format(s, "www", 999999999, 10));
     }
 }
