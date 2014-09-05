@@ -12,6 +12,7 @@ import java.io.IOException;
  * Created by Richard Xue on 14-7-15.
  */
 public final class ImageTools {
+    private static final ConvertCmd convertCmd = new ConvertCmd();
 
     /** ImageMagick的路径 */
     public static String imageMagickPath = null;
@@ -52,8 +53,6 @@ public final class ImageTools {
          */
         op.crop(width, height, x, y);
         op.addImage(newPath);
-        ConvertCmd convertCmd = new ConvertCmd();
-        //linux下不要设置此值，不然会报错
         if(isWin) {
             convertCmd.setSearchPath(imageMagickPath);
         }
@@ -73,7 +72,6 @@ public final class ImageTools {
         op.addImage(srcPath);
         op.resize(width, height);
         op.addImage(newPath);
-        ConvertCmd convertCmd = new ConvertCmd();
         //linux下不要设置此值，不然会报错
         if(isWin) {
             convertCmd.setSearchPath(imageMagickPath);
@@ -93,7 +91,6 @@ public final class ImageTools {
         op.addImage(srcPath);
         op.rotate(angle);
         op.addImage(newPath);
-        ConvertCmd convertCmd = new ConvertCmd();
         //linux下不要设置此值，不然会报错
         if(isWin) {
             convertCmd.setSearchPath(imageMagickPath);
@@ -113,7 +110,6 @@ public final class ImageTools {
         op.addImage(srcPath);
         op.resize(width, null);
         op.addImage(newPath);
-        ConvertCmd convertCmd = new ConvertCmd();
         //linux下不要设置此值，不然会报错
         if(isWin) {
             convertCmd.setSearchPath(imageMagickPath);
@@ -131,36 +127,11 @@ public final class ImageTools {
         op.font("宋体").gravity("southeast").pointsize(18).fill("#BCBFC8").draw("text 5,5 juziku.com");
         op.addImage();
         op.addImage();
-        ConvertCmd convertCmd = new ConvertCmd();
         //linux下不要设置此值，不然会报错
         if(isWin) {
             convertCmd.setSearchPath(imageMagickPath);
         }
         convertCmd.run(op, srcPath, srcPath);
-    }
-
-    /**
-     *
-     * @param srcImgPath
-     * @param src2ImagePath
-     * @param targetImgPath
-     * @throws InterruptedException
-     * @throws IOException
-     * @throws IM4JavaException
-     */
-    public static void mergeImages(String srcImgPath,String src2ImagePath,String targetImgPath) throws InterruptedException, IOException, IM4JavaException {
-        IMOperation op = new IMOperation();
-        op.addImage(srcImgPath);
-        // op.draw("image Over x,y x1,y1 XX.img.jpg"); x,y 是图片左上角的坐标，x1，y1则是这个图片拼接到原图的大小
-        op.draw("image Over " + 100 + "," + 100+ " " + 150 + ","+ 150 + " " + src2ImagePath);
-        op.addImage(targetImgPath);
-        // IM4JAVA是同时支持ImageMagick和GraphicsMagick的，如果为true则使用GM，如果为false支持IM。
-        ConvertCmd cmd = new ConvertCmd(true);
-        if(isWin) {
-            cmd.setSearchPath(imageMagickPath);
-        }
-        cmd.setErrorConsumer(StandardStream.STDERR);
-        cmd.run(op);
     }
 
 }

@@ -24,4 +24,6 @@ public interface ApplicationService {
 
     public List<ApplicationSummary> getApplicationSummaries(Integer curPage,String query);
 
+    public long getApplicationCount();
+
 }

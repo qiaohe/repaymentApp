@@ -21,6 +21,8 @@ import java.util.Date;
 public class IdCardRecognizer {
     private static final int FILENAME_LENGTH = 12;
     private static final String FILENAME_PATTERN = "%s/%s.jpg";
+    private static final String LONG_TERM_TEXT = "长期";
+    private static final String LONG_TERM_DATE_STR = "2099.12.31";
 
     private static final String VALID_DATE_DELIMITER = "-";
     private static final String VALID_DATE_PATTERN = "yyyy.MM.dd";
@@ -67,7 +69,7 @@ public class IdCardRecognizer {
         if (!isFront) {
             String[] vs = StringUtils.split(card.ValidPeriod, VALID_DATE_DELIMITER);
             return new IdCard(card.IssueAuthority, VALID_DATE_FORMATTER.parseDateTime(vs[0]).toDate(),
-                    VALID_DATE_FORMATTER.parseDateTime(vs[1]).toDate(), randomFileName + ".jpg");
+                    VALID_DATE_FORMATTER.parseDateTime(LONG_TERM_TEXT.equals(vs[1]) ? LONG_TERM_DATE_STR : vs[1]).toDate(), randomFileName + ".jpg");
         }
         Date birthday = BIRTHDAY_DATE_FORMATTER.parseDateTime(card.Birthday).toDate();
         return new IdCard(card.CardNo, card.Name, SexEnum.fromName(card.Sex), birthday, card.Folk, card.Address, randomFileName + ".jpg");
