@@ -12,6 +12,7 @@ public class LoanCommonDto {
     private String name;
     private String cardNo;
     private Short bank;
+    private Double appAmt;
     private Double amt;
     private Double payAmt;
     private String transCode;
@@ -22,7 +23,7 @@ public class LoanCommonDto {
     private Integer confirmStatus;
 
     public LoanCommonDto(BigInteger loanId, String appNo, String appDate, String name, String cardNo, Short bank,
-                         Double amt, Double payAmt, String transCode, String transTime, String confirmId,
+                         Double appAmt,Double amt, Double payAmt, String transCode, String transTime, String confirmId,
                          String confirmDate, String errorMsg, Integer confirmStatus) {
         this.loanId = loanId;
         this.appNo = appNo;
@@ -30,6 +31,7 @@ public class LoanCommonDto {
         this.name = name;
         this.cardNo = cardNo;
         this.bank = bank;
+        this.appAmt = appAmt;
         this.amt = amt;
         this.payAmt = payAmt;
         this.transCode = transCode;
@@ -86,6 +88,14 @@ public class LoanCommonDto {
 
     public void setBank(Short bank) {
         this.bank = bank;
+    }
+
+    public Double getAppAmt() {
+        return appAmt;
+    }
+
+    public void setAppAmt(Double appAmt) {
+        this.appAmt = appAmt;
     }
 
     public Double getAmt() {

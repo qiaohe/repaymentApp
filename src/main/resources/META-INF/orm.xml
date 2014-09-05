@@ -118,7 +118,7 @@
 
     <named-native-query name="Loan.findLoanTransDetails" result-set-mapping="loanTransMapping">
         <query>
-            select b.BID,appl.APPL_NO,appl.APPLY_TIME,idcard.NAME,cc.CARD_NO,cc.BANK,appl.AMT,
+            select b.BID,appl.APPL_NO,appl.APPLY_TIME,idcard.NAME,cc.CARD_NO,cc.BANK,appl.AMT as APPL_AMT,b.AMT,
             p.PAY_AMT,p.TRANS_CODE,p.TRANS_TIME,p.CONFORMED_ID,p.CONFORMED_DATE,p.ERROR_MESSAGE,p.CONFORMED from MEMBER m
             inner join ID_CARD idcard on m.ID = idcard.MEMBER_ID
             inner join APPL appl on appl.MEMBER_ID = m.ID
@@ -150,6 +150,7 @@
         <column-result name="APPLY_TIME"/>
         <column-result name="NAME"/>
         <column-result name="CARD_NO"/>
+        <column-result name="APPL_AMT"/>
         <column-result name="AMT"/>
         <column-result name="PAY_AMT"/>
         <column-result name="TRANS_CODE"/>

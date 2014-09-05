@@ -77,7 +77,7 @@ $(function(){
                 "<td style=\"width:6%;\">贷款人姓名</td>\n"+
                 "<td style=\"width:10%;\">信用卡卡号</td>\n"+
                 "<td style=\"width:6%;\">发卡行</td>\n"+
-                "<td style=\"width:6%;\">贷款金额</td>\n"+
+                "<td style=\"width:6%;\">应转金额</td>\n"+
                 "<td style=\"width:6%;\">已转金额</td>\n"+
                 "<td style=\"width:8%;\">转账流水号</td>\n"+
                 "<td style=\"width:8%;\">转账日期</td>\n"+

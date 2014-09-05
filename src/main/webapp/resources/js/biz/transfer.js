@@ -63,7 +63,6 @@
             "<td style=\"width:8%;\">贷款人姓名</td>\n"+
             "<td style=\"width:13%;\">信用卡卡号</td>\n"+
             "<td style=\"width:8%;\">发卡行</td>\n"+
-            "<td style=\"width:8%;\">贷款金额</td>\n"+
             "<td style=\"width:8%;\">应转金额</td>\n"+
             "<td style=\"width:13%;\">转账流水号</td>\n"+
             "<td style=\"width:10%;\">操作</td>\n"+
@@ -85,8 +84,7 @@
                         "<td>"+entity.name+"</td>\n"+
                         "<td>"+entity.cardNo+"</td>\n"+
                         "<td>"+transfer.bankMap[entity.bank]+"</td>\n"+
-                        "<td>"+entity.amt+"</td>\n"+
-                        "<td>"+(entity.amt-entity.payAmt)+"</td>\n"+
+                        "<td style='color: red;'>"+entity.amt+"</td>\n"+
                         "<td><input type=\"text\" class=\"transferNo\" value=\"\"></td>\n"+
                         "<td><input type=\"button\" class=\"transfer\" value=\"已转账\" loanNo=\""+entity.loanId+"\" style=\"width: 100px;\"></td>\n"+
                     "</tr>";
