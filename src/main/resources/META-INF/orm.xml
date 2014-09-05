@@ -124,7 +124,7 @@
             inner join APPL appl on appl.MEMBER_ID = m.ID
             inner join BORROW b on b.APP_NO = appl.APPL_NO
             inner join CREDITCARD cc on appl.CC_ID = cc.ID
-            left join PAY p on p.APP_NO = appl.APPL_NO :q
+            left join PAY p on p.BID = b.BID :q
          </query>
     </named-native-query>
 
